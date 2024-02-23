@@ -64,3 +64,10 @@ Planche (Couleur)
 code temperature frigo/congelo
 - -18, -32
 - 0, 4
+
+## Autres
+Bcript / Argon2
+login throttling
+plat
+recette
+debouncing 
