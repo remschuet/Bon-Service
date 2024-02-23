@@ -11,36 +11,27 @@ actions a faire todoliste ?
 */
 
 enum UniteMesure {
-  "Kilo"
-  "Livre"
+  "Kilogramme"
+  "Millilitre"
 }
 
 enum Role {
+  /*modifier par un chef ?*/
   "Chef"
   "Sous-Chef"
   "Cuisinier"
   "Plongueur"
 }
 
-enum HoraireDate {
-  "7:00"
-  "7:30"
-  "8:00"
-}
-
-enum EchelonageTemps {
-  /*cout journalier vs semaine*/
-  "1-Journee"
-  "1-Semaine"
-  "1-Mois"
-}
-
 enum ActionMapaq {
+  /*modifier par un chef ?*/
   "Planche-Bleu"
+  "Planche-Rouge"
 }
 
-Table ButtinUrgence {
-  /*cuisine chef ?*/
+Table BottinUrgence {
+  /*cuisine chef ?
+   quand ajouté un fournisseur, autommatiquement une nouvelle entrée ?*/
   id int [pk]
   cuisine int [ref: > Cuisine.id]
   nom varchar
@@ -48,17 +39,8 @@ Table ButtinUrgence {
   tellephone varchar
 }
 
-Table Horaire {
-  id int [pk]
-  cuisine int [ref: > Cuisine.id]
-  user_id int [ref: > User.id]
-  role Role /*default user_id.role*/
-  date date
-  horaireIn HoraireDate
-  horaireOut HoraireDate
-}
-
 Table Checklist {
+  /*Scrapper ?*/
   id int [pk]
   date date
   cuisine int [ref: > Cuisine.id]
@@ -70,9 +52,10 @@ Table Checklist {
 Table CheckTemp {
   id int [pk]
   cuisine int [ref: > Cuisine.id]
-  date date
+  date date [default: 1] // NOW()
   description text
   temperature float
+  tag bool [default: 0] // tag par nous si selon trop chaud ?
 }
 
 Table Ingredient {
@@ -87,7 +70,38 @@ Table Ingredient {
   qte float
 }
 
+Table LivreRecette {
+  /*Gerer les partages des livres ou ?*/
+  id int [pk]
+  desc varchar
+  chefid int [ref: > Chef.id]
+}
+
+Table Recipe {
+  /*Garder dans le temps des versions ?
+  Gérer les couts objectif: 25% 18%*/
+  id int [pk]
+  livreRecetteId int [ref: > LivreRecette.id]
+  auteur int [ref: > User.id]
+  nom varchar
+  qtePortion int
+  tempsPreparation int
+  tempsCuisson int
+  attribution varchar
+  dateAjout date
+  ingredients int [ref: > Ingredient.id]
+  etapes varchar
+  etapesPhoto int [ref: > Image_Video.key]
+  etapesMapaq ActionMapaq
+  alergene varchar
+}
+
+Table Menu {
+  id int [pk]
+}
+
 Table PreparedIngredient {
+  //
   id int [pk]
   item_id int [ref: > Ingredient.id]
   nom varchar
@@ -95,6 +109,8 @@ Table PreparedIngredient {
 }
 
 Table Chef {
+  /* comment en db gerer viewer
+  Comment gerer tutoriel*/
   id int [pk]
   prenom varchar
   nom varchar
@@ -114,28 +130,28 @@ Table User {
   username varchar
 }
 
-Table Viewer {
-  /* comment en db gerer viewer*/
-  id int [pk]
-}
-
-Table UserCuisine {
-  /*chef cuisine ?
-  user chef ?*/
-  users_id int [ref: > User.id]
-  cuisine_id int [ref: > Cuisine.id]
-  role Role
-  salaire float
-}
-
 Table Cuisine {
   id int [pk]
   chef_id int [ref: > User.id]
   nom varchar
 }
 
+Table UserCuisine {
+  /*chef cuisine ?*/
+  users_id int [ref: > User.id]
+  cuisine_id int [ref: > Cuisine.id]
+  role Role
+  salaire float
+}
+
+Table UserChef{
+  /*user chef ?*/
+  int id [pk]
+}
+
 Table BackUpCostRevenue {
-  /*sauvegarder dans le temps*/
+  /* Useless ?
+  sauvegarder dans le temps*/
   /*tag : commande lait, salaire*/
   chef_id int [ref: > User.id]
   date date
@@ -145,40 +161,26 @@ Table BackUpCostRevenue {
   tag varchar
 }
 
-Table RecipeToDo {
-  /*Gérer les recettes a faire au courant de la journée*/
-  id int [pk]
-  user_id int [ref: > User.id]
-  recipe int [ref: > Recipe.id]
-  nbFois int
-  date date
-}
-
 Table inventaire {
-  /*pas besoin de chef if pcq ingredient en possede deja 1*/
+  /* useless mais ingredients / fournisseur
+  pas besoin de chef if pcq ingredient en possede deja 1*/
   id int [pk]
   cuisine int [ref: > Cuisine.id]
   ingredient int [ref: > Ingredient.id]
   qte int
 }
 
-Table Recipe {
-  id int [pk]
-  cusine int [ref: > Cuisine.id]
-  auteur int [ref: > User.id]
-  nom varchar
-  qtePortion int
-  tempsPreparation int
-  tempsCuisson int
-  attribution varchar
-  dateAjout date
-  ingredients int [ref: > Ingredient.id]
-  etapes varchar
-  etapesPhoto int [ref: > Image_Video.key]
-  etapesMapaq ActionMapaq
-  alergene varchar
+Table fournisseur {
+  /*Marché de base*/
+  int id [pk]
 }
 
+Table Avatar {
+  /*S3*/
+  int id [pk]
+}
+
+/* S3 */
 Table Image_Video {
   key int [pk]
   value varchar
