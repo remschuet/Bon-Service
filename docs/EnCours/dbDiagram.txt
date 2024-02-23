@@ -1,0 +1,185 @@
+/*QTS
+recette appartient a un cuisine ou chef?
+Si chef :
+    quand chef change ?
+    si chef quite ?
+Si cuisine :
+    qui set up (chef? administration?)
+    quel est le but d une cuisine ?
+horaire ?
+actions a faire todoliste ?
+*/
+
+enum UniteMesure {
+  "Kilo"
+  "Livre"
+}
+
+enum Role {
+  "Chef"
+  "Sous-Chef"
+  "Cuisinier"
+  "Plongueur"
+}
+
+enum HoraireDate {
+  "7:00"
+  "7:30"
+  "8:00"
+}
+
+enum EchelonageTemps {
+  /*cout journalier vs semaine*/
+  "1-Journee"
+  "1-Semaine"
+  "1-Mois"
+}
+
+enum ActionMapaq {
+  "Planche-Bleu"
+}
+
+Table ButtinUrgence {
+  /*cuisine chef ?*/
+  id int [pk]
+  cuisine int [ref: > Cuisine.id]
+  nom varchar
+  description varchar
+  tellephone varchar
+}
+
+Table Horaire {
+  id int [pk]
+  cuisine int [ref: > Cuisine.id]
+  user_id int [ref: > User.id]
+  role Role /*default user_id.role*/
+  date date
+  horaireIn HoraireDate
+  horaireOut HoraireDate
+}
+
+Table Checklist {
+  id int [pk]
+  date date
+  cuisine int [ref: > Cuisine.id]
+  action varchar
+  fait bool
+  description text
+}
+
+Table CheckTemp {
+  id int [pk]
+  cuisine int [ref: > Cuisine.id]
+  date date
+  description text
+  temperature float
+}
+
+Table Ingredient {
+  /*date, categorie, prix total, appartient a un chef?*/
+  /*Si chef_id = null, ingredient pour tous (default mode)*/
+  id int [pk]
+  item varchar
+  /*cuisine ou chef ?*/
+  chef_id int [ref: > Chef.id]
+  prix_unitaire float
+  unite_mesure UniteMesure
+  qte float
+}
+
+Table PreparedIngredient {
+  id int [pk]
+  item_id int [ref: > Ingredient.id]
+  nom varchar
+  chef_id int [ref: > Chef.id]
+}
+
+Table Chef {
+  id int [pk]
+  prenom varchar
+  nom varchar
+  tel varchar
+  adresse varchar
+  password varchar
+  username varchar
+}
+
+Table User {
+  id int [pk]
+  prenom varchar
+  nom varchar
+  tel varchar
+  adresse varchar
+  password varchar
+  username varchar
+}
+
+Table Viewer {
+  /* comment en db gerer viewer*/
+  id int [pk]
+}
+
+Table UserCuisine {
+  /*chef cuisine ?
+  user chef ?*/
+  users_id int [ref: > User.id]
+  cuisine_id int [ref: > Cuisine.id]
+  role Role
+  salaire float
+}
+
+Table Cuisine {
+  id int [pk]
+  chef_id int [ref: > User.id]
+  nom varchar
+}
+
+Table BackUpCostRevenue {
+  /*sauvegarder dans le temps*/
+  /*tag : commande lait, salaire*/
+  chef_id int [ref: > User.id]
+  date date
+  echelonage EchelonageTemps
+  gainTot float
+  coutTot float
+  tag varchar
+}
+
+Table RecipeToDo {
+  /*Gérer les recettes a faire au courant de la journée*/
+  id int [pk]
+  user_id int [ref: > User.id]
+  recipe int [ref: > Recipe.id]
+  nbFois int
+  date date
+}
+
+Table inventaire {
+  /*pas besoin de chef if pcq ingredient en possede deja 1*/
+  id int [pk]
+  cuisine int [ref: > Cuisine.id]
+  ingredient int [ref: > Ingredient.id]
+  qte int
+}
+
+Table Recipe {
+  id int [pk]
+  cusine int [ref: > Cuisine.id]
+  auteur int [ref: > User.id]
+  nom varchar
+  qtePortion int
+  tempsPreparation int
+  tempsCuisson int
+  attribution varchar
+  dateAjout date
+  ingredients int [ref: > Ingredient.id]
+  etapes varchar
+  etapesPhoto int [ref: > Image_Video.key]
+  etapesMapaq ActionMapaq
+  alergene varchar
+}
+
+Table Image_Video {
+  key int [pk]
+  value varchar
+}
