@@ -1,14 +1,4 @@
-/*QTS
-recette appartient a un cuisine ou chef?
-Si chef :
-    quand chef change ?
-    si chef quite ?
-Si cuisine :
-    qui set up (chef? administration?)
-    quel est le but d une cuisine ?
-horaire ?
-actions a faire todoliste ?
-*/
+/*DATABASE, 24/2/2024*/
 
 enum UniteMesure {
   "Kilogramme"
@@ -29,85 +19,6 @@ enum ActionMapaq {
   "Planche-Rouge"
 }
 
-Table BottinUrgence {
-  /*cuisine chef ?
-   quand ajouté un fournisseur, autommatiquement une nouvelle entrée ?*/
-  id int [pk]
-  cuisine int [ref: > Cuisine.id]
-  nom varchar
-  description varchar
-  tellephone varchar
-}
-
-Table Checklist {
-  /*Scrapper ?*/
-  id int [pk]
-  date date
-  cuisine int [ref: > Cuisine.id]
-  action varchar
-  fait bool
-  description text
-}
-
-Table CheckTemp {
-  id int [pk]
-  cuisine int [ref: > Cuisine.id]
-  date date [default: 1] // NOW()
-  description text
-  temperature float
-  tag bool [default: 0] // tag par nous si selon trop chaud ?
-}
-
-Table Ingredient {
-  /*date, categorie, prix total, appartient a un chef?*/
-  /*Si chef_id = null, ingredient pour tous (default mode)*/
-  id int [pk]
-  item varchar
-  /*cuisine ou chef ?*/
-  chef_id int [ref: > Chef.id]
-  prix_unitaire float
-  unite_mesure UniteMesure
-  qte float
-}
-
-Table LivreRecette {
-  /*Gerer les partages des livres ou ?*/
-  id int [pk]
-  desc varchar
-  chefid int [ref: > Chef.id]
-}
-
-Table Recipe {
-  /*Garder dans le temps des versions ?
-  Gérer les couts objectif: 25% 18%*/
-  id int [pk]
-  livreRecetteId int [ref: > LivreRecette.id]
-  auteur int [ref: > User.id]
-  nom varchar
-  qtePortion int
-  tempsPreparation int
-  tempsCuisson int
-  attribution varchar
-  dateAjout date
-  ingredients int [ref: > Ingredient.id]
-  etapes varchar
-  etapesPhoto int [ref: > Image_Video.key]
-  etapesMapaq ActionMapaq
-  alergene varchar
-}
-
-Table Menu {
-  id int [pk]
-}
-
-Table PreparedIngredient {
-  //
-  id int [pk]
-  item_id int [ref: > Ingredient.id]
-  nom varchar
-  chef_id int [ref: > Chef.id]
-}
-
 Table Chef {
   /* comment en db gerer viewer
   Comment gerer tutoriel*/
@@ -118,70 +29,173 @@ Table Chef {
   adresse varchar
   password varchar
   username varchar
+  avatar int [ref: > Avatar.key]
 }
 
-Table User {
+Table Cuisine {
+  id int [pk]
+  chef_id int [ref: > Cuisinier.id]
+  nom varchar
+  int costObjectif [default: 20]
+}
+
+Table Cuisinier {
   id int [pk]
   prenom varchar
   nom varchar
   tel varchar
   adresse varchar
+  courriel varchar [unique]
   password varchar
-  username varchar
+  username varchar [unique]
+  avatar int [ref: > Avatar.key]
 }
 
-Table Cuisine {
-  id int [pk]
-  chef_id int [ref: > User.id]
-  nom varchar
-}
-
-Table UserCuisine {
+Table CuisinierCuisine {
   /*chef cuisine ?*/
-  users_id int [ref: > User.id]
-  cuisine_id int [ref: > Cuisine.id]
+  cuisinier int [ref: > Cuisinier.id]
+  cuisine int [ref: > Cuisine.id]
   role Role
-  salaire float
 }
 
-Table UserChef{
-  /*user chef ?*/
-  int id [pk]
+Table Fournisseur {
+  /*Marché de base*/
+  id int [pk]
+  nom varchar
+  estMarche bool [default: false]
+  ingredient int [ref: > Ingredient.id]
+  
 }
 
-Table BackUpCostRevenue {
-  /* Useless ?
-  sauvegarder dans le temps*/
-  /*tag : commande lait, salaire*/
-  chef_id int [ref: > User.id]
-  date date
-  echelonage EchelonageTemps
-  gainTot float
-  coutTot float
-  tag varchar
+Table FournisseurIngredient {
+  fournisseur int [ref: > Fournisseur.id]
+  ingredient int [ref: > Ingredient.id]
 }
 
-Table inventaire {
-  /* useless mais ingredients / fournisseur
-  pas besoin de chef if pcq ingredient en possede deja 1*/
+Table Ingredient {
+  id int [pk]
+  nom varchar
+  fournisseur int [ref: > Fournisseur.id]
+  prix_unitaire float
+  unite_mesure UniteMesure
+}
+
+
+Table LivreRecette {
+  /*
+  Comme créer une categorie
+  Lié a un chef, menu = partagé*/
+  id int [pk]
+  nom varchar
+  chef int [ref: > Chef.id]
+}
+
+Enum RecetteEtat{
+  "Recette"
+  "Menu"
+}
+
+Table Recipe {
+  /*Garder dans le temps des versions ?
+  Gérer les couts objectif: 25% 18%*/
+  id int [pk]
+  /*categorie, enum ?*/
+  livreRecetteId int [ref: > LivreRecette.id]
+  nom varchar
+  recetteEtat RecetteEtat
+  tempsPreparation int
+  tempsCuisson int
+  
+  qtePortion int /*Aucune idée, qte, unité mesure?*/
+  dateAjout date [default: 0] /*NOW()*/
+}
+
+enum Alergene {
+  "lactose"
+  "gluten"
+}
+
+Table RecetteAlergene {
+  recette int [ref: > Recipe.id]
+  alergene Alergene
+}
+
+Table RecetteEtapes {
+  id int [pk]
+  recette int [ref: > Recipe.id]
+  ordre int /*1, 2, 3 etapes dans cette recette*/
+  
+  /*Liste chainé pour représenté un etapes qui suit la prochaine ?
+  Select etrange pour faire ca*/
+  nextEtapeId int [ref: > RecetteEtapes.id]
+  etapesMapaq ActionMapaq
+
+}
+
+Table RecettePhoto {
+  recette int [ref: > Recipe.id]
+  photo int [ref: > Photo.key]
+}
+
+Table RecetteIngredient {
+  recette int [ref: > Recipe.id]
+  ingredient int [ref: > Ingredient.id]
+}
+
+Table Menu {
+  id int [pk]
+  nom varchar [unique]
+  cuisine int [ref: > Cuisine.id]
+  estPublic bool [default: false]
+  cost int [default: 0]
+  estimeVente int [default: 0] /*cost * cuisine.objectif*/
+}
+
+enum PlatEmplecement {
+  "Entrée"
+  "Plat"
+  "Dessert"
+}
+
+Table MenuPlat {
+  /*date now pour savoir l ordre ?*/
+  menu int [ref: > Menu.id]
+  recette int [ref: > Recipe.id]
+  categorie PlatEmplecement
+}
+
+
+
+
+
+
+Table BottinUrgence {
   id int [pk]
   cuisine int [ref: > Cuisine.id]
-  ingredient int [ref: > Ingredient.id]
-  qte int
+  nom varchar
+  description varchar
+  tellephone varchar
 }
 
-Table fournisseur {
-  /*Marché de base*/
-  int id [pk]
+Table CheckTemp {
+  id int [pk]
+  cuisine int [ref: > Cuisine.id]
+  cuisinier int [ref: > Cuisinier.id]
+  date date [default: 1] // NOW()
+  temperature float
+  tag bool [default: 0] // tag par nous si selon trop chaud ?
 }
+
+
 
 Table Avatar {
   /*S3*/
-  int id [pk]
+  key int [pk]
+  value varbinary
 }
 
 /* S3 */
-Table Image_Video {
+Table Photo {
   key int [pk]
   value varchar
 }
