@@ -1,82 +1,106 @@
-/*DATABASE, 24/2/2024*/
+/*DATABASE, 26/2/2024*/
 
 enum UniteMesure {
-  "Kilogramme"
+  /*FIXE*/
+  "gramme"
   "Millilitre"
-}
-
-enum Role {
-  /*modifier par un chef ?*/
-  "Chef"
-  "Sous-Chef"
-  "Cuisinier"
-  "Plongueur"
+  "portion"
 }
 
 enum ActionMapaq {
-  /*modifier par un chef ?*/
   "Planche-Bleu"
   "Planche-Rouge"
+  "refroidir rapidement"
 }
 
-Table Chef {
-  /* comment en db gerer viewer
-  Comment gerer tutoriel*/
+enum Alergene {
+  "lactose"
+  "gluten"
+  "arachides"
+  "noix"
+  "œufs"
+  "poissons"
+  "crustacés"
+  "mollusques"
+  "soja"
+  "sulfites"
+  "moutarde"
+}
+
+enum typeUser {
+  /*FIXE*/
+  "Admin"
+  "Membre"
+}
+
+Enum RecetteEtat{
+  /*FIXE*/
+  "Recette"
+  "Plat"
+}
+
+Table User {
   id int [pk]
   prenom varchar
   nom varchar
+  type typeUser
   tel varchar
   adresse varchar
   password varchar
-  username varchar
+  courriel varchar unique
+  username varchar unique
   avatar int [ref: > Avatar.key]
 }
 
 Table Cuisine {
   id int [pk]
-  chef_id int [ref: > Cuisinier.id]
+  user_admin int [ref: > User.id]
   nom varchar
   int costObjectif [default: 20]
 }
 
-Table Cuisinier {
-  id int [pk]
-  prenom varchar
-  nom varchar
-  tel varchar
-  adresse varchar
-  courriel varchar [unique]
-  password varchar
-  username varchar [unique]
-  avatar int [ref: > Avatar.key]
+Table CuisineRole {
+  cuisine int [ref: > Cuisine.id, pk]
+  role varchar [pk]
 }
 
-Table CuisinierCuisine {
-  /*chef cuisine ?*/
-  cuisinier int [ref: > Cuisinier.id]
+Table UserCuisine {
   cuisine int [ref: > Cuisine.id]
-  role Role
+  user int [ref: > User.id]
+  role varchar
 }
 
-Table Fournisseur {
-  /*Marché de base*/
+Table Fournisseur{
   id int [pk]
-  nom varchar
-  estMarche bool [default: false]
-  ingredient int [ref: > Ingredient.id]
-  
+  nom string
+}
+
+/*
+Table Representant {
+  id int
+  nom string
+  tel varchar
+}
+*/
+
+Table FournisseurCuisine {
+  /*A travers le nom on sait si c'est le marché */
+  id int [pk]
+  cuisine int [ref: > Cuisine.id, unique]
+  nom varchar [unique]
+  // representant int [ref:> Representant.id]
+  /*unique cuisine et nom*/
 }
 
 Table FournisseurIngredient {
-  fournisseur int [ref: > Fournisseur.id]
+  fournisseur int [ref: > FournisseurCuisine.id]
   ingredient int [ref: > Ingredient.id]
 }
 
 Table Ingredient {
   id int [pk]
   nom varchar
-  fournisseur int [ref: > Fournisseur.id]
-  prix_unitaire float
+  prix_unitaire int /*499 prix = 4.99$*/
   unite_mesure UniteMesure
 }
 
@@ -87,49 +111,44 @@ Table LivreRecette {
   Lié a un chef, menu = partagé*/
   id int [pk]
   nom varchar
-  chef int [ref: > Chef.id]
+  chef int [ref: > User.id]
 }
 
-Enum RecetteEtat{
-  "Recette"
-  "Menu"
+Table RecipeArchive {
+  /*A VOIR*/
+  id int [pk]
 }
 
-Table Recipe {
+Table categorieRecette {
+  user int [ref: > User.id, pk]
+  categorie varchar [pk]
+  /*user et categorie unique ensemble SET*/
+}
+
+Table Recipe { /*Recette*/
   /*Garder dans le temps des versions ?
   Gérer les couts objectif: 25% 18%*/
   id int [pk]
+  version_number int [default: 0]
+  nom varchar
   /*categorie, enum ?*/
   livreRecetteId int [ref: > LivreRecette.id]
-  nom varchar
+  categorie int [ref: > categorieRecette.categorie]
   recetteEtat RecetteEtat
   tempsPreparation int
   tempsCuisson int
   
-  qtePortion int /*Aucune idée, qte, unité mesure?*/
-  dateAjout date [default: 0] /*NOW()*/
-}
+  etapes string /*toutes les etapes JSON*/
 
-enum Alergene {
-  "lactose"
-  "gluten"
+  unite_mesure UniteMesure
+  rendement int /*3000ml 3 portions*/
+  dateAjout date [default: 0] /*NOW()*/
+  obj_rendement float /* cost * entre 0 et 1*/
 }
 
 Table RecetteAlergene {
   recette int [ref: > Recipe.id]
   alergene Alergene
-}
-
-Table RecetteEtapes {
-  id int [pk]
-  recette int [ref: > Recipe.id]
-  ordre int /*1, 2, 3 etapes dans cette recette*/
-  
-  /*Liste chainé pour représenté un etapes qui suit la prochaine ?
-  Select etrange pour faire ca*/
-  nextEtapeId int [ref: > RecetteEtapes.id]
-  etapesMapaq ActionMapaq
-
 }
 
 Table RecettePhoto {
@@ -147,43 +166,39 @@ Table Menu {
   nom varchar [unique]
   cuisine int [ref: > Cuisine.id]
   estPublic bool [default: false]
-  cost int [default: 0]
-  estimeVente int [default: 0] /*cost * cuisine.objectif*/
-}
-
-enum PlatEmplecement {
-  "Entrée"
-  "Plat"
-  "Dessert"
 }
 
 Table MenuPlat {
   /*date now pour savoir l ordre ?*/
   menu int [ref: > Menu.id]
   recette int [ref: > Recipe.id]
-  categorie PlatEmplecement
+  categorie int [ref: > PlatEmplacement.categorie]
 }
 
+Table PlatEmplacement {
+  /*exemple: entrée principale dessert*/
+  user int [ref: > User.id, pk]
+  categorie varchar [unique]
+}
 
-
-
-
-
-Table BottinUrgence {
+Table Bottin {
+ /*Lorsque 1 forunisseur créé on call en db*/ 
   id int [pk]
   cuisine int [ref: > Cuisine.id]
   nom varchar
   description varchar
   tellephone varchar
+  /*portion admin*/
+  numero_compte varchar
+  est_public bool [default: false]
 }
 
 Table CheckTemp {
   id int [pk]
   cuisine int [ref: > Cuisine.id]
-  cuisinier int [ref: > Cuisinier.id]
+  user int [ref: > User.id]
   date date [default: 1] // NOW()
   temperature float
-  tag bool [default: 0] // tag par nous si selon trop chaud ?
 }
 
 
@@ -191,11 +206,16 @@ Table CheckTemp {
 Table Avatar {
   /*S3*/
   key int [pk]
-  value varbinary
+  value varchar
 }
 
 /* S3 */
 Table Photo {
+  key int [pk]
+  value varchar
+}
+
+Table Video {
   key int [pk]
   value varchar
 }
