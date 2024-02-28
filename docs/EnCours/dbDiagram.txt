@@ -166,16 +166,13 @@ Table Menu {
   nom varchar [unique]
   cuisine int [ref: > Cuisine.id]
   estPublic bool [default: false]
+  plats string /*
+  structMenu_1{id_1_plat, id_2_plat, id_3_plat}
+  structMenu_2{id_1_plat, id_2_plat, id_3_plat}
+  structMenu_3{id_1_plat, id_2_plat, id_3_plat}*/
 }
 
-Table MenuPlat {
-  /*date now pour savoir l ordre ?*/
-  menu int [ref: > Menu.id]
-  recette int [ref: > Recipe.id]
-  categorie int [ref: > PlatEmplacement.categorie]
-}
-
-Table PlatEmplacement {
+Table structMenu {
   /*exemple: entrée principale dessert*/
   user int [ref: > User.id, pk]
   categorie varchar [unique]
