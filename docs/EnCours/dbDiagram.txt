@@ -1,212 +1,208 @@
-/*DATABASE, 26/2/2024*/
+/*Fournisseur -> Supplier*/
+/*yield -> rendement*/
 
-enum UniteMesure {
-  /*FIXE*/
-  "gramme"
-  "Millilitre"
+enum UnitMeasure {
+  "g"
+  "ml"
   "portion"
+  "cup"
+  "oz"
+  "tbsp"
+  "tsp"
+  "lbs"
 }
 
 enum ActionMapaq {
-  "Planche-Bleu"
-  "Planche-Rouge"
-  "refroidir rapidement"
+  "Plank-Blue"
+  "Plank-Red"
+  "Plank-Yellow"
+  "Cool Quickly"
 }
 
-enum Alergene {
+enum Alergen {
   "lactose"
   "gluten"
-  "arachides"
-  "noix"
-  "œufs"
-  "poissons"
-  "crustacés"
-  "mollusques"
-  "soja"
-  "sulfites"
-  "moutarde"
+  "peanut"
+  "nut"
+  "egg"
+  "fish"
+  "crustacean"
+  "molluscs"
+  "soy"
+  "sulphites"
+  "mustard"
 }
 
-enum typeUser {
-  /*FIXE*/
+enum UserType {
   "Admin"
   "Membre"
 }
 
-Enum RecetteEtat{
+Enum RecipeState{
   /*FIXE*/
-  "Recette"
-  "Plat"
+  "Recipe"
+  "Dish"
 }
 
 Table User {
   id int [pk]
-  prenom varchar
-  nom varchar
-  type typeUser
-  tel varchar
-  adresse varchar
+  firstName varchar
+  name varchar
+  userType UserType
+  phone varchar
+  adress varchar
   password varchar
-  courriel varchar unique
-  username varchar unique
+  eMail varchar unique
+  verfiy bool [default : false]
   avatar int [ref: > Avatar.key]
 }
 
-Table Cuisine {
+Table Kitchen {
+  /*user_admin and name unique together*/
   id int [pk]
-  user_admin int [ref: > User.id]
-  nom varchar
-  int costObjectif [default: 20]
+  userAdmin int [ref: > User.id, unique] 
+  name varchar unique
+  costObjective int [default: 20]
 }
 
-Table CuisineRole {
-  cuisine int [ref: > Cuisine.id, pk]
+Table KitchenRole {
+  /*kitchen and role unique together*/
+  kitchen int [ref: > Kitchen.id, pk]
   role varchar [pk]
 }
 
-Table UserCuisine {
-  cuisine int [ref: > Cuisine.id]
+Table KitchenUser {
+  cuisine int [ref: > Kitchen.id]
   user int [ref: > User.id]
   role varchar
 }
 
-Table Fournisseur{
+Table Supplier{
   id int [pk]
-  nom string
+  name string
 }
 
-/*
-Table Representant {
-  id int
-  nom string
-  tel varchar
-}
-*/
-
-Table FournisseurCuisine {
-  /*A travers le nom on sait si c'est le marché */
+Table SupplierKitchen {
+  /*Through the name we know if it's the Market */
+  /*kitchen and name unique together*/
   id int [pk]
-  cuisine int [ref: > Cuisine.id, unique]
-  nom varchar [unique]
-  // representant int [ref:> Representant.id]
-  /*unique cuisine et nom*/
+  kitchen int [ref: > Kitchen.id, unique]
+  name varchar [unique]
 }
 
-Table FournisseurIngredient {
-  fournisseur int [ref: > FournisseurCuisine.id]
+Table SupplierIngredient {
+  supplier int [ref: > SupplierKitchen.id]
   ingredient int [ref: > Ingredient.id]
 }
 
 Table Ingredient {
+  /*unitPrice 499 = 4.99*/
   id int [pk]
-  nom varchar
-  prix_unitaire int /*499 prix = 4.99$*/
-  unite_mesure UniteMesure
+  name varchar
+  unitPrice int 
+  unitMeasure UnitMeasure
 }
 
 
-Table LivreRecette {
-  /*
-  Comme créer une categorie
-  Lié a un chef, menu = partagé*/
+Table RecipeBook {
+  /*name and userAdmin unique together*/
   id int [pk]
-  nom varchar
-  chef int [ref: > User.id]
+  name varchar [unique]
+  userAdmin int [ref: > User.id, unique]
 }
 
 Table RecipeArchive {
-  /*A VOIR*/
   id int [pk]
 }
 
-Table categorieRecette {
+Table RecipeCategory {
+  /*user and category unique together*/
   user int [ref: > User.id, pk]
-  categorie varchar [pk]
-  /*user et categorie unique ensemble SET*/
+  category varchar [pk]
 }
 
-Table Recipe { /*Recette*/
-  /*Garder dans le temps des versions ?
-  Gérer les couts objectif: 25% 18%*/
+Table Recipe { 
+  /*name maybe unique*/
+  /*yield: 3000 ml or 3 portions*/
+  /*objYield = ]0-1[*/
   id int [pk]
-  version_number int [default: 0]
-  nom varchar
-  /*categorie, enum ?*/
-  livreRecetteId int [ref: > LivreRecette.id]
-  categorie int [ref: > categorieRecette.categorie]
-  recetteEtat RecetteEtat
-  tempsPreparation int
-  tempsCuisson int
+  versionNumber int [default: 0]
+  name varchar
+  recipeBook int [ref: > RecipeBook.id]
+  category int [ref: > RecipeCategory.category]
+  recipeState RecipeState
+  preparationTimeMin int
+  cookingTimeMin int
   
-  etapes string /*toutes les etapes JSON*/
-
-  unite_mesure UniteMesure
-  rendement int /*3000ml 3 portions*/
-  dateAjout date [default: 0] /*NOW()*/
-  obj_rendement float /* cost * entre 0 et 1*/
+  steps json
+  yield int
+  unitMeasure UnitMeasure
+  dateAdded date [default: 0] /*NOW()*/
+  objYield float 
 }
 
-Table RecetteAlergene {
-  recette int [ref: > Recipe.id]
-  alergene Alergene
+Table RecipeAllergen {
+  recipe int [ref: > Recipe.id]
+  alergen Alergen
 }
 
-Table RecettePhoto {
-  recette int [ref: > Recipe.id]
+Table RecipePhoto {
+  recipe int [ref: > Recipe.id]
   photo int [ref: > Photo.key]
 }
 
-Table RecetteIngredient {
-  recette int [ref: > Recipe.id]
+Table RecipeIngredient {
+  recipe int [ref: > Recipe.id]
   ingredient int [ref: > Ingredient.id]
 }
 
 Table Menu {
-  id int [pk]
-  nom varchar [unique]
-  cuisine int [ref: > Cuisine.id]
-  estPublic bool [default: false]
-  plats string /*
+  /*
+  dishs exemple
   structMenu_1{id_1_plat, id_2_plat, id_3_plat}
   structMenu_2{id_1_plat, id_2_plat, id_3_plat}
   structMenu_3{id_1_plat, id_2_plat, id_3_plat}*/
+  id int [pk]
+  name varchar [unique]
+  kitchen int [ref: > Kitchen.id]
+  isPublic bool [default: false]
+  dishs json 
 }
 
 Table structMenu {
-  /*exemple: entrée principale dessert*/
-  user int [ref: > User.id, pk]
-  categorie varchar [unique]
+  /*userAdmin and category unique together*/
+  /*category example: starter, main, dessert*/
+  userAdmin int [ref: > User.id, pk]
+  category varchar [pk]
 }
 
-Table Bottin {
- /*Lorsque 1 forunisseur créé on call en db*/ 
+Table PhoneBook {
+ /*When yield add, create to phone book*/ 
   id int [pk]
-  cuisine int [ref: > Cuisine.id]
-  nom varchar
+  kitchen int [ref: > Kitchen.id]
+  name varchar
   description varchar
-  tellephone varchar
+  phone varchar
   /*portion admin*/
-  numero_compte varchar
-  est_public bool [default: false]
+  compteNumber varchar
+  isPublic bool [default: false]
 }
 
 Table CheckTemp {
   id int [pk]
-  cuisine int [ref: > Cuisine.id]
+  kitchen int [ref: > Kitchen.id]
   user int [ref: > User.id]
   date date [default: 1] // NOW()
-  temperature float
+  temp float
 }
 
 
-
+/* S3 */
 Table Avatar {
-  /*S3*/
   key int [pk]
   value varchar
 }
 
-/* S3 */
 Table Photo {
   key int [pk]
   value varchar
