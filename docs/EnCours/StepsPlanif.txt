@@ -1,0 +1,41 @@
+Creation du projet "code"
+Implementation du serveur
+Implementation de la base de donnée
+Implementation de test unitaire Github workflow			
+
+Creation des pages : menu, dashboard, cuisine
+Authentification (login, register) chef
+Ajouter marché fixe
+Input standardisé recette
+Organisation livre de recette et categorie
+Création de menu
+
+input boite et tasse
+
+
+Authentification (login, register) cuisinier
+Attribuer roles dans une equpes	
+
+Partage de menu	
+
+Ajouter fournisseur et modification marché
+Visualiser et calculs de reviens des menu
+problematique de switch cuisinier a chef
+
+Gestion de profils (modification, email, username)
+creation frigo
+Input frigo
+
+Notification frigo ou autre
+
+Internationalisation (fr, en)
+
+ajouter video recette
+ajouter photos recette
+ajouter avatar
+
+ajouter bottin telephonique
+Ajouter tutoriel
+maintient registre mapaq
+verification securité et tests finaux
+deploiment
