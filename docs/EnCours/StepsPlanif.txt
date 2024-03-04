@@ -21,7 +21,7 @@ Partage de menu
 Ajouter des fournisseurs
 Autorisation modification du marché
 Visualiser et calculs de reviens des menu
-problematique de switch cuisinier à chef
+problématique de switch cuisinier à chef
 
 Gestion de profils (modification, email, username)
 Creation de frigo
@@ -30,6 +30,7 @@ System de notification (frigo)
 
 Internationalisation (fr, en)
 
+Implémentation de l'ajout de la gestion des médias
 ajouter video recette
 ajouter photos recette
 ajouter avatar
