@@ -1,32 +1,32 @@
 Creation du projet "code"
-Implementation du serveur
-Implementation de la base de donnée
+Implementation du serveur Next.js
+Implementation de la base de donnée prisma
 Implementation de test unitaire Github workflow			
 
-Creation des pages : menu, dashboard, cuisine
-Authentification (login, register) chef
-Ajouter marché fixe
-Input standardisé recette
-Organisation livre de recette et categorie
+Creation des chemins des pages: menu, dashboard, cuisine
+Authentification (login, register) Chef
+Ajouter le marché fixe (ingredients par default)
+
+Input standardisés des recettes et plats
+Organisation des livre de recettes et categories
 Création de menu
 
-input boite et tasse
+convertisseur input (boite, tps et tasse)
 
-
-Authentification (login, register) cuisinier
-Attribuer roles dans une equpes	
+Authentification (login, register) Cuisinier
+Attribuer roles dans une équipes	
 
 Partage de menu	
 
-Ajouter fournisseur et modification marché
+Ajouter des fournisseurs
+Autorisation modification du marché
 Visualiser et calculs de reviens des menu
-problematique de switch cuisinier a chef
+problematique de switch cuisinier à chef
 
 Gestion de profils (modification, email, username)
-creation frigo
-Input frigo
-
-Notification frigo ou autre
+Creation de frigo
+Input temperature frigo
+System de notification (frigo)
 
 Internationalisation (fr, en)
 
