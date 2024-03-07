@@ -16,6 +16,7 @@ datasource db {
 enum UserTypes {
   ADMIN
   MEMBER
+  DEV
 }
 
 model User {
@@ -29,6 +30,6 @@ model User {
   avatar_key String?
   isVerified Boolean @default(false)
   createdAt DateTime @default(now())
-  userTypes UserTypes[]
+  userTypes UserTypes[] @default([DEV])
   updatedAt DateTime @updatedAt
 }
