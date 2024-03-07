@@ -30,6 +30,6 @@ model User {
   avatar_key String?
   isVerified Boolean @default(false)
   createdAt DateTime @default(now())
-  userTypes UserTypes[] @default([DEV])
+  userTypes UserTypes[] @default([ADMIN])
   updatedAt DateTime @updatedAt
 }
