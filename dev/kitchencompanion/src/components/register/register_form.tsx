@@ -30,18 +30,20 @@ export function RegisterForm() {
       <div className='h-full flex-col bg-stone-700 p-12 text-white lg:flex dark:border-r'>
         <div className='text-xl font-medium'>Kitchen Companion</div>
         <div className='mt-auto'>
-          <blockquote className=' max-w-[70%] space-y-2'>
-            <p className='text-lg'>
+          <blockquote className=' max-w-[90%] space-y-2'>
+            <p className='sm:text-md'>
               “Grace à Kitchen Companion j'arrive à concacrer plus de temps à
               l'élaboration de mes menus et moins de temps à la gestion de ma
               cuisine.”
             </p>
-            <p className='text-sm'>Normand Laprise</p>
+            <p className='text-sm font-semibold text-stone-300'>
+              Normand Laprise
+            </p>
           </blockquote>
         </div>
       </div>
       <div className='lg:px-8 grid place-content-center col-span-2'>
-        <Card className='p-8 flex w-full flex-col justify-center space-y-6 sm:min-w-[350px]'>
+        <div className='p-8 flex w-full flex-col justify-center space-y-6 sm:min-w-[350px]'>
           <CardHeader className='flex flex-col space-y-2 text-center'>
             <h1 className='text-2xl font-semibold tracking-tight'>
               Créer un compte
@@ -103,7 +105,7 @@ export function RegisterForm() {
               </Button>
             </form>
           </CardContent>
-        </Card>
+        </div>
       </div>
     </div>
   );
