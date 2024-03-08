@@ -1,3 +1,24 @@
+-- CreateEnum
+CREATE TYPE "UserTypes" AS ENUM ('ADMIN', 'MEMBER', 'DEV');
+
+-- CreateTable
+CREATE TABLE "User" (
+    "id" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "firstName" TEXT,
+    "name" TEXT,
+    "phone" TEXT,
+    "adress" TEXT,
+    "avatar_key" TEXT,
+    "isVerified" BOOLEAN DEFAULT false,
+    "userType" "UserTypes" DEFAULT 'ADMIN',
+    "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3),
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateTable
 CREATE TABLE "Account" (
     "id" TEXT NOT NULL,
@@ -15,6 +36,9 @@ CREATE TABLE "Account" (
 
     CONSTRAINT "Account_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Account_provider_providerAccountId_key" ON "Account"("provider", "providerAccountId");
