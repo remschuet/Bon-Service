@@ -20,16 +20,16 @@ enum UserTypes {
 }
 
 model User {
-  id       String   @id @default(cuid())
-  email    String   @unique
-  password String
-  firstName String?
-  name     String?
-  phone    String?
-  adress   String?
+  id         String    @id @default(cuid())
+  email      String    @unique
+  password   String
+  firstName  String?
+  name       String?
+  phone      String?
+  adress     String?
   avatar_key String?
-  isVerified Boolean @default(false)
-  createdAt DateTime @default(now())
-  userTypes UserTypes[] @default([ADMIN])
-  updatedAt DateTime @updatedAt
+  isVerified Boolean   @default(false)
+  userType   UserTypes @default(ADMIN)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
 }
