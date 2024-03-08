@@ -1,5 +1,5 @@
-import { CreateUser } from "@/components/create_users";
-import { DisplayUsers } from "@/components/display_users";
+import { CreateUser } from "@/components/basic_test/create_users";
+import { DisplayUsers } from "@/components/basic_test/display_users";
 
 export default function Home() {
   return (

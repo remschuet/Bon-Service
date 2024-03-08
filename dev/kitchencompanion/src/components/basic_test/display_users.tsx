@@ -1,4 +1,4 @@
-import { getUsers } from "@/server/db/dao_user";
+import { getUsers } from "@/data_access/user";
 
 export async function DisplayUsers() {
 

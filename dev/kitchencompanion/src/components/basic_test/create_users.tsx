@@ -1,19 +1,20 @@
-import { User } from "@/server/type";
-import { Button } from "./ui/button";
-import { Card, CardContent, CardHeader } from "./ui/card";
-import { createUser } from "@/server/db/dao_user";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { createUser } from "@/data_access/user";
 import { revalidatePath } from "next/cache";
+import { User } from "@prisma/client";
 
 export function CreateUser() {
 
     async function handleCreateUser(formData: FormData){
         'use server'
-        const newUser:User = {
+        const newUser = {
             email: formData.get("email") as string,
-            password: formData.get("password") as string
+            password: formData.get("password") as string,
+
         }
 
-        await createUser(newUser);
+        await createUser(newUser as User);
         revalidatePath("/");
 
     }
