@@ -6,6 +6,16 @@ const db = new PrismaClient();
 export async function createUser(user: User) {
   const hashedPassword = await argon2.hash(user.password);
 
+  if (user.userType === UserTypes.MEMBER) {
+    return await db.user.create({
+      data: {
+        email: user.email,
+        password: hashedPassword,
+        userType: UserTypes.MEMBER,
+      },
+    });
+  }
+
   return await db.user.create({
     data: {
       email: user.email,

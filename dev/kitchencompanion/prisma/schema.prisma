@@ -26,7 +26,7 @@ model User {
   firstName  String?
   name       String?
   phone      String?
-  adress     String?
+  address    String?
   avatar_key String?
   isVerified Boolean   @default(false)
   userType   UserTypes @default(ADMIN)
