@@ -9,7 +9,6 @@ datasource db {
 }
 
 // ---- Mandatory for NextAuth ---- // 
-
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -24,13 +23,208 @@ model Account {
   id_token          String? @db.Text
   session_state     String?
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
 
+// ---- model ---- //
+model User {
+  id                String     @id @default(cuid())
+  email             String     @unique
+  password          String
+  firstName         String?
+  name              String?
+  phone             String?
+  address           String?
+  avatar_key        String?
+  isVerified        Boolean?   @default(false)
+  userType          UserTypes? @default(ADMIN)
+  createdAt         DateTime?  @default(now())
+  updatedAt         DateTime?  @updatedAt
 
-// -------- // 
+  kitchens          Kitchen[]
+  kitchenUsers      KitchenUser[]
+  recipeBooks       RecipeBook[]
+  recipeCategories  RecipeCategory[]
+  structMenus       StructMenu[]
+  checkTemps        CheckTemp[]
+
+  // For NextAuth //
+  accounts          Account[]
+}
+
+model Kitchen {
+  id                String    @id @default(cuid())
+  user              User      @relation(fields: [userId], references: [id])
+  userId            String
+  name              String
+  costObjective     Int       @default(20)
+  
+  @@unique([userId, name])
+
+  kitchenRoles      KitchenRole[]
+  kitchenUsers      KitchenUser[]
+  menus             Menu[]
+  phoneBooks        PhoneBook[]
+  checkTemps        CheckTemp[]
+}
+
+model KitchenRole {
+  kitchen           Kitchen   @relation(fields: [kitchenId], references: [id])
+  kitchenId         String
+  role              String
+
+  @@id([kitchenId, role])
+}
+
+model KitchenUser {
+  kitchen           Kitchen   @relation(fields: [kitchenId], references: [id])
+  kitchenId         String
+  user              User      @relation(fields: [userId], references: [id])
+  userId            String
+
+  @@id([kitchenId, userId])
+}
+
+
+model Supplier {
+  id                String   @id @default(cuid())
+  name              String   @unique
+
+  ingredients       Ingredient[]
+}
+
+model Ingredient { 
+  id                String   @id @default(cuid())
+  name              String
+  unitPrice         Int
+  unitMeasure       UnitMeasure
+  supplier          Supplier @relation(fields: [supplierId], references: [id])
+  supplierId        String
+
+  @@unique([name, supplierId])
+
+  recipeIngredients RecipeIngredient[]
+}
+
+model RecipeBook{
+  id                String  @id @default(cuid())
+  name              String  
+  user              User    @relation(fields: [userId], references: [id])
+  userId            String
+
+  @@unique([name, userId])
+
+  recipes           Recipe[]
+}
+
+model RecipeCategory {
+  id                String @id @default(cuid())
+
+  user              User   @relation(fields: [userId], references: [id])
+  userId            String
+  category          String
+
+  @@unique([userId, category])
+
+  recipes           Recipe[]
+}
+
+model Recipe{
+  id                String         @id @default(cuid())
+  versionNumber     Int?           @default(0)
+  name              String
+  recipeBook        RecipeBook     @relation(fields: [recipeBookId], references: [id])
+  recipeBookId      String
+
+  recipeCategory    RecipeCategory @relation(fields: [recipeCategoryId], references: [id])
+  recipeCategoryId  String
+
+  recipeState       RecipeState?   @default(RECIPE)
+  preparationTime   Int?
+  cookingTime       Int?
+
+  recipeAllergens   RecipeAllergen[]
+  recipePhotos      RecipePhoto[]
+  recipeIngredients RecipeIngredient[]
+}
+
+model RecipeAllergen {
+  recipe            Recipe  @relation(fields: [recipeId], references: [id])
+  recipeId          String
+  alergen           Alergen
+
+  @@id([recipeId, alergen])
+}
+
+model RecipePhoto {
+  id                String @id @default(cuid())
+
+  recipe            Recipe @relation(fields: [recipeId], references: [id])
+  recipeId          String
+  photo             Int
+
+  @@unique([recipeId, photo])
+}
+
+model RecipeIngredient{
+  id                String      @id @default(cuid())
+  
+  recipe            Recipe      @relation(fields: [recipeId], references: [id])
+  recipeId          String
+
+  ingredient        Ingredient  @relation(fields: [ingredientId], references: [id])
+  ingredientId      String
+  
+  @@unique([recipeId, ingredientId])
+}
+
+
+model Menu {
+  id                String    @id @default(cuid())
+
+  name              String    @unique
+  kitchen           Kitchen   @relation(fields: [kitchenId], references: [id])
+  kitchenId         String
+
+  isPublic          Boolean?  @default(false)
+  dishs             Json?
+}
+
+model StructMenu {
+  id                String @id @default(cuid())
+
+  user              User @relation(fields: [userId], references: [id])
+  userId            String
+  category          String
+
+  @@unique([userId, category])
+}
+
+model PhoneBook {
+  id                String   @id @default(cuid())
+
+  kitchen           Kitchen  @relation(fields: [kitchenId], references: [id])
+  kitchenId         String
+  name              String
+  description       String?
+  phoneNumber       String
+  compteNumber      String
+  isPublic          Boolean? @default(false)
+}
+
+model CheckTemp{
+  id                String    @id @default(cuid())
+
+  kitchen           Kitchen   @relation(fields: [kitchenId], references: [id])
+  kitchenId         String
+  user              User      @relation(fields: [userId], references: [id])
+  userId            String
+
+  date              DateTime? @default(now())
+  temp              Float
+}
 
 
 // ---- enum ---- //
@@ -76,45 +270,3 @@ enum RecipeState {
   RECIPE
   DISH
 }
-
-// ---- model ---- //
-model User {
-  id         String    @id @default(cuid())
-  email      String    @unique
-  password   String
-  firstName  String?
-  name       String?
-  phone      String?
-  address    String?
-  avatar_key String?
-  isVerified Boolean?   @default(false)
-  userType   UserTypes? @default(ADMIN)
-  createdAt  DateTime?  @default(now())
-  updatedAt  DateTime?  @updatedAt
-
-  kitchens    Kitchen[]
-
-  // For NextAuth //
-  accounts   Account[]
-}
-
-model Kitchen {
-  id         String    @id @default(cuid())
-  user       User      @relation(fields: [userId], references: [id])
-  userId     String    @unique
-  
-  name            String   @unique
-  costObjective   Int      @default(20)
-  kitchenRoles    KitchenRole[]
-}
-
-model KitchenRole {
-  kitchen Kitchen @relation(fields: [kitchenId], references: [id])
-  kitchenId String
-  role      String
-
-  @@id([kitchenId, role])
-}
-
-
-
