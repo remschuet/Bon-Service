@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
+import "@/app/globals.css";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "KitchenCompanion",
-  description: "A recipe and cost management application for the modern chef",
+  description: "Une application de cuisine pour les chef moderne.",
 };
 
 export default function RootLayout({
@@ -15,8 +16,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang='en'>
+      <body className={inter.className}>
+        <main className='grid place-content-center'>{children}</main>
+        // Component ShadcnUI qui permet de faire des popup style toast dans le
+        bas a droite de l'ecran
+        <Toaster />
+      </body>
     </html>
   );
 }

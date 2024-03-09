@@ -3,10 +3,10 @@ import { RegisterLayout } from "@/components/register/register_layout";
 
 export default function RegisterPage() {
   return (
-    <main className='grid place-content-center'>
+    <div>
       <RegisterLayout>
         <RegisterForm />
       </RegisterLayout>
-    </main>
+    </div>
   );
 }

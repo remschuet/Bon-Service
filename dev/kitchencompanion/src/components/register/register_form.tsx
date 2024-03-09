@@ -1,29 +1,33 @@
 "use client";
 
+import { User } from "@prisma/client";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RegisterResponse, register } from "@/app/actions/register";
-import { User } from "@prisma/client";
 import Link from "next/link";
+
+import { useToast } from "@/components/ui/use-toast";
 import { useState, useRef, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
 export function RegisterForm() {
+  const { toast } = useToast();
   const router = useRouter();
   const [_, startTransition] = useTransition();
-  const [error, setError] = useState("");
   const [registrationSuccessful, setRegistrationSuccessful] = useState(false);
 
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);
 
   async function handleSubmit() {
-    setError("");
-
     const email = (emailRef.current?.value as string) || "";
     const password = (passwordRef.current?.value as string) || "";
+
+    // TODO: Ici on va vouloir faire une validation des champs
+    // regex pour le courriel et le password, s'assurer que les champs sont pas vides
 
     startTransition(async () => {
       const newUser = {
@@ -34,7 +38,13 @@ export function RegisterForm() {
       await register(newUser as User).then(
         (data: RegisterResponse | undefined = {}) => {
           if (data.error) {
-            setError(data.error);
+            toast({
+              variant: "destructive",
+              title: "Oups! Quelque chose s'est mal passé.",
+              description: data.error,
+            });
+            emailRef.current!.value = "";
+            passwordRef.current!.value = "";
           } else {
             setRegistrationSuccessful(true);
           }
@@ -44,7 +54,6 @@ export function RegisterForm() {
   }
 
   function handleRedirect() {
-    setRegistrationSuccessful(false);
     router.push("/");
   }
 
