@@ -1,112 +1,137 @@
-import { Button } from "@/components/ui/button";
+"use client";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { revalidatePath } from "next/cache";
+import { CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { RegisterResponse, register } from "@/app/actions/register";
 import { User } from "@prisma/client";
-import { createUser } from "@/data_access/user";
-import { Card, CardContent, CardHeader } from "../ui/card";
+import Link from "next/link";
+import { useState, useRef, useTransition } from "react";
+import { useRouter } from "next/navigation";
 
 export function RegisterForm() {
-  async function handleCreateUser(formData: FormData) {
-    "use server";
+  const router = useRouter();
+  const [_, startTransition] = useTransition();
+  const [error, setError] = useState("");
+  const [registrationSuccessful, setRegistrationSuccessful] = useState(false);
 
-    const newUser = {
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-    };
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
 
-    await createUser(newUser as User);
-    revalidatePath("/");
+  async function handleSubmit() {
+    setError("");
+
+    const email = (emailRef.current?.value as string) || "";
+    const password = (passwordRef.current?.value as string) || "";
+
+    startTransition(async () => {
+      const newUser = {
+        email: email as string,
+        password: password as string,
+      };
+
+      await register(newUser as User).then(
+        (data: RegisterResponse | undefined = {}) => {
+          if (data.error) {
+            setError(data.error);
+          } else {
+            setRegistrationSuccessful(true);
+          }
+        }
+      );
+    });
+  }
+
+  function handleRedirect() {
+    setRegistrationSuccessful(false);
+    router.push("/");
+  }
+
+  if (registrationSuccessful) {
+    return (
+      <div className='grid place-items-center gap-5'>
+        <h1 className='text-2xl font-semibold tracking-tight'>
+          Votre compte à été créé!
+        </h1>
+        <p className='text-sm text-muted-foreground'>
+          Veuillez vérifier votre courriel pour activer votre compte
+        </p>
+        <Button
+          variant={"outline"}
+          onClick={handleRedirect}>
+          Accéder à mon portail
+        </Button>
+      </div>
+    );
   }
 
   return (
-    <div className='relative h-[100vh] md:grid lg:max-w-none lg:grid-cols-3 lg:px-0'>
-      <Button
-        className='absolute right-4 top-4 md:right-8 md:top-8'
-        variant={"link"}>
-        Connexion
-      </Button>
-      <div className='h-full flex-col bg-stone-700 p-12 text-white lg:flex dark:border-r'>
-        <div className='text-xl font-medium'>Kitchen Companion</div>
-        <div className='mt-auto'>
-          <blockquote className=' max-w-[90%] space-y-2'>
-            <p className='sm:text-md'>
-              “Grace à Kitchen Companion j'arrive à concacrer plus de temps à
-              l'élaboration de mes menus et moins de temps à la gestion de ma
-              cuisine.”
+    <div className='flex flex-col justify-center lg:max-w-[500px] sm:min-w-[350px] '>
+      <CardHeader className='flex flex-col space-y-2 text-center'>
+        <h1 className='text-2xl font-semibold tracking-tight'>
+          Créer un compte
+        </h1>
+        <p className='text-sm text-muted-foreground'>
+          Entrez votre adresse courriel pour créer un compte
+        </p>
+      </CardHeader>
+      <CardContent>
+        <form
+          className='grid gap-6'
+          action={handleSubmit}>
+          <div className='grid gap-1.5'>
+            <Label
+              className='sr-only'
+              htmlFor='email'>
+              Courriel
+            </Label>
+            <Input
+              id='email'
+              placeholder='nom@example.com'
+              type='email'
+              name='email'
+              ref={emailRef as any}
+            />
+            <Label
+              className='sr-only'
+              htmlFor='password'>
+              Mot de passe
+            </Label>
+            <Input
+              id='password'
+              placeholder='Mot de passe'
+              type='password'
+              name='password'
+              ref={passwordRef as any}
+            />
+          </div>
+          <Button
+            variant={"default"}
+            type='submit'>
+            Inscription
+          </Button>
+          <div className='flex gap-3 w-[60%] mx-auto text-center'>
+            <p className='text-[0.75rem]'>
+              En cliquant sur{" "}
+              <span className='font-semibold italic'>Inscription</span> vous
+              acceptez nos{" "}
+              <Link
+                href='/terms'
+                className='underline'>
+                {" "}
+                conditions d'utilisation{" "}
+              </Link>
+              et notre{" "}
+              <Link
+                className='underline'
+                href='/privacy'>
+                politique de confidentialité
+              </Link>
             </p>
-            <p className='text-sm font-semibold text-stone-300'>
-              Normand Laprise
-            </p>
-          </blockquote>
-        </div>
-      </div>
-      <div className='lg:px-8 grid place-content-center col-span-2'>
-        <div className='p-8 flex w-full flex-col justify-center space-y-6 sm:min-w-[350px]'>
-          <CardHeader className='flex flex-col space-y-2 text-center'>
-            <h1 className='text-2xl font-semibold tracking-tight'>
-              Créer un compte
-            </h1>
-            <p className='text-sm text-muted-foreground'>
-              Entrez votre adresse courriel pour créer un compte
-            </p>
-          </CardHeader>
-          <CardContent className='grid gap-6'>
-            <form
-              action={handleCreateUser}
-              className='grid gap-6'>
-              <div className='grid gap-1.5'>
-                <Label
-                  className='sr-only'
-                  htmlFor='email'>
-                  Courriel
-                </Label>
-                <Input
-                  id='email'
-                  placeholder='nom@example.com'
-                  type='email'
-                  name='email'
-                />
-                <Label
-                  className='sr-only'
-                  htmlFor='password'>
-                  Mot de passe
-                </Label>
-                <Input
-                  id='password'
-                  placeholder='Mot de passe'
-                  type='password'
-                  name='password'
-                />
-              </div>
-              <div className='grid gap-2'>
-                <div className='flex gap-3'>
-                  <Checkbox id='terms' />
-                  <Label
-                    className='text-[0.8rem]'
-                    htmlFor='terms'>
-                    J'accèpte les conditions d'utilisation
-                  </Label>
-                </div>
-                <div className='flex gap-3'>
-                  <Checkbox id='privacy' />
-                  <Label
-                    className='text-[0.8rem]'
-                    htmlFor='privacy'>
-                    J'accèpte la politique de confidentialité
-                  </Label>
-                </div>
-              </div>
-              <Button
-                variant={"default"}
-                type='submit'>
-                Inscription
-              </Button>
-            </form>
-          </CardContent>
-        </div>
-      </div>
+          </div>
+        </form>
+      </CardContent>
     </div>
   );
 }
