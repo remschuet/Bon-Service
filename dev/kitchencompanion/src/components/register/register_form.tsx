@@ -19,6 +19,7 @@ export function RegisterForm() {
   const { toast } = useToast();
   const router = useRouter();
   const [registrationSuccessful, setRegistrationSuccessful] = useState(false);
+  const [passwordMatch, setPasswordMatch] = useState(false);
 
   const ref = useRef<HTMLFormElement>(null);
 
@@ -126,6 +127,7 @@ export function RegisterForm() {
                 placeholder='Confirmer le mot de passe'
                 type='password'
                 name='password-confirmation'
+                variant={passwordMatch ? "success" : "destructive"}
               />
             </div>
           </div>
