@@ -112,8 +112,6 @@ model Ingredient {
   supplier    Supplier    @relation(fields: [supplierId], references: [id])
   supplierId  String
 
-  recipeIngredients RecipeIngredient[]
-
   @@unique([name, supplierId])
 }
 
@@ -164,7 +162,6 @@ model Recipe {
 
   recipeAllergens   RecipeAllergen[]
   recipePhotos      RecipePhoto[]
-  recipeIngredients RecipeIngredient[]
 }
 
 model RecipeAllergen {
