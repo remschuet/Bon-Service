@@ -9,48 +9,50 @@ import { Button } from "@/components/ui/button";
 import { RegisterResponse, register } from "@/app/actions/register";
 import Link from "next/link";
 
+import { registrationSchema } from "@/validation/schema";
+
 import { useToast } from "@/components/ui/use-toast";
-import { useState, useRef, useTransition } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 export function RegisterForm() {
   const { toast } = useToast();
   const router = useRouter();
-  const [_, startTransition] = useTransition();
   const [registrationSuccessful, setRegistrationSuccessful] = useState(false);
 
-  const emailRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
+  const ref = useRef<HTMLFormElement>(null);
 
-  async function handleSubmit() {
-    const email = (emailRef.current?.value as string) || "";
-    const password = (passwordRef.current?.value as string) || "";
-
+  async function handleRegistetration(formdata: FormData) {
     // TODO: Ici on va vouloir faire une validation des champs
     // regex pour le courriel et le password, s'assurer que les champs sont pas vides
 
-    startTransition(async () => {
-      const newUser = {
-        email: email as string,
-        password: password as string,
-      };
+    const user = {
+      email: formdata.get("email") as string,
+      password: formdata.get("password") as string,
+      confirmPassword: formdata.get("password-confirmation") as string,
+    };
 
-      await register(newUser as User).then(
-        (data: RegisterResponse | undefined = {}) => {
-          if (data.error) {
-            toast({
-              variant: "destructive",
-              title: "Oups! Quelque chose s'est mal passé.",
-              description: data.error,
-            });
-            emailRef.current!.value = "";
-            passwordRef.current!.value = "";
-          } else {
-            setRegistrationSuccessful(true);
-          }
+    // On utilise le schema zod pour valider le email et le password.
+    const result = registrationSchema.safeParse(user);
+
+    if (result.success) {
+      await register({
+        email: result.data.email,
+        password: result.data.email,
+      } as User).then((data: RegisterResponse | undefined = {}) => {
+        if (data.error) {
+          toast({
+            variant: "destructive",
+            title: "Oups! Quelque chose s'est mal passé.",
+            description: data.error,
+          });
+
+          ref.current?.reset();
+        } else {
+          setRegistrationSuccessful(true);
         }
-      );
-    });
+      });
+    }
   }
 
   function handleRedirect() {
@@ -88,7 +90,8 @@ export function RegisterForm() {
       <CardContent>
         <form
           className='grid gap-6'
-          action={handleSubmit}>
+          ref={ref}
+          action={handleRegistetration}>
           <div className='grid gap-1.5'>
             <Label
               className='sr-only'
@@ -100,20 +103,31 @@ export function RegisterForm() {
               placeholder='nom@example.com'
               type='email'
               name='email'
-              ref={emailRef as any}
             />
-            <Label
-              className='sr-only'
-              htmlFor='password'>
-              Mot de passe
-            </Label>
-            <Input
-              id='password'
-              placeholder='Mot de passe'
-              type='password'
-              name='password'
-              ref={passwordRef as any}
-            />
+            <div className='flex gap-1.5'>
+              <Label
+                className='sr-only'
+                htmlFor='password'>
+                Mot de passe
+              </Label>
+              <Input
+                id='password'
+                placeholder='Mot de passe'
+                type='password'
+                name='password'
+              />
+              <Label
+                className='sr-only'
+                htmlFor='password-confirmation'>
+                Confirmation Mot de Passe
+              </Label>
+              <Input
+                id='password'
+                placeholder='Confirmer le mot de passe'
+                type='password'
+                name='password-confirmation'
+              />
+            </div>
           </div>
           <Button
             variant={"default"}

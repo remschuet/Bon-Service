@@ -19,9 +19,9 @@ export default function RootLayout({
     <html lang='en'>
       <body className={inter.className}>
         <main className='grid place-content-center'>{children}</main>
-        // Component ShadcnUI qui permet de faire des popup style toast dans le
-        bas a droite de l'ecran
         <Toaster />
+        {/* Component ShadcnUI qui permet de faire des popup style toast dans le
+        bas a droite de l'ecran */}
       </body>
     </html>
   );
