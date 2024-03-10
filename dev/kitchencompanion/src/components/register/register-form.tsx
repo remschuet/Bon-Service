@@ -12,7 +12,7 @@ import Link from "next/link";
 import { partialRegistrationSchema } from "@/validation/schema";
 
 import { useToast } from "@/components/ui/use-toast";
-import { useState, useRef } from "react";
+import { useState, useRef, use, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { CheckCircleIcon } from "@/components/icons/check-circle";
 import { debounce } from "@/lib/utils";
@@ -29,6 +29,12 @@ export function RegisterForm() {
   const [validated, setValidated] = useState(false);
 
   const ref = useRef<HTMLFormElement>(null);
+
+  function handleFormValidation() {
+    if (emailValid && passwordValid) {
+      setValidated(true);
+    }
+  }
 
   function handlePasswordValidation() {
     const password = ref.current?.elements.namedItem(
@@ -50,6 +56,8 @@ export function RegisterForm() {
     }
   }
 
+  // Debounce la validation du email pour éviter de faire trop de requêtes à la base de données
+
   const handleEmailValidation = debounce(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
       const email = e.target.value;
@@ -66,12 +74,6 @@ export function RegisterForm() {
     },
     500
   );
-
-  function handleFormValidation() {
-    if (emailValid && passwordValid) {
-      setValidated(true);
-    }
-  }
 
   async function handleRegistetration(formdata: FormData) {
     const user = {
@@ -103,6 +105,8 @@ export function RegisterForm() {
   function handleRedirect() {
     router.push("/");
   }
+
+  useEffect(handleFormValidation, [emailValid, passwordValid]);
 
   if (registrationSuccessful) {
     return (
@@ -136,7 +140,6 @@ export function RegisterForm() {
         <form
           className='grid gap-6'
           ref={ref}
-          onChange={handleFormValidation}
           action={handleRegistetration}>
           <div className='grid gap-1.5'>
             <div className='relative'>
