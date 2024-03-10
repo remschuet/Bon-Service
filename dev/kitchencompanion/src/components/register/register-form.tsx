@@ -37,7 +37,7 @@ export function RegisterForm() {
     ) as HTMLInputElement;
 
     // Si les champs sont vides, on ne valide pas
-    if (!password.value || !passwordConfirmation.value) {
+    if (password.value === "" || passwordConfirmation.value === "") {
       setPasswordValid(null);
       return;
     }
@@ -114,7 +114,7 @@ export function RegisterForm() {
     if (!registrationSuccessful) {
       ref.current?.reset();
       setEmailValid(null);
-      setPasswordValid(false);
+      setPasswordValid(null);
       setFormValidated(false);
     }
   }, [registrationSuccessful]);
