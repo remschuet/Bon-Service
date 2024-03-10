@@ -1,14 +1,20 @@
-// ---- Mandatory for compatibility ---- //
+/// Prisma Generator Client
+/// This section is used to specify the Prisma Client settings.
+/// The provider is set to "prisma-client-js" to use the Prisma Client for JavaScript and TypeScript.
 generator client {
   provider = "prisma-client-js"
 }
 
+/// Prisma Datasource DB
+/// This section is used to specify the database connection settings.
+/// The provider is set to "postgresql" to use the PostgreSQL database.
+/// The url is set to the "DATABASE_URL" environment variable which should contain the connection string to the PostgreSQL database.
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-// ---- Mandatory for NextAuth ---- // 
+/// Mandatory for NextAuth to work
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -28,7 +34,7 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
-// ---- model ---- //
+/// Model definitions
 model User {
   id         String     @id @default(cuid())
   email      String     @unique
@@ -50,7 +56,7 @@ model User {
   structMenus      StructMenu[]
   checkTemps       CheckTemp[]
 
-  // For NextAuth //
+  /// For NextAuth
   accounts Account[]
 }
 
@@ -61,12 +67,12 @@ model Kitchen {
   name          String
   costObjective Int    @default(20)
 
-  kitchenRoles      KitchenRole[]
-  kitchenUsers      KitchenUser[]
-  menus             Menu[]
-  phoneBooks        PhoneBook[]
-  checkTemps        CheckTemp[]
-  supplierKitchens  SupplierKitchen[]
+  kitchenRoles     KitchenRole[]
+  kitchenUsers     KitchenUser[]
+  menus            Menu[]
+  phoneBooks       PhoneBook[]
+  checkTemps       CheckTemp[]
+  supplierKitchens SupplierKitchen[]
 
   @@unique([userId, name])
 }
@@ -96,10 +102,10 @@ model Supplier {
 }
 
 model SupplierKitchen {
-  id String           @id @default(cuid())
-  kitchen Kitchen     @relation(fields: [kitchenId], references: [id])
+  id        String  @id @default(cuid())
+  kitchen   Kitchen @relation(fields: [kitchenId], references: [id])
   kitchenId String
-  name String
+  name      String
 
   @@unique([kitchenId, name])
 }
@@ -127,7 +133,7 @@ model RecipeBook {
 }
 
 model RecipeCategory {
-  id String       @id @default(cuid())
+  id String @id @default(cuid())
 
   user     User   @relation(fields: [userId], references: [id])
   userId   String
@@ -152,19 +158,19 @@ model Recipe {
   preparationTime Int?
   cookingTime     Int?
 
-  steps           Json
-  ingredients     Json
+  steps       Json
+  ingredients Json
 
-  yield           Int
-  unitMeasure     UnitMeasure
+  yield       Int
+  unitMeasure UnitMeasure
 
-  objInvestment  Float? @default(20)
+  objInvestment Float? @default(20)
 
-  createdAt  DateTime?  @default(now())
-  updatedAt  DateTime?  @updatedAt
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
 
-  recipeAllergens   RecipeAllergen[]
-  recipePhotos      RecipePhoto[]
+  recipeAllergens RecipeAllergen[]
+  recipePhotos    RecipePhoto[]
 }
 
 model RecipeAllergen {
@@ -230,7 +236,7 @@ model CheckTemp {
   temp Float
 }
 
-// ---- enum ---- //
+/// Enums
 enum UnitMeasure {
   G
   ML
@@ -266,7 +272,7 @@ enum ActionMapaq {
   PLANK_BLUE
   PLANK_RED
   PLANK_YELLOW
-  COOL_QUICKY
+  COOL_QUICKLY
 }
 
 enum RecipeState {
