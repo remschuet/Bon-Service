@@ -36,6 +36,7 @@ enum Alergen {
 enum UserType {
   "Admin"
   "Membre"
+  "Dev"
 }
 
 Enum RecipeState{
@@ -46,21 +47,24 @@ Enum RecipeState{
 
 Table User {
   id int [pk]
+  eMail varchar unique
   firstName varchar
+  password varchar
+  /*optional*/
   name varchar
   userType UserType
   phone varchar
   adress varchar
-  password varchar
-  eMail varchar unique
-  verfiy bool [default : false]
-  avatar int [ref: > Avatar.key]
+  is_verfied bool [default : false]
+  avatar_key int [ref: > Avatar.key]
+  created_at Date [default: 0] /*NOW()*/
+  updated_at Date
 }
 
 Table Kitchen {
   /*user_admin and name unique together*/
   id int [pk]
-  userAdmin int [ref: > User.id, unique] 
+  user int [ref: > User.id, unique] 
   name varchar unique
   costObjective int [default: 20]
 }
@@ -90,17 +94,13 @@ Table SupplierKitchen {
   name varchar [unique]
 }
 
-Table SupplierIngredient {
-  supplier int [ref: > SupplierKitchen.id]
-  ingredient int [ref: > Ingredient.id]
-}
-
 Table Ingredient {
   /*unitPrice 499 = 4.99*/
   id int [pk]
   name varchar
   unitPrice int 
   unitMeasure UnitMeasure
+  supplier Int [ref: > Supplier.id]
 }
 
 
@@ -108,9 +108,10 @@ Table RecipeBook {
   /*name and userAdmin unique together*/
   id int [pk]
   name varchar [unique]
-  userAdmin int [ref: > User.id, unique]
+  user int [ref: > User.id, unique]
 }
 
+/*Not implemented*/
 Table RecipeArchive {
   id int [pk]
 }
@@ -135,10 +136,15 @@ Table Recipe {
   cookingTimeMin int
   
   steps json
-  yield int
+  ingredients json
+  yield Int
   unitMeasure UnitMeasure
+  
   dateAdded date [default: 0] /*NOW()*/
-  objYield float 
+  objInvestment float 
+
+  createdAt date
+  updatedAt Date
 }
 
 Table RecipeAllergen {
@@ -149,11 +155,6 @@ Table RecipeAllergen {
 Table RecipePhoto {
   recipe int [ref: > Recipe.id]
   photo int [ref: > Photo.key]
-}
-
-Table RecipeIngredient {
-  recipe int [ref: > Recipe.id]
-  ingredient int [ref: > Ingredient.id]
 }
 
 Table Menu {
@@ -172,7 +173,7 @@ Table Menu {
 Table structMenu {
   /*userAdmin and category unique together*/
   /*category example: starter, main, dessert*/
-  userAdmin int [ref: > User.id, pk]
+  user int [ref: > User.id, pk]
   category varchar [pk]
 }
 
@@ -182,7 +183,7 @@ Table PhoneBook {
   kitchen int [ref: > Kitchen.id]
   name varchar
   description varchar
-  phone varchar
+  phoneNumber varchar
   /*portion admin*/
   compteNumber varchar
   isPublic bool [default: false]
