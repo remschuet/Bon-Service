@@ -6,13 +6,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { RegisterResponse, register, userExist } from "@/app/actions/register";
+import { RegisterResponse, register, userExist } from "@/actions/register";
 import Link from "next/link";
 
 import { partialRegistrationSchema } from "@/validation/schema";
 
 import { useToast } from "@/components/ui/use-toast";
-import { useState, useRef, use, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { CheckCircleIcon } from "@/components/icons/check-circle";
 import { debounce } from "@/lib/utils";
@@ -26,15 +26,9 @@ export function RegisterForm() {
   );
   const [passwordValid, setPasswordValid] = useState(false);
   const [emailValid, setEmailValid] = useState(false);
-  const [validated, setValidated] = useState(false);
+  const [formValidated, setFormValidated] = useState(false);
 
   const ref = useRef<HTMLFormElement>(null);
-
-  function handleFormValidation() {
-    if (emailValid && passwordValid) {
-      setValidated(true);
-    }
-  }
 
   function handlePasswordValidation() {
     const password = ref.current?.elements.namedItem(
@@ -72,7 +66,7 @@ export function RegisterForm() {
         setEmailValid(false);
       }
     },
-    500
+    250
   );
 
   async function handleRegistetration(formdata: FormData) {
@@ -95,7 +89,7 @@ export function RegisterForm() {
         ref.current?.reset();
         setEmailValid(false);
         setPasswordValid(false);
-        setValidated(false);
+        setFormValidated(false);
       } else {
         setRegistrationSuccessful(true);
       }
@@ -106,7 +100,9 @@ export function RegisterForm() {
     router.push("/");
   }
 
-  useEffect(handleFormValidation, [emailValid, passwordValid]);
+  useEffect(() => {
+    setFormValidated(emailValid && passwordValid);
+  }, [emailValid, passwordValid]);
 
   if (registrationSuccessful) {
     return (
@@ -127,104 +123,114 @@ export function RegisterForm() {
   }
 
   return (
-    <div className='flex flex-col justify-center lg:max-w-[500px] sm:min-w-[350px] '>
-      <CardHeader className='flex flex-col space-y-2 text-center'>
-        <h1 className='text-2xl font-semibold tracking-tight'>
-          Créer un compte
-        </h1>
-        <p className='text-sm text-muted-foreground'>
-          Entrez votre adresse courriel pour créer un compte
-        </p>
-      </CardHeader>
-      <CardContent>
-        <form
-          className='grid gap-6'
-          ref={ref}
-          action={handleRegistetration}>
-          <div className='grid gap-1.5'>
-            <div className='relative'>
-              <Label
-                className='sr-only'
-                htmlFor='email'>
-                Courriel
-              </Label>
-              <Input
-                id='email'
-                placeholder='nom@example.com'
-                type='email'
-                name='email'
-                onChange={handleEmailValidation}
-              />
-              {emailValid && (
-                <CheckCircleIcon className='absolute w-6 h-6 top-2 right-2 text-success-foreground' />
-              )}
-            </div>
-            <div className='flex gap-1.5'>
-              <Label
-                className='sr-only'
-                htmlFor='password'>
-                Mot de passe
-              </Label>
-              <Input
-                id='password'
-                onChange={handlePasswordValidation}
-                placeholder='Mot de passe'
-                type='password'
-                name='password'
-              />
-              <div className='relative w-full'>
+    <>
+      <Button
+        className='absolute right-4 top-4 md:right-8 md:top-8'
+        variant={"link"}
+        onClick={handleRedirect}>
+        Connexion
+      </Button>
+      <div className='flex flex-col justify-center max-w-[500px]'>
+        <CardHeader className='flex flex-col space-y-2 text-center'>
+          <h1 className='text-2xl font-semibold tracking-tight'>
+            Créer un compte
+          </h1>
+          <p className='text-sm text-muted-foreground'>
+            Entrez votre adresse courriel pour créer un compte
+          </p>
+        </CardHeader>
+        <CardContent>
+          <form
+            className='grid gap-6'
+            ref={ref}
+            action={handleRegistetration}>
+            <div className='grid gap-1.5'>
+              <div className='relative'>
                 <Label
                   className='sr-only'
-                  htmlFor='password-confirmation'>
-                  Confirmation Mot de Passe
+                  htmlFor='email'>
+                  Courriel
                 </Label>
                 <Input
-                  id='password-confirmation'
-                  onChange={handlePasswordValidation}
-                  placeholder='Confirmer le mot de passe'
-                  type='password'
-                  name='password-confirmation'
-                  variant={passwordMatch}
+                  id='email'
+                  placeholder='nom@example.com'
+                  type='email'
+                  name='email'
+                  onChange={handleEmailValidation}
                 />
-                {passwordValid && (
+                {emailValid && (
                   <CheckCircleIcon className='absolute w-6 h-6 top-2 right-2 text-success-foreground' />
                 )}
               </div>
+              <div className='flex gap-1.5'>
+                <div className='w-[50%]'>
+                  <Label
+                    className='sr-only'
+                    htmlFor='password'>
+                    Mot de passe
+                  </Label>
+                  <Input
+                    id='password'
+                    onChange={handlePasswordValidation}
+                    placeholder='Mot de passe'
+                    type='password'
+                    name='password'
+                  />
+                </div>
+                <div className='relative w-[50%]'>
+                  <Label
+                    className='sr-only'
+                    htmlFor='password-confirmation'>
+                    Confirmation Mot de Passe
+                  </Label>
+                  <Input
+                    id='password-confirmation'
+                    onChange={handlePasswordValidation}
+                    placeholder='Confirmer le mot de passe'
+                    type='password'
+                    name='password-confirmation'
+                    variant={passwordMatch}
+                  />
+                  {passwordValid && (
+                    <CheckCircleIcon className='absolute w-6 h-6 top-2 right-2 text-success-foreground' />
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
-          <div>
-            <p className='px-5 text-[0.7rem] text-muted-foreground'>
-              Votre mot de passe doit contenir au moins 8 caractères, une
-              majuscule, une minuscule et un chiffre.
-            </p>
-          </div>
-          <Button
-            variant={"default"}
-            type='submit'
-            disabled={!validated}>
-            Inscription
-          </Button>
-          <div className='flex gap-3 w-[80%] mx-auto text-center'>
-            <p className='text-[0.75rem]'>
-              En cliquant sur{" "}
-              <span className='font-semibold italic'>Inscription</span> vous
-              acceptez nos{" "}
-              <Link
-                href='/terms'
-                className='underline'>
-                {" "}
-                conditions d'utilisation{" "}
-              </Link>
-              et notre{" "}
-              <Link
-                className='underline'
-                href='/privacy'>
-                politique de confidentialité
-              </Link>
-            </p>
-          </div>
-        </form>
-      </CardContent>
-    </div>
+            <div>
+              <p className='px-5 text-[0.7rem] text-muted-foreground'>
+                Votre mot de passe doit contenir au moins 8 caractères, une
+                majuscule, une minuscule et un chiffre.
+              </p>
+            </div>
+            <Button
+              variant={"default"}
+              type='submit'
+              disabled={!formValidated}>
+              Inscription
+            </Button>
+            <div className='flex gap-3 w-[80%] mx-auto text-center'>
+              <p className='text-[0.75rem]'>
+                En cliquant sur{" "}
+                <span className='font-semibold italic'>Inscription</span> vous
+                acceptez nos{" "}
+                <Link
+                  href='/terms'
+                  className='underline'>
+                  {" "}
+                  conditions d'utilisation{" "}
+                </Link>
+                et notre{" "}
+                <Link
+                  className='underline'
+                  href='/privacy'>
+                  politique de confidentialité
+                </Link>
+              </p>
+            </div>
+          </form>
+        </CardContent>
+      </div>
+    </>
   );
 }
