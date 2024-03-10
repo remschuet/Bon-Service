@@ -17,8 +17,7 @@ const inputVariant = cva(
       variant: {
         default: "",
         destructive:
-          "destructive border-destructive border-2  bg-destructive/20",
-        success: "success border-success-foreground border-2 bg-success/20",
+          "destructive border-destructive/40 border-2  bg-destructive/15",
       },
     },
     defaultVariants: {

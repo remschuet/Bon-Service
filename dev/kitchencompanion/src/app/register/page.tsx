@@ -1,5 +1,5 @@
-import { RegisterForm } from "@/components/register/register_form";
-import { RegisterLayout } from "@/components/register/register_layout";
+import { RegisterForm } from "@/components/register/register-form";
+import { RegisterLayout } from "@/components/register/register-layout";
 
 export default function RegisterPage() {
   return (

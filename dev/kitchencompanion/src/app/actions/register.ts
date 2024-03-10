@@ -1,6 +1,6 @@
 "use server";
 
-import { createUser } from "@/data_access/user";
+import { createUser, getUser } from "@/data_access/user";
 import { User } from "@prisma/client";
 
 // Permet de définir un type pour la réponse de la fonction register
@@ -17,4 +17,9 @@ export async function register(user: User) {
         "Il existe déjà un compte pour cette addresse courriel. Veuillez recommencer.",
     } as RegisterResponse;
   }
+}
+
+export async function userExist(email: string) {
+  const user = await getUser(email);
+  return user ? true : false;
 }
