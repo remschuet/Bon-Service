@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 
 export function LoginForm() {
   return (
-    <div className='flex flex-col justify-center max-w-[500px]'>
+    <div className='flex flex-col justify-center min-w-[500px]'>
       <CardHeader className='flex flex-col space-y-2 text-center'>
         <h1 className='text-2xl font-semibold tracking-tight'>Connexion</h1>
         <p className='text-sm text-muted-foreground'>

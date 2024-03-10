@@ -7,25 +7,23 @@ import { Label } from "@/components/ui/label";
 import { CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RegisterResponse, register, userExist } from "@/actions/register";
+import { useToast } from "@/components/ui/use-toast";
+import { CheckCircleIcon } from "@/components/icons/check-circle";
 import Link from "next/link";
 
 import { partialRegistrationSchema } from "@/validation/schema";
+import { debounce } from "@/lib/utils";
 
-import { useToast } from "@/components/ui/use-toast";
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { CheckCircleIcon } from "@/components/icons/check-circle";
-import { debounce } from "@/lib/utils";
+import { ExclamationCircleIcon } from "../icons/exclamation-circle";
 
 export function RegisterForm() {
   const { toast } = useToast();
   const router = useRouter();
   const [registrationSuccessful, setRegistrationSuccessful] = useState(false);
-  const [passwordMatch, setPasswordMatch] = useState(
-    "default" as "default" | "destructive"
-  );
-  const [passwordValid, setPasswordValid] = useState(false);
-  const [emailValid, setEmailValid] = useState(false);
+  const [passwordValid, setPasswordValid] = useState<boolean | null>(null);
+  const [emailValid, setEmailValid] = useState<boolean | null>(null);
   const [formValidated, setFormValidated] = useState(false);
 
   const ref = useRef<HTMLFormElement>(null);
@@ -38,16 +36,19 @@ export function RegisterForm() {
       "password-confirmation"
     ) as HTMLInputElement;
 
+    // Si les champs sont vides, on ne valide pas
+    if (!password.value || !passwordConfirmation.value) {
+      setPasswordValid(null);
+      return;
+    }
+
     const result = partialRegistrationSchema.safeParse({
       password: password.value,
     });
 
-    if (password.value !== passwordConfirmation.value || !result.success) {
-      setPasswordMatch("destructive");
-    } else {
-      setPasswordMatch("default");
-      setPasswordValid(result.success);
-    }
+    setPasswordValid(
+      password.value === passwordConfirmation.value && result.success
+    );
   }
 
   // Debounce la validation du email pour éviter de faire trop de requêtes à la base de données
@@ -55,6 +56,13 @@ export function RegisterForm() {
   const handleEmailValidation = debounce(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
       const email = e.target.value;
+
+      // Si le champ est vide, on ne valide pas
+      if (email.length === 0) {
+        setEmailValid(null);
+        return;
+      }
+
       const schemaValidationResult = partialRegistrationSchema.safeParse({
         email: email,
       });
@@ -79,17 +87,12 @@ export function RegisterForm() {
       email: user.email,
       password: user.password,
     } as User).then((data: RegisterResponse | undefined = {}) => {
-      if (data.error) {
+      if (data.status === 500) {
         toast({
           variant: "destructive",
           title: "Oups! Quelque chose s'est mal passé.",
           description: data.error,
         });
-
-        ref.current?.reset();
-        setEmailValid(false);
-        setPasswordValid(false);
-        setFormValidated(false);
       } else {
         setRegistrationSuccessful(true);
       }
@@ -101,8 +104,20 @@ export function RegisterForm() {
   }
 
   useEffect(() => {
+    if (emailValid === null) return;
+    if (passwordValid === null) return;
+
     setFormValidated(emailValid && passwordValid);
   }, [emailValid, passwordValid]);
+
+  useEffect(() => {
+    if (!registrationSuccessful) {
+      ref.current?.reset();
+      setEmailValid(null);
+      setPasswordValid(false);
+      setFormValidated(false);
+    }
+  }, [registrationSuccessful]);
 
   if (registrationSuccessful) {
     return (
@@ -161,6 +176,9 @@ export function RegisterForm() {
                 {emailValid && (
                   <CheckCircleIcon className='absolute w-6 h-6 top-2 right-2 text-success-foreground' />
                 )}
+                {!emailValid && emailValid !== null && (
+                  <ExclamationCircleIcon className='absolute w-6 h-6 top-2 right-2 text-destructive' />
+                )}
               </div>
               <div className='flex gap-1.5'>
                 <div className='w-[50%]'>
@@ -189,10 +207,12 @@ export function RegisterForm() {
                     placeholder='Confirmer le mot de passe'
                     type='password'
                     name='password-confirmation'
-                    variant={passwordMatch}
                   />
                   {passwordValid && (
                     <CheckCircleIcon className='absolute w-6 h-6 top-2 right-2 text-success-foreground' />
+                  )}
+                  {!passwordValid && passwordValid !== null && (
+                    <ExclamationCircleIcon className='absolute w-6 h-6 top-2 right-2 text-destructive' />
                   )}
                 </div>
               </div>

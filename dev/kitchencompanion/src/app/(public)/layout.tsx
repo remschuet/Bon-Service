@@ -21,7 +21,7 @@ export default function RootLayout({
         <main className='grid place-content-center'>
           {" "}
           <div className='relative h-[100vh] md:grid lg:max-w-none lg:grid-cols-3 lg:px-0'>
-            <div className='h-full flex-col bg-stone-700 p-12 text-white lg:flex dark:border-r'>
+            <div className='max-h-full flex-col bg-stone-700 p-12 text-white lg:flex dark:border-r'>
               <div className='text-xl font-medium'>Kitchen Companion</div>
               <div className='mt-auto'>
                 <blockquote className=' max-w-[90%] space-y-2'>
