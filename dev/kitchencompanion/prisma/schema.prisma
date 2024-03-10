@@ -61,11 +61,12 @@ model Kitchen {
   name          String
   costObjective Int    @default(20)
 
-  kitchenRoles KitchenRole[]
-  kitchenUsers KitchenUser[]
-  menus        Menu[]
-  phoneBooks   PhoneBook[]
-  checkTemps   CheckTemp[]
+  kitchenRoles      KitchenRole[]
+  kitchenUsers      KitchenUser[]
+  menus             Menu[]
+  phoneBooks        PhoneBook[]
+  checkTemps        CheckTemp[]
+  supplierKitchens  SupplierKitchen[]
 
   @@unique([userId, name])
 }
@@ -94,6 +95,15 @@ model Supplier {
   ingredients Ingredient[]
 }
 
+model SupplierKitchen {
+  id String           @id @default(cuid())
+  kitchen Kitchen     @relation(fields: [kitchenId], references: [id])
+  kitchenId String
+  name String
+
+  @@unique([kitchenId, name])
+}
+
 model Ingredient {
   id          String      @id @default(cuid())
   name        String
@@ -101,8 +111,6 @@ model Ingredient {
   unitMeasure UnitMeasure
   supplier    Supplier    @relation(fields: [supplierId], references: [id])
   supplierId  String
-
-  recipeIngredients RecipeIngredient[]
 
   @@unique([name, supplierId])
 }
@@ -119,7 +127,7 @@ model RecipeBook {
 }
 
 model RecipeCategory {
-  id String @id @default(cuid())
+  id String       @id @default(cuid())
 
   user     User   @relation(fields: [userId], references: [id])
   userId   String
@@ -144,9 +152,16 @@ model Recipe {
   preparationTime Int?
   cookingTime     Int?
 
+  steps           Json
+  ingredients     Json
+
+  yield           Int
+  unitMeasure     UnitMeasure
+
+  objInverstment  Int? @default(20)
+
   recipeAllergens   RecipeAllergen[]
   recipePhotos      RecipePhoto[]
-  recipeIngredients RecipeIngredient[]
 }
 
 model RecipeAllergen {
@@ -165,18 +180,6 @@ model RecipePhoto {
   photo    Int
 
   @@unique([recipeId, photo])
-}
-
-model RecipeIngredient {
-  id String @id @default(cuid())
-
-  recipe   Recipe @relation(fields: [recipeId], references: [id])
-  recipeId String
-
-  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
-  ingredientId String
-
-  @@unique([recipeId, ingredientId])
 }
 
 model Menu {
