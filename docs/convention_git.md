@@ -38,6 +38,13 @@ Changes that affect the build system or external dependencies (example scopes : 
 **temp**<br>
 Temporary commit that won't be included in your CHANGELOG
 
+**db**<br>
+Change prisma schema or database configuration
+
+**convention**<br>
+modify the git convention file
+
+
 ## scope
 Optional, can be anything specifying the scope of the commit change<br>
 In App Development, scope can be a page, a module or a component<br>
