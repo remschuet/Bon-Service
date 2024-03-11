@@ -6,45 +6,48 @@ import { Toaster } from "@/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "KitchenCompanion",
-  description: "Une application de cuisine pour les chef moderne.",
+    title: "KitchenCompanion",
+    description: "Une application de cuisine pour les chef moderne.",
 };
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <html lang='en'>
-      <body className={inter.className}>
-        <main className='grid place-content-center'>
-          {" "}
-          <div className='relative h-[100vh] md:grid lg:max-w-none lg:grid-cols-3 lg:px-0'>
-            <div className='max-h-full flex-col bg-stone-700 p-12 text-white lg:flex dark:border-r'>
-              <div className='text-xl font-medium'>Kitchen Companion</div>
-              <div className='mt-auto'>
-                <blockquote className=' max-w-[90%] space-y-2'>
-                  <p className='sm:text-md'>
-                    “Grace à Kitchen Companion j'arrive à concacrer plus de
-                    temps à l'élaboration de mes menus et moins de temps à la
-                    gestion de ma cuisine.”
-                  </p>
-                  <p className='text-sm font-semibold text-stone-300'>
-                    Normand Laprise
-                  </p>
-                </blockquote>
-              </div>
-            </div>
-            <div className='lg:px-8 grid place-content-center col-span-2'>
-              {children}
-            </div>
-          </div>
-        </main>
-        <Toaster />
-        {/* Component ShadcnUI qui permet de faire des popup style toast dans le
+    return (
+        <html lang="en">
+            <body className={inter.className}>
+                <main className="grid place-content-center">
+                    {" "}
+                    <div className="relative h-[100vh] md:grid lg:max-w-none lg:grid-cols-3 lg:px-0">
+                        <div className="max-h-full flex-col bg-stone-700 p-12 text-white lg:flex dark:border-r">
+                            <div className="text-xl font-medium">
+                                Kitchen Companion
+                            </div>
+                            <div className="mt-auto">
+                                <blockquote className=" max-w-[90%] space-y-2">
+                                    <p className="sm:text-md">
+                                        “Grace à Kitchen Companion j'arrive à
+                                        conçacrer plus de temps à l'élaboration
+                                        de mes menus et moins de temps à la
+                                        gestion de ma cuisine.”
+                                    </p>
+                                    <p className="text-sm font-semibold text-stone-300">
+                                        Normand Laprise
+                                    </p>
+                                </blockquote>
+                            </div>
+                        </div>
+                        <div className="lg:px-8 grid place-content-center col-span-2">
+                            {children}
+                        </div>
+                    </div>
+                </main>
+                <Toaster />
+                {/* Component ShadcnUI qui permet de faire des popup style toast dans le
         bas a droite de l'ecran */}
-      </body>
-    </html>
-  );
+            </body>
+        </html>
+    );
 }
