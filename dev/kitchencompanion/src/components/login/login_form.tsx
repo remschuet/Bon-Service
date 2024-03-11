@@ -16,13 +16,17 @@ import {
     FormField,
     FormItem,
     FormLabel,
-    FormMessage,
 } from "@/components/ui/form";
 
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { FormError } from "@/components/form-error";
+
+import { useState } from "react";
+import { login } from "@/actions/login";
 
 export function LoginForm() {
+    const [error, setError] = useState("");
+
     const form = useForm<z.infer<typeof LoginSchema>>({
         resolver: zodResolver(LoginSchema),
         defaultValues: {
@@ -30,6 +34,17 @@ export function LoginForm() {
             password: "",
         },
     });
+
+    const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
+        setError("");
+
+        const res = await login(values);
+
+        if (res.error) {
+            setError(res.error);
+            return;
+        }
+    };
 
     return (
         <div className="flex flex-col justify-center min-w-[500px]">
@@ -44,10 +59,10 @@ export function LoginForm() {
             <CardContent>
                 <Form {...form}>
                     <form
-                        className="grid gap-4"
-                        onSubmit={form.handleSubmit(() => {})}
+                        className="grid gap-2"
+                        onSubmit={form.handleSubmit(onSubmit)}
                     >
-                        <div className="grid gap-1.5">
+                        <div>
                             <FormField
                                 control={form.control}
                                 name="email"
@@ -92,7 +107,22 @@ export function LoginForm() {
                                 )}
                             />
                         </div>
+
+                        {error !== "" && <FormError error={error} />}
+
+                        <Button variant={"default"} type="submit">
+                            Connexion
+                        </Button>
                         <div>
+                            <p className="text-[0.75rem] text-center font-normal text-muted-foreground">
+                                Vous n'avez pas de compte?{" "}
+                                <Link
+                                    className="underline italic font-semibold"
+                                    href="/register"
+                                >
+                                    Inscrivez-vous!
+                                </Link>
+                            </p>
                             <p className="px-5 text-[0.7rem] text-muted-foreground text-center">
                                 <Link
                                     className="underline italic font-semibold"
@@ -102,18 +132,6 @@ export function LoginForm() {
                                 </Link>
                             </p>
                         </div>
-                        <Button variant={"default"} type="submit">
-                            Connexion
-                        </Button>
-                        <p className="text-[0.75rem] text-center font-normal text-muted-foreground">
-                            Vous n'avez pas de compte?{" "}
-                            <Link
-                                className="underline italic font-semibold"
-                                href="/register"
-                            >
-                                Inscrivez-vous!
-                            </Link>
-                        </p>
                     </form>
                 </Form>
             </CardContent>
