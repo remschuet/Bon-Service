@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const registrationSchema = z.object({
+const RegistrationSchema = z.object({
   email: z.string().email(),
   password: z
     .string()
@@ -11,4 +11,9 @@ const registrationSchema = z.object({
     .regex(new RegExp(".*[0-9].*"), "One number"),
 });
 
-export const partialRegistrationSchema = registrationSchema.partial();
+export const LoginSchema = z.object({
+  email: z.string().email(),
+  password: z.string(),
+});
+
+export const partialRegistrationSchema = RegistrationSchema.partial();
