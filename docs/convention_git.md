@@ -24,7 +24,7 @@ A code change that neither fixes a big nor adds a feature
 Adding missing tests or correcting existing ones
 
 **chore**<br>
-Changes to your CI configuration files and scripts
+General changes that don't need specific classification
 
 **pref**<br>
 A code change that improves performance
