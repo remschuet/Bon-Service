@@ -1,15 +1,12 @@
 import { UserTypes, User } from "@prisma/client";
 import { db } from "@/db/prisma_db";
-import * as argon2 from "argon2";
 
 export async function createUser(user: User) {
-  const hashedPassword = await argon2.hash(user.password);
-
   if (user.userType === UserTypes.MEMBER) {
     return await db.user.create({
       data: {
         email: user.email,
-        password: hashedPassword,
+        password: user.password,
         userType: UserTypes.MEMBER,
       },
     });
@@ -18,7 +15,7 @@ export async function createUser(user: User) {
   return await db.user.create({
     data: {
       email: user.email,
-      password: hashedPassword,
+      password: user.password,
     },
   });
 }

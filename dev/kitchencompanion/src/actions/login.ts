@@ -6,17 +6,26 @@ import { LoginSchema } from "@/validation/schema";
 import { verify } from "argon2";
 
 export async function login(values: z.infer<typeof LoginSchema>) {
-    const user = await getUser(values.email);
+  const validatedValues = LoginSchema.safeParse(values);
 
-    if (!user) {
-        return { error: "Utilisateur non trouvé", status: 404 };
-    }
+  if (!validatedValues.success) {
+    return { error: "Valeurs invalides", status: 400 };
+  }
 
-    const validPassword = await verify(user.password, values.password);
+  const user = await getUser(validatedValues.data.email);
 
-    if (!validPassword) {
-        return { error: "Mot de passe invalide", status: 401 };
-    }
+  if (!user) {
+    return { error: "Utilisateur non trouvé", status: 404 };
+  }
 
-    return { user, status: 200 };
+  const validPassword = await verify(
+    user.password,
+    validatedValues.data.password
+  );
+
+  if (!validPassword) {
+    return { error: "Mot de passe invalide", status: 401 };
+  }
+
+  return { success: "Utilisateur connecté", status: 200 };
 }

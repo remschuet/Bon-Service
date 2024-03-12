@@ -38,12 +38,13 @@ export function LoginForm() {
   const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
     setError("");
 
-    const res = await login(values);
-
-    if (res.error) {
-      setError(res.error);
-      return;
-    }
+    login(values).then((res) => {
+      if (res.error) {
+        setError(res.error);
+        return;
+      }
+      console.log(res.success);
+    });
   };
 
   return (
