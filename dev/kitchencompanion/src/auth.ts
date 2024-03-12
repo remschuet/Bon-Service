@@ -5,6 +5,8 @@ import { db } from "@/db/prisma_db";
 import { getUserById } from "@/data_access/user";
 import { UserTypes } from "@prisma/client";
 
+// Type sur mesure pour ajouter des propriétés à l'objet user de la session
+
 type ExtendedUser = DefaultSession["user"] & {
   id: string;
   userType: UserTypes;
