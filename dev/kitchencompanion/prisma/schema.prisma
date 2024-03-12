@@ -40,7 +40,6 @@ model User {
   email         String     @unique
   password      String
   emailVerified DateTime?
-  firstName     String?
   name          String?
   phone         String?
   address       String?
