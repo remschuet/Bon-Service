@@ -1,0 +1,214 @@
+/*Fournisseur -> Supplier*/
+/*yield -> rendement*/
+
+enum UnitMeasure {
+  "g"
+  "ml"
+  "portion"
+  "cup"
+  "oz"
+  "tbsp"
+  "tsp"
+  "lbs"
+}
+
+enum ActionMapaq {
+  "Plank-Blue"
+  "Plank-Red"
+  "Plank-Yellow"
+  "Cool Quickly"
+}
+
+enum Alergen {
+  "lactose"
+  "gluten"
+  "peanut"
+  "nut"
+  "egg"
+  "fish"
+  "crustacean"
+  "molluscs"
+  "soy"
+  "sulphites"
+  "mustard"
+}
+
+enum UserType {
+  "Admin"
+  "Membre"
+  "Dev"
+}
+
+Enum RecipeState{
+  /*FIXE*/
+  "Recipe"
+  "Dish"
+}
+
+Table User {
+  id int [pk]
+  eMail varchar unique
+  password varchar
+  /*optional*/
+  name varchar
+  userType UserType
+  phone varchar
+  adress varchar
+  is_verfied bool [default : false]
+  avatar_key int [ref: > Avatar.key]
+  created_at Date [default: 0] /*NOW()*/
+  updated_at Date
+}
+
+Table Kitchen {
+  /*user_admin and name unique together*/
+  id int [pk]
+  user int [ref: > User.id, unique] 
+  name varchar unique
+  costObjective int [default: 20]
+}
+
+Table KitchenRole {
+  /*kitchen and role unique together*/
+  kitchen int [ref: > Kitchen.id, pk]
+  role varchar [pk]
+}
+
+Table KitchenUser {
+  cuisine int [ref: > Kitchen.id]
+  user int [ref: > User.id]
+  role varchar
+}
+
+Table Supplier{
+  id int [pk]
+  name string
+}
+
+Table SupplierKitchen {
+  /*Through the name we know if it's the Market */
+  /*kitchen and name unique together*/
+  id int [pk]
+  kitchen int [ref: > Kitchen.id, unique]
+  name varchar [unique]
+}
+
+Table Ingredient {
+  /*unitPrice 499 = 4.99*/
+  id int [pk]
+  name varchar
+  unitPrice int 
+  unitMeasure UnitMeasure
+  supplier Int [ref: > Supplier.id]
+}
+
+
+Table RecipeBook {
+  /*name and userAdmin unique together*/
+  id int [pk]
+  name varchar [unique]
+  user int [ref: > User.id, unique]
+}
+
+/*Not implemented*/
+Table RecipeArchive {
+  id int [pk]
+}
+
+Table RecipeCategory {
+  /*user and category unique together*/
+  user int [ref: > User.id, pk]
+  category varchar [pk]
+}
+
+Table Recipe { 
+  /*name maybe unique*/
+  /*yield: 3000 ml or 3 portions*/
+  /*objYield = ]0-1[*/
+  id int [pk]
+  versionNumber int [default: 0]
+  name varchar
+  recipeBook int [ref: > RecipeBook.id]
+  category int [ref: > RecipeCategory.category]
+  recipeState RecipeState
+  preparationTimeMin int
+  cookingTimeMin int
+  
+  steps json
+  ingredients json
+  yield Int
+  unitMeasure UnitMeasure
+  
+  dateAdded date [default: 0] /*NOW()*/
+  objInvestment float 
+
+  createdAt date
+  updatedAt Date
+}
+
+Table RecipeAllergen {
+  recipe int [ref: > Recipe.id]
+  alergen Alergen
+}
+
+Table RecipePhoto {
+  recipe int [ref: > Recipe.id]
+  photo int [ref: > Photo.key]
+}
+
+Table Menu {
+  /*
+  dishs exemple
+  structMenu_1{id_1_plat, id_2_plat, id_3_plat}
+  structMenu_2{id_1_plat, id_2_plat, id_3_plat}
+  structMenu_3{id_1_plat, id_2_plat, id_3_plat}*/
+  id int [pk]
+  name varchar [unique]
+  kitchen int [ref: > Kitchen.id]
+  isPublic bool [default: false]
+  dishs json 
+}
+
+Table structMenu {
+  /*userAdmin and category unique together*/
+  /*category example: starter, main, dessert*/
+  user int [ref: > User.id, pk]
+  category varchar [pk]
+}
+
+Table PhoneBook {
+ /*When yield add, create to phone book*/ 
+  id int [pk]
+  kitchen int [ref: > Kitchen.id]
+  name varchar
+  description varchar
+  phoneNumber varchar
+  /*portion admin*/
+  compteNumber varchar
+  isPublic bool [default: false]
+}
+
+Table CheckTemp {
+  id int [pk]
+  kitchen int [ref: > Kitchen.id]
+  user int [ref: > User.id]
+  date date [default: 1] // NOW()
+  temp float
+}
+
+
+/* S3 */
+Table Avatar {
+  key int [pk]
+  value varchar
+}
+
+Table Photo {
+  key int [pk]
+  value varchar
+}
+
+Table Video {
+  key int [pk]
+  value varchar
+}
