@@ -86,11 +86,10 @@ Table Supplier{
 }
 
 Table SupplierKitchen {
-  /*Through the name we know if it's the Market */
-  /*kitchen and name unique together*/
+  /*Through the name of the supplier we know if it's the Market */
   id int [pk]
   kitchen int [ref: > Kitchen.id, unique]
-  name varchar [unique]
+  supplier int [ref: > Supplier.id, unique]
 }
 
 Table Ingredient {
