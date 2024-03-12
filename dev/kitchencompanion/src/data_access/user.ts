@@ -24,6 +24,12 @@ export async function getUsers() {
   return await db.user.findMany();
 }
 
+export async function getUser(email: string) {
+  return await db.user.findUnique({
+    where: { email },
+  });
+}
+
 export async function updateUserRole(email: string) {
   return await db.user.update({
     where: { email },
@@ -39,8 +45,40 @@ export async function deleteUser(email: string) {
   });
 }
 
-export async function getUser(email: string) {
-  return await db.user.findUnique({
-    where: { email },
+// KITCHENS
+export async function getKitchensByAdmin(user: User) {
+  // Return all kitchens where user is the administrator
+  return await db.user.findFirst({
+    where: { 
+      id: user.id 
+    },
+    include: {
+      kitchens: true,
+    }
   });
+}
+
+export async function getKitchensByAdminById(id: string) {
+  // Return all kitchens where user is the administrator
+  return await db.user.findFirst({
+    where: { 
+      id 
+    },
+    include: {
+      kitchens: true,
+    }
+  });
+}
+
+
+// DEV FONCTIONS
+export async function dev_getAllKitchen() {
+  // Return all user and all there kitchens 
+  const users = await db.user.findMany({
+    include: {
+      kitchens: true
+    }
+  });
+
+  return users;
 }
