@@ -26,7 +26,9 @@ export async function LinkKitchenUser() {
                     <input type="text" name="kitchenId" id="kitchenId" placeholder="Enter kitchenId" />
                     <Button type="submit">Link</Button>
                 </form>
+
             </CardContent>
+
         </Card>
     );
 }
