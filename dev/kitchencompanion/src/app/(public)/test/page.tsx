@@ -23,6 +23,13 @@ export default function Home() {
       >
           supplier
       </Button>
+      <Button
+          onClick={() => {
+              router.push("/test/linkKitchenUser");
+          }}
+      >
+          Link kitchenUser
+      </Button>
     </div>
     );
 }
