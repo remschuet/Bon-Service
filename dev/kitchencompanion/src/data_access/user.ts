@@ -2,26 +2,26 @@ import { UserTypes, User } from "@prisma/client";
 import { db } from "@/db/prisma_db";
 
 export async function createUser(user: User) {
-    if (user.userType === UserTypes.MEMBER) {
-        return await db.user.create({
-            data: {
-                email: user.email,
-                password: user.password,
-                userType: UserTypes.MEMBER,
-            },
-        });
-    }
-
+  if (user.userType === UserTypes.MEMBER) {
     return await db.user.create({
-        data: {
-            email: user.email,
-            password: user.password,
-        },
+      data: {
+        email: user.email,
+        password: user.password,
+        userType: UserTypes.MEMBER,
+      },
     });
+  }
+
+  return await db.user.create({
+    data: {
+      email: user.email,
+      password: user.password,
+    },
+  });
 }
 
 export async function getUsers() {
-    return await db.user.findMany();
+  return await db.user.findMany();
 }
 
 export async function getUser(email: string) {
@@ -32,58 +32,57 @@ export async function getUser(email: string) {
 
 export async function getUserById(id: string) {
   return await db.user.findUnique({
-      where: { id },
+    where: { id },
   });
 }
 
 export async function updateUserRole(email: string) {
-    return await db.user.update({
-        where: { email },
-        data: {
-            userType: UserTypes.ADMIN,
-        },
-    });
+  return await db.user.update({
+    where: { email },
+    data: {
+      userType: UserTypes.ADMIN,
+    },
+  });
 }
 
 export async function deleteUser(email: string) {
-    return await db.user.delete({
-        where: { email },
-    });
+  return await db.user.delete({
+    where: { email },
+  });
 }
 
 // KITCHENS
 export async function getKitchensByAdmin(user: User) {
   // Return all kitchens where user is the administrator
   return await db.user.findFirst({
-    where: { 
-      id: user.id 
+    where: {
+      id: user.id,
     },
     include: {
       kitchens: true,
-    }
+    },
   });
 }
 
 export async function getKitchensByAdminById(id: string) {
   // Return all kitchens where user is the administrator
   return await db.user.findFirst({
-    where: { 
-      id 
+    where: {
+      id,
     },
     include: {
       kitchens: true,
-    }
+    },
   });
 }
 
-
 // DEV FONCTIONS
 export async function dev_getAllKitchen() {
-  // Return all user and all there kitchens 
+  // Return all user and all there kitchens
   const users = await db.user.findMany({
     include: {
-      kitchens: true
-    }
+      kitchens: true,
+    },
   });
 
   return users;

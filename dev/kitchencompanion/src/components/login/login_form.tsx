@@ -27,8 +27,8 @@ import { useState } from "react";
 import { login } from "@/actions/login";
 
 export function LoginForm() {
-  const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccess] = useState<string | undefined>("");
+  const [error, setError] = useState<string | undefined>(undefined);
+  const [success, setSuccess] = useState<string | undefined>(undefined);
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -39,8 +39,8 @@ export function LoginForm() {
   });
 
   const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
-    setError("");
-    setSuccess("");
+    setError(undefined);
+    setSuccess(undefined);
 
     login(values).then((res) => {
       setError(res?.error);
@@ -99,8 +99,8 @@ export function LoginForm() {
               />
             </div>
 
-            {error !== "" && <FormError error={error} />}
-            {success !== "" && <FormSuccess success={success} />}
+            {error !== undefined && <FormError error={error} />}
+            {success !== undefined && <FormSuccess success={success} />}
 
             <Button variant={"default"} type="submit">
               Connexion

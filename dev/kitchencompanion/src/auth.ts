@@ -6,54 +6,63 @@ import { getUserById } from "@/data_access/user";
 import { UserTypes } from "@prisma/client";
 
 type ExtendedUser = DefaultSession["user"] & {
-    id: string;
-    userType: UserTypes;
+  id: string;
+  userType: UserTypes;
 };
 
 declare module "next-auth" {
-    interface Session {
-        user: ExtendedUser;
-    }
+  interface Session {
+    user: ExtendedUser;
+  }
 }
 
 export const {
-    handlers: { GET, POST },
-    auth,
-    signIn,
-    signOut,
+  handlers: { GET, POST },
+  auth,
+  signIn,
+  signOut,
 } = NextAuth({
-    callbacks: {
-        // async signIn({ user }) {
-        //     const existingUser = await getUserById(user.id as string);
+  pages: {
+    signIn: "/login",
+  },
+  callbacks: {
+    async signIn({ user, account }) {
+      // Si l'utilisateur c'est connecté avec Google ou Facebook, on ne vérifie pas si l'adresse courriel est vérifiée
+      if (account?.provider !== "credentials") return true;
 
-        //     if (!existingUser || !existingUser.emailVerified) return false;
+      const existingUser = await getUserById(user.id as string);
 
-        //     return true;
-        // },
-        async jwt({ token }) {
-            if (!token.sub) return token;
+      // Si l'utilisateur n'a pas vérifier son adresse courriel, on ne le connecte pas
+      if (!existingUser?.emailVerified) return false;
 
-            const existingUser = await getUserById(token.sub);
+      // TODO: 2FA
 
-            if (!existingUser) return token;
-
-            token.userType = existingUser.userType;
-
-            return token;
-        },
-        async session({ token, session }) {
-            if (session.user && token.sub) {
-                session.user.id = token.sub;
-            }
-
-            if (session.user && token.userType) {
-                session.user.userType = token.userType as UserTypes;
-            }
-
-            return session;
-        },
+      return true;
     },
-    adapter: PrismaAdapter(db),
-    session: { strategy: "jwt" },
-    ...authConfig,
+    async jwt({ token }) {
+      if (!token.sub) return token;
+
+      const existingUser = await getUserById(token.sub);
+
+      if (!existingUser) return token;
+
+      token.userType = existingUser.userType;
+
+      return token;
+    },
+    async session({ token, session }) {
+      if (session.user && token.sub) {
+        session.user.id = token.sub;
+      }
+
+      if (session.user && token.userType) {
+        session.user.userType = token.userType as UserTypes;
+      }
+
+      return session;
+    },
+  },
+  adapter: PrismaAdapter(db),
+  session: { strategy: "jwt" },
+  ...authConfig,
 });

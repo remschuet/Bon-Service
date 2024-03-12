@@ -2,7 +2,7 @@ import { Kitchen, KitchenUser } from "@prisma/client";
 import { db } from "@/db/prisma_db";
 
 ////////////////////////////////
-// TABLES 
+// TABLES
 // Kitchen
 // KitchenUser
 ////////////////////////////////
@@ -11,15 +11,15 @@ export async function createKitchen(kitchen: Kitchen) {
   return await db.kitchen.create({
     data: {
       userId: kitchen.userId,
-      name: kitchen.name 
+      name: kitchen.name,
     },
   });
 }
 
 export async function deleteKitchen(kitchen: Kitchen) {
-    return await db.kitchen.delete({
-      where: { id: kitchen.id },
-    });
+  return await db.kitchen.delete({
+    where: { id: kitchen.id },
+  });
 }
 
 export async function getUserForKitchen(kitchen: Kitchen) {
