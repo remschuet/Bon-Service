@@ -7,7 +7,6 @@ import { Label } from "@/components/ui/label";
 import { CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { register, userExist } from "@/actions/register";
-import { useToast } from "@/components/ui/use-toast";
 import Link from "next/link";
 
 import { partialRegistrationSchema } from "@/validation/schema";
@@ -19,7 +18,6 @@ import { useRouter } from "next/navigation";
 import { BadgeCheck, BadgeAlert } from "lucide-react";
 
 export function RegisterForm() {
-  const { toast } = useToast();
   const router = useRouter();
   const [registrationSuccessful, setRegistrationSuccessful] = useState(false);
   const [passwordValid, setPasswordValid] = useState<boolean | null>(null);
