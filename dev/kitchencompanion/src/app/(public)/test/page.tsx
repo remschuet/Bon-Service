@@ -1,9 +1,28 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+
 export default function Home() {
+  const router = useRouter();
+
   return (
     <div>
       <h1>TEST PAGE</h1>
-      <p>kitchen</p>
-      <p>supplier</p>
+      <Button
+          onClick={() => {
+              router.push("/test/kitchen");
+          }}
+      >
+          kitchen
+      </Button>
+      <Button
+          onClick={() => {
+              router.push("/test/supplier");
+          }}
+      >
+          supplier
+      </Button>
     </div>
     );
 }
