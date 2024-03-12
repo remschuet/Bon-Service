@@ -1,31 +1,38 @@
 "use server";
 
 import { z } from "zod";
-import { getUser } from "@/data_access/user";
 import { LoginSchema } from "@/validation/schema";
-import { verify } from "argon2";
+
+import { signIn } from "@/auth";
+import { DEFAULT_REDIRECT_URL } from "@/route";
+import { AuthError } from "next-auth";
 
 export async function login(values: z.infer<typeof LoginSchema>) {
-  const validatedValues = LoginSchema.safeParse(values);
+    const validatedValues = LoginSchema.safeParse(values);
 
-  if (!validatedValues.success) {
-    return { error: "Valeurs invalides", status: 400 };
-  }
+    if (!validatedValues.success) {
+        return { error: "Valeurs invalides", status: 400 };
+    }
 
-  const user = await getUser(validatedValues.data.email);
+    const { email, password } = validatedValues.data;
 
-  if (!user) {
-    return { error: "Utilisateur non trouvé", status: 404 };
-  }
-
-  const validPassword = await verify(
-    user.password,
-    validatedValues.data.password
-  );
-
-  if (!validPassword) {
-    return { error: "Mot de passe invalide", status: 401 };
-  }
-
-  return { success: "Utilisateur connecté", status: 200 };
+    try {
+        await signIn("credentials", {
+            email,
+            password,
+            redirectTo: DEFAULT_REDIRECT_URL,
+        });
+    } catch (error) {
+        if (error instanceof AuthError) {
+            switch (error.type) {
+                case "CredentialsSignin": {
+                    return { error: "Identifiants invalides", status: 400 };
+                }
+                default: {
+                    return { error: "Une erreur est survenue", status: 500 };
+                }
+            }
+        }
+        throw error;
+    }
 }

@@ -24,7 +24,5 @@ export const authRoutes = ["/login", "/register"];
  * This is a list of protected routes that are only accessible to authenticated users.
  */
 
-export const protectedRoutes = ["/dashboard"];
-
 export const apiRoutesPrefix = "/api/auth";
 export const DEFAULT_REDIRECT_URL = "/dashboard";
