@@ -7,6 +7,9 @@ import { db } from "@/db/prisma_db";
 // KitchenUser
 ////////////////////////////////
 
+/** @description Create a new kitchen 
+ * @Table Kitchen
+ */
 export async function createKitchen(kitchen: Kitchen) {
   return await db.kitchen.create({
     data: {
@@ -16,13 +19,19 @@ export async function createKitchen(kitchen: Kitchen) {
   });
 }
 
+/** @description Remove a kitchen 
+ * @Table Kitchen
+ */
 export async function deleteKitchen(kitchen: Kitchen) {
     return await db.kitchen.delete({
       where: { id: kitchen.id },
     });
 }
 
-export async function getUserForKitchen(kitchen: Kitchen) {
+/** @description Get all users working in a kitchen 
+ * @Table KitchenUser
+ */
+export async function getUsersForKitchen(kitchen: Kitchen) {
   // KitchenUser
   return await db.kitchen.findMany({
     where: { id: kitchen.id },
@@ -32,8 +41,25 @@ export async function getUserForKitchen(kitchen: Kitchen) {
   });
 }
 
-export async function linkKitchenUserById(userId: string, kitchenId: string) {
+
+/** @description Get all Users working in a kitchen
+ * @Table Kitchen
+ */
+export async function getUsersForKitchenById(kitchenId: string) {
   // KitchenUser
+  return await db.kitchen.findMany({
+    where: { id: kitchenId },
+    include: {
+      user: true,
+    },
+  });
+}
+
+
+/** @description Link kitchen and user with Id
+ * @Table KitchenUser
+ */
+  export async function linkKitchenUserById(userId: string, kitchenId: string) {
   return await db.kitchenUser.create({
     data: {
       userId: userId,
