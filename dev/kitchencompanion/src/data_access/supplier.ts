@@ -17,17 +17,17 @@ export async function createSupplier(supplier: Supplier) {
 
 export async function removeSupplier(supplier: Supplier) {
   return await db.supplier.delete({
-    where: { 
-      name: supplier.name 
+    where: {
+      name: supplier.name,
     },
   });
 }
 
 export async function getSupplier(name: string) {
   return await db.supplier.findUnique({
-    where: { 
-      name
-     },
+    where: {
+      name,
+    },
   });
 }
 
