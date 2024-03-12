@@ -107,15 +107,17 @@ model Supplier {
   name String @unique
 
   ingredients Ingredient[]
+  supplierKitchens SupplierKitchen[]
 }
 
 model SupplierKitchen {
   id        String  @id @default(cuid())
   kitchen   Kitchen @relation(fields: [kitchenId], references: [id])
   kitchenId String
-  name      String
+  supplier  Supplier @relation(fields: [supplierId], references: [id])
+  supplierId String
 
-  @@unique([kitchenId, name])
+  @@unique([kitchenId, supplierId])
 }
 
 model Ingredient {
