@@ -42,7 +42,7 @@ export async function getUsersForKitchen(kitchen: Kitchen) {
 }
 
 
-/** @description Get all Users working in a kitchen
+/** @description Get all users working in a kitchen
  * @Table Kitchen
  */
 export async function getUsersForKitchenById(kitchenId: string) {
@@ -56,7 +56,7 @@ export async function getUsersForKitchenById(kitchenId: string) {
 }
 
 
-/** @description Link kitchen and user with Id
+/** @description Link kitchen and user(members) with Id
  * @Table KitchenUser
  */
   export async function linkKitchenUserById(userId: string, kitchenId: string) {
@@ -65,5 +65,20 @@ export async function getUsersForKitchenById(kitchenId: string) {
       userId: userId,
       kitchenId: kitchenId,
     },
+  });
+}
+
+
+/** @description Get all supplier liked to a kitchen
+ * @Table kitchen
+ */
+export async function getSuppliersForKitchen(kitchenId: string) {
+  return await db.kitchen.findMany({
+    where: { 
+      id: kitchenId
+     },
+     include: {
+      supplierKitchens: true, 
+    }
   });
 }
