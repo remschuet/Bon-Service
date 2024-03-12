@@ -29,5 +29,5 @@ export async function register(user: User) {
 
 export async function userExist(email: string) {
     const user = await getUser(email);
-    return user ? true : false;
+    return !!user;
 }
