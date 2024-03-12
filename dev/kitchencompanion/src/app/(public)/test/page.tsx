@@ -1,5 +1,9 @@
-import { CreateSupplier } from "@/components/basic_test/create_supplier";
-
 export default function Home() {
-  return <CreateSupplier />;
+  return (
+    <div>
+      <h1>TEST PAGE</h1>
+      <p>kitchen</p>
+      <p>supplier</p>
+    </div>
+    );
 }
