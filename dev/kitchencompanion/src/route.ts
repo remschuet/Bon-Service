@@ -5,7 +5,7 @@
  * This is a list of public routes that are accessible to everyone.
  */
 
-export const publicRoutes = ["/", "/privacy", "/terms", "/test", "/test/kitchen", "/test/supplier"];
+export const publicRoutes = ["/", "/privacy", "/terms", "/test", "/test/kitchen", "/test/supplier", "/test/linkKitchenUser"];
 
 /**
  * @description Authentication routes
