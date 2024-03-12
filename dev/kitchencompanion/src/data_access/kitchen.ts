@@ -22,7 +22,13 @@ export async function deleteKitchen(kitchen: Kitchen) {
     });
 }
 
-// DEV FONCTIONS
+// DEV FONCTIONS// DEV FONCTIONS
 export async function dev_getAllKitchen() {
-    return await db.kitchen.findMany();
+  const users = await db.user.findMany({
+    include: {
+      kitchens: true
+    }
+  });
+
+  return users;
 }

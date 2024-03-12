@@ -32,10 +32,14 @@ export async function CreateKitchen() {
                 </form>
             </CardContent>
 
-            <CardHeader>Display all Supplier</CardHeader>
+            <CardHeader>Display all Kitchen (DEV MODE)</CardHeader>
             <ul>
                 {kitchens.map((kitchen) => (
-                    <li key={kitchen.id}>{kitchen.name}, " -- " {kitchen.userId}</li>
+                    <li key={kitchen.id}>{kitchen.name}, " -- " 
+                        {kitchen.kitchens.map(()=> (
+                            <Button type="submit">Delete</Button>
+                        ))}
+                    </li>
                 ))}
             </ul>
 
