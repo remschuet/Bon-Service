@@ -5,7 +5,6 @@ import {
     DEFAULT_REDIRECT_URL,
     apiRoutesPrefix,
     authRoutes,
-    protectedRoutes,
     publicRoutes,
 } from "@/route";
 
@@ -23,8 +22,18 @@ export default auth((req) => {
         return;
     }
 
-    console.log("isLoggedIn", isLoggedIn);
-    console.log("ROUTE : ", nextUrl.pathname);
+    if (isAuthRoute) {
+        if (isLoggedIn) {
+            return Response.redirect(new URL(DEFAULT_REDIRECT_URL, nextUrl));
+        }
+        return;
+    }
+
+    if (!isLoggedIn && !isPublicRoute) {
+        return Response.redirect(new URL("/login", nextUrl));
+    }
+
+    return;
 });
 
 // Optionally, don't invoke Middleware on some paths
