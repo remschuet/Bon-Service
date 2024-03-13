@@ -11,6 +11,7 @@ import bcrypt from "bcryptjs";
  *          - If the registration is successful, it returns an object with a success message and a status code of 200.
  *          - If the registration fails due to an existing email address, it returns an object with an error message and a status code of 500.
  */
+
 export async function register(user: User) {
   try {
     const hashedPassword = await bcrypt.hash(user.password, 10);
