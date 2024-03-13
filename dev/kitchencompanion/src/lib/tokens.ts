@@ -2,14 +2,18 @@ import { v4 as uuid } from "uuid";
 import { getVerificationTokenByEmail } from "@/data-access/verification-token";
 import { db } from "@/db/prisma-db";
 
+/**
+ * Creates a verification token for the given email.
+ * If an existing token exists for the email, it will be deleted before creating a new one.
+ * The token will be valid for 1 hour.
+ * @param email - The email for which to create the verification token.
+ *
+ * @returns The created verification token.
+ */
+
 export async function createVerificationToken(email: string) {
-  // On génère un token unique
   const token = uuid();
-
-  // Valide pour 1 heure
   const expires = new Date(new Date().getTime() + 3600 * 1000);
-
-  // On supprime les tokens existants pour cet email si il y en a
   const existingToken = await getVerificationTokenByEmail(email);
 
   if (existingToken) {
@@ -20,7 +24,6 @@ export async function createVerificationToken(email: string) {
     });
   }
 
-  // On crée un nouveau token
   const verificationToken = await db.verificationToken.create({
     data: {
       email,

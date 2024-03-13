@@ -7,6 +7,12 @@ import { db } from "@/db/prisma-db";
 // SupplierKitchen
 ////////////////////////////////
 
+/**
+ * Creates a new supplier.
+ *
+ * @param supplier - The supplier object containing the name of the supplier.
+ * @returns A promise that resolves to the created supplier.
+ */
 export async function createSupplier(supplier: Supplier) {
   return await db.supplier.create({
     data: {
@@ -15,6 +21,12 @@ export async function createSupplier(supplier: Supplier) {
   });
 }
 
+/**
+ * Removes a supplier.
+ *
+ * @param supplier - The supplier object containing the name of the supplier to be removed.
+ * @returns A promise that resolves to the deleted supplier.
+ */
 export async function removeSupplier(supplier: Supplier) {
   return await db.supplier.delete({
     where: {
@@ -23,6 +35,12 @@ export async function removeSupplier(supplier: Supplier) {
   });
 }
 
+/**
+ * Retrieves a supplier by name.
+ *
+ * @param name - The name of the supplier to retrieve.
+ * @returns A promise that resolves to the retrieved supplier.
+ */
 export async function getSupplier(name: string) {
   return await db.supplier.findUnique({
     where: {
@@ -31,6 +49,11 @@ export async function getSupplier(name: string) {
   });
 }
 
+/**
+ * Retrieves all suppliers.
+ *
+ * @returns A promise that resolves to an array of all suppliers, ordered by name in ascending order.
+ */
 export async function getAllSuppliers() {
   return await db.supplier.findMany({
     orderBy: {
@@ -39,8 +62,12 @@ export async function getAllSuppliers() {
   });
 }
 
-/** @description Link supplier to kitchen with Id
- * @Table supplierKitchen
+/**
+ * Links a supplier to a kitchen.
+ *
+ * @param supplierId - The ID of the supplier.
+ * @param kitchenId - The ID of the kitchen.
+ * @returns A promise that resolves to the created supplier-kitchen link.
  */
 export async function linkSupplierKitchen(
   supplierId: string,

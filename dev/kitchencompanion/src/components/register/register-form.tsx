@@ -52,29 +52,24 @@ export function RegisterForm() {
 
   // Debounce la validation du email pour éviter de faire trop de requêtes à la base de données
 
-  const handleEmailValidation = debounce(
-    async (e: React.ChangeEvent<HTMLInputElement>) => {
-      const email = e.target.value;
+  const handleEmailValidation = debounce(async (e) => {
+    const email = e.target.value;
 
-      // Si le champ est vide, on ne valide pas
-      if (email.length === 0) {
-        setEmailValid(null);
-        return;
-      }
+    // Si le champ est vide, on ne valide pas
+    if (email.length === 0) {
+      setEmailValid(null);
+      return;
+    }
 
-      const schemaValidationResult = partialRegistrationSchema.safeParse({
-        email: email,
-      });
+    const schemaValidationResult = partialRegistrationSchema.safeParse({
+      email: email,
+    });
 
-      if (schemaValidationResult.success) {
-        const userExists = await userExist(email);
-        setEmailValid(!userExists);
-      } else {
-        setEmailValid(false);
-      }
-    },
-    250
-  );
+    if (schemaValidationResult.success) {
+      const userExists = await userExist(email);
+      setEmailValid(!userExists);
+    }
+  }, 250);
 
   async function handleRegistetration(formdata: FormData) {
     const user = {

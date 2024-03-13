@@ -10,6 +10,20 @@ import { signIn } from "@/auth";
 import { DEFAULT_REDIRECT_URL } from "@/route";
 import { AuthError } from "next-auth";
 
+import bcrypt from "bcryptjs";
+
+/**
+ * Logs in a user with the provided email and password.
+ *
+ * @param values - The login credentials.
+ * @returns An object containing the result of the login operation.
+ *          - If the login is successful, it returns `{ success: string, status: number }`.
+ *          - If the login credentials are invalid, it returns `{ error: string, status: number }`.
+ *          - If there is no account associated with the provided email, it returns `{ error: string, status: number }`.
+ *          - If the password is incorrect, it returns `{ error: string, status: number }`.
+ *          - If an error occurs during the login process, it returns `{ error: string, status: number }`.
+ */
+
 export async function login(values: z.infer<typeof LoginSchema>) {
   const validatedValues = LoginSchema.safeParse(values);
 
@@ -26,6 +40,12 @@ export async function login(values: z.infer<typeof LoginSchema>) {
       error: "Il n'existe pas de compte associé à cette adresse courriel",
       status: 400,
     };
+  }
+
+  const validPassword = await bcrypt.compare(password, existingUser.password);
+
+  if (!validPassword) {
+    return { error: "Le mot de passe est invalide", status: 400 };
   }
 
   if (!existingUser.emailVerified) {

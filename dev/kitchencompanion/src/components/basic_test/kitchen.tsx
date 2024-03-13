@@ -26,8 +26,8 @@ export async function CreateKitchen() {
 
   return (
     <Card className='w-[350px] h-[450px] grid place-content-center'>
+      <CardHeader>Create Kitchen</CardHeader>
       <CardContent>
-        <CardHeader>Create Kitchen</CardHeader>
         <form
           action={handleCreateKitchen}
           className='grid gap-2'>
@@ -57,8 +57,8 @@ export async function CreateKitchen() {
           {kitchens.map((kitchen) => (
             <li key={kitchen.id}>
               {kitchen.name}
-              {kitchen.kitchens.map((kitchen) => (
-                <p>-{kitchen.name}</p>
+              {kitchen.kitchens.map((kitchen, key) => (
+                <p key={key}>-{kitchen.name}</p>
               ))}
             </li>
           ))}
