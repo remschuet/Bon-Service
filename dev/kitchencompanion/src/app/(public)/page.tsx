@@ -1,19 +1,13 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { RedirectButton } from "@/components/redirect-button";
 
 export default function Home() {
-    const router = useRouter();
-
-    function handleRedirect() {
-        router.push("/login");
-    }
-
-    return (
-        <div>
-            <h1>Home</h1>
-            <Button onClick={handleRedirect}>Login</Button>
-        </div>
-    );
+  return (
+    <div>
+      <h1>Home</h1>
+      <RedirectButton href='/login'>
+        <Button>Login</Button>
+      </RedirectButton>
+    </div>
+  );
 }

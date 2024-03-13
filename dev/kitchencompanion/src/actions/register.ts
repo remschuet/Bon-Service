@@ -1,6 +1,6 @@
 "use server";
 
-import { createUser, getUser } from "@/data_access/user";
+import { createUser, getUser } from "@/data-access/user";
 import { createVerificationToken } from "@/lib/tokens";
 import { User } from "@prisma/client";
 import bcrypt from "bcryptjs";

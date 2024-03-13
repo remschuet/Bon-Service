@@ -1,8 +1,8 @@
 import { Supplier } from "@prisma/client";
-import { db } from "@/db/prisma_db";
+import { db } from "@/db/prisma-db";
 
 ////////////////////////////////
-// TABLES 
+// TABLES
 // Supplier
 // SupplierKitchen
 ////////////////////////////////
@@ -42,7 +42,10 @@ export async function getAllSuppliers() {
 /** @description Link supplier to kitchen with Id
  * @Table supplierKitchen
  */
-export async function linkSupplierKitchen(supplierId: string, kitchenId: string) {
+export async function linkSupplierKitchen(
+  supplierId: string,
+  kitchenId: string
+) {
   return await db.supplierKitchen.create({
     data: {
       supplierId: supplierId,

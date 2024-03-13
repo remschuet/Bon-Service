@@ -1,5 +1,5 @@
 import { Kitchen, KitchenUser } from "@prisma/client";
-import { db } from "@/db/prisma_db";
+import { db } from "@/db/prisma-db";
 
 ////////////////////////////////
 // TABLES
@@ -7,7 +7,7 @@ import { db } from "@/db/prisma_db";
 // KitchenUser
 ////////////////////////////////
 
-/** @description Create a new kitchen 
+/** @description Create a new kitchen
  * @Table Kitchen
  */
 export async function createKitchen(kitchen: Kitchen) {
@@ -19,7 +19,7 @@ export async function createKitchen(kitchen: Kitchen) {
   });
 }
 
-/** @description Remove a kitchen 
+/** @description Remove a kitchen
  * @Table Kitchen
  */
 export async function deleteKitchen(kitchen: Kitchen) {
@@ -28,7 +28,7 @@ export async function deleteKitchen(kitchen: Kitchen) {
   });
 }
 
-/** @description Get all users working in a kitchen 
+/** @description Get all users working in a kitchen
  * @Table KitchenUser
  */
 export async function getUsersForKitchen(kitchen: Kitchen) {
@@ -40,7 +40,6 @@ export async function getUsersForKitchen(kitchen: Kitchen) {
     },
   });
 }
-
 
 /** @description Get all users working in a kitchen
  * @Table Kitchen
@@ -55,11 +54,10 @@ export async function getUsersForKitchenById(kitchenId: string) {
   });
 }
 
-
 /** @description Link kitchen and user(members) with Id
  * @Table KitchenUser
  */
-  export async function linkKitchenUserById(userId: string, kitchenId: string) {
+export async function linkKitchenUserById(userId: string, kitchenId: string) {
   return await db.kitchenUser.create({
     data: {
       userId: userId,
@@ -68,17 +66,16 @@ export async function getUsersForKitchenById(kitchenId: string) {
   });
 }
 
-
 /** @description Get all supplier liked to a kitchen
  * @Table kitchen
  */
 export async function getSuppliersForKitchen(kitchenId: string) {
   return await db.kitchen.findMany({
-    where: { 
-      id: kitchenId
-     },
-     include: {
-      supplierKitchens: true, 
-    }
+    where: {
+      id: kitchenId,
+    },
+    include: {
+      supplierKitchens: true,
+    },
   });
 }

@@ -1,4 +1,4 @@
-import { db } from "@/db/prisma_db";
+import { db } from "@/db/prisma-db";
 
 export async function getVerificationTokenByEmail(email: string) {
   try {

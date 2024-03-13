@@ -1,10 +1,10 @@
-import { v4 as uuidv4 } from "uuid";
-import { getVerificationTokenByEmail } from "@/data_access/verification-token";
-import { db } from "@/db/prisma_db";
+import { v4 as uuid } from "uuid";
+import { getVerificationTokenByEmail } from "@/data-access/verification-token";
+import { db } from "@/db/prisma-db";
 
 export async function createVerificationToken(email: string) {
   // On génère un token unique
-  const token = uuidv4();
+  const token = uuid();
 
   // Valide pour 1 heure
   const expires = new Date(new Date().getTime() + 3600 * 1000);

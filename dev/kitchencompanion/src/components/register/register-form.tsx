@@ -12,17 +12,18 @@ import Link from "next/link";
 import { partialRegistrationSchema } from "@/validation/schema";
 import { debounce } from "@/lib/utils";
 
-import { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useRef, useEffect, useTransition } from "react";
 
 import { BadgeCheck, BadgeAlert } from "lucide-react";
+import { RedirectButton } from "../redirect-button";
+import { PulseLoader } from "react-spinners";
 
 export function RegisterForm() {
-  const router = useRouter();
   const [registrationSuccessful, setRegistrationSuccessful] = useState(false);
   const [passwordValid, setPasswordValid] = useState<boolean | null>(null);
   const [emailValid, setEmailValid] = useState<boolean | null>(null);
   const [formValidated, setFormValidated] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   const ref = useRef<HTMLFormElement>(null);
 
@@ -81,18 +82,16 @@ export function RegisterForm() {
       password: formdata.get("password") as string,
     };
 
-    await register({
-      email: user.email,
-      password: user.password,
-    } as User).then((data) => {
-      if (data.status === 200) {
-        setRegistrationSuccessful(true);
-      }
+    startTransition(async () => {
+      register({
+        email: user.email,
+        password: user.password,
+      } as User).then((data) => {
+        if (data.status === 200) {
+          setRegistrationSuccessful(true);
+        }
+      });
     });
-  }
-
-  function handleRedirect() {
-    router.push("/login");
   }
 
   useEffect(() => {
@@ -120,23 +119,22 @@ export function RegisterForm() {
         <p className='text-sm text-muted-foreground'>
           Veuillez vérifier votre courriel pour activer votre compte
         </p>
-        <Button
-          variant={"outline"}
-          onClick={handleRedirect}>
-          Accéder à mon portail
-        </Button>
+        <RedirectButton href='/login'>
+          <Button variant={"outline"}>Accéder à mon portail</Button>
+        </RedirectButton>
       </div>
     );
   }
 
   return (
     <>
-      <Button
-        className='absolute right-4 top-4 md:right-8 md:top-8'
-        variant={"link"}
-        onClick={handleRedirect}>
-        Connexion
-      </Button>
+      <RedirectButton href='/login'>
+        <Button
+          className='absolute right-4 top-4 md:right-8 md:top-8'
+          variant={"link"}>
+          Connexion
+        </Button>
+      </RedirectButton>
       <div className='flex flex-col justify-center max-w-[500px]'>
         <CardHeader className='flex flex-col space-y-2 text-center'>
           <h1 className='text-2xl font-semibold tracking-tight'>
@@ -164,6 +162,7 @@ export function RegisterForm() {
                   type='email'
                   name='email'
                   onChange={handleEmailValidation}
+                  disabled={isPending}
                 />
                 {emailValid && (
                   <BadgeCheck className='absolute w-6 h-6 top-2 right-2 text-success-foreground' />
@@ -185,6 +184,7 @@ export function RegisterForm() {
                     placeholder='Mot de passe'
                     type='password'
                     name='password'
+                    disabled={isPending}
                   />
                 </div>
                 <div className='relative w-[50%]'>
@@ -199,6 +199,7 @@ export function RegisterForm() {
                     placeholder='Confirmer le mot de passe'
                     type='password'
                     name='password-confirmation'
+                    disabled={isPending}
                   />
 
                   {passwordValid && (
@@ -219,8 +220,8 @@ export function RegisterForm() {
             <Button
               variant={"default"}
               type='submit'
-              disabled={!formValidated}>
-              Inscription
+              disabled={!formValidated || isPending}>
+              {isPending ? <PulseLoader size={5} /> : "Inscription"}
             </Button>
             <div className='flex gap-3 w-[80%] mx-auto text-center'>
               <p className='text-[0.75rem]'>

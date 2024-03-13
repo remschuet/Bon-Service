@@ -22,13 +22,15 @@ import { Input } from "@/components/ui/input";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "../form-success";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { PulseLoader } from "react-spinners";
 
 import { login } from "@/actions/login";
 
 export function LoginForm() {
   const [error, setError] = useState<string | undefined>(undefined);
   const [success, setSuccess] = useState<string | undefined>(undefined);
+  const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -42,37 +44,44 @@ export function LoginForm() {
     setError(undefined);
     setSuccess(undefined);
 
-    login(values).then((res) => {
-      setError(res?.error);
-      setSuccess(res?.success);
+    startTransition(async () => {
+      login(values).then((res) => {
+        setError(res?.error);
+        setSuccess(res?.success);
+      });
     });
   };
 
   return (
-    <div className="flex flex-col justify-center min-w-[500px]">
-      <CardHeader className="flex flex-col space-y-2 text-center">
-        <h1 className="text-2xl font-semibold tracking-tight">Connexion</h1>
-        <p className="text-sm text-muted-foreground">
+    <div className='flex flex-col justify-center min-w-[500px]'>
+      <CardHeader className='flex flex-col space-y-2 text-center'>
+        <h1 className='text-2xl font-semibold tracking-tight'>Connexion</h1>
+        <p className='text-sm text-muted-foreground'>
           Entrez votre adresse courriel et votre mot de passe
         </p>
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form className="grid gap-2" onSubmit={form.handleSubmit(onSubmit)}>
+          <form
+            className='grid gap-2'
+            onSubmit={form.handleSubmit(onSubmit)}>
             <div>
               <FormField
                 control={form.control}
-                name="email"
+                name='email'
                 render={({ field }) => (
-                  <FormItem className="relative">
-                    <FormLabel className="sr-only" htmlFor="email">
+                  <FormItem className='relative'>
+                    <FormLabel
+                      className='sr-only'
+                      htmlFor='email'>
                       Courriel
                     </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder="nom@example.com"
-                        type="email"
+                        placeholder='nom@example.com'
+                        type='email'
+                        disabled={isPending}
                       />
                     </FormControl>
                   </FormItem>
@@ -81,17 +90,20 @@ export function LoginForm() {
 
               <FormField
                 control={form.control}
-                name="password"
+                name='password'
                 render={({ field }) => (
-                  <FormItem className="relative">
-                    <FormLabel className="sr-only" htmlFor="password">
+                  <FormItem className='relative'>
+                    <FormLabel
+                      className='sr-only'
+                      htmlFor='password'>
                       Mot de passe
                     </FormLabel>
                     <FormControl>
                       <Input
                         {...field}
-                        placeholder="Mot de passe"
-                        type="password"
+                        placeholder='Mot de passe'
+                        type='password'
+                        disabled={isPending}
                       />
                     </FormControl>
                   </FormItem>
@@ -102,24 +114,25 @@ export function LoginForm() {
             {error !== undefined && <FormError error={error} />}
             {success !== undefined && <FormSuccess success={success} />}
 
-            <Button variant={"default"} type="submit">
-              Connexion
+            <Button
+              variant={"default"}
+              type='submit'
+              disabled={isPending}>
+              {isPending ? <PulseLoader size={5} /> : "Connexion"}
             </Button>
             <div>
-              <p className="text-[0.75rem] text-center font-normal text-muted-foreground">
+              <p className='text-[0.75rem] text-center font-normal text-muted-foreground'>
                 Vous n'avez pas de compte?{" "}
                 <Link
-                  className="underline italic font-semibold"
-                  href="/register"
-                >
+                  className='underline italic font-semibold'
+                  href='/register'>
                   Inscrivez-vous!
                 </Link>
               </p>
-              <p className="px-5 text-[0.7rem] text-muted-foreground text-center">
+              <p className='px-5 text-[0.7rem] text-muted-foreground text-center'>
                 <Link
-                  className="underline italic font-semibold"
-                  href="/forgot-password"
-                >
+                  className='underline italic font-semibold'
+                  href='/forgot-password'>
                   Mot de passe oublié?
                 </Link>
               </p>

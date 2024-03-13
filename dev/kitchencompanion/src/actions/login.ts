@@ -4,7 +4,7 @@ import { z } from "zod";
 import { LoginSchema } from "@/validation/schema";
 
 import { createVerificationToken } from "@/lib/tokens";
-import { getUser } from "@/data_access/user";
+import { getUser } from "@/data-access/user";
 
 import { signIn } from "@/auth";
 import { DEFAULT_REDIRECT_URL } from "@/route";

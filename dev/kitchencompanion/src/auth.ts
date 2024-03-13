@@ -1,8 +1,8 @@
 import NextAuth, { type DefaultSession } from "next-auth";
 import authConfig from "@/auth.config";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { db } from "@/db/prisma_db";
-import { getUserById } from "@/data_access/user";
+import { db } from "@/db/prisma-db";
+import { getUserById } from "@/data-access/user";
 import { UserTypes } from "@prisma/client";
 
 // Type sur mesure pour ajouter des propriétés à l'objet user de la session
@@ -29,9 +29,6 @@ export const {
   },
   callbacks: {
     async signIn({ user, account }) {
-      // Si l'utilisateur c'est connecté avec Google ou Facebook, on ne vérifie pas si l'adresse courriel est vérifiée
-      if (account?.provider !== "credentials") return true;
-
       const existingUser = await getUserById(user.id as string);
 
       // Si l'utilisateur n'a pas vérifier son adresse courriel, on ne le connecte pas

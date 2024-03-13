@@ -1,5 +1,5 @@
 import { UserTypes, User } from "@prisma/client";
-import { db } from "@/db/prisma_db";
+import { db } from "@/db/prisma-db";
 
 export async function createUser(user: User) {
   if (user.userType === UserTypes.MEMBER) {

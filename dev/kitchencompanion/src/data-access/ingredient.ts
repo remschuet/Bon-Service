@@ -1,11 +1,11 @@
 import { Ingredient } from "@prisma/client";
-import { db } from "@/db/prisma_db";
+import { db } from "@/db/prisma-db";
 
 ////////////////////////////////
-// TABLES 
+// TABLES
 // Ingredient
 ////////////////////////////////
 
-/** @description  
+/** @description
  * @Table Kitchen
  */
