@@ -11,6 +11,7 @@ import { DEFAULT_REDIRECT_URL } from "@/route";
 import { AuthError } from "next-auth";
 
 import bcrypt from "bcryptjs";
+import { sendVerificationEmail } from "@/lib/mail";
 
 /**
  * Logs in a user with the provided email and password.
@@ -49,7 +50,16 @@ export async function login(values: z.infer<typeof LoginSchema>) {
   }
 
   if (!existingUser.emailVerified) {
-    await createVerificationToken(existingUser.email);
+    const verificationToken = await createVerificationToken(existingUser.email);
+
+    const res = await sendVerificationEmail(
+      verificationToken.email,
+      verificationToken.token
+    );
+
+    if (res.error) {
+      return { error: "Une erreur est survenue", status: 500 };
+    }
 
     return {
       success: "Un nouveau lien de vérification vous a été envoyé.",
