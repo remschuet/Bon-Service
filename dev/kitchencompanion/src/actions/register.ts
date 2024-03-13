@@ -1,4 +1,7 @@
+"use server";
+
 import { createUser, getUser } from "@/data-access/user";
+import { sendVerificationEmail } from "@/lib/mail";
 import { createVerificationToken } from "@/lib/tokens";
 import { User } from "@prisma/client";
 import bcrypt from "bcryptjs";
@@ -21,7 +24,14 @@ export async function register(user: User) {
 
     const verificationToken = await createVerificationToken(user.email);
 
-    // TODO: Send email verification token
+    const res = await sendVerificationEmail(
+      verificationToken.email,
+      verificationToken.token
+    );
+
+    if (res.error) {
+      return { error: "Une erreur est survenue", status: 500 };
+    }
 
     return {
       success: "Votre compte a été créé avec succès.",
