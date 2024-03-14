@@ -6,7 +6,7 @@ export async function sendVerificationEmail(email: string, token: string) {
   const verificationLink = `http://localhost:3000/account-verification/?token=${token}`;
 
   const { data, error } = await resend.emails.send({
-    from: "Acme <onboarding@resend.dev>",
+    from: "KitchenCompanion <onboarding@resend.dev>",
     to: [email],
     subject: "Vérification de votre adresse courriel",
     html: `<p>Veuillez cliquez <a href=${verificationLink} >ici</a> pour confirmer votre courriel.</p>`,

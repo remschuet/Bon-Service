@@ -37,3 +37,41 @@ export async function getVerificationTokenByToken(token: string) {
     return null;
   }
 }
+
+/**
+ * Retrieves the password reset token for a given email.
+ * @param email - The email address associated with the password reset token.
+ * @returns The password reset token, or null if not found.
+ */
+export async function getPasswordResetTokenByEmail(email: string) {
+  try {
+    const passwordResetToken = await db.passwordResetToken.findFirst({
+      where: {
+        email,
+      },
+    });
+
+    return passwordResetToken;
+  } catch (e) {
+    return null;
+  }
+}
+
+/**
+ * Retrieves a password reset token by its token value.
+ * @param {string} token - The token value to search for.
+ * @returns The password reset token, or null if not found.
+ */
+export async function getPasswordResetTokenByToken(token: string) {
+  try {
+    const passwordResetToken = await db.passwordResetToken.findUnique({
+      where: {
+        token,
+      },
+    });
+
+    return passwordResetToken;
+  } catch (e) {
+    return null;
+  }
+}

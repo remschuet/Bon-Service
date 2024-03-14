@@ -25,7 +25,7 @@ import { FormSuccess } from "../form-success";
 import { useState, useTransition } from "react";
 import { PulseLoader } from "react-spinners";
 
-import { login } from "@/actions/login";
+import { login } from "@/app/(public)/(auth)/login/_action/login";
 
 export function LoginForm() {
   const [error, setError] = useState<string | undefined>(undefined);

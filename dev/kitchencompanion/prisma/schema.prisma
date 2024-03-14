@@ -34,7 +34,22 @@ model Account {
   @@unique([provider, providerAccountId])
 }
 
+model RateLimiterFlexible {
+  key    String    @id
+  points Int
+  expire DateTime?
+}
+
 model VerificationToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model PasswordResetToken {
   id      String   @id @default(cuid())
   email   String
   token   String   @unique

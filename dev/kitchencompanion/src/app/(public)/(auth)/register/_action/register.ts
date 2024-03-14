@@ -23,7 +23,6 @@ export async function register(user: User) {
     await createUser(user);
 
     const verificationToken = await createVerificationToken(user.email);
-
     const res = await sendVerificationEmail(
       verificationToken.email,
       verificationToken.token

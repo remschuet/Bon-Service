@@ -6,7 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { register, userExist } from "@/actions/register";
+import {
+  register,
+  userExist,
+} from "@/app/(public)/(auth)/register/_action/register";
 import Link from "next/link";
 
 import { partialRegistrationSchema } from "@/validation/schema";

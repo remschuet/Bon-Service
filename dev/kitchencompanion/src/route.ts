@@ -24,14 +24,7 @@ export const publicRoutes = [
  * Will be used to redirect users to the dashboard if they are already authenticated.
  */
 
-export const authRoutes = ["/login", "/register"];
-
-/**
- * @description Protected routes
- * @type {string[]}
- *
- * This is a list of protected routes that are only accessible to authenticated users.
- */
+export const authRoutes = ["/login", "/register", "/password-reset"];
 
 export const apiRoutesPrefix = "/api/auth";
 export const DEFAULT_REDIRECT_URL = "/dashboard";

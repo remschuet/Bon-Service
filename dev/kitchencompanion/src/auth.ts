@@ -28,7 +28,7 @@ export const {
     signIn: "/login",
   },
   callbacks: {
-    async signIn({ user, account }) {
+    async signIn({ user }) {
       const existingUser = await getUserById(user.id as string);
 
       // Si l'utilisateur n'a pas vérifier son adresse courriel, on ne le connecte pas
