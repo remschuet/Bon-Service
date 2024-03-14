@@ -15,20 +15,45 @@ import {
   linkSupplierKitchen,
   getSupplier,
 } from "@/data-access/supplier";
-import { Supplier } from "@prisma/client";
+
+import {
+  createIngredient,
+  getIngredientsBySupplierId,
+} from "@/data-access/ingredient";
+import { $Enums, Ingredient, Supplier, UnitMeasure } from "@prisma/client";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 const data = [
-  { id: 1, name: "Product A", price: 10, quantity: 5 },
+  { id: "1", name: "Product A", price: 10, quantity: "5" },
   { id: 2, name: "Product B", price: 15, quantity: 7 },
   { id: 3, name: "Product C", price: 20, quantity: 3 },
   { id: 4, name: "Product D", price: 25, quantity: 8 },
   { id: 5, name: "Product E", price: 30, quantity: 2 },
 ];
 
+export default async function handler(supplierId: string) {
+  const ingredients = await getIngredientsBySupplierId(supplierId);
+  return ingredients;
+}
+
 export function DataTableDemo() {
   let filterValue = "";
+
+  async function buildIngredientList(formData: FormData) {
+    "use server";
+    const ingredientsList = await getIngredientsBySupplierId(
+      formData.get("supplierId") as string
+    );
+    ingredientsList.forEach((ingredient) => {
+      data.push({
+        id: ingredient.id,
+        name: ingredient.name,
+        price: ingredient.unitPrice, // Modification de unitPrice à price pour correspondre à la structure de data
+        quantity: ingredient.unitMeasure, // Modification de unitMeasure à quantity pour correspondre à la structure de data
+      });
+    });
+  }
 
   async function linkSupplier(formData: FormData) {
     "use server";
@@ -43,9 +68,20 @@ export function DataTableDemo() {
     revalidatePath("/test");
   }
 
-  async function createIngredient(formData: FormData) {
+  async function handleCreateIngredient(formData: FormData) {
     "use server";
-    return;
+    const priceValue = formData.get("price");
+    const unitPrice =
+      typeof priceValue === "string" ? parseInt(priceValue, 10) : 0;
+
+    const newIngredient = {
+      name: formData.get("ingredientName") as string,
+      unitPrice: unitPrice,
+      unitMeasure: formData.get("measure") as $Enums.UnitMeasure,
+      supplierId: formData.get("supplierId") as string,
+    };
+    await createIngredient(newIngredient as Ingredient);
+    revalidatePath("/test");
   }
 
   async function handleCreateSupplier(formData: FormData) {
@@ -79,7 +115,7 @@ export function DataTableDemo() {
             .filter((item) =>
               item.name.toLowerCase().includes(filterValue.toLowerCase())
             )
-            .map((row) => (
+            .map((row: any) => (
               <TableRow key={row.id} className="flex flex-row">
                 <TableCell>{row.id}</TableCell>
                 <TableCell>{row.name}</TableCell>
@@ -120,7 +156,7 @@ export function DataTableDemo() {
       </CardContent>
 
       <CardContent>
-        <form action={createIngredient} className="grid gap-2">
+        <form action={handleCreateIngredient} className="grid gap-2">
           <input
             type="text"
             name="ingredientName"
@@ -128,7 +164,7 @@ export function DataTableDemo() {
             placeholder="Enter nom"
           />
           <input
-            type="text"
+            type="number"
             name="price"
             id="price"
             placeholder="Enter prix (int)"
@@ -146,6 +182,18 @@ export function DataTableDemo() {
             placeholder="Enter supplierId"
           />
           <Button type="submit">Create Ingredients (DEV)</Button>
+        </form>
+      </CardContent>
+
+      <CardContent>
+        <form action={buildIngredientList} className="grid gap-2">
+          <input
+            type="text"
+            name="supplierId"
+            id="supplierId"
+            placeholder="Enter supplierId"
+          />
+          <Button type="submit">display ingredients for supplierId(DEV)</Button>
         </form>
       </CardContent>
     </div>
