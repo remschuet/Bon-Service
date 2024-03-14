@@ -26,7 +26,9 @@ export async function CreateSupplier() {
     "use server";
 
     const supplier = await getSupplier(formData.get("name") as string);
-    // await linkSupplierKitchen(supplier.id, "kitchen Id");
+    if (supplier) {
+      await linkSupplierKitchen(supplier.id, "kitchen Id");
+    }
     revalidatePath("/test");
   }
 
