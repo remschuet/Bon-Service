@@ -43,6 +43,11 @@ export function DataTableDemo() {
     revalidatePath("/test");
   }
 
+  async function createIngredient(formData: FormData) {
+    "use server";
+    return;
+  }
+
   async function handleCreateSupplier(formData: FormData) {
     "use server";
     const newSupplier = {
@@ -110,7 +115,37 @@ export function DataTableDemo() {
       <CardContent>
         <form action={handleCreateSupplier} className="grid gap-2">
           <input type="text" name="name" id="name" placeholder="Enter name" />
-          <Button type="submit">Create Supplier</Button>
+          <Button type="submit">Create Supplier (DEV)</Button>
+        </form>
+      </CardContent>
+
+      <CardContent>
+        <form action={createIngredient} className="grid gap-2">
+          <input
+            type="text"
+            name="ingredientName"
+            id="ingredientName"
+            placeholder="Enter nom"
+          />
+          <input
+            type="text"
+            name="price"
+            id="price"
+            placeholder="Enter prix (int)"
+          />
+          <input
+            type="text"
+            name="measure"
+            id="measure"
+            placeholder="Enter unité measure(ENUM)"
+          />
+          <input
+            type="text"
+            name="supplierId"
+            id="supplierId"
+            placeholder="Enter supplierId"
+          />
+          <Button type="submit">Create Ingredients (DEV)</Button>
         </form>
       </CardContent>
     </div>
