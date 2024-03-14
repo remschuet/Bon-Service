@@ -20,25 +20,23 @@ export async function LinkKitchenUser() {
   }
 
   return (
-    <Card className='w-[350px] h-[450px] grid place-content-center'>
+    <Card className="w-[350px] h-[450px] grid place-content-center">
       <CardContent>
         <CardHeader>Link User and Kitchen</CardHeader>
-        <form
-          action={handleLinkKitchenUser}
-          className='grid gap-2'>
+        <form action={handleLinkKitchenUser} className="grid gap-2">
           <input
-            type='text'
-            name='userId'
-            id='userId'
-            placeholder='Enter userId'
+            type="text"
+            name="userId"
+            id="userId"
+            placeholder="Enter userId"
           />
           <input
-            type='text'
-            name='kitchenId'
-            id='kitchenId'
-            placeholder='Enter kitchenId'
+            type="text"
+            name="kitchenId"
+            id="kitchenId"
+            placeholder="Enter kitchenId"
           />
-          <Button type='submit'>Link</Button>
+          <Button type="submit">Link</Button>
         </form>
       </CardContent>
     </Card>

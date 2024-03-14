@@ -16,7 +16,7 @@ import {
 import {
   actionGetIngredients,
   actionGetPriceIngredientById,
-} from "./supplier-action";
+} from "../../app/(public)/test/supplier/supplier-action";
 
 export function SupplierForm() {
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
