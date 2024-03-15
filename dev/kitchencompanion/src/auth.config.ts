@@ -9,7 +9,7 @@ import bcrypt from "bcryptjs";
 export default {
   providers: [
     Credentials({
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         const validatedValues = LoginSchema.safeParse(credentials);
 
         if (validatedValues.success) {

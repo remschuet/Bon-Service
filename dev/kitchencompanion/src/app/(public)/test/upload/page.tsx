@@ -1,6 +1,6 @@
 "use client";
 
-import processReceipt from "./_action/openai";
+import processReceipt from "./_action/process-receipt";
 import { Button } from "@/components/ui/button";
 
 export default async function Upload() {
