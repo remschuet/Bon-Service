@@ -104,7 +104,7 @@ export async function getKitchensByAdmin(user: User) {
  * @returns A promise that resolves to the user object with the associated kitchens.
  */
 export async function getKitchensByAdminById(id: string) {
-  return await db.user.findFirst({
+  return await db.user.findMany({
     where: {
       id,
     },

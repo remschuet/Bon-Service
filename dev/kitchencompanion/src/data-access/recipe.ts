@@ -16,6 +16,21 @@ export async function createRecipeBook(recipeBook: RecipeBook) {
   });
 }
 
+export async function deleteRecipeBook(recipeBook: RecipeBook) {
+  return await db.recipeBook.delete({
+    where: { id: recipeBook.id },
+  });
+}
+
+export async function deleteRecipeBookByUserIdAndName(
+  userId: string,
+  name: string
+) {
+  return await db.recipeBook.deleteMany({
+    where: { userId, name },
+  });
+}
+
 /**
  * Get a RecipeBook by id.
  * @param recipeBookId - The recipeBook id.

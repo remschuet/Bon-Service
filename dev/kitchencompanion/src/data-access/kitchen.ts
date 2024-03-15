@@ -16,6 +16,15 @@ export async function createKitchen(kitchen: Kitchen) {
   });
 }
 
+export async function getKitchenByAdminAndName(userId: string, name: string) {
+  return await db.kitchen.findFirst({
+    where: {
+      name,
+      userId,
+    },
+  });
+}
+
 /**
  * Deletes a kitchen.
  * @param kitchen - The kitchen object to be deleted.
@@ -24,6 +33,12 @@ export async function createKitchen(kitchen: Kitchen) {
 export async function deleteKitchen(kitchen: Kitchen) {
   return await db.kitchen.delete({
     where: { id: kitchen.id },
+  });
+}
+
+export async function deleteKitchenByUserAndName(userId: string, name: string) {
+  return await db.kitchen.deleteMany({
+    where: { userId: userId, name: name },
   });
 }
 
