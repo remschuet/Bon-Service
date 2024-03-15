@@ -11,6 +11,7 @@ export async function createKitchen(kitchen: Kitchen) {
     data: {
       userId: kitchen.userId,
       name: kitchen.name,
+      costObjective: kitchen.costObjective,
     },
   });
 }
