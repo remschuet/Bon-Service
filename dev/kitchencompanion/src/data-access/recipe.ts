@@ -1,4 +1,10 @@
-import { RecipeBook, Recipe, UnitMeasure } from "@prisma/client";
+import {
+  RecipeBook,
+  RecipeAllergen,
+  Allergen,
+  Recipe,
+  UnitMeasure,
+} from "@prisma/client";
 import { db } from "@/db/prisma-db";
 import { number } from "zod";
 import { Prisma } from "@prisma/client";
@@ -32,6 +38,24 @@ export async function createRecipe(recipe: Recipe) {
       objInvestment: recipe.objInvestment,
       createdAt: recipe.createdAt,
       updatedAt: recipe.updatedAt,
+    },
+  });
+}
+
+export async function linkRecipeAllergen(recipe: Recipe, allergen: Allergen) {
+  return await db.recipeAllergen.create({
+    data: {
+      recipeId: recipe.id,
+      allergen: allergen,
+    },
+  });
+}
+
+export async function linkRecipePhoto(recipe: Recipe, photo: string) {
+  return await db.recipePhoto.create({
+    data: {
+      recipeId: recipe.id,
+      photo: photo,
     },
   });
 }
