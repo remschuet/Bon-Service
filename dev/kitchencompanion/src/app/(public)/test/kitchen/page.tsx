@@ -1,4 +1,4 @@
-import { CreateKitchen } from "@/components/basic_test/kitchen";
+import { CreateKitchen } from "@/components/basic_test/kitchen-form";
 
 export default function Home() {
   return <CreateKitchen />;
