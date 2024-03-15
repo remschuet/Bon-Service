@@ -6,8 +6,17 @@ import { useTransition } from "react";
 import { CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-import { Table, TableBody, TableCell, TableHead, TableRow } from "@/components/ui/table";
-import { actionGetIngredients, actionGetPriceIngredientById } from "../../app/(public)/test/supplier/_action/supplier-action";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  actionGetIngredients,
+  actiionGetSupplierNameById,
+} from "../../app/(public)/test/supplier/_action/supplier-action";
 
 export function SupplierForm() {
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
@@ -15,12 +24,15 @@ export function SupplierForm() {
 
   async function buildIngredientList(formData: FormData) {
     startTransition(async () => {
-      actionGetPriceIngredientById("cltrnj6pz0005a4o9i8y2knqd");
-      /*actionGetIngredients(formData.get("supplier Id") as string).then(
-        (ingredients) => {
+      const supplierId = formData.get("supplierName") as string;
+      const supplierName = await actiionGetSupplierNameById(supplierId);
+      if (supplierName) {
+        actionGetIngredients(supplierName).then((ingredients) => {
           setIngredients(ingredients);
-        }
-      );*/
+        });
+      } else {
+        console.error("Supplier name is undefined.");
+      }
     });
   }
   return (
@@ -35,7 +47,7 @@ export function SupplierForm() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {ingredients.map(row => (
+          {ingredients.map((row) => (
             <TableRow key={row.id} className="flex flex-row">
               <TableCell>{row.id}</TableCell>
               <TableCell>{row.name}</TableCell>
@@ -48,8 +60,15 @@ export function SupplierForm() {
 
       <CardContent>
         <form action={buildIngredientList} className="grid gap-2">
-          <input type="text" name="supplierId" id="supplierId" placeholder="Enter supplierId" />
-          <Button type="submit">display ingredients for supplierId(DEV)</Button>
+          <input
+            type="text"
+            name="supplierName"
+            id="supplierName"
+            placeholder="Enter supplier Name"
+          />
+          <Button type="submit">
+            display ingredients for supplier Name(DEV)
+          </Button>
         </form>
       </CardContent>
     </div>
