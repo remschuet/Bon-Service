@@ -1,9 +1,6 @@
-"use serveur";
+"use server";
 
-import {
-  getIngredientsBySupplierId,
-  getPriceIngredientById,
-} from "@/data-access/ingredient";
+import { getIngredientsBySupplierId, getPriceIngredientById } from "@/data-access/ingredient";
 
 export async function actionGetIngredients(supplierId: string) {
   return await getIngredientsBySupplierId(supplierId);
