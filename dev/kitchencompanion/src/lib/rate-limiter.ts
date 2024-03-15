@@ -11,13 +11,24 @@ const rateLimiter = new RateLimiterPrisma({
   blockDuration: 60 * 60, // Block for 1 hour,
 });
 
-export const getEmailIPkey = (email: string, ip: string) => `${email}_${ip}`;
+export const getEmailIPkey = (email: string, ip: string) => {
+  return `${email}_${ip}`;
+};
 
 export async function rateLimitLogin(emailIPKey: string) {
   try {
     const rlRes = await rateLimiter.consume(emailIPKey, 1); // consume 1 point
-    console.log(rlRes);
+    return rlRes;
   } catch (rejRes) {
     throw rejRes;
   }
+}
+
+export async function clearLoginLimit(emailIPKey: string) {
+  await rateLimiter.delete(emailIPKey);
+}
+
+export async function isAccountBlocked(emailIPKey: string) {
+  const attempts = await rateLimiter.get(emailIPKey);
+  return attempts !== null && attempts.consumedPoints >= maxFailsByEmailAndIP;
 }

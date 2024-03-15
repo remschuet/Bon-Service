@@ -13,6 +13,14 @@ import { AuthError } from "next-auth";
 import bcrypt from "bcryptjs";
 import { sendVerificationEmail } from "@/lib/mail";
 
+import { headers } from "next/headers";
+import {
+  clearLoginLimit,
+  getEmailIPkey,
+  isAccountBlocked,
+  rateLimitLogin,
+} from "@/lib/rate-limiter";
+
 /**
  * Logs in a user with the provided email and password.
  *
@@ -27,12 +35,14 @@ import { sendVerificationEmail } from "@/lib/mail";
 
 export async function login(values: z.infer<typeof LoginSchema>) {
   const validatedValues = LoginSchema.safeParse(values);
+  const clientIp = headers().get("x-forwarded-for");
 
   if (!validatedValues.success) {
     return { error: "Identifiants invalides", status: 400 };
   }
 
   const { email, password } = validatedValues.data;
+  const emailIPKey = getEmailIPkey(email, clientIp!);
 
   const existingUser = await getUser(email);
 
@@ -45,7 +55,15 @@ export async function login(values: z.infer<typeof LoginSchema>) {
 
   const validPassword = await bcrypt.compare(password, existingUser.password);
 
+  if (await isAccountBlocked(emailIPKey)) {
+    return {
+      error: "Trop de tentatives de connexion. Réessayez plus tard.",
+      status: 429,
+    };
+  }
+
   if (!validPassword) {
+    await rateLimitLogin(emailIPKey);
     return { error: "Le mot de passe est invalide", status: 400 };
   }
 
@@ -68,6 +86,7 @@ export async function login(values: z.infer<typeof LoginSchema>) {
   }
 
   try {
+    await clearLoginLimit(emailIPKey);
     await signIn("credentials", {
       email,
       password,
