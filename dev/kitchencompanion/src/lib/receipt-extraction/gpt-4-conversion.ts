@@ -14,7 +14,7 @@ export async function getReceiptData(text: string) {
         content: [
           {
             type: "text",
-            text: "The folowing text is from a receipt. Please convert it to a JSON object. There might be some errors in the item description : For example, '5LB' might had been extracted as 'SLB' since the 5 closely resemble an S. Please fix those errors. The JSON object should only contain the items and it's price per unit. The description you will will be always formated in the following manner : 'NAME OF THE INGREDIENT(ie: PIMENT JALAPENO) QUANTITY-UNIT(ie: 5LB) PROVENANCE (ie: E.U). make sure those fields are properly seperated",
+            text: "The folowing text is from a receipt. Please convert it to a JSON object. There might be some errors in the item description : For example, '5LB' might had been extracted as 'SLB' since the 5 closely resemble an S. Please fix those errors. The JSON object should only contain the items and it's price per unit. The description you will will be always formated in the following manner : 'NAME OF THE INGREDIENT(ie: PIMENT JALAPENO) QUANTITY-UNIT(ie: 5LB) PROVENANCE (ie: E.U). make sure those fields are properly seperated. Units that are labeled GR should be changed to G. and the QUANTITY-UNIT should be in 2 unique fields",
           },
           {
             type: "text",
