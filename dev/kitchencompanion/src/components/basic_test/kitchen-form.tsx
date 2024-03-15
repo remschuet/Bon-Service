@@ -25,31 +25,24 @@ export async function CreateKitchen() {
   }
 
   return (
-    <Card className='w-[350px] h-[450px] grid place-content-center'>
+    <Card className="w-[350px] h-[450px] grid place-content-center">
       <CardHeader>Create Kitchen</CardHeader>
       <CardContent>
-        <form
-          action={handleCreateKitchen}
-          className='grid gap-2'>
+        <form action={handleCreateKitchen} className="grid gap-2">
           <input
-            type='text'
-            name='userId'
-            id='userId'
-            placeholder='Enter userId'
+            type="text"
+            name="userId"
+            id="userId"
+            placeholder="Enter userId"
           />
+          <input type="text" name="name" id="name" placeholder="Enter name" />
           <input
-            type='text'
-            name='name'
-            id='name'
-            placeholder='Enter name'
+            type="text"
+            name="costObj"
+            id="costObj"
+            placeholder="Enter costObj"
           />
-          <input
-            type='text'
-            name='costObj'
-            id='costObj'
-            placeholder='Enter costObj'
-          />
-          <Button type='submit'>Create kitchen</Button>
+          <Button type="submit">Create kitchen</Button>
         </form>
 
         <CardHeader>Display all Kitchen (DEV MODE)</CardHeader>
