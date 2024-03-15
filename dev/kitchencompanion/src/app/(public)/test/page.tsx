@@ -10,26 +10,29 @@ export default function Home() {
     <div>
       <h1>TEST PAGE</h1>
       <Button
-          onClick={() => {
-              router.push("/test/kitchen");
-          }}
-      >
-          kitchen
+        onClick={() => {
+          router.push("/test/kitchen");
+        }}>
+        kitchen
       </Button>
       <Button
-          onClick={() => {
-              router.push("/test/supplier");
-          }}
-      >
-          supplier
+        onClick={() => {
+          router.push("/test/supplier");
+        }}>
+        supplier
       </Button>
       <Button
-          onClick={() => {
-              router.push("/test/linkKitchenUser");
-          }}
-      >
-          Link kitchenUser
+        onClick={() => {
+          router.push("/test/linkKitchenUser");
+        }}>
+        Link kitchenUser
+      </Button>
+      <Button
+        onClick={() => {
+          router.push("/test/upload");
+        }}>
+        Link openAI upload
       </Button>
     </div>
-    );
+  );
 }

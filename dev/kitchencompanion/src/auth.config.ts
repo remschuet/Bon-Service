@@ -12,7 +12,6 @@ export default {
     Credentials({
       async authorize(credentials, req) {
         const clientIP = req.headers.get("x-forwarded-for");
-
         console.log(clientIP);
 
         const validatedValues = LoginSchema.safeParse(credentials);
