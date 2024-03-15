@@ -1,5 +1,5 @@
-import { AccountVerificationForm } from "@/components/account-verification/account-verification-form";
+import { AccountVerification } from "@/components/account-verification/account-verification";
 
 export default function AccountVerificationPage() {
-  return <AccountVerificationForm />;
+  return <AccountVerification />;
 }

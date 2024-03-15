@@ -3,14 +3,14 @@
 import { accountVerification } from "@/app/(public)/account-verification/_action/account-verification";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState, useTransition } from "react";
-import { FormError } from "../form-error";
-import { FormSuccess } from "../form-success";
-import { Card, CardContent, CardHeader } from "../ui/card";
+import { FormError } from "@/components/form-error";
+import { FormSuccess } from "@/components/form-success";
+import { CardContent, CardHeader } from "@/components/ui/card";
 import { PulseLoader } from "react-spinners";
-import { Button } from "../ui/button";
-import { RedirectButton } from "../redirect-button";
+import { Button } from "@/components/ui/button";
+import { RedirectButton } from "@/components/redirect-button";
 
-export const AccountVerificationForm = () => {
+export const AccountVerification = () => {
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>(undefined);
   const [success, setSuccess] = useState<string | undefined>(undefined);
@@ -28,7 +28,7 @@ export const AccountVerificationForm = () => {
       setError(undefined);
       setSuccess(undefined);
 
-      await accountVerification(token)
+      accountVerification(token)
         .then((result) => {
           setError(result.error);
           setSuccess(result.success);
@@ -46,12 +46,10 @@ export const AccountVerificationForm = () => {
   return (
     <div className='flex flex-col justify-center min-w-[500px] space-y-6'>
       <CardHeader className='flex flex-col space-y-2 text-center'>
-        <h1 className='text-2xl font-semibold tracking-tight'>
-          Vérification de votre courriel
-        </h1>
+        <h1 className='text-2xl font-semibold tracking-tight'>Vérification</h1>
         {isPending && (
-          <p className='italic text-sm text-center text-muted-foreground'>
-            Vérification en cours...
+          <p className='text-sm text-center text-muted-foreground'>
+            Nous vérifions votre addresse courriel.
           </p>
         )}
       </CardHeader>
@@ -61,7 +59,7 @@ export const AccountVerificationForm = () => {
         {success && success !== undefined && <FormSuccess success={success} />}
         {!isPending && (
           <RedirectButton href='/login'>
-            <Button variant={"link"}>Retour à la page de connexion</Button>
+            <Button variant={"link"}>Connexion</Button>
           </RedirectButton>
         )}
       </CardContent>

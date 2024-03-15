@@ -2,51 +2,44 @@
 
 import { z } from "zod";
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-import { LoginSchema } from "@/validation/schema";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { CardContent, CardHeader } from "@/components/ui/card";
-
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form";
 
 import { Input } from "@/components/ui/input";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "../form-success";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useRef } from "react";
 import { PulseLoader } from "react-spinners";
 
 import { login } from "@/app/(public)/(auth)/login/_action/login";
 import { RedirectButton } from "../redirect-button";
+import { LoginSchema } from "@/validation/schema";
+import { Label } from "../ui/label";
 
 export function LoginForm() {
+  const ref = useRef<HTMLFormElement>(null);
   const [error, setError] = useState<string | undefined>(undefined);
   const [success, setSuccess] = useState<string | undefined>(undefined);
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
-
-  const onSubmit = async (values: z.infer<typeof LoginSchema>) => {
+  const onSubmit = async () => {
     setError(undefined);
     setSuccess(undefined);
 
+    const email = ref.current?.elements.namedItem("email") as HTMLInputElement;
+    const password = ref.current?.elements.namedItem(
+      "password"
+    ) as HTMLInputElement;
+
+    const userInfo: z.infer<typeof LoginSchema> = {
+      email: email.value,
+      password: password.value,
+    };
+
     startTransition(async () => {
-      login(values).then((res) => {
+      login(userInfo).then((res) => {
         setError(res?.error);
         setSuccess(res?.success);
       });
@@ -70,84 +63,64 @@ export function LoginForm() {
           </p>
         </CardHeader>
         <CardContent>
-          <Form {...form}>
-            <form
-              className='grid gap-2'
-              onSubmit={form.handleSubmit(onSubmit)}>
-              <div>
-                <FormField
-                  control={form.control}
-                  name='email'
-                  render={({ field }) => (
-                    <FormItem className='relative'>
-                      <FormLabel
-                        className='sr-only'
-                        htmlFor='email'>
-                        Courriel
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          placeholder='nom@example.com'
-                          type='email'
-                          disabled={isPending}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
+          <form
+            className='grid gap-2'
+            ref={ref}
+            action={onSubmit}>
+            <div className='relative'>
+              <Label
+                className='sr-only'
+                htmlFor='email'>
+                Courriel
+              </Label>
+              <Input
+                placeholder='nom@example.com'
+                type='email'
+                name='email'
+                disabled={isPending}
+              />
+            </div>
+            <div className='relative'>
+              <Label
+                className='sr-only'
+                htmlFor='password'>
+                Mot de passe
+              </Label>
+              <Input
+                placeholder='Mot de passe'
+                type='password'
+                name='password'
+                disabled={isPending}
+              />
+            </div>
 
-                <FormField
-                  control={form.control}
-                  name='password'
-                  render={({ field }) => (
-                    <FormItem className='relative'>
-                      <FormLabel
-                        className='sr-only'
-                        htmlFor='password'>
-                        Mot de passe
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          placeholder='Mot de passe'
-                          type='password'
-                          disabled={isPending}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </div>
+            {error !== undefined && <FormError error={error} />}
+            {success !== undefined && <FormSuccess success={success} />}
 
-              {error !== undefined && <FormError error={error} />}
-              {success !== undefined && <FormSuccess success={success} />}
-
-              <Button
-                variant={"default"}
-                type='submit'
-                disabled={isPending}>
-                {isPending ? <PulseLoader size={5} /> : "Connexion"}
-              </Button>
-              <div>
-                <p className='text-[0.75rem] text-center font-normal text-muted-foreground'>
-                  Vous n'avez pas de compte?{" "}
-                  <Link
-                    className='underline italic font-semibold'
-                    href='/register'>
-                    Inscrivez-vous!
-                  </Link>
-                </p>
-                <p className='px-5 text-[0.7rem] text-muted-foreground text-center'>
-                  <Link
-                    className='underline italic font-semibold'
-                    href='/forgot-password'>
-                    Mot de passe oublié?
-                  </Link>
-                </p>
-              </div>
-            </form>
-          </Form>
+            <Button
+              variant={"default"}
+              type='submit'
+              disabled={isPending}>
+              {isPending ? <PulseLoader size={5} /> : "Connexion"}
+            </Button>
+            <div>
+              <p className='text-[0.75rem] text-center font-normal text-muted-foreground'>
+                Vous n'avez pas de compte?{" "}
+                <Link
+                  className='underline italic font-semibold'
+                  href='/register'>
+                  Inscrivez-vous!
+                </Link>
+              </p>
+              <p className='px-5 text-[0.7rem] text-muted-foreground text-center'>
+                <Link
+                  className='underline italic font-semibold'
+                  href='/forgot-password'>
+                  Mot de passe oublié?
+                </Link>
+              </p>
+            </div>
+          </form>
         </CardContent>
       </div>
     </>

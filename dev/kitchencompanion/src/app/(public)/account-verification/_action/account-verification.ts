@@ -1,6 +1,9 @@
 "use server";
 
-import { getVerificationTokenByToken } from "@/data-access/verification-token";
+import {
+  getVerificationTokenByToken,
+  deleteVerificationToken,
+} from "@/data-access/verification-token";
 import { getUser, userVerification } from "@/data-access/user";
 
 export async function accountVerification(token: string) {
@@ -21,6 +24,7 @@ export async function accountVerification(token: string) {
   }
 
   await userVerification(user, currentToken);
+  await deleteVerificationToken(currentToken.token);
 
   return { success: "Votre courriel a été vérifié avec succès.", status: 200 };
 }
