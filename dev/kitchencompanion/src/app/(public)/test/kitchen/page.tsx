@@ -1,5 +1,5 @@
-import { CreateKitchen } from "@/components/basic_test/kitchen";
+import { KitchenForm } from "@/components/basic_test/kitchen-form";
 
 export default function Home() {
-  return <CreateKitchen />;
+  return <KitchenForm />;
 }

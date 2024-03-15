@@ -80,3 +80,15 @@ export async function linkSupplierKitchen(
     },
   });
 }
+
+export async function removelinkSupplierKitchen(
+  supplierId: string,
+  kitchenId: string
+) {
+  return await db.supplierKitchen.deleteMany({
+    where: {
+      supplierId: supplierId,
+      kitchenId: kitchenId,
+    },
+  });
+}

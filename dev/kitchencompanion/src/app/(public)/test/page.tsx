@@ -12,25 +12,29 @@ export default function Home() {
       <Button
         onClick={() => {
           router.push("/test/kitchen");
-        }}>
+        }}
+      >
         kitchen
       </Button>
       <Button
         onClick={() => {
           router.push("/test/supplier");
-        }}>
+        }}
+      >
         supplier
       </Button>
       <Button
         onClick={() => {
           router.push("/test/linkKitchenUser");
-        }}>
+        }}
+      >
         Link kitchenUser
       </Button>
       <Button
         onClick={() => {
           router.push("/test/upload");
-        }}>
+        }}
+      >
         Link openAI upload
       </Button>
     </div>
