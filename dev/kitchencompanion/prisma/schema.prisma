@@ -203,9 +203,9 @@ model Recipe {
 model RecipeAllergen {
   recipe   Recipe  @relation(fields: [recipeId], references: [id])
   recipeId String
-  alergen  Alergen
+  allergen  Allergen
 
-  @@id([recipeId, alergen])
+  @@id([recipeId, allergen])
 }
 
 model RecipePhoto {
@@ -213,7 +213,7 @@ model RecipePhoto {
 
   recipe   Recipe @relation(fields: [recipeId], references: [id])
   recipeId String
-  photo    Int
+  photo    String
 
   @@unique([recipeId, photo])
 }
@@ -275,7 +275,7 @@ enum UnitMeasure {
   LBS
 }
 
-enum Alergen {
+enum Allergen {
   LACTOSE
   GLUTEN
   PEANUT
