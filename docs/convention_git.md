@@ -1,10 +1,13 @@
 # Convention Git
+
 ## Messages
-Correct format : 
-```<type>[scope]: <subject>```<br>
+
+Correct format :
+`<type>[scope]: <subject>`<br>
 Example: "docs: update README to add developer tips"
 
 ## Type
+
 **feat**<br>
 A new feature
 
@@ -41,14 +44,18 @@ Temporary commit that won't be included in your CHANGELOG
 **db**<br>
 Change prisma schema or database configuration
 
+**BUG**<br>
+Pushing an error not resolved at the moment but discovered. May be waiting for a solution from a teammate
+
 **convention**<br>
 modify the git convention file
 
-
 ## scope
+
 Optional, can be anything specifying the scope of the commit change<br>
 In App Development, scope can be a page, a module or a component<br>
 
 ## subject
+
 Brief summary of the change in present tense <br>
 No period at the end
