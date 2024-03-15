@@ -5,7 +5,7 @@ export interface FormSuccessProps {
 
 export function FormSuccess({ success: message }: FormSuccessProps) {
   return (
-    <div className='flex items-center justify-center text-xs font-md bg-emerald-500/15 text-emerald-500 py-2 w-full rounded-sm shadow-sm'>
+    <div className='flex items-center justify-center text-sm font-md bg-emerald-500/15 text-emerald-500 py-2 px-5 w-full rounded-sm shadow-sm'>
       {message}
     </div>
   );

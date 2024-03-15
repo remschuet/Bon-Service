@@ -1,4 +1,4 @@
-import { UserTypes, User } from "@prisma/client";
+import { UserTypes, User, VerificationToken } from "@prisma/client";
 import { db } from "@/db/prisma-db";
 
 /**
@@ -10,6 +10,7 @@ export async function createUser(user: User) {
   if (user.userType === UserTypes.MEMBER) {
     return await db.user.create({
       data: {
+        name: user.name,
         email: user.email,
         password: user.password,
         userType: UserTypes.MEMBER,
@@ -19,6 +20,7 @@ export async function createUser(user: User) {
 
   return await db.user.create({
     data: {
+      name: user.name,
       email: user.email,
       password: user.password,
     },
@@ -65,6 +67,16 @@ export async function updateUserRole(email: string) {
     where: { email },
     data: {
       userType: UserTypes.ADMIN,
+    },
+  });
+}
+
+export async function userVerification(user: User, token: VerificationToken) {
+  return await db.user.update({
+    where: { id: user.id },
+    data: {
+      emailVerified: new Date(),
+      email: token.email,
     },
   });
 }

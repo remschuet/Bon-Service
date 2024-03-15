@@ -76,12 +76,14 @@ export function RegisterForm() {
 
   async function handleRegistetration(formdata: FormData) {
     const user = {
+      name: formdata.get("name") as string,
       email: formdata.get("email") as string,
       password: formdata.get("password") as string,
     };
 
     startTransition(async () => {
       register({
+        name: user.name,
         email: user.email,
         password: user.password,
       } as User).then((data) => {
@@ -110,17 +112,23 @@ export function RegisterForm() {
 
   if (registrationSuccessful) {
     return (
-      <div className='grid place-items-center gap-5'>
-        <h1 className='text-2xl font-semibold tracking-tight'>
-          Votre compte à été créé!
-        </h1>
-        <p className='text-sm text-muted-foreground'>
-          Veuillez vérifier votre courriel pour activer votre compte
-        </p>
+      <>
         <RedirectButton href='/login'>
-          <Button variant={"outline"}>Accéder à mon portail</Button>
+          <Button
+            className='absolute right-4 top-4 md:right-8 md:top-8'
+            variant={"link"}>
+            Connexion
+          </Button>
         </RedirectButton>
-      </div>
+        <div className='grid place-items-center gap-5'>
+          <h1 className='text-2xl font-semibold tracking-tight'>
+            Votre compte à été créé!
+          </h1>
+          <p className='text-sm text-muted-foreground'>
+            Veuillez vérifier votre courriel pour activer votre compte
+          </p>
+        </div>
+      </>
     );
   }
 
@@ -148,6 +156,16 @@ export function RegisterForm() {
             ref={ref}
             action={handleRegistetration}>
             <div className='grid gap-1.5'>
+              <div className='relative'>
+                <Label className='sr-only'>Nom</Label>
+                <Input
+                  id='name'
+                  placeholder='Jean Tremblay'
+                  type='text'
+                  name='name'
+                  disabled={isPending}
+                />
+              </div>
               <div className='relative'>
                 <Label
                   className='sr-only'
