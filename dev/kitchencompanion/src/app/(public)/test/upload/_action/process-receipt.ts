@@ -16,5 +16,5 @@ export default async function processReceipt(formData: FormData) {
     .replace("\n", "")
     .replace("```", "");
 
-  console.log(json);
+  return JSON.parse(json);
 }
