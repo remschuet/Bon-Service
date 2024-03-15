@@ -1,26 +1,36 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { createKitchen } from "@/data-access/kitchen";
 import { dev_getAllKitchen, getKitchensByAdminById } from "@/data-access/user";
+import { useTransition } from "react";
+import React, { useState } from "react";
 
 import { revalidatePath } from "next/cache";
 import { Kitchen } from "@prisma/client";
+import { actionCreateKitchen } from "@/app/(public)/test/kitchen/_action/kitchen-action";
 
-export async function CreateKitchen() {
+export async function KitchenForm() {
+  const [isPending, startTransition] = useTransition();
+  const [kitchen, setKitchen] = useState<Kitchen[]>([]);
+
   const kitchens = await dev_getAllKitchen();
   const JulienKitchens = await getKitchensByAdminById(
     "cltojl41a0000puk74dk3fmcg"
   );
 
   async function handleCreateKitchen(formData: FormData) {
-    "use server";
     const newKitchen = {
       userId: formData.get("userId") as string,
       name: formData.get("name") as string,
       costObjective: parseInt(formData.get("costObj") as string),
     };
 
-    await createKitchen(newKitchen as Kitchen);
+    startTransition(async () => {
+      if (newKitchen) {
+        actionCreateKitchen(newKitchen as Kitchen);
+      }
+    });
+
     revalidatePath("/test");
   }
 
