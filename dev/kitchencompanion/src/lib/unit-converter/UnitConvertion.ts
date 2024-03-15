@@ -1,6 +1,6 @@
 export type Ingredient = {
   name: string;
-  value: number;
+  value: number; // 12 * 5 boites ou 5 lbs,
   unitMeasure: string;
   price: number;
 };
@@ -11,6 +11,27 @@ abstract class UnitConversionStrategy {
 
 interface SolidUnits {
   [unit: string]: number;
+}
+
+export class UnitPriceConverter {
+  private pricePrecision: number = 100000;
+
+  private priceConverter(price: number, value: number): number {
+    return Math.floor((price * this.pricePrecision) / value);
+  }
+
+  public convert(
+    ingredient: Ingredient,
+    strategy: UnitConversionStrategy
+  ): [number, number] {
+    const convertedValue: number = strategy.convert(ingredient);
+    const pricePerUnit: number = ingredient.price;
+    const convertedPrice: number = this.priceConverter(
+      pricePerUnit,
+      convertedValue
+    );
+    return [convertedValue, convertedPrice];
+  }
 }
 
 export class SolidConversionStrategy extends UnitConversionStrategy {
