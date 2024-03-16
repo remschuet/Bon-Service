@@ -11,14 +11,12 @@ import { PulseLoader } from "react-spinners";
 import { RedirectButton } from "@/components/redirect-button";
 import { Label } from "@/components/ui/label";
 
-import { useState, useTransition, useRef, createContext } from "react";
+import { useState, useTransition, useRef } from "react";
 
 import { PasswordResetSchema } from "@/validation/schema";
-import { sendPasswordResetToken } from "@/app/(public)/(auth)/_actions/send-password-reset-token";
+import { sendPasswordResetToken } from "@/app/(public)/forgot-password/_actions/forgot-password";
 
-export const PasswordResetContext = createContext("");
-
-export function ForgotPassword() {
+export function ForgotPasswordForm() {
   const ref = useRef<HTMLFormElement>(null);
   const [error, setError] = useState<string | undefined>(undefined);
   const [success, setSuccess] = useState<string | undefined>(undefined);

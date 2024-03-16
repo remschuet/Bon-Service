@@ -9,6 +9,7 @@ export const publicRoutes = [
   "/",
   "/privacy",
   "/account-verification",
+  "/forgot-password",
   "/terms",
   "/test",
   "/test/kitchen",
@@ -25,12 +26,7 @@ export const publicRoutes = [
  * Will be used to redirect users to the dashboard if they are already authenticated.
  */
 
-export const authRoutes = [
-  "/login",
-  "/register",
-  "/password-reset",
-  "/forgot-password",
-];
+export const authRoutes = ["/login", "/register", "/password-reset"];
 
 export const apiRoutesPrefix = "/api/auth";
 export const DEFAULT_REDIRECT_URL = "/dashboard";
