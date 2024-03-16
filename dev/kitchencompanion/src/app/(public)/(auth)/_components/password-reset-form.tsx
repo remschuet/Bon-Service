@@ -15,7 +15,7 @@ import { RedirectButton } from "@/components/redirect-button";
 import { passwordReset } from "@/app/(public)/(auth)/_actions/password-reset";
 import { partialRegistrationSchema } from "@/validation/schema";
 
-export async function PasswordResetForm() {
+export function PasswordResetForm() {
   const param = useSearchParams();
   const token = param.get("token");
 
@@ -55,14 +55,10 @@ export async function PasswordResetForm() {
     }
 
     startTransition(async () => {
-      passwordReset(token, password.value)
-        .then((res) => {
-          setError(res?.error);
-          setSuccess(res?.success);
-        })
-        .catch(() => {
-          setError("Une erreur s'est produite.");
-        });
+      passwordReset(token, password.value).then((res) => {
+        setError(res?.error);
+        setSuccess(res?.success);
+      });
     });
   };
 

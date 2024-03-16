@@ -115,7 +115,7 @@ export function LoginForm() {
               <p className='px-5 text-[0.7rem] text-muted-foreground text-center'>
                 <Link
                   className='underline italic font-semibold'
-                  href='/password-reset'>
+                  href='/forgot-password'>
                   Mot de passe oublié?
                 </Link>
               </p>
