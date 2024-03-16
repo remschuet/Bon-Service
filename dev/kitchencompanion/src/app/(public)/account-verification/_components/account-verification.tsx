@@ -18,7 +18,7 @@ export const AccountVerification = () => {
   const param = useSearchParams();
   const token = param.get("token");
 
-  const onSubmit = useCallback(async () => {
+  const onPageLoad = useCallback(async () => {
     if (!token) {
       setError("Le jeton de vérification n'existe pas.");
       return;
@@ -40,8 +40,8 @@ export const AccountVerification = () => {
   }, [token]);
 
   useEffect(() => {
-    onSubmit();
-  }, [onSubmit]);
+    onPageLoad();
+  }, [onPageLoad]);
 
   return (
     <div className='flex flex-col justify-center min-w-[500px] space-y-6'>

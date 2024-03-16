@@ -6,10 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  register,
-  userExist,
-} from "@/app/(public)/(auth)/register/_action/register";
+import { register, userExist } from "@/app/(public)/(auth)/_actions/register";
 import Link from "next/link";
 
 import { partialRegistrationSchema } from "@/validation/schema";
@@ -18,7 +15,7 @@ import { debounce } from "@/lib/utils";
 import { useState, useRef, useEffect, useTransition } from "react";
 
 import { BadgeCheck, BadgeAlert } from "lucide-react";
-import { RedirectButton } from "../redirect-button";
+import { RedirectButton } from "@/components/redirect-button";
 import { PulseLoader } from "react-spinners";
 
 export function RegisterForm() {

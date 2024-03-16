@@ -8,15 +8,15 @@ import { CardContent, CardHeader } from "@/components/ui/card";
 
 import { Input } from "@/components/ui/input";
 import { FormError } from "@/components/form-error";
-import { FormSuccess } from "../form-success";
+import { FormSuccess } from "@/components/form-success";
 
 import { useState, useTransition, useRef } from "react";
 import { PulseLoader } from "react-spinners";
 
-import { login } from "@/app/(public)/(auth)/login/_action/login";
-import { RedirectButton } from "../redirect-button";
+import { login } from "@/app/(public)/(auth)/_actions/login";
+import { RedirectButton } from "@/components/redirect-button";
 import { LoginSchema } from "@/validation/schema";
-import { Label } from "../ui/label";
+import { Label } from "@/components/ui/label";
 
 export function LoginForm() {
   const ref = useRef<HTMLFormElement>(null);
