@@ -1,6 +1,6 @@
 "use client";
 
-import { accountVerification } from "@/app/(public)/account-verification/_action/account-verification";
+import { accountVerification } from "@/app/(public)/account-verification/_actions/account-verification";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState, useTransition } from "react";
 import { FormError } from "@/components/form-error";

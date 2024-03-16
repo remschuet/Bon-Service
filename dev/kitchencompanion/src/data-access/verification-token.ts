@@ -92,3 +92,20 @@ export async function deleteVerificationToken(token: string) {
     return null;
   }
 }
+
+/**
+ * Deletes a verification token by token.
+ * @param token - The token associated with the verification token.
+ */
+
+export async function deletePasswordResetToken(token: string) {
+  try {
+    await db.passwordResetToken.delete({
+      where: {
+        token,
+      },
+    });
+  } catch (e) {
+    return null;
+  }
+}

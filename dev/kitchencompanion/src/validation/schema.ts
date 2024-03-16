@@ -16,4 +16,8 @@ export const LoginSchema = z.object({
   password: z.string().min(1, { message: "Mot de passe invalide" }),
 });
 
+export const PasswordResetSchema = z.object({
+  email: z.string().email({ message: "Courriel invalide" }),
+});
+
 export const partialRegistrationSchema = RegistrationSchema.partial();

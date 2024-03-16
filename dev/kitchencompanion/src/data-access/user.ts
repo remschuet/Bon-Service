@@ -28,6 +28,21 @@ export async function createUser(user: User) {
 }
 
 /**
+ * Updates a user password in the database.
+ * @param user - The user object containing the user's details.
+ * @returns A promise that resolves to the updated user.
+ */
+
+export async function updateUserPassword(email: string, password: string) {
+  return await db.user.update({
+    where: { email: email },
+    data: {
+      password: password,
+    },
+  });
+}
+
+/**
  * Retrieves all users from the database.
  * @returns A promise that resolves to an array of users.
  */

@@ -1,4 +1,4 @@
-import { AccountVerification } from "@/components/account-verification/account-verification";
+import { AccountVerification } from "@/app/(public)/account-verification/_components/account-verification";
 
 export default function AccountVerificationPage() {
   return <AccountVerification />;
