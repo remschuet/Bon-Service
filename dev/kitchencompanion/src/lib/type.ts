@@ -3,3 +3,12 @@ export type ResponseMessage = {
   status: number;
   success?: string;
 };
+
+export type UserSession = {
+  user: {
+    name: string;
+    email: string;
+    userType: string;
+    id: string;
+  };
+};

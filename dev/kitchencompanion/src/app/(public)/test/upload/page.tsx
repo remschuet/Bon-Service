@@ -1,12 +1,21 @@
-import processReceipt from "@/app/(public)/test/upload/_action/process-receipt";
 import { Button } from "@/components/ui/button";
 
 export default async function Upload() {
+  const headers = new Headers();
+  headers.append("X-API-KEY", process.env.RECEIPT_EXTRACTOR_API_KEY as string);
+  headers.append("X-Supplier", "hector_larivee");
+
   async function handleReceipt(formData: FormData) {
     "use server";
-    const data = await processReceipt(formData);
-    console.log(data);
-    // TODO: Get user to validate the data
+
+    const data = await fetch("http://127.0.0.1:5000/api/process-receipts", {
+      method: "POST",
+      headers: headers,
+      body: formData,
+    });
+
+    const response = await data.json();
+    console.log(response);
   }
 
   return (
