@@ -9,6 +9,9 @@ export function cn(...inputs: ClassValue[]): string {
  * Creates a debounced version of the provided function.
  * @param func - The function to be debounced.
  * @param waitFor - The number of milliseconds to wait before invoking the debounced function.
+ *
+ * Source: https://gist.github.com/ca0v/73a31f57b397606c9813472f7493a940
+ *         https://www.youtube.com/watch?v=cjIswDCKgu0&t=569s
  */
 
 export function debounce<F extends (...args: any[]) => any>(

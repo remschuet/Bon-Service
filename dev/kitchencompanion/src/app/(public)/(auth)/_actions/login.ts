@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { LoginSchema } from "@/validation/schema";
+import { LoginSchema } from "@/lib/validation";
 
 import { createVerificationToken } from "@/lib/tokens";
 import { getUser } from "@/data-access/user";

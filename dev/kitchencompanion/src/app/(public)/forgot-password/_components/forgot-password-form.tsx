@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label";
 
 import { useState, useTransition, useRef } from "react";
 
-import { PasswordResetSchema } from "@/validation/schema";
+import { PasswordResetSchema } from "@/lib/validation";
 import { sendPasswordResetToken } from "@/app/(public)/forgot-password/_actions/forgot-password";
 
 export function ForgotPasswordForm() {

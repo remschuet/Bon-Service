@@ -15,7 +15,7 @@ import { PulseLoader } from "react-spinners";
 
 import { login } from "@/app/(public)/(auth)/_actions/login";
 import { RedirectButton } from "@/components/redirect-button";
-import { LoginSchema } from "@/validation/schema";
+import { LoginSchema } from "@/lib/validation";
 import { Label } from "@/components/ui/label";
 
 export function LoginForm() {

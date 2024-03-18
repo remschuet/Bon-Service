@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { PasswordResetSchema } from "@/validation/schema";
+import { PasswordResetSchema } from "@/lib/validation";
 import { createPasswordResetToken } from "@/lib/tokens";
 import { sendPasswordResetEmail } from "@/lib/mail";
 import { ResponseMessage } from "@/lib/type";

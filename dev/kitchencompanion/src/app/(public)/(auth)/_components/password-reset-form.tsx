@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { RedirectButton } from "@/components/redirect-button";
 
 import { passwordReset } from "@/app/(public)/(auth)/_actions/password-reset";
-import { partialRegistrationSchema } from "@/validation/schema";
+import { partialRegistrationSchema } from "@/lib/validation";
 
 export function PasswordResetForm() {
   const param = useSearchParams();

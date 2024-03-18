@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { register, userExist } from "@/app/(public)/(auth)/_actions/register";
 import Link from "next/link";
 
-import { partialRegistrationSchema } from "@/validation/schema";
+import { partialRegistrationSchema } from "@/lib/validation";
 import { debounce } from "@/lib/utils";
 
 import { useState, useRef, useEffect, useTransition } from "react";
