@@ -2,8 +2,9 @@ from flask import Flask, request, abort, jsonify
 from flask_cors import CORS
 from werkzeug.utils import secure_filename
 from data.dao import ApiDataManager
-from gpt4 import Inferencer
 from paddleocr import PaddleOCR
+from .gpt4 import Inferencer
+from .celery import init_celery
 import os
 
 app = Flask(__name__)
