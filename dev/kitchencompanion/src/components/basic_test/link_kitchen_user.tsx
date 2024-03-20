@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
-  linkKitchenUserById,
-  getUsersForKitchenById,
+  createKitchenUserByIds,
+  getAllKitchenUserById,
 } from "@/db/data-access/kitchen";
 
 import { revalidatePath } from "next/cache";
@@ -15,30 +15,28 @@ export async function LinkKitchenUser() {
     const userId = formData.get("userId") as string;
     const kitchenId = formData.get("kitchenId") as string;
 
-    await linkKitchenUserById(userId, kitchenId);
+    await createKitchenUserByIds(userId, kitchenId);
     revalidatePath("/test");
   }
 
   return (
-    <Card className='w-[350px] h-[450px] grid place-content-center'>
+    <Card className="w-[350px] h-[450px] grid place-content-center">
       <CardContent>
         <CardHeader>Link User and Kitchen</CardHeader>
-        <form
-          action={handleLinkKitchenUser}
-          className='grid gap-2'>
+        <form action={handleLinkKitchenUser} className="grid gap-2">
           <input
-            type='text'
-            name='userId'
-            id='userId'
-            placeholder='Enter userId'
+            type="text"
+            name="userId"
+            id="userId"
+            placeholder="Enter userId"
           />
           <input
-            type='text'
-            name='kitchenId'
-            id='kitchenId'
-            placeholder='Enter kitchenId'
+            type="text"
+            name="kitchenId"
+            id="kitchenId"
+            placeholder="Enter kitchenId"
           />
-          <Button type='submit'>Link</Button>
+          <Button type="submit">Link</Button>
         </form>
       </CardContent>
     </Card>

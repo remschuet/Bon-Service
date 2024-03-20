@@ -47,7 +47,7 @@ export async function deleteKitchenByUserAndName(userId: string, name: string) {
  * @param kitchen - The kitchen object for which to retrieve the users.
  * @returns A promise that resolves to an array of kitchen users.
  */
-export async function getUsersForKitchen(kitchen: Kitchen) {
+export async function getAllKitchenUser(kitchen: Kitchen) {
   // KitchenUser
   return await db.kitchen.findMany({
     where: { id: kitchen.id },
@@ -62,7 +62,7 @@ export async function getUsersForKitchen(kitchen: Kitchen) {
  * @param kitchenId - The ID of the kitchen for which to retrieve the users.
  * @returns A promise that resolves to an array of kitchen users.
  */
-export async function getUsersForKitchenById(kitchenId: string) {
+export async function getAllKitchenUserById(kitchenId: string) {
   // KitchenUser
   return await db.kitchen.findMany({
     where: { id: kitchenId },
@@ -78,7 +78,10 @@ export async function getUsersForKitchenById(kitchenId: string) {
  * @param kitchenId - The ID of the kitchen to link.
  * @returns A promise that resolves when the user is linked to the kitchen.
  */
-export async function linkKitchenUserById(userId: string, kitchenId: string) {
+export async function createKitchenUserByIds(
+  userId: string,
+  kitchenId: string
+) {
   return await db.kitchenUser.create({
     data: {
       userId: userId,
@@ -92,7 +95,7 @@ export async function linkKitchenUserById(userId: string, kitchenId: string) {
  * @param kitchenId - The ID of the kitchen for which to retrieve the suppliers.
  * @returns A promise that resolves to an array of kitchen suppliers.
  */
-export async function getSuppliersForKitchen(kitchenId: string) {
+export async function getAllKitchenSupplierKitchenById(kitchenId: string) {
   return await db.kitchen.findMany({
     where: {
       id: kitchenId,

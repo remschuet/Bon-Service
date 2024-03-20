@@ -22,7 +22,7 @@ export async function createIngredient(ingredient: Ingredient) {
   });
 }
 
-export async function getIngredientsBySupplierId(supplierId: string) {
+export async function getAllIngredientBySupplierId(supplierId: string) {
   return await db.ingredient.findMany({
     where: {
       supplierId: supplierId,

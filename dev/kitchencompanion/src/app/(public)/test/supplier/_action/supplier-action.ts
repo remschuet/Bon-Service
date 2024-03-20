@@ -1,14 +1,14 @@
 "use server";
 
 import {
-  getIngredientsBySupplierId,
+  getAllIngredientBySupplierId,
   getPriceIngredientById,
 } from "@/db/data-access/ingredient";
 
 import { getSupplier } from "@/db/data-access/supplier";
 
 export async function actionGetIngredients(supplierId: string) {
-  return await getIngredientsBySupplierId(supplierId);
+  return await getAllIngredientBySupplierId(supplierId);
 }
 
 export async function actionGetPriceIngredientById(ingredientId: string) {

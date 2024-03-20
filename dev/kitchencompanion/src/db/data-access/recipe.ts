@@ -65,7 +65,7 @@ export async function getRecipeBookByName(
  * @param userId - The user id
  * @returns a lists of recipeBook.
  */
-export async function getRecipeBooksByUserId(userId: string) {
+export async function getAllRecipeBookByUserId(userId: string) {
   return await db.recipeBook.findMany({
     where: { userId: userId },
   });

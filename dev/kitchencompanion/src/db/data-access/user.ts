@@ -46,7 +46,7 @@ export async function updateUserPassword(email: string, password: string) {
  * Retrieves all users from the database.
  * @returns A promise that resolves to an array of users.
  */
-export async function getUsers() {
+export async function getAllUser() {
   return await db.user.findMany();
 }
 
@@ -114,7 +114,7 @@ export async function deleteUser(email: string) {
  * @param user - The user object.
  * @returns A promise that resolves to the user object with the associated kitchens.
  */
-export async function getKitchensByAdmin(user: User) {
+export async function getUserKitchens(user: User) {
   return await db.user.findFirst({
     where: {
       id: user.id,
@@ -130,7 +130,7 @@ export async function getKitchensByAdmin(user: User) {
  * @param id - The ID of the user.
  * @returns A promise that resolves to the user object with the associated kitchens.
  */
-export async function getKitchensByAdminById(id: string) {
+export async function getAllUserKitchensById(id: string) {
   return await db.user.findMany({
     where: {
       id,
