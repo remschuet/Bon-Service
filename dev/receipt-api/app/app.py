@@ -12,7 +12,14 @@ CORS(app)
 
 @app.route("/api/process-receipts", methods=["POST"])
 def process_receipts():
-    _ocr = PaddleOCR(use_angle_cls=True, lang='fr', show_log=True)
+    _ocr = PaddleOCR(
+        use_angle_cls=True, 
+        lang='fr', 
+        show_log=True,
+        det_model_dir='/root/.paddleocr/whl/det/en_PP-OCRv3_det_infer/',
+        rec_model_dir='/root/.paddleocr/whl/rec/latin_PP-OCRv3_rec_infer/',
+        cls_model_dir='/root/.paddleocr/whl/cls/ch_ppocr_mobile_v2.0_cls_infer/'
+        )
     _gpt = Inferencer()
 
     app_name = request.headers.get('X-App-Name')

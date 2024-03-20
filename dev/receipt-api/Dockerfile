@@ -15,11 +15,12 @@ RUN apt-get update && apt-get install -y \
     libxrender-dev \
     && rm -rf /var/lib/apt/lists/*
 
-COPY models/ /root/.paddleocr/whl/
 
 COPY app/ .
 
 RUN pip install -r requirements.txt
+
+COPY models/ /root/.paddleocr/whl/
 
 CMD gunicorn --bind 0.0.0.0:5000 app:app
 
