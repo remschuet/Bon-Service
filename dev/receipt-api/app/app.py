@@ -3,8 +3,7 @@ from flask_cors import CORS
 from werkzeug.utils import secure_filename
 from data.dao import ApiDataManager
 from paddleocr import PaddleOCR
-from .gpt4 import Inferencer
-from .celery import init_celery
+from gpt4 import Inferencer
 import os
 
 app = Flask(__name__)
