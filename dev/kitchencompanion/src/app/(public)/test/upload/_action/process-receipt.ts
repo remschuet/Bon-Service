@@ -2,7 +2,8 @@
 
 export default async function processReceipt(formData: FormData) {
   const headers = new Headers();
-  headers.append("X-API-KEY", process.env.RECEIPT_EXTRACTOR_API_KEY as string);
+  headers.append("X-App-Name", "bonservice");
+  headers.append("X-Api-Key", process.env.RECEIPT_EXTRACTOR_API_KEY as string);
   headers.append("X-Supplier", formData.get("supplier") as string);
 
   const data = await fetch("http://127.0.0.1:5000/api/process-receipts", {

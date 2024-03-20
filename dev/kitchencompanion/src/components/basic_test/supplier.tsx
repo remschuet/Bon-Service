@@ -34,13 +34,20 @@ export async function CreateSupplier() {
 
   return (
     <>
-      <Card className="w-[350px] h-[450px] grid place-content-center">
+      <Card className='w-[350px] h-[450px] grid place-content-center'>
         <CardHeader>Link Supplier</CardHeader>
         <CardContent>
-          <form action={handleCreateSupplier} className="grid gap-2">
-            <label htmlFor="name">Name</label>
-            <input type="text" name="name" id="name" placeholder="Enter name" />
-            <Button type="submit">Create Supplier</Button>
+          <form
+            action={handleCreateSupplier}
+            className='grid gap-2'>
+            <label htmlFor='name'>Name</label>
+            <input
+              type='text'
+              name='name'
+              id='name'
+              placeholder='Enter name'
+            />
+            <Button type='submit'>Create Supplier</Button>
           </form>
         </CardContent>
 
@@ -51,13 +58,20 @@ export async function CreateSupplier() {
           ))}
         </ul>
       </Card>
-      <Card className="w-[350px] h-[450px] grid place-content-center">
+      <Card className='w-[350px] h-[450px] grid place-content-center'>
         <CardHeader>Create Supplier (DEV)</CardHeader>
         <CardContent>
-          <form action={handleCreateSupplier} className="grid gap-2">
-            <label htmlFor="name">Name</label>
-            <input type="text" name="name" id="name" placeholder="Enter name" />
-            <Button type="submit">Create Supplier</Button>
+          <form
+            action={handleCreateSupplier}
+            className='grid gap-2'>
+            <label htmlFor='name'>Name</label>
+            <input
+              type='text'
+              name='name'
+              id='name'
+              placeholder='Enter name'
+            />
+            <Button type='submit'>Create Supplier</Button>
           </form>
         </CardContent>
 
