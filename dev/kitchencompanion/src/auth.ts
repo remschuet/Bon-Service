@@ -2,7 +2,7 @@ import NextAuth, { type DefaultSession } from "next-auth";
 import authConfig from "@/auth.config";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { db } from "@/db/prisma-db";
-import { getUserById } from "@/data-access/user";
+import { getUserById } from "@/db/data-access/user";
 import { UserTypes } from "@prisma/client";
 
 // Type sur mesure pour ajouter des propriétés à l'objet user de la session

@@ -5,7 +5,7 @@ import {
   getAllSuppliers,
   linkSupplierKitchen,
   getSupplier,
-} from "@/data-access/supplier";
+} from "@/db/data-access/supplier";
 import { revalidatePath } from "next/cache";
 import { Supplier } from "@prisma/client";
 

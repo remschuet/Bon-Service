@@ -2,7 +2,7 @@ import { v4 as uuid } from "uuid";
 import {
   getPasswordResetTokenByEmail,
   getVerificationTokenByEmail,
-} from "@/data-access/verification-token";
+} from "@/db/data-access/verification-token";
 import { db } from "@/db/prisma-db";
 
 /**

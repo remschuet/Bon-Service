@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   linkKitchenUserById,
   getUsersForKitchenById,
-} from "@/data-access/kitchen";
+} from "@/db/data-access/kitchen";
 
 import { revalidatePath } from "next/cache";
 import { Kitchen, User } from "@prisma/client";

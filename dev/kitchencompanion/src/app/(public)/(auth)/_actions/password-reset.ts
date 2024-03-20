@@ -3,8 +3,8 @@
 import {
   deletePasswordResetToken,
   getPasswordResetTokenByToken,
-} from "@/data-access/verification-token";
-import { getUser, updateUserPassword } from "@/data-access/user";
+} from "@/db/data-access/verification-token";
+import { getUser, updateUserPassword } from "@/db/data-access/user";
 import bcrypt from "bcryptjs";
 
 export async function passwordReset(token: string, password: string) {

@@ -14,12 +14,12 @@ import {
   getAllSuppliers,
   linkSupplierKitchen,
   getSupplier,
-} from "@/data-access/supplier";
+} from "@/db/data-access/supplier";
 
 import {
   createIngredient,
   getIngredientsBySupplierId,
-} from "@/data-access/ingredient";
+} from "@/db/data-access/ingredient";
 import { $Enums, Ingredient, Supplier, UnitMeasure } from "@prisma/client";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";

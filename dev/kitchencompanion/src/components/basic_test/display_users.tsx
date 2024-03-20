@@ -1,4 +1,4 @@
-import { getUsers } from "@/data-access/user";
+import { getUsers } from "@/db/data-access/user";
 
 export async function DisplayUsers() {
   const users = await getUsers();

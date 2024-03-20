@@ -1,7 +1,10 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { dev_getAllKitchen, getKitchensByAdminById } from "@/data-access/user";
+import {
+  dev_getAllKitchen,
+  getKitchensByAdminById,
+} from "@/db/data-access/user";
 import { useTransition } from "react";
 import React, { useState } from "react";
 

@@ -5,23 +5,23 @@ import {
   deleteKitchen,
   deleteKitchenByUserAndName,
   getKitchenByAdminAndName,
-} from "@/data-access/kitchen";
+} from "@/db/data-access/kitchen";
 import {
   createRecipeBook,
   deleteRecipeBookByUserIdAndName,
-} from "@/data-access/recipe";
+} from "@/db/data-access/recipe";
 import {
   createSupplier,
   getSupplier,
   linkSupplierKitchen,
   removeSupplier,
   removelinkSupplierKitchen,
-} from "@/data-access/supplier";
+} from "@/db/data-access/supplier";
 import {
   getKitchensByAdmin,
   getKitchensByAdminById,
   getUserById,
-} from "@/data-access/user";
+} from "@/db/data-access/user";
 import { Kitchen } from "@prisma/client";
 import { Supplier, RecipeBook, User } from "@prisma/client";
 

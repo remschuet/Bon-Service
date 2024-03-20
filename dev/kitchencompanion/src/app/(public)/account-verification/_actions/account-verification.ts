@@ -3,8 +3,8 @@
 import {
   getVerificationTokenByToken,
   deleteVerificationToken,
-} from "@/data-access/verification-token";
-import { getUser, userVerification } from "@/data-access/user";
+} from "@/db/data-access/verification-token";
+import { getUser, userVerification } from "@/db/data-access/user";
 
 export async function accountVerification(token: string) {
   const currentToken = await getVerificationTokenByToken(token);
