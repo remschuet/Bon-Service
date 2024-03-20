@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
-  createKitchenUserByIds,
+  linkKitchenUserById,
   getAllKitchenUserById,
 } from "@/db/data-access/kitchen";
 
@@ -15,7 +15,7 @@ export async function LinkKitchenUser() {
     const userId = formData.get("userId") as string;
     const kitchenId = formData.get("kitchenId") as string;
 
-    await createKitchenUserByIds(userId, kitchenId);
+    await linkKitchenUserById(userId, kitchenId);
     revalidatePath("/test");
   }
 
