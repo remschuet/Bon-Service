@@ -3,9 +3,9 @@
 import {
   getIngredientsBySupplierId,
   getPriceIngredientById,
-} from "@/data-access/ingredient";
+} from "@/db/data-access/ingredient";
 
-import { getSupplier } from "@/data-access/supplier";
+import { getSupplier } from "@/db/data-access/supplier";
 
 export async function actionGetIngredients(supplierId: string) {
   return await getIngredientsBySupplierId(supplierId);

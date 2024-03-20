@@ -1,6 +1,6 @@
 "use server";
 
-import { createUser, getUser } from "@/data-access/user";
+import { createUser, getUser } from "@/db/data-access/user";
 import { sendVerificationEmail } from "@/lib/mail";
 import { createVerificationToken } from "@/lib/tokens";
 import { User } from "@prisma/client";

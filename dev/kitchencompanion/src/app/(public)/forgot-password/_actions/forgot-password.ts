@@ -5,7 +5,7 @@ import { PasswordResetSchema } from "@/lib/validation";
 import { createPasswordResetToken } from "@/lib/tokens";
 import { sendPasswordResetEmail } from "@/lib/mail";
 import { ResponseMessage } from "@/lib/type";
-import { getUser } from "@/data-access/user";
+import { getUser } from "@/db/data-access/user";
 
 export async function sendPasswordResetToken(
   values: z.infer<typeof PasswordResetSchema>

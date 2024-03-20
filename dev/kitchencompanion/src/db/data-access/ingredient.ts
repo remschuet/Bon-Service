@@ -1,0 +1,39 @@
+import { Ingredient, UnitMeasure } from "@prisma/client";
+import { db } from "@/db/prisma-db";
+
+////////////////////////////////
+// TABLES
+// Ingredient
+////////////////////////////////
+
+/**
+ * @description
+ * @Table Kitchen
+ */
+
+export async function createIngredient(ingredient: Ingredient) {
+  return await db.ingredient.create({
+    data: {
+      name: ingredient.name,
+      unitPrice: ingredient.unitPrice,
+      unitMeasure: ingredient.unitMeasure,
+      supplierId: ingredient.supplierId,
+    },
+  });
+}
+
+export async function getIngredientsBySupplierId(supplierId: string) {
+  return await db.ingredient.findMany({
+    where: {
+      supplierId: supplierId,
+    },
+  });
+}
+
+export async function getPriceIngredientById(ingredientId: string) {
+  return await db.ingredient.findFirst({
+    where: {
+      id: ingredientId,
+    },
+  });
+}

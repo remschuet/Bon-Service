@@ -14,12 +14,12 @@ import {
   getAllSuppliers,
   linkSupplierKitchen,
   getSupplier,
-} from "@/data-access/supplier";
+} from "@/db/data-access/supplier";
 
 import {
   createIngredient,
   getIngredientsBySupplierId,
-} from "@/data-access/ingredient";
+} from "@/db/data-access/ingredient";
 import { $Enums, Ingredient, Supplier, UnitMeasure } from "@prisma/client";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -95,11 +95,11 @@ export function DataTableDemo() {
   }
 
   return (
-    <div className="w-full">
+    <div className='w-full'>
       <Input
-        placeholder="Filter by name..."
+        placeholder='Filter by name...'
         // onChange={(event) => (filterValue = event.target.value)}
-        className="max-w-sm"
+        className='max-w-sm'
       />
       <Table>
         <TableHead>
@@ -116,7 +116,9 @@ export function DataTableDemo() {
               item.name.toLowerCase().includes(filterValue.toLowerCase())
             )
             .map((row: any) => (
-              <TableRow key={row.id} className="flex flex-row">
+              <TableRow
+                key={row.id}
+                className='flex flex-row'>
                 <TableCell>{row.id}</TableCell>
                 <TableCell>{row.name}</TableCell>
                 <TableCell>{row.price}</TableCell>
@@ -131,69 +133,82 @@ export function DataTableDemo() {
       <br />
 
       <CardContent>
-        <form action={linkSupplier} className="grid gap-2">
+        <form
+          action={linkSupplier}
+          className='grid gap-2'>
           <input
-            type="text"
-            name="kitchenId"
-            id="kitchenId"
-            placeholder="kitchenId"
+            type='text'
+            name='kitchenId'
+            id='kitchenId'
+            placeholder='kitchenId'
           />
           <input
-            type="text"
-            name="supplierName"
-            id="supplierName"
-            placeholder="supplierName"
+            type='text'
+            name='supplierName'
+            id='supplierName'
+            placeholder='supplierName'
           />
-          <Button type="submit">Link Kitchen Supplier</Button>
+          <Button type='submit'>Link Kitchen Supplier</Button>
         </form>
       </CardContent>
 
       <CardContent>
-        <form action={handleCreateSupplier} className="grid gap-2">
-          <input type="text" name="name" id="name" placeholder="Enter name" />
-          <Button type="submit">Create Supplier (DEV)</Button>
+        <form
+          action={handleCreateSupplier}
+          className='grid gap-2'>
+          <input
+            type='text'
+            name='name'
+            id='name'
+            placeholder='Enter name'
+          />
+          <Button type='submit'>Create Supplier (DEV)</Button>
         </form>
       </CardContent>
 
       <CardContent>
-        <form action={handleCreateIngredient} className="grid gap-2">
+        <form
+          action={handleCreateIngredient}
+          className='grid gap-2'>
           <input
-            type="text"
-            name="ingredientName"
-            id="ingredientName"
-            placeholder="Enter nom"
+            type='text'
+            name='ingredientName'
+            id='ingredientName'
+            placeholder='Enter nom'
           />
           <input
-            type="number"
-            name="price"
-            id="price"
-            placeholder="Enter prix (int)"
+            type='number'
+            name='price'
+            id='price'
+            placeholder='Enter prix (int)'
           />
           <input
-            type="text"
-            name="measure"
-            id="measure"
-            placeholder="Enter unité measure(ENUM)"
+            type='text'
+            name='measure'
+            id='measure'
+            placeholder='Enter unité measure(ENUM)'
           />
           <input
-            type="text"
-            name="supplierId"
-            id="supplierId"
-            placeholder="Enter supplierId"
+            type='text'
+            name='supplierId'
+            id='supplierId'
+            placeholder='Enter supplierId'
           />
-          <Button type="submit">Create Ingredients (DEV)</Button>
+          <Button type='submit'>Create Ingredients (DEV)</Button>
         </form>
       </CardContent>
 
       <CardContent>
-        <form action={buildIngredientList} className="grid gap-2">
+        <form
+          action={buildIngredientList}
+          className='grid gap-2'>
           <input
-            type="text"
-            name="supplierId"
-            id="supplierId"
-            placeholder="Enter supplierId"
+            type='text'
+            name='supplierId'
+            id='supplierId'
+            placeholder='Enter supplierId'
           />
-          <Button type="submit">display ingredients for supplierId(DEV)</Button>
+          <Button type='submit'>display ingredients for supplierId(DEV)</Button>
         </form>
       </CardContent>
     </div>

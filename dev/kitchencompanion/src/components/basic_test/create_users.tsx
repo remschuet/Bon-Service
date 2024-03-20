@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { createUser } from "@/data-access/user";
+import { createUser } from "@/db/data-access/user";
 import { revalidatePath } from "next/cache";
 import { User } from "@prisma/client";
 
