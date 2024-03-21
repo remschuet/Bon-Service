@@ -1,5 +1,15 @@
 /*Fournisseur -> Supplier*/
 /*yield -> rendement*/
+/*
+supplier -> default supplier
+location
+phone book -> user
+*/
+
+enum NotifType {
+  "OpenIaReturn"
+  "UpdateRecipe"
+}
 
 enum UnitMeasure {
   "g"
@@ -80,27 +90,45 @@ Table KitchenUser {
   role varchar
 }
 
-Table Supplier{
+Table SupplierSupported{
+  /*dev*/
   id int [pk]
-  name string
+  name varchar
+  description varchar
+  phoneNumber varchar
+  prompt varchar
+  /*portion dev*/
+  isPublic bool [default: false]
 }
 
-Table SupplierKitchen {
-  /*Through the name of the supplier we know if it's the Market */
+Table Supplier{
+  /*dev*/
   id int [pk]
-  kitchen int [ref: > Kitchen.id, unique]
-  supplier int [ref: > Supplier.id, unique]
+  name varchar
+  description varchar
+  phoneNumber varchar
+  prompt varchar
+  user int [ref: > User.id]
+}
+
+Table Notification {
+  id int [pk]
+  content varchar
+  notifType NotifType 
+  reciver int [ref: > User.id]
+  read Data [default: 0]
 }
 
 Table Ingredient {
+  /*unique (user, name, supplierName)*/
   /*unitPrice 499 = 4.99*/
   id int [pk]
   name varchar
   unitPrice int 
   unitMeasure UnitMeasure
-  supplier Int [ref: > Supplier.id]
+  supplierName varchar
+  user int [ref: > User.id]
 }
-
 
 Table RecipeBook {
   /*name and userAdmin unique together*/
@@ -178,12 +206,18 @@ Table structMenu {
 Table PhoneBook {
  /*When yield add, create to phone book*/ 
   id int [pk]
-  kitchen int [ref: > Kitchen.id]
+  user int [ref: > User.id]
   name varchar
   description varchar
   phoneNumber varchar
   /*portion admin*/
   compteNumber varchar
+}
+
+Table PhoneBookKitchen {
+  id int [pk]
+  kitchen int [ref: > Kitchen.id]
+  phoneBook int [ref: > PhoneBook.id]
   isPublic bool [default: false]
 }
 
