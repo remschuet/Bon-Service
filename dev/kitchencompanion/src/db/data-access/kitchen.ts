@@ -30,7 +30,10 @@ export async function getKitchenByAdminAndName(userId: string, name: string) {
       },
     });
   } catch (error) {
-    console.error("Error data-access/kitchen: createUser(), error: ", error);
+    console.error(
+      "Error data-access/kitchen: getKitchenByAdminAndName(), error: ",
+      error
+    );
     throw error;
   }
 }
