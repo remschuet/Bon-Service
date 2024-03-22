@@ -106,7 +106,6 @@ Table Supplier{
   id int [pk]
   name varchar
   description varchar
-  phoneNumber varchar
   prompt varchar
   user int [ref: > User.id]
 }
