@@ -17,15 +17,28 @@ export async function createIngredient(ingredient: Ingredient) {
       name: ingredient.name,
       unitPrice: ingredient.unitPrice,
       unitMeasure: ingredient.unitMeasure,
-      supplierId: ingredient.supplierId,
+      supplierName: ingredient.supplierName,
+      userId: ingredient.userId,
     },
   });
 }
 
-export async function getAllIngredientBySupplierId(supplierId: string) {
+export async function getAllIngredientBySupplierNameAndUserId(
+  supplierName: string,
+  userId: string
+) {
   return await db.ingredient.findMany({
     where: {
-      supplierId: supplierId,
+      supplierName: supplierName,
+      userId: userId,
+    },
+  });
+}
+
+export async function getAllIngredientByUserId(userId: string) {
+  return await db.ingredient.findMany({
+    where: {
+      userId: userId,
     },
   });
 }

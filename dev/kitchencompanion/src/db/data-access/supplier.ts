@@ -1,4 +1,4 @@
-import { Supplier } from "@prisma/client";
+import { Supplier, SupplierSupported } from "@prisma/client";
 import { db } from "@/db/prisma-db";
 
 ////////////////////////////////
@@ -17,6 +17,9 @@ export async function createSupplier(supplier: Supplier) {
   return await db.supplier.create({
     data: {
       name: supplier.name,
+      prompt: supplier.prompt,
+      description: supplier.description,
+      userId: supplier.userId,
     },
   });
 }
@@ -28,11 +31,17 @@ export async function createSupplier(supplier: Supplier) {
  * @returns A promise that resolves to the deleted supplier.
  */
 export async function removeSupplier(supplier: Supplier) {
-  return await db.supplier.delete({
-    where: {
-      name: supplier.name,
-    },
-  });
+  try {
+    return await db.supplier.deleteMany({
+      where: {
+        userId: supplier.userId,
+        name: supplier.name,
+      },
+    });
+  } catch (error) {
+    console.error("Error data access: removeSupplier(), error: ", error);
+    throw error;
+  }
 }
 
 /**
@@ -41,10 +50,11 @@ export async function removeSupplier(supplier: Supplier) {
  * @param name - The name of the supplier to retrieve.
  * @returns A promise that resolves to the retrieved supplier.
  */
-export async function getSupplier(name: string) {
-  return await db.supplier.findUnique({
+export async function getSupplier(name: string, userId: string) {
+  return await db.supplier.findMany({
     where: {
       name,
+      userId,
     },
   });
 }
@@ -69,26 +79,22 @@ export async function getAllSuppliers() {
  * @param kitchenId - The ID of the kitchen.
  * @returns A promise that resolves to the created supplier-kitchen link.
  */
-export async function linkSupplierKitchen(
-  supplierId: string,
-  kitchenId: string
-) {
-  return await db.supplierKitchen.create({
-    data: {
-      supplierId: supplierId,
-      kitchenId: kitchenId,
+export async function getSupplierSupported(name: string) {
+  return await db.supplierSupported.findUnique({
+    where: {
+      name,
     },
   });
 }
 
-export async function removelinkSupplierKitchen(
-  supplierId: string,
-  kitchenId: string
-) {
-  return await db.supplierKitchen.deleteMany({
-    where: {
-      supplierId: supplierId,
-      kitchenId: kitchenId,
+export async function dev_createSupplierSupported(supplier: SupplierSupported) {
+  return await db.supplierSupported.create({
+    data: {
+      name: supplier.name,
+      phoneNumber: supplier.phoneNumber,
+      prompt: supplier.prompt,
+      description: supplier.description,
+      isPublic: supplier.isPublic,
     },
   });
 }
