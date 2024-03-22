@@ -23,8 +23,6 @@ import {
 // create recipe book
 // Supplier default de SupplierSupported
 // Supplier -> SupplierSupported
-// ? create kitchen
-// ? create ingredients
 export async function action_initUser(userId: string) {
   try {
     const user = (await getUserById(userId)) as User;
@@ -52,7 +50,7 @@ export async function action_initUser(userId: string) {
 }
 
 // REMOVE USER
-export async function action_removeUser(userId: string) {
+export async function action_dataUser(userId: string) {
   try {
     const user = await getUserById(userId);
 
@@ -69,3 +67,5 @@ export async function action_removeUser(userId: string) {
     );
   }
 }
+
+export async function action_initSupplierSupported() {}
