@@ -55,6 +55,22 @@ export async function removeSupplier(supplier: Supplier) {
   }
 }
 
+export async function removeAllSupplierByUserId(userId: string) {
+  try {
+    return await db.supplier.deleteMany({
+      where: {
+        userId,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/supplier: removeSupplierByUserId(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
 /**
  * Retrieves a supplier by name.
  *
