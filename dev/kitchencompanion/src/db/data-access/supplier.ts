@@ -154,3 +154,31 @@ export async function dev_createSupplierSupported(supplier: SupplierSupported) {
     throw error;
   }
 }
+
+export async function dev_createManySupplierSupported(
+  supplier: SupplierSupported[]
+) {
+  try {
+    return await db.supplierSupported.createMany({
+      data: supplier,
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/supplier: dev_createSupplierSupported(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
+export async function dev_removeAllSupplierSupported() {
+  try {
+    return await db.supplierSupported.deleteMany();
+  } catch (error) {
+    console.error(
+      "Error data-access/supplier: dev_removeAllSupplierSupported(), error: ",
+      error
+    );
+    throw error;
+  }
+}
