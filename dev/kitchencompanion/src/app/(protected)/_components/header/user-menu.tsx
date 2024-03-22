@@ -16,7 +16,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOut, Settings, Receipt } from "lucide-react";
 
 import { UserSession } from "@/lib/type";
-import logout from "@/app/(protected)/dashboard/_actions/logout";
+import logout from "@/app/(protected)/_actions/logout";
 
 export function DashboardUserMenu({ session }: { session: UserSession }) {
   const [open, setOpen] = useState(false);
