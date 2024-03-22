@@ -18,14 +18,19 @@ const bucketName = process.env.BUCKET_NAME;
  * @returns A Promise that resolves to the result of the upload operation.
  */
 export async function uploadImageToS3(image: Buffer, key: string) {
-  const params = {
-    Bucket: bucketName,
-    Key: key,
-    Body: image,
-    ContentType: "image/jpeg",
-  };
-  const command = new PutObjectCommand(params);
-  return aws.send(command);
+  try {
+    const params = {
+      Bucket: bucketName,
+      Key: key,
+      Body: image,
+      ContentType: "image/jpeg",
+    };
+    const command = new PutObjectCommand(params);
+    return aws.send(command);
+  } catch (error) {
+    console.error("Error data-access/media: uploadImageToS3(), error: ", error);
+    throw error;
+  }
 }
 
 /**
@@ -34,13 +39,21 @@ export async function uploadImageToS3(image: Buffer, key: string) {
  * @returns A promise that resolves when the image is successfully deleted.
  */
 export async function deleteImageFromS3(key: string) {
-  const params = {
-    Bucket: bucketName,
-    Key: key,
-  };
+  try {
+    const params = {
+      Bucket: bucketName,
+      Key: key,
+    };
 
-  const command = new DeleteObjectCommand(params);
-  return aws.send(command);
+    const command = new DeleteObjectCommand(params);
+    return aws.send(command);
+  } catch (error) {
+    console.error(
+      "Error data-access/media: deleteImageFromS3(), error: ",
+      error
+    );
+    throw error;
+  }
 }
 
 /**
@@ -49,11 +62,16 @@ export async function deleteImageFromS3(key: string) {
  * @returns A Promise that resolves to the signed URL of the image.
  */
 export async function getImageFromS3(key: string) {
-  return await getSignedUrl(
-    aws,
-    new GetObjectCommand({
-      Bucket: bucketName,
-      Key: key,
-    })
-  );
+  try {
+    return await getSignedUrl(
+      aws,
+      new GetObjectCommand({
+        Bucket: bucketName,
+        Key: key,
+      })
+    );
+  } catch (error) {
+    console.error("Error data-access/media: getImageFromS3(), error: ", error);
+    throw error;
+  }
 }

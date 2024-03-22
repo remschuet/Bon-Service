@@ -14,14 +14,22 @@ import { db } from "@/db/prisma-db";
  * @returns A promise that resolves to the created supplier.
  */
 export async function createSupplier(supplier: Supplier) {
-  return await db.supplier.create({
-    data: {
-      name: supplier.name,
-      prompt: supplier.prompt,
-      description: supplier.description,
-      userId: supplier.userId,
-    },
-  });
+  try {
+    return await db.supplier.create({
+      data: {
+        name: supplier.name,
+        prompt: supplier.prompt,
+        description: supplier.description,
+        userId: supplier.userId,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/supplier: createSupplier(), error: ",
+      error
+    );
+    throw error;
+  }
 }
 
 /**
@@ -39,7 +47,10 @@ export async function removeSupplier(supplier: Supplier) {
       },
     });
   } catch (error) {
-    console.error("Error data access: removeSupplier(), error: ", error);
+    console.error(
+      "Error data-access/supplier: removeSupplier(), error: ",
+      error
+    );
     throw error;
   }
 }
@@ -51,12 +62,17 @@ export async function removeSupplier(supplier: Supplier) {
  * @returns A promise that resolves to the retrieved supplier.
  */
 export async function getSupplier(name: string, userId: string) {
-  return await db.supplier.findMany({
-    where: {
-      name,
-      userId,
-    },
-  });
+  try {
+    return await db.supplier.findMany({
+      where: {
+        name,
+        userId,
+      },
+    });
+  } catch (error) {
+    console.error("Error data-access/supplier: getSupplier(), error: ", error);
+    throw error;
+  }
 }
 
 /**
@@ -65,11 +81,19 @@ export async function getSupplier(name: string, userId: string) {
  * @returns A promise that resolves to an array of all suppliers, ordered by name in ascending order.
  */
 export async function getAllSuppliers() {
-  return await db.supplier.findMany({
-    orderBy: {
-      name: "asc",
-    },
-  });
+  try {
+    return await db.supplier.findMany({
+      orderBy: {
+        name: "asc",
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/supplier: getAllSuppliers(), error: ",
+      error
+    );
+    throw error;
+  }
 }
 
 /**
@@ -80,21 +104,37 @@ export async function getAllSuppliers() {
  * @returns A promise that resolves to the created supplier-kitchen link.
  */
 export async function getSupplierSupported(name: string) {
-  return await db.supplierSupported.findUnique({
-    where: {
-      name,
-    },
-  });
+  try {
+    return await db.supplierSupported.findUnique({
+      where: {
+        name,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/supplier: getSupplierSupported(), error: ",
+      error
+    );
+    throw error;
+  }
 }
 
 export async function dev_createSupplierSupported(supplier: SupplierSupported) {
-  return await db.supplierSupported.create({
-    data: {
-      name: supplier.name,
-      phoneNumber: supplier.phoneNumber,
-      prompt: supplier.prompt,
-      description: supplier.description,
-      isPublic: supplier.isPublic,
-    },
-  });
+  try {
+    return await db.supplierSupported.create({
+      data: {
+        name: supplier.name,
+        phoneNumber: supplier.phoneNumber,
+        prompt: supplier.prompt,
+        description: supplier.description,
+        isPublic: supplier.isPublic,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/supplier: dev_createSupplierSupported(), error: ",
+      error
+    );
+    throw error;
+  }
 }

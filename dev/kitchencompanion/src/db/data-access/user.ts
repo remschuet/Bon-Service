@@ -7,24 +7,29 @@ import { db } from "@/db/prisma-db";
  * @returns A promise that resolves to the created user.
  */
 export async function createUser(user: User) {
-  if (user.userType === UserTypes.MEMBER) {
+  try {
+    if (user.userType === UserTypes.MEMBER) {
+      return await db.user.create({
+        data: {
+          name: user.name,
+          email: user.email,
+          password: user.password,
+          userType: UserTypes.MEMBER,
+        },
+      });
+    }
+
     return await db.user.create({
       data: {
         name: user.name,
         email: user.email,
         password: user.password,
-        userType: UserTypes.MEMBER,
       },
     });
+  } catch (error) {
+    console.error("Error data-access/user: createUser(), error: ", error);
+    throw error;
   }
-
-  return await db.user.create({
-    data: {
-      name: user.name,
-      email: user.email,
-      password: user.password,
-    },
-  });
 }
 
 /**
@@ -34,12 +39,20 @@ export async function createUser(user: User) {
  */
 
 export async function updateUserPassword(email: string, password: string) {
-  return await db.user.update({
-    where: { email: email },
-    data: {
-      password: password,
-    },
-  });
+  try {
+    return await db.user.update({
+      where: { email: email },
+      data: {
+        password: password,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/user: updateUserPassword(), error: ",
+      error
+    );
+    throw error;
+  }
 }
 
 /**
@@ -47,7 +60,12 @@ export async function updateUserPassword(email: string, password: string) {
  * @returns A promise that resolves to an array of users.
  */
 export async function getAllUser() {
-  return await db.user.findMany();
+  try {
+    return await db.user.findMany();
+  } catch (error) {
+    console.error("Error data-access/user: getAllUser(), error: ", error);
+    throw error;
+  }
 }
 
 /**
@@ -56,9 +74,14 @@ export async function getAllUser() {
  * @returns A promise that resolves to the user object.
  */
 export async function getUser(email: string) {
-  return await db.user.findUnique({
-    where: { email },
-  });
+  try {
+    return await db.user.findUnique({
+      where: { email },
+    });
+  } catch (error) {
+    console.error("Error data-access/user: getUser(), error: ", error);
+    throw error;
+  }
 }
 
 /**
@@ -67,9 +90,14 @@ export async function getUser(email: string) {
  * @returns A promise that resolves to the user object.
  */
 export async function getUserById(id: string) {
-  return await db.user.findUnique({
-    where: { id },
-  });
+  try {
+    return await db.user.findUnique({
+      where: { id },
+    });
+  } catch (error) {
+    console.error("Error data-access/user: getUserById(), error: ", error);
+    throw error;
+  }
 }
 
 /**
@@ -78,22 +106,32 @@ export async function getUserById(id: string) {
  * @returns A promise that resolves to the updated user object.
  */
 export async function updateUserRole(email: string) {
-  return await db.user.update({
-    where: { email },
-    data: {
-      userType: UserTypes.ADMIN,
-    },
-  });
+  try {
+    return await db.user.update({
+      where: { email },
+      data: {
+        userType: UserTypes.ADMIN,
+      },
+    });
+  } catch (error) {
+    console.error("Error data-access/user: updateUserRole(), error: ", error);
+    throw error;
+  }
 }
 
 export async function userVerification(user: User, token: VerificationToken) {
-  return await db.user.update({
-    where: { id: user.id },
-    data: {
-      emailVerified: new Date(),
-      email: token.email,
-    },
-  });
+  try {
+    return await db.user.update({
+      where: { id: user.id },
+      data: {
+        emailVerified: new Date(),
+        email: token.email,
+      },
+    });
+  } catch (error) {
+    console.error("Error data-access/user: userVerification(), error: ", error);
+    throw error;
+  }
 }
 
 /**
@@ -102,9 +140,14 @@ export async function userVerification(user: User, token: VerificationToken) {
  * @returns A promise that resolves to the deleted user object.
  */
 export async function deleteUser(email: string) {
-  return await db.user.delete({
-    where: { email },
-  });
+  try {
+    return await db.user.delete({
+      where: { email },
+    });
+  } catch (error) {
+    console.error("Error data-access/user: deleteUser(), error: ", error);
+    throw error;
+  }
 }
 
 // KITCHENS
@@ -115,14 +158,19 @@ export async function deleteUser(email: string) {
  * @returns A promise that resolves to the user object with the associated kitchens.
  */
 export async function getUserKitchens(user: User) {
-  return await db.user.findFirst({
-    where: {
-      id: user.id,
-    },
-    include: {
-      kitchens: true,
-    },
-  });
+  try {
+    return await db.user.findFirst({
+      where: {
+        id: user.id,
+      },
+      include: {
+        kitchens: true,
+      },
+    });
+  } catch (error) {
+    console.error("Error data-access/user: getUserKitchens(), error: ", error);
+    throw error;
+  }
 }
 
 /**
@@ -131,14 +179,22 @@ export async function getUserKitchens(user: User) {
  * @returns A promise that resolves to the user object with the associated kitchens.
  */
 export async function getAllUserKitchensById(id: string) {
-  return await db.user.findMany({
-    where: {
-      id,
-    },
-    include: {
-      kitchens: true,
-    },
-  });
+  try {
+    return await db.user.findMany({
+      where: {
+        id,
+      },
+      include: {
+        kitchens: true,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/user: getAllUserKitchenById(), error: ",
+      error
+    );
+    throw error;
+  }
 }
 
 // DEV FUNCTIONS
@@ -148,11 +204,17 @@ export async function getAllUserKitchensById(id: string) {
  * @returns A promise that resolves to an array of users with their associated kitchens.
  */
 export async function dev_getAllKitchen() {
-  const users = await db.user.findMany({
-    include: {
-      kitchens: true,
-    },
-  });
-
-  return users;
+  try {
+    return await db.user.findMany({
+      include: {
+        kitchens: true,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/user: dev_getAllKitchen(), error: ",
+      error
+    );
+    throw error;
+  }
 }
