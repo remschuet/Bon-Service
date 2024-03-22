@@ -3,7 +3,7 @@
 import { Bell, Dot } from "lucide-react";
 import { useState } from "react";
 
-export function DashboardNotification() {
+export function Notification() {
   const [asNotifications, setAsNotifications] = useState(false);
 
   return (

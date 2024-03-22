@@ -11,7 +11,7 @@ import { ChevronRight } from "lucide-react";
 
 import { useCurrentPath } from "@/app/_hooks/useCurrentPath";
 
-export function DashboardLocation() {
+export function Location() {
   const current = useCurrentPath();
   return (
     <div className='flex items-center space-x-2'>

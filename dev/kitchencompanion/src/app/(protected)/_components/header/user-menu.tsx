@@ -18,7 +18,7 @@ import { LogOut, Settings, Receipt } from "lucide-react";
 import { UserSession } from "@/lib/type";
 import logout from "@/app/(protected)/_actions/logout";
 
-export function DashboardUserMenu({ session }: { session: UserSession }) {
+export function UserMenu({ session }: { session: UserSession }) {
   const [open, setOpen] = useState(false);
 
   return (

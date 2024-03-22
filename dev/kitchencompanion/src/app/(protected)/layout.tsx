@@ -5,10 +5,11 @@ import { Lato } from "next/font/google";
 
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/theme-provider";
+import { NavigationStateProvider } from "@/app/_providers/navigation-provider";
 
 import { auth } from "@/auth";
 import { UserSession } from "@/lib/type";
-import { LayoutNavigation } from "@/app/(protected)/_components/layout-navigation";
+import { Nagivation } from "@/app/(protected)/_components/layout-navigation";
 import { PageLayout } from "@/app/(protected)/_components/layout-page";
 
 const lato = Lato({
@@ -42,10 +43,12 @@ export default async function RootLayout({
           disableTransitionOnChange>
           <main>
             <div className='flex h-screen'>
-              <LayoutNavigation />
-              <PageLayout session={session as UserSession}>
-                {children}
-              </PageLayout>
+              <NavigationStateProvider>
+                <Nagivation />
+                <PageLayout session={session as UserSession}>
+                  {children}
+                </PageLayout>
+              </NavigationStateProvider>
             </div>
           </main>
         </ThemeProvider>

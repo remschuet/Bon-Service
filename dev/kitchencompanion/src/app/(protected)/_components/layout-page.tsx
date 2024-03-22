@@ -1,7 +1,9 @@
+"use client";
+
 import { UserSession } from "@/lib/type";
 import { CurrentPathProvider } from "@/app/(protected)/_components/header/current-pathname";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import DashboardHeader from "@/app/(protected)/_components/layout-header";
+import { Header } from "@/app/(protected)/_components/layout-header";
+import { useNavigation } from "@/app/_providers/navigation-provider";
 
 export function PageLayout({
   children,
@@ -10,10 +12,19 @@ export function PageLayout({
   children: React.ReactNode;
   session: UserSession;
 }) {
+  const { isOpen } = useNavigation();
+
+  const layoutStyle = isOpen
+    ? "left-[12rem] w-[calc(100%-12rem)]"
+    : "left-[4rem] w-[calc(100%-4rem)]";
+
   return (
-    <div className='w-full'>
+    <div>
       <CurrentPathProvider>
-        <DashboardHeader session={session as UserSession} />
+        <Header
+          session={session as UserSession}
+          className={layoutStyle}
+        />
       </CurrentPathProvider>
       {children}
     </div>

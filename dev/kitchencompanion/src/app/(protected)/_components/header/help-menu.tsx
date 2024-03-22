@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-export function DashboardHelpMenu() {
+export function HelpMenu() {
   const [open, setOpen] = useState(false);
 
   return (
