@@ -1,7 +1,14 @@
-import { Ingredient, UnitMeasure } from "@prisma/client";
+import {
+  Ingredient,
+  PhoneBook,
+  SupplierSupported,
+  UnitMeasure,
+} from "@prisma/client";
 import { db } from "@/db/prisma-db";
 import {
+  createManySupplier,
   createSupplier,
+  getAllSupplierSupported,
   getSupplier,
   removeAllSupplierByUserId,
   removeSupplier,
@@ -38,8 +45,34 @@ export async function action_initUser(userId: string) {
         userId: user.id,
         description: "default market",
       };
+
       await createSupplier(supplier as Supplier);
       await createRecipeBook(recipeBook as RecipeBook);
+      const supplierSupported: SupplierSupported[] =
+        await getAllSupplierSupported();
+
+      let supplierToAdd: Supplier[] = [];
+      let phoneBookToAdd: PhoneBook[] = [];
+      // Create all liste from supplierSupported
+      supplierSupported.map((supplier) => {
+        if (supplier.isPublic) {
+          supplierToAdd.push({
+            name: supplier.name,
+            prompt: supplier.prompt,
+            description: supplier.description,
+            userId: userId,
+          } as Supplier);
+
+          phoneBookToAdd.push({
+            userId: userId,
+            name: supplier.name,
+            description: supplier.description,
+            phoneNumber: supplier.phoneNumber,
+            isPublic: false,
+          } as PhoneBook);
+        }
+      });
+      await createManySupplier(supplierToAdd);
     }
   } catch (error) {
     console.error(
@@ -50,7 +83,7 @@ export async function action_initUser(userId: string) {
 }
 
 // REMOVE USER
-export async function action_dataUser(userId: string) {
+export async function action_removeDataUser(userId: string) {
   try {
     const user = await getUserById(userId);
 

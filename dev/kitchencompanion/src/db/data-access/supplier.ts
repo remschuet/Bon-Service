@@ -32,6 +32,20 @@ export async function createSupplier(supplier: Supplier) {
   }
 }
 
+export async function createManySupplier(supplier: Supplier[]) {
+  try {
+    return await db.supplier.createMany({
+      data: supplier,
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/supplier: createManySupplier(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
 /**
  * Removes a supplier.
  *
