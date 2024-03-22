@@ -1,5 +1,8 @@
 "use server";
-import { action_initUser, action_dataUser } from "@/db/data-access/action";
+import {
+  action_initUser,
+  action_removeDataUser,
+} from "@/db/data-access/action";
 import { createKitchen } from "@/db/data-access/kitchen";
 import {
   dev_createManySupplierSupported,
@@ -12,7 +15,7 @@ export async function actionCreateKitchenWhenUserCreate(userId: string) {
 }
 
 export async function actionDestroyKitchenAndMore(userId: string) {
-  action_dataUser(userId);
+  action_removeDataUser(userId);
 }
 
 export async function actionCreateKitchen(kitchen: Kitchen) {
