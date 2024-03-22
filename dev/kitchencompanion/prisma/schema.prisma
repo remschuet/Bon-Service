@@ -141,7 +141,7 @@ model SupplierSupported {
   description String?
 
   // For dev part
-  isPublic Boolean? @default(false)
+  isPublic Boolean @default(false)
 }
 
 model Ingredient {
@@ -258,7 +258,7 @@ model PhoneBook {
   name         String
   description  String?
   phoneNumber  String
-  compteNumber String
+  compteNumber String?
   isPublic     Boolean? @default(false)
 
   phoneBookKitchens PhoneBookKitchen[]
