@@ -1,6 +1,6 @@
 "use client";
 
-import { BadgeHelp } from "lucide-react";
+import { BadgeHelp, File, GraduationCap } from "lucide-react";
 import { useState } from "react";
 
 import {
@@ -33,11 +33,15 @@ export function DashboardHelpMenu() {
           <DropdownMenuGroup>
             <DropdownMenuItem>
               Tutoriel
-              <DropdownMenuShortcut></DropdownMenuShortcut>
+              <DropdownMenuShortcut>
+                <GraduationCap className='w-4 h-4' />
+              </DropdownMenuShortcut>
             </DropdownMenuItem>
             <DropdownMenuItem>
               Documentation
-              <DropdownMenuShortcut></DropdownMenuShortcut>
+              <DropdownMenuShortcut>
+                <File className='w-4 h-4' />
+              </DropdownMenuShortcut>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem className='font-semibold'>
