@@ -12,41 +12,73 @@ import { db } from "@/db/prisma-db";
  */
 
 export async function createIngredient(ingredient: Ingredient) {
-  return await db.ingredient.create({
-    data: {
-      name: ingredient.name,
-      unitPrice: ingredient.unitPrice,
-      unitMeasure: ingredient.unitMeasure,
-      supplierName: ingredient.supplierName,
-      userId: ingredient.userId,
-    },
-  });
+  try {
+    return await db.ingredient.create({
+      data: {
+        name: ingredient.name,
+        unitPrice: ingredient.unitPrice,
+        unitMeasure: ingredient.unitMeasure,
+        supplierName: ingredient.supplierName,
+        userId: ingredient.userId,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/ingredient: createIngredient(), error: ",
+      error
+    );
+    throw error;
+  }
 }
 
 export async function getAllIngredientBySupplierNameAndUserId(
   supplierName: string,
   userId: string
 ) {
-  return await db.ingredient.findMany({
-    where: {
-      supplierName: supplierName,
-      userId: userId,
-    },
-  });
+  try {
+    return await db.ingredient.findMany({
+      where: {
+        supplierName: supplierName,
+        userId: userId,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/ingredient: getAllIngredientBySupplierNameAndUserId(), error: ",
+      error
+    );
+    throw error;
+  }
 }
 
 export async function getAllIngredientByUserId(userId: string) {
-  return await db.ingredient.findMany({
-    where: {
-      userId: userId,
-    },
-  });
+  try {
+    return await db.ingredient.findMany({
+      where: {
+        userId: userId,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/ingredient: getAllIngredientByUserId(), error: ",
+      error
+    );
+    throw error;
+  }
 }
 
 export async function getPriceIngredientById(ingredientId: string) {
-  return await db.ingredient.findFirst({
-    where: {
-      id: ingredientId,
-    },
-  });
+  try {
+    return await db.ingredient.findFirst({
+      where: {
+        id: ingredientId,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/ingredient: getPriceIngredientById(), error: ",
+      error
+    );
+    throw error;
+  }
 }
