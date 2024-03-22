@@ -10,7 +10,7 @@ import {
   createSupplier,
   getAllSupplierSupported,
   getSupplier,
-  removeAllSupplierByUserId,
+  deleteAllSupplierByUserId,
   removeSupplier,
 } from "@/db/data-access/supplier";
 import { getUserById } from "@/db/data-access/user";
@@ -20,6 +20,10 @@ import {
   createRecipeBook,
   deleteRecipeBookByUserIdAndName,
 } from "@/db/data-access/recipe";
+import {
+  createManyPhoneBook,
+  deleteAllPhoneBook,
+} from "@/db/data-access/phoneBook";
 
 // return notif true false
 // init user
@@ -73,6 +77,7 @@ export async function action_initUser(userId: string) {
         }
       });
       await createManySupplier(supplierToAdd);
+      await createManyPhoneBook(phoneBookToAdd);
     }
   } catch (error) {
     console.error(
@@ -91,7 +96,8 @@ export async function action_removeDataUser(userId: string) {
       // Remove recipe book
       await deleteRecipeBookByUserIdAndName(userId, "Default_" + user.name);
       // Remove all Supplier
-      await removeAllSupplierByUserId(userId);
+      await deleteAllSupplierByUserId(userId);
+      await deleteAllPhoneBook(userId);
     }
   } catch (error) {
     console.error(

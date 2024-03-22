@@ -69,7 +69,7 @@ export async function removeSupplier(supplier: Supplier) {
   }
 }
 
-export async function removeAllSupplierByUserId(userId: string) {
+export async function deleteAllSupplierByUserId(userId: string) {
   try {
     return await db.supplier.deleteMany({
       where: {
