@@ -112,6 +112,22 @@ export async function getAllSuppliers() {
   }
 }
 
+export async function getAllSupplierSupported() {
+  try {
+    return await db.supplierSupported.findMany({
+      orderBy: {
+        name: "asc",
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/supplier: getAllSupplierSupported(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
 /**
  * Links a supplier to a kitchen.
  *
