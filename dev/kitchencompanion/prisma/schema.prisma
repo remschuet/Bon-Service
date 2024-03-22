@@ -141,7 +141,7 @@ model SupplierSupported {
   description String?
 
   // For dev part
-  isPublic Boolean? @default(false)
+  isPublic Boolean @default(false)
 }
 
 model Ingredient {
@@ -236,7 +236,7 @@ model Menu {
   kitchen   Kitchen @relation(fields: [kitchenId], references: [id])
   kitchenId String
 
-  isPublic Boolean? @default(false)
+  isPublic Boolean @default(false)
   dishs    Json?
 }
 
@@ -258,8 +258,8 @@ model PhoneBook {
   name         String
   description  String?
   phoneNumber  String
-  compteNumber String
-  isPublic     Boolean? @default(false)
+  compteNumber String?
+  isPublic     Boolean @default(false)
 
   phoneBookKitchens PhoneBookKitchen[]
 }
@@ -284,7 +284,7 @@ model CheckTemp {
   user      User    @relation(fields: [userId], references: [id])
   userId    String
 
-  date DateTime? @default(now())
+  date DateTime @default(now())
   temp Float
 }
 

@@ -32,6 +32,20 @@ export async function createSupplier(supplier: Supplier) {
   }
 }
 
+export async function createManySupplier(supplier: Supplier[]) {
+  try {
+    return await db.supplier.createMany({
+      data: supplier,
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/supplier: createManySupplier(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
 /**
  * Removes a supplier.
  *
@@ -49,6 +63,22 @@ export async function removeSupplier(supplier: Supplier) {
   } catch (error) {
     console.error(
       "Error data-access/supplier: removeSupplier(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
+export async function deleteAllSupplierByUserId(userId: string) {
+  try {
+    return await db.supplier.deleteMany({
+      where: {
+        userId,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/supplier: removeSupplierByUserId(), error: ",
       error
     );
     throw error;
@@ -96,6 +126,22 @@ export async function getAllSuppliers() {
   }
 }
 
+export async function getAllSupplierSupported() {
+  try {
+    return await db.supplierSupported.findMany({
+      orderBy: {
+        name: "asc",
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/supplier: getAllSupplierSupported(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
 /**
  * Links a supplier to a kitchen.
  *
@@ -133,6 +179,34 @@ export async function dev_createSupplierSupported(supplier: SupplierSupported) {
   } catch (error) {
     console.error(
       "Error data-access/supplier: dev_createSupplierSupported(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
+export async function dev_createManySupplierSupported(
+  supplier: SupplierSupported[]
+) {
+  try {
+    return await db.supplierSupported.createMany({
+      data: supplier,
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/supplier: dev_createSupplierSupported(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
+export async function dev_removeAllSupplierSupported() {
+  try {
+    return await db.supplierSupported.deleteMany();
+  } catch (error) {
+    console.error(
+      "Error data-access/supplier: dev_removeAllSupplierSupported(), error: ",
       error
     );
     throw error;

@@ -1,91 +1,53 @@
 "use server";
-
 import {
-  createKitchen,
-  deleteKitchen,
-  deleteKitchenByUserAndName,
-  getKitchenByAdminAndName,
-} from "@/db/data-access/kitchen";
+  action_initUser,
+  action_removeDataUser,
+} from "@/db/data-access/action";
+import { createKitchen } from "@/db/data-access/kitchen";
+import { createManyPhoneBook } from "@/db/data-access/phoneBook";
 import {
-  createRecipeBook,
-  deleteRecipeBookByUserIdAndName,
-} from "@/db/data-access/recipe";
-import {
-  createSupplier,
-  getSupplier,
-  linkSupplierKitchen,
-  removeSupplier,
-  removelinkSupplierKitchen,
+  dev_createManySupplierSupported,
+  dev_removeAllSupplierSupported,
 } from "@/db/data-access/supplier";
-import {
-  getKitchensByAdmin,
-  getKitchensByAdminById,
-  getUserById,
-} from "@/db/data-access/user";
-import { Kitchen } from "@prisma/client";
-import { Supplier, RecipeBook, User } from "@prisma/client";
+import { Kitchen, Prisma, SupplierSupported } from "@prisma/client";
 
-/*LORSQUE ON CRER UN USER PAS SEULEMENT UNE CUISINE*/
 export async function actionCreateKitchenWhenUserCreate(userId: string) {
-  console.log("testing");
-
-  const user = (await getUserById(userId)) as User;
-
-  if (user) {
-    const kitchen = {
-      name: "Kitchen_" + user.name,
-      userId: userId,
-    };
-    await createKitchen(kitchen as Kitchen);
-    // create kitchen
-    // create default recipe book
-    const recipeBook = {
-      name: "Default_" + user.name,
-      userId: kitchen.userId,
-    };
-    const newKitchen = await getKitchenByAdminAndName(
-      user.id,
-      "Kitchen_" + user.name
-    );
-    await createRecipeBook(recipeBook as RecipeBook);
-    // create supplier marché
-    let supplier = {
-      name: "Market_" + user.name,
-    };
-    await createSupplier(supplier as Supplier);
-    const newSupplier = await getSupplier(supplier.name);
-    // link supplier to user
-    if (newSupplier && newKitchen) {
-      await linkSupplierKitchen(newSupplier.id, newKitchen.id);
-    } else {
-      console.log("error");
-      console.log(newSupplier);
-      console.log(newKitchen);
-    }
-  }
+  action_initUser(userId);
 }
 
 export async function actionDestroyKitchenAndMore(userId: string) {
-  const user = await getUserById(userId);
-  if (user) {
-    const kitchen = await getKitchenByAdminAndName(
-      userId,
-      "Kitchen_" + user.name
-    );
-    const supplierObj = {
-      name: "Market_" + user.name,
-    };
-    const supplier = await getSupplier(supplierObj.name);
+  action_removeDataUser(userId);
+}
 
-    if (kitchen && supplier) {
-      // Remove link
-      await removelinkSupplierKitchen(supplier.id, kitchen.id);
-      // Remove recipe book
-      await deleteRecipeBookByUserIdAndName(userId, "Default_" + user.name);
-    }
-    // Remove kitchen
-    await deleteKitchenByUserAndName(user.id, "Kitchen_" + user.name);
-    // Remove supplier
-    await removeSupplier(supplier as Supplier);
-  }
+export async function actionCreateKitchen(kitchen: Kitchen) {
+  createKitchen(kitchen);
+}
+
+export async function actionRemoveSupplierSupported() {
+  dev_removeAllSupplierSupported();
+}
+
+export async function actionCreateSupplierSupported() {
+  let supplierSupportedList: SupplierSupported[] = [];
+
+  const Hector = {
+    name: "Hector Larivée",
+    prompt: "OPEN IA",
+    phoneNumber: "111-111-1111",
+    description: "Supper fournisseur 10/10",
+    isPublic: true,
+  } as SupplierSupported;
+
+  const JulienDev = {
+    name: "Julien Dev",
+    prompt: "OPEN IA",
+    phoneNumber: "111-111-1111",
+    description: "Supper fournisseur 10/10",
+    isPublic: false,
+  } as SupplierSupported;
+
+  supplierSupportedList.push(Hector);
+  supplierSupportedList.push(JulienDev);
+
+  dev_createManySupplierSupported(supplierSupportedList);
 }
