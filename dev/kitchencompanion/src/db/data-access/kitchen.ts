@@ -86,19 +86,3 @@ export async function linkKitchenUserById(userId: string, kitchenId: string) {
     },
   });
 }
-
-/**
- * Retrieves the suppliers associated with a kitchen by kitchen ID.
- * @param kitchenId - The ID of the kitchen for which to retrieve the suppliers.
- * @returns A promise that resolves to an array of kitchen suppliers.
- */
-export async function getAllKitchenSupplierKitchenById(kitchenId: string) {
-  return await db.kitchen.findMany({
-    where: {
-      id: kitchenId,
-    },
-    include: {
-      supplierKitchens: true,
-    },
-  });
-}
