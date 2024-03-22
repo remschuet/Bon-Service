@@ -78,6 +78,10 @@ model User {
   recipeCategories RecipeCategory[]
   structMenus      StructMenu[]
   checkTemps       CheckTemp[]
+  suppliers Supplier[]
+  notifications Notification[]
+  ingredients Ingredient[]
+  phoneBooks PhoneBook[]
 
   /// For NextAuth
   accounts Account[]
@@ -95,9 +99,8 @@ model Kitchen {
   kitchenRoles     KitchenRole[]
   kitchenUsers     KitchenUser[]
   menus            Menu[]
-  phoneBooks       PhoneBook[]
   checkTemps       CheckTemp[]
-  supplierKitchens SupplierKitchen[]
+  phoneBookKitchens PhoneBookKitchen[]
 
   @@unique([userId, name])
 }
@@ -121,20 +124,24 @@ model KitchenUser {
 
 model Supplier {
   id   String @id @default(cuid())
-  name String @unique
+  name String
+  prompt String?
+  description String?
+  user User @relation(fields: [userId], references: [id])
+  userId String 
 
-  ingredients      Ingredient[]
-  supplierKitchens SupplierKitchen[]
+  @@unique([userId, name])
 }
 
-model SupplierKitchen {
-  id         String   @id @default(cuid())
-  kitchen    Kitchen  @relation(fields: [kitchenId], references: [id])
-  kitchenId  String
-  supplier   Supplier @relation(fields: [supplierId], references: [id])
-  supplierId String
+model SupplierSupported {
+  id String @id @default(cuid())
+  name String @unique
+  phoneNumber String?
+  prompt String?
+  description String?
 
-  @@unique([kitchenId, supplierId])
+  // For dev part
+  isPublic Boolean? @default(false)
 }
 
 model Ingredient {
@@ -142,10 +149,14 @@ model Ingredient {
   name        String
   unitPrice   Int
   unitMeasure UnitMeasure
-  supplier    Supplier    @relation(fields: [supplierId], references: [id])
-  supplierId  String
+  supplierName String
 
-  @@unique([name, supplierId])
+  // supplier    Supplier    @relation(fields: [supplierId], references: [id])
+  // supplierId  String
+  user    User    @relation(fields: [userId], references: [id])
+  userId  String
+
+  @@unique([name, supplierName, userId])
 }
 
 model RecipeBook {
@@ -242,13 +253,27 @@ model StructMenu {
 model PhoneBook {
   id String @id @default(cuid())
 
-  kitchen      Kitchen  @relation(fields: [kitchenId], references: [id])
-  kitchenId    String
+  user      User  @relation(fields: [userId], references: [id])
+  userId    String
   name         String
   description  String?
   phoneNumber  String
   compteNumber String
   isPublic     Boolean? @default(false)
+
+  phoneBookKitchens PhoneBookKitchen[]
+}
+
+model PhoneBookKitchen {
+  id String @id @default(cuid())
+  isPublic Boolean? @default(false)
+
+  kitchen      Kitchen  @relation(fields: [kitchenId], references: [id])
+  kitchenId    String
+
+  phoneBook      PhoneBook  @relation(fields: [phoneBookId], references: [id])
+  phoneBookId    String
+
 }
 
 model CheckTemp {
@@ -263,7 +288,22 @@ model CheckTemp {
   temp Float
 }
 
+model Notification {
+  id String @id @default(cuid())
+  content String
+  notifType NotifType
+  reciver User @relation(fields: [reciverId], references: [id])
+  reciverId String
+  read DateTime?
+}
+
 /// Enums
+enum NotifType {
+  OPENIA_RETURN
+  UPDATE_RECIPE
+  GENERAL_UPDATE
+}
+
 enum UnitMeasure {
   G
   ML
