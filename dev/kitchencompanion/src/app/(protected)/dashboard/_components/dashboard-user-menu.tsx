@@ -61,9 +61,6 @@ export function DashboardUserMenu({ session }: { session: UserSession }) {
             <DropdownMenuSeparator />
             <DropdownMenuItem className='font-semibold'>
               Premium
-              <DropdownMenuShortcut>
-                <Receipt className='w-4 h-4' />
-              </DropdownMenuShortcut>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
