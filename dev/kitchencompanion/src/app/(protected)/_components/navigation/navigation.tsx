@@ -7,6 +7,7 @@ import {
   NotebookPen,
   Store,
   Phone,
+  BookOpen,
 } from "lucide-react";
 
 import { useNavigation } from "@/app/_hooks/useNavigation";
@@ -27,7 +28,8 @@ export function Nagivation() {
 
   const links = [
     { path: "/kitchen", icon: <UsersRound />, text: "Cuisines" },
-    { path: "/recipes", icon: <NotebookPen />, text: "Recettes" },
+    { path: "/menus", icon: <NotebookPen />, text: "Menus" },
+    { path: "/recipes", icon: <BookOpen />, text: "Recettes" },
     { path: "/market", icon: <Store />, text: "Marché" },
     { path: "/contacts", icon: <Phone />, text: "Contacts" },
   ];
