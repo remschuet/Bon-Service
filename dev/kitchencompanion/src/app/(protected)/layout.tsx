@@ -5,12 +5,13 @@ import { Lato } from "next/font/google";
 
 import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/theme-provider";
-import { NavigationStateProvider } from "@/app/_providers/navigation-provider";
+import { NavigationStateProvider } from "@/app/_providers/navigation-state";
+import { CurrentPathProvider } from "@/app/_providers/current-path";
 
 import { auth } from "@/auth";
 import { UserSession } from "@/lib/type";
-import { Nagivation } from "@/app/(protected)/_components/layout-navigation";
-import { PageLayout } from "@/app/(protected)/_components/layout-page";
+import { Nagivation } from "@/app/(protected)/_components/navigation/navigation";
+import { PageLayout } from "@/app/(protected)/_components/page-layout";
 
 const lato = Lato({
   subsets: ["latin"],
@@ -43,12 +44,14 @@ export default async function RootLayout({
           disableTransitionOnChange>
           <main>
             <div className='flex h-screen'>
-              <NavigationStateProvider>
-                <Nagivation />
-                <PageLayout session={session as UserSession}>
-                  {children}
-                </PageLayout>
-              </NavigationStateProvider>
+              <CurrentPathProvider>
+                <NavigationStateProvider>
+                  <Nagivation />
+                  <PageLayout session={session as UserSession}>
+                    {children}
+                  </PageLayout>
+                </NavigationStateProvider>
+              </CurrentPathProvider>
             </div>
           </main>
         </ThemeProvider>

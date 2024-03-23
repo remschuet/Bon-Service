@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { CurrentPath } from "@/app/_contexts/path";
+import { CurrentPath } from "@/app/_contexts/current-path";
 
 export function CurrentPathProvider({
   children,

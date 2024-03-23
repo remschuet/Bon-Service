@@ -13,12 +13,13 @@ import { useCurrentPath } from "@/app/_hooks/useCurrentPath";
 
 export function Location() {
   const current = useCurrentPath();
+
   return (
     <div className='flex items-center space-x-2'>
       <Breadcrumb>
         <BreadcrumbList className='flex items-center'>
-          {current.map((path, index) => {
-            const pathName = path.charAt(0).toUpperCase() + path.slice(1);
+          {current.map((p, index) => {
+            const pathName = p.charAt(0).toUpperCase() + p.slice(1);
             const isLast = index === current.length - 1;
 
             return (
@@ -28,7 +29,7 @@ export function Location() {
                 {isLast ? (
                   `${pathName}`
                 ) : (
-                  <BreadcrumbLink href={`/${path}`}>{pathName}</BreadcrumbLink>
+                  <BreadcrumbLink href={`/${p}`}>{pathName}</BreadcrumbLink>
                 )}
                 <BreadcrumbSeparator>
                   <ChevronRight />

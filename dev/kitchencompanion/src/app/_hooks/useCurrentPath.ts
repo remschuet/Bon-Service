@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { CurrentPath } from "@/app/_contexts/path";
+import { CurrentPath } from "@/app/_contexts/current-path";
 
 export function useCurrentPath() {
   const current = useContext(CurrentPath);
@@ -8,7 +8,7 @@ export function useCurrentPath() {
   useEffect(() => {
     const currentPath = current.split("/").slice(1);
     setPath(currentPath);
-  }, []);
+  }, [current]);
 
   return path;
 }
