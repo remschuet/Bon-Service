@@ -13,7 +13,7 @@ export function Header({
 }) {
   return (
     <div
-      className={`flex fixed top-0 justify-between py-2 px-6 border-b shadow-sm ${className}`}>
+      className={`flex fixed top-0 justify-between py-2 px-6 border-b-2 z-10 bg-white min-h-[6vh] ${className}`}>
       <Location />
       <div className='flex items-center space-x-3'>
         <Notification />

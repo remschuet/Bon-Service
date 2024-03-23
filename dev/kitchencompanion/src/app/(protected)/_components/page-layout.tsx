@@ -2,7 +2,8 @@
 
 import { UserSession } from "@/lib/type";
 import { Header } from "@/app/(protected)/_components/header/header";
-import { useNavigation } from "@/app/_providers/navigation-state";
+import { useNavigation } from "@/app/_hooks/useNavigation";
+import { CurrentPathProvider } from "@/app/_providers/current-path";
 
 export function PageLayout({
   children,
@@ -18,12 +19,15 @@ export function PageLayout({
     : "left-[4rem] w-[calc(100%-4rem)]";
 
   return (
-    <div>
+    <CurrentPathProvider>
       <Header
         session={session as UserSession}
         className={layoutStyle}
       />
-      {children}
-    </div>
+      <div
+        className={`absolute min-h-[calc(100vh-85px)] top-[85px] p-6 ${layoutStyle}`}>
+        {children}
+      </div>
+    </CurrentPathProvider>
   );
 }

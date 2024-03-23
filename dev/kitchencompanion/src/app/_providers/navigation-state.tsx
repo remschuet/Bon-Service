@@ -1,10 +1,8 @@
 "use client";
 
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { NavigationState } from "@/app/_contexts/navigation-state";
-
-export const useNavigation = () => useContext(NavigationState);
 
 export const NavigationStateProvider = ({
   children,
@@ -12,6 +10,7 @@ export const NavigationStateProvider = ({
   children: React.ReactNode;
 }) => {
   const path = usePathname().split("/")[1];
+
   const [isOpen, setIsOpen] = useState(false);
   const [isActive, setIsActive] = useState("/" + path);
   return (

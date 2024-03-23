@@ -9,7 +9,7 @@ import {
   Phone,
 } from "lucide-react";
 
-import { useNavigation } from "@/app/_providers/navigation-state";
+import { useNavigation } from "@/app/_hooks/useNavigation";
 import Link from "next/link";
 
 export function Nagivation() {
@@ -34,7 +34,7 @@ export function Nagivation() {
 
   return (
     <nav
-      className={`flex fixed top-0 left-0 flex-col ${
+      className={`flex fixed top-0 left-0 z-20 flex-col ${
         isOpen ? "min-w-[12rem]" : "min-w-[4rem]"
       } h-screen border-r-2 transition-all`}>
       <div

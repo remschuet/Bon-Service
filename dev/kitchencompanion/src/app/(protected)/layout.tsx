@@ -1,15 +1,15 @@
 import "@/app/globals.css";
 
+import { auth } from "@/auth";
+import { UserSession } from "@/lib/type";
+
 import type { Metadata } from "next";
 import { Lato } from "next/font/google";
 
-import { Toaster } from "@/components/ui/toaster";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/app/_providers/theme";
 import { NavigationStateProvider } from "@/app/_providers/navigation-state";
-import { CurrentPathProvider } from "@/app/_providers/current-path";
 
-import { auth } from "@/auth";
-import { UserSession } from "@/lib/type";
+import { Toaster } from "@/components/ui/toaster";
 import { Nagivation } from "@/app/(protected)/_components/navigation/navigation";
 import { PageLayout } from "@/app/(protected)/_components/page-layout";
 
@@ -44,14 +44,12 @@ export default async function RootLayout({
           disableTransitionOnChange>
           <main>
             <div className='flex h-screen'>
-              <CurrentPathProvider>
-                <NavigationStateProvider>
-                  <Nagivation />
-                  <PageLayout session={session as UserSession}>
-                    {children}
-                  </PageLayout>
-                </NavigationStateProvider>
-              </CurrentPathProvider>
+              <NavigationStateProvider>
+                <Nagivation />
+                <PageLayout session={session as UserSession}>
+                  {children}
+                </PageLayout>
+              </NavigationStateProvider>
             </div>
           </main>
         </ThemeProvider>
