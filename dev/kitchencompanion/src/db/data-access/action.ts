@@ -1,6 +1,6 @@
 import {
   Ingredient,
-  PhoneBook,
+  Contact,
   SupplierSupported,
   UnitMeasure,
 } from "@prisma/client";
@@ -22,10 +22,7 @@ import {
   getAllRecipeBookByUserId,
   getAllRecipeByRecipeBookIds,
 } from "@/db/data-access/recipe";
-import {
-  createManyPhoneBook,
-  deleteAllPhoneBook,
-} from "@/db/data-access/phoneBook";
+import { createManyContact, deleteAllContact } from "@/db/data-access/contact";
 
 /////////// DASHBOARD ///////////
 // kitchen: getAllKitchenByAdminId() -> return all kitchens created by specified admin
@@ -71,7 +68,7 @@ export async function action_initUser(userId: string) {
         await getAllSupplierSupported();
 
       let supplierToAdd: Supplier[] = [];
-      let phoneBookToAdd: PhoneBook[] = [];
+      let contactToAdd: Contact[] = [];
 
       supplierSupported.map((supplier) => {
         if (supplier.isPublic) {
@@ -82,19 +79,19 @@ export async function action_initUser(userId: string) {
             userId: userId,
           } as Supplier);
 
-          phoneBookToAdd.push({
+          contactToAdd.push({
             userId: userId,
             name: supplier.name,
             description: supplier.description,
             phoneNumber: supplier.phoneNumber,
             isPublic: false,
-          } as PhoneBook);
+          } as Contact);
         }
       });
       // Create all supplier based on supplierSupported
       await createManySupplier(supplierToAdd);
       // Create all Contact based on supplierSupported
-      await createManyPhoneBook(phoneBookToAdd);
+      await createManyContact(contactToAdd);
     }
   } catch (error) {
     console.error(
@@ -114,7 +111,7 @@ export async function action_removeDataUser(userId: string) {
       await deleteRecipeBookByUserIdAndName(userId, "Default_" + user.name);
       // Remove all Supplier
       await deleteAllSupplierByUserId(userId);
-      await deleteAllPhoneBook(userId);
+      await deleteAllContact(userId);
     }
   } catch (error) {
     console.error(
