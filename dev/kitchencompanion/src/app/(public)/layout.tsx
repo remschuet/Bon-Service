@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Lato } from "next/font/google";
 import "@/app/globals.css";
-import { Toaster } from "@/components/ui/toaster";
 
 const lato = Lato({
   subsets: ["latin"],
@@ -45,9 +44,6 @@ export default function RootLayout({
             </div>
           </div>
         </main>
-        <Toaster />
-        {/* Component ShadcnUI qui permet de faire des popup style toast dans le
-        bas à droite de l'écran */}
       </body>
     </html>
   );

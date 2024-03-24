@@ -19,11 +19,22 @@ const config = {
     },
     extend: {
       colors: {
-        border: "hsl(var(--border))",
+        border: {
+          DEFAULT: "hsl(var(--border))",
+          brand: "hsl(var(--border-brand))",
+        },
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        brand: {
+          DEFAULT: "hsl(var(--brand))",
+          light: "hsl(var(--brand-light))",
+          foreground: "hsl(var(--brand-foreground))",
+          dark: "hsl(var(--brand-dark))",
+          link: "hsl(var(--brand-dark-hover))",
+          hover: "hsl(var(--brand-hover))",
+        },
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -78,6 +89,9 @@ const config = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      boxShadow: {
+        innerColor: "0 0 0px 1000px hsl(var(--autofill)) inset",
       },
     },
   },

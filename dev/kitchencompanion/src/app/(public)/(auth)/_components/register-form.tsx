@@ -121,7 +121,7 @@ export function RegisterForm() {
           <h1 className='text-2xl font-semibold tracking-tight'>
             Votre compte à été créé!
           </h1>
-          <p className='text-sm text-muted-foreground'>
+          <p className='text-sm text-muted'>
             Veuillez vérifier votre courriel pour activer votre compte
           </p>
         </div>
@@ -143,7 +143,7 @@ export function RegisterForm() {
           <h1 className='text-2xl font-semibold tracking-tight'>
             Créer un compte
           </h1>
-          <p className='text-sm text-muted-foreground'>
+          <p className='text-sm text-muted'>
             Entrez votre adresse courriel pour créer un compte
           </p>
         </CardHeader>
@@ -178,7 +178,7 @@ export function RegisterForm() {
                   disabled={isPending}
                 />
                 {emailValid && (
-                  <BadgeCheck className='absolute w-6 h-6 top-2 right-2 text-success-foreground' />
+                  <BadgeCheck className='absolute w-6 h-6 top-2 right-2 text-success' />
                 )}
                 {!emailValid && emailValid !== null && (
                   <BadgeAlert className='absolute w-6 h-6 top-2 right-2 text-destructive' />
@@ -225,7 +225,7 @@ export function RegisterForm() {
               </div>
             </div>
             <div>
-              <p className='px-5 text-[0.7rem] text-muted-foreground'>
+              <p className='px-5 text-[0.8rem] text-muted text-center'>
                 Votre mot de passe doit contenir au moins 8 caractères, une
                 majuscule, une minuscule et un chiffre.
               </p>

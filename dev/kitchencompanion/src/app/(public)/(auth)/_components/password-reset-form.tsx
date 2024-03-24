@@ -76,9 +76,7 @@ export function PasswordResetForm() {
           <h1 className='text-2xl font-semibold tracking-tight'>
             Changez votre mot de passe
           </h1>
-          <p className='text-sm text-muted-foreground'>
-            Entrez un nouveau mot de passe
-          </p>
+          <p className='text-sm text-muted'>Entrez un nouveau mot de passe</p>
         </CardHeader>
         <CardContent>
           <form

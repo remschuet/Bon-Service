@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { NavigationState } from "@/app/_contexts/navigation-state";
+import { NavigationState } from "@/contexts/navigation-state";
 
 export const NavigationStateProvider = ({
   children,

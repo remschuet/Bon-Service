@@ -32,7 +32,7 @@ export function UserMenu({ session }: { session: UserSession }) {
               src={undefined}
               alt={session.user.name}
             />
-            <AvatarFallback className='bg-emerald-600/40'>
+            <AvatarFallback className='bg-brand text-stone-900 font-black'>
               {session.user.name[0]}
             </AvatarFallback>
           </Avatar>

@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { ChevronRight } from "lucide-react";
 
-import { useCurrentPath } from "@/app/_hooks/useCurrentPath";
+import { useCurrentPath } from "@/hooks/useCurrentPath";
 
 export function Location() {
   const current = useCurrentPath();
@@ -17,7 +17,7 @@ export function Location() {
   return (
     <div className='flex items-center space-x-2'>
       <Breadcrumb>
-        <BreadcrumbList className='flex items-center'>
+        <BreadcrumbList className='flex items-center text-foreground'>
           {current.map((p, index) => {
             const pathName = p.charAt(0).toUpperCase() + p.slice(1);
             const isLast = index === current.length - 1;
