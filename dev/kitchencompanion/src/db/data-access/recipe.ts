@@ -100,6 +100,24 @@ export async function getRecipeBookByName(
   }
 }
 
+export async function getAllRecipeByRecipeBookIds(recipeBookIds: string[]) {
+  try {
+    return await db.recipe.findMany({
+      where: {
+        recipeBookId: {
+          in: recipeBookIds,
+        },
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/recipe: getAllRecipeByRecipeBookId(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
 /**
  * Get all RecipeBook by userId.
  * @param userId - The user id

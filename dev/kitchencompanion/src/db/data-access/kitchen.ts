@@ -38,6 +38,25 @@ export async function getKitchenByAdminAndName(userId: string, name: string) {
   }
 }
 
+/*
+ * Get all the kitchens from specified user admin
+ */
+export async function getAllKitchenByAdminId(userId: string) {
+  try {
+    return await db.kitchen.findMany({
+      where: {
+        userId: userId,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/kitchen: getAllKitchenByAdminId(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
 /**
  * Deletes a kitchen.
  * @param kitchen - The kitchen object to be deleted.

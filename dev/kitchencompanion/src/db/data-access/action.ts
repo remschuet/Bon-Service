@@ -19,21 +19,35 @@ import { Supplier, RecipeBook, User } from "@prisma/client";
 import {
   createRecipeBook,
   deleteRecipeBookByUserIdAndName,
+  getAllRecipeBookByUserId,
+  getAllRecipeByRecipeBookIds,
 } from "@/db/data-access/recipe";
 import {
   createManyPhoneBook,
   deleteAllPhoneBook,
 } from "@/db/data-access/phoneBook";
 
-// return notif true false
-// init user
-// init
+/////////// DASHBOARD ///////////
+// kitchen: getAllKitchenByAdminId() -> return all kitchens created by specified admin
+export async function getAllRecipeByAdminId(adminId: string) {
+  try {
+    // Get recipe book id for admin
+    const recipeBooks = getAllRecipeBookByUserId(adminId);
+    if (recipeBooks && (await recipeBooks).length > 0) {
+      const recipeBookIds = (await recipeBooks).map((recipeId) => recipeId.id);
+      // get all recipes for admin
+      const recipes = getAllRecipeByRecipeBookIds(recipeBookIds);
+      console.log("recipes: " + recipes);
+    }
+  } catch (error) {
+    console.error(
+      "Error data-access/kitchen: getAllRecipeByAdminId(), error: ",
+      error
+    );
+  }
+}
 
-// INIT USER
-// create supplier
-// create recipe book
-// Supplier default de SupplierSupported
-// Supplier -> SupplierSupported
+/////////// INIT USER ///////////
 export async function action_initUser(userId: string) {
   try {
     const user = (await getUserById(userId)) as User;
@@ -49,15 +63,16 @@ export async function action_initUser(userId: string) {
         userId: user.id,
         description: "default market",
       };
-
+      // create supplier
       await createSupplier(supplier as Supplier);
+      // create recipeBook
       await createRecipeBook(recipeBook as RecipeBook);
       const supplierSupported: SupplierSupported[] =
         await getAllSupplierSupported();
 
       let supplierToAdd: Supplier[] = [];
       let phoneBookToAdd: PhoneBook[] = [];
-      // Create all liste from supplierSupported
+
       supplierSupported.map((supplier) => {
         if (supplier.isPublic) {
           supplierToAdd.push({
@@ -76,7 +91,9 @@ export async function action_initUser(userId: string) {
           } as PhoneBook);
         }
       });
+      // Create all supplier based on supplierSupported
       await createManySupplier(supplierToAdd);
+      // Create all Contact based on supplierSupported
       await createManyPhoneBook(phoneBookToAdd);
     }
   } catch (error) {
