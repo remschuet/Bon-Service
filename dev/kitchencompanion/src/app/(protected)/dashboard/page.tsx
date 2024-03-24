@@ -111,7 +111,7 @@ export default function DashboardPage() {
 
   return (
     <div className='grid gap-5 sm:grid-cols-7 sm:grid-rows-10 '>
-      <div className='bg-brand-light flex flex-col gap-3 shadow-md min-h-[100px] rounded-sm border-2 border-border-brand p-6 sm:col-span-4 row-span-2 '>
+      <div className='bg-brand-hover flex flex-col gap-3 shadow-md min-h-[100px] rounded-sm border-2 border-border-brand p-6 sm:col-span-4 row-span-2 '>
         <h1 className='text-xl font-semibold text-brand-foreground tracking-tight sm:text-2xl'>
           Bienvenue sur votre portail !
         </h1>

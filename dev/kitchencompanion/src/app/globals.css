@@ -32,18 +32,18 @@
     --success-foreground: 145 63% 40%;
 
     --border: 24,5.7%,82.9%;
-    --border-brand: 220, 60%, 55%, 0.5;
+    --border-brand: 94, 50%, 21%, 0.2;
     --input: 33.3,5.5%,32.4%, 0.5;
     --ring: 222.2 84% 4.9%;
 
-    --brand: 220, 60%, 55%;
-    --brand-light: 221, 61%, 75%;
+    --brand: 94, 72%, 64%;
+    --brand-light: 94, 93%, 75%;
     --brand-foreground: 24,9.8%,10%;
-    --brand-dark: 220, 60%, 35%;
-    --brand-dark-hover: 220, 60%, 45%;
-    --brand-hover:220, 61%, 85%;
+    --brand-dark: 94, 50%, 31%;
+    --brand-dark-hover: 94, 47%, 47%;
+    --brand-hover: 94, 80%, 85%;
 
-    --autofill: 25,5.3%,44.7%, 0.5;
+    --autofill: 25,5.3%,44.7%, 0.2;
 
     --radius: 0.5rem;
   }

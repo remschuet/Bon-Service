@@ -33,14 +33,14 @@ export default async function RootLayout({
 
   return (
     <html
-      lang='en'
+      lang='fr'
       className='scrollbar-none'
       suppressHydrationWarning>
       <body className={lato.className}>
         <main>
           <ThemeProvider
             attribute='class'
-            defaultTheme='light'
+            defaultTheme='dark'
             disableTransitionOnChange>
             <div className='flex h-screen'>
               <NavigationStateProvider>
