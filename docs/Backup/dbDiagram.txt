@@ -202,7 +202,7 @@ Table structMenu {
   category varchar [pk]
 }
 
-Table PhoneBook {
+Table Contact {
  /*When yield add, create to phone book*/ 
   id int [pk]
   user int [ref: > User.id]
@@ -213,10 +213,10 @@ Table PhoneBook {
   compteNumber varchar
 }
 
-Table PhoneBookKitchen {
+Table ContactKitchen {
   id int [pk]
   kitchen int [ref: > Kitchen.id]
-  phoneBook int [ref: > PhoneBook.id]
+  contact int [ref: > Contact.id]
   isPublic bool [default: false]
 }
 

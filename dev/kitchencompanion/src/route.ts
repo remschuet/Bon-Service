@@ -16,6 +16,7 @@ export const publicRoutes = [
   "/test/supplier",
   "/test/linkKitchenUser",
   "/test/upload",
+  "/test/ingredient",
 ];
 
 /**

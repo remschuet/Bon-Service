@@ -4,7 +4,7 @@ import {
   action_removeDataUser,
 } from "@/db/data-access/action";
 import { createKitchen } from "@/db/data-access/kitchen";
-import { createManyPhoneBook } from "@/db/data-access/phoneBook";
+import { createManyContact } from "@/db/data-access/contact";
 import {
   dev_createManySupplierSupported,
   dev_removeAllSupplierSupported,
