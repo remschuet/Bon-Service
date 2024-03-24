@@ -81,7 +81,7 @@ model User {
   suppliers Supplier[]
   notifications Notification[]
   ingredients Ingredient[]
-  phoneBooks PhoneBook[]
+  contacts Contact[]
 
   /// For NextAuth
   accounts Account[]
@@ -100,7 +100,7 @@ model Kitchen {
   kitchenUsers     KitchenUser[]
   menus            Menu[]
   checkTemps       CheckTemp[]
-  phoneBookKitchens PhoneBookKitchen[]
+  contactKitchens ContactKitchen[]
 
   @@unique([userId, name])
 }
@@ -250,7 +250,7 @@ model StructMenu {
   @@unique([userId, category])
 }
 
-model PhoneBook {
+model Contact {
   id String @id @default(cuid())
 
   user      User  @relation(fields: [userId], references: [id])
@@ -261,18 +261,18 @@ model PhoneBook {
   compteNumber String?
   isPublic     Boolean @default(false)
 
-  phoneBookKitchens PhoneBookKitchen[]
+  contactKitchens ContactKitchen[]
 }
 
-model PhoneBookKitchen {
+model ContactKitchen {
   id String @id @default(cuid())
   isPublic Boolean? @default(false)
 
   kitchen      Kitchen  @relation(fields: [kitchenId], references: [id])
   kitchenId    String
 
-  phoneBook      PhoneBook  @relation(fields: [phoneBookId], references: [id])
-  phoneBookId    String
+  contact      Contact  @relation(fields: [contactId], references: [id])
+  contactId    String
 
 }
 
