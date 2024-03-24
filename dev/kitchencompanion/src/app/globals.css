@@ -4,13 +4,13 @@
 
 @layer base {
   :root {
-    --background: 20,5.9%,90%;
+    --background: 60,4.8%,95.9%;
     --foreground: 24,9.8%,10%;
 
-    --card: 60,9.1%,97.8%;
+    --card: 60,4.8%,95.9%;
     --card-foreground: 24,9.8%,10%;
 
-    --popover: 60,9.1%,97.8%;
+    --popover: 60,4.8%,95.9%;
     --popover-foreground: 24,9.8%,10%;
 
     --primary: 222.2 47.4% 11.2%;
@@ -32,16 +32,16 @@
     --success-foreground: 145 63% 40%;
 
     --border: 24,5.7%,82.9%;
-    --border-brand: 85.9,78.4%,27.3%, 0.5;
+    --border-brand: 220, 60%, 55%, 0.5;
     --input: 33.3,5.5%,32.4%, 0.5;
     --ring: 222.2 84% 4.9%;
 
-    --brand: 82.7,78%,55.5%;
-    --brand-light: 82.7,78%,55.5%, 0.5;
+    --brand: 220, 60%, 55%;
+    --brand-light: 221, 61%, 75%;
     --brand-foreground: 24,9.8%,10%;
-    --brand-dark: 85.9,78.4%,27.3%;
-    --brand-dark-hover: 84.8,85.2%,34.5%;
-    --brand-hover:80.9,88.5%,79.6%, 0.8;
+    --brand-dark: 220, 60%, 35%;
+    --brand-dark-hover: 220, 60%, 45%;
+    --brand-hover:220, 61%, 85%;
 
     --autofill: 25,5.3%,44.7%, 0.5;
 
@@ -53,10 +53,10 @@
     --foreground: 24,5.7%,82.9%;
 
     --card: 24,9.8%,10%;
-    --card-foreground: 0,9.1%,97.8%;
+    --card-foreground: 24,5.7%,82.9%;
 
     --popover: 24,9.8%,10%;
-    --popover-foreground: 0,9.1%,97.8%;
+    --popover-foreground: 24,5.7%,82.9%;
 
     --primary: 60,9.1%,97.8%;
     --primary-foreground: 0,9.1%,97.8%;

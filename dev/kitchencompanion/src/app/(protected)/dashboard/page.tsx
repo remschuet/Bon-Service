@@ -112,13 +112,13 @@ export default function DashboardPage() {
   return (
     <div className='grid gap-5 sm:grid-cols-7 sm:grid-rows-10 '>
       <div className='bg-brand-light flex flex-col gap-3 shadow-md min-h-[100px] rounded-sm border-2 border-border-brand p-6 sm:col-span-4 row-span-2 '>
-        <h1 className='text-xl font-semibold text-foreground tracking-tight sm:text-2xl'>
+        <h1 className='text-xl font-semibold text-brand-foreground tracking-tight sm:text-2xl'>
           Bienvenue sur votre portail !
         </h1>
-        <h2 className='text-lg text-foreground sm:text-xl italic'>
+        <h2 className='text-lg text-brand-foreground sm:text-xl italic'>
           Guide de démarrage
         </h2>
-        <p className='text-sm sm:text-base'>
+        <p className='text-sm text-brand-foreground sm:text-base'>
           Bon Service est un outil de gestion et de partage de recettes pour les
           chefs modernes. Vous pouvez rapidement créer, organiser et partager à
           votre équipes vos recettes et menus. Ajoutez facilements des
@@ -127,7 +127,7 @@ export default function DashboardPage() {
           l'administration.
         </p>
         <Link
-          className='self-center font-bold text-stone-900 hover:text-brand-link mt-2 sm:self-end'
+          className='self-center font-bold text-brand-foreground hover:text-brand-link mt-2 sm:self-end'
           href='/documentation'>
           <div className='flex items-center gap-3'>
             <p>En savoir plus</p>
@@ -147,7 +147,7 @@ export default function DashboardPage() {
         </div>
         <Table className='mt-10'>
           <TableHeader>
-            <TableRow>
+            <TableRow className='hover:bg-background'>
               <TableHead>Nom</TableHead>
               <TableHead>Entreprise</TableHead>
               <TableHead>Notes</TableHead>
@@ -169,7 +169,7 @@ export default function DashboardPage() {
             ))}
           </TableBody>
           <TableFooter>
-            <TableRow>
+            <TableRow className='hover:bg-muted-foreground'>
               <TableCell colSpan={6}>
                 <Link
                   href='/contacts'
@@ -228,7 +228,7 @@ export default function DashboardPage() {
         <Table>
           <TableCaption>Liste de vos menus partagé</TableCaption>
           <TableHeader>
-            <TableRow>
+            <TableRow className='hover:bg-background'>
               <TableHead className='w-[100px]'>Type</TableHead>
               <TableHead>Nom</TableHead>
               <TableHead>Cuisine</TableHead>
@@ -250,7 +250,7 @@ export default function DashboardPage() {
             ))}
           </TableBody>
           <TableFooter>
-            <TableRow>
+            <TableRow className='hover:bg-muted-foreground'>
               <TableCell colSpan={6}>
                 <Link
                   href='/menus'

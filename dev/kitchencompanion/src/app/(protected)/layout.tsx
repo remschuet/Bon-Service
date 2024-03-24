@@ -40,7 +40,7 @@ export default async function RootLayout({
         <main>
           <ThemeProvider
             attribute='class'
-            defaultTheme='dark'
+            defaultTheme='light'
             disableTransitionOnChange>
             <div className='flex h-screen'>
               <NavigationStateProvider>

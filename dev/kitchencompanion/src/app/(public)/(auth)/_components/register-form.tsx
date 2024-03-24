@@ -178,7 +178,7 @@ export function RegisterForm() {
                   disabled={isPending}
                 />
                 {emailValid && (
-                  <BadgeCheck className='absolute w-6 h-6 top-2 right-2 text-success' />
+                  <BadgeCheck className='absolute w-6 h-6 top-2 right-2 text-success-foreground' />
                 )}
                 {!emailValid && emailValid !== null && (
                   <BadgeAlert className='absolute w-6 h-6 top-2 right-2 text-destructive' />
