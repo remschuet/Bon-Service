@@ -4,7 +4,7 @@ import { RedirectButton } from "@/components/redirect-button";
 export default function Home() {
   return (
     <div>
-      <RedirectButton href='/login'>
+      <RedirectButton href="/login">
         <Button>Connexion</Button>
       </RedirectButton>
     </div>

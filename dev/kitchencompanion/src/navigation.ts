@@ -12,6 +12,10 @@ export const pathnames = {
   // If all locales use the same pathname, a
   // single external path can be provided.
   "/": "/",
+  "/account-verification": {
+    en: "/account-verification",
+    fr: "/verification-compte",
+  },
   "/login": {
     en: "/login",
     fr: "/connexion",
@@ -48,9 +52,14 @@ export const pathnames = {
     fr: "/cuisines",
   },
 
+  "/kitchen/[kitchenid]": {
+    en: "/kitchen/[kitchenid]",
+    fr: "/cuisines/[kitchenid]",
+  },
+
   "/market": {
     en: "/market",
-    fr: "/marché",
+    fr: "/marche",
   },
 
   "/menus": "/menus",

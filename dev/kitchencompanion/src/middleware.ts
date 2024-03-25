@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import createMiddleware from "next-intl/middleware";
+import { locales, localePrefix, pathnames } from "@/navigation";
 
 import authConfig from "@/auth.config";
 import {
@@ -11,9 +12,10 @@ import {
 
 const intlMiddleware = createMiddleware({
   // A list of all locales that are supported
-  locales: ["en", "fr"],
   defaultLocale: "fr",
-  localePrefix: "never",
+  localePrefix,
+  locales,
+  pathnames,
 });
 
 const { auth } = NextAuth(authConfig);
@@ -34,6 +36,7 @@ export default auth((req) => {
     if (isLoggedIn) {
       return Response.redirect(new URL(DEFAULT_REDIRECT_URL, nextUrl));
     }
+
     return intlMiddleware(req);
   }
 
@@ -46,10 +49,5 @@ export default auth((req) => {
 
 // Optionally, don't invoke Middleware on some paths
 export const config = {
-  matcher: [
-    "/((?!.+\\.[\\w]+$|_next).*)",
-    "/",
-    "/(fr|en)/:path*",
-    "/(api|trpc)(.*)",
-  ],
+  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };
