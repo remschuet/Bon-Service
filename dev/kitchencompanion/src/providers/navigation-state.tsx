@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/navigation";
 import { NavigationState } from "@/contexts/navigation-state";
 
 export const NavigationStateProvider = ({

@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname } from "@/navigation";
 import { CurrentPath } from "@/contexts/current-path";
 
 export function CurrentPathProvider({
