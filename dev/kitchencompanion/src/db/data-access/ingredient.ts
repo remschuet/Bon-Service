@@ -16,8 +16,10 @@ export async function createIngredient(ingredient: Ingredient) {
     return await db.ingredient.create({
       data: {
         name: ingredient.name,
-        unitPrice: ingredient.unitPrice,
-        unitMeasure: ingredient.unitMeasure,
+        price: ingredient.price,
+        unit: ingredient.unit,
+        category: ingredient.category,
+        origin: ingredient.origin,
         supplierName: ingredient.supplierName,
         userId: ingredient.userId,
       },
