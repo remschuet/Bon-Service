@@ -1,4 +1,6 @@
 import NextAuth from "next-auth";
+import createMiddleware from "next-intl/middleware";
+import { locales, localePrefix, pathnames } from "@/navigation";
 
 import authConfig from "@/auth.config";
 import {
@@ -7,6 +9,14 @@ import {
   authRoutes,
   publicRoutes,
 } from "@/route";
+
+const intlMiddleware = createMiddleware({
+  // A list of all locales that are supported
+  defaultLocale: "fr",
+  localePrefix,
+  locales,
+  pathnames,
+});
 
 const { auth } = NextAuth(authConfig);
 
@@ -26,14 +36,15 @@ export default auth((req) => {
     if (isLoggedIn) {
       return Response.redirect(new URL(DEFAULT_REDIRECT_URL, nextUrl));
     }
-    return;
+
+    return intlMiddleware(req);
   }
 
   if (!isLoggedIn && !isPublicRoute) {
     return Response.redirect(new URL("/login", nextUrl));
   }
 
-  return;
+  return intlMiddleware(req);
 });
 
 // Optionally, don't invoke Middleware on some paths

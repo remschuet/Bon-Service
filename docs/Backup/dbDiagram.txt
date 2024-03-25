@@ -123,8 +123,10 @@ Table Ingredient {
   /*unitPrice 499 = 4.99*/
   id int [pk]
   name varchar
-  unitPrice int 
-  unitMeasure UnitMeasure
+  price int 
+  unit UnitMeasure
+  category varchar
+  origin varchar
   supplierName varchar
   user int [ref: > User.id]
 }
@@ -244,3 +246,5 @@ Table Video {
   key int [pk]
   value varchar
 }
+
+Ref: "User"."id" < "User"."password"

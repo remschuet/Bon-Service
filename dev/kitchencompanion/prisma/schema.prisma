@@ -147,8 +147,10 @@ model SupplierSupported {
 model Ingredient {
   id          String      @id @default(cuid())
   name        String
-  unitPrice   Int
-  unitMeasure UnitMeasure
+  price       Int
+  unit        UnitMeasure
+  category    String
+  origin      String
   supplierName String
 
   // supplier    Supplier    @relation(fields: [supplierId], references: [id])

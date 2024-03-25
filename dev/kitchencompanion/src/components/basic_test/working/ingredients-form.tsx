@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { actionCreateKitchenWhenUserCreate } from "@/app/(public)/test/kitchen/_action/kitchen-action";
+import { actionCreateKitchenWhenUserCreate } from "@/app/[locale]/(public)/test/kitchen/_action/kitchen-action";
 
 const data = [
   {

@@ -16,7 +16,7 @@ import {
 import {
   actionGetIngredients,
   actiionGetSupplierNameById,
-} from "../../../app/(public)/test/supplier/_action/supplier-action";
+} from "@/app/[locale]/(public)/test/supplier/_action/supplier-action";
 
 export function SupplierForm() {
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
@@ -36,7 +36,7 @@ export function SupplierForm() {
     });
   }
   return (
-    <div className="w-full">
+    <div className='w-full'>
       <Table>
         <TableHead>
           <TableRow>
@@ -48,25 +48,29 @@ export function SupplierForm() {
         </TableHead>
         <TableBody>
           {ingredients.map((row) => (
-            <TableRow key={row.id} className="flex flex-row">
+            <TableRow
+              key={row.id}
+              className='flex flex-row'>
               <TableCell>{row.id}</TableCell>
               <TableCell>{row.name}</TableCell>
-              <TableCell>{row.unitPrice}</TableCell>
-              <TableCell>{row.unitMeasure}</TableCell>
+              <TableCell>{row.price}</TableCell>
+              <TableCell>{row.unit}</TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
 
       <CardContent>
-        <form action={buildIngredientList} className="grid gap-2">
+        <form
+          action={buildIngredientList}
+          className='grid gap-2'>
           <input
-            type="text"
-            name="supplierName"
-            id="supplierName"
-            placeholder="Enter supplier Name"
+            type='text'
+            name='supplierName'
+            id='supplierName'
+            placeholder='Enter supplier Name'
           />
-          <Button type="submit">
+          <Button type='submit'>
             display ingredients for supplier Name(DEV)
           </Button>
         </form>
