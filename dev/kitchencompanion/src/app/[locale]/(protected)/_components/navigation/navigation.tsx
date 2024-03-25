@@ -18,7 +18,7 @@ export function Nagivation() {
   const toggleOpen = () => setIsOpen(!isOpen);
 
   const linkStyle = (path: string) =>
-    `${isOpen ? "flex gap-5 items-center " : ""} p-2 rounded-md  ${
+    `${isOpen && "flex gap-5 items-center"} p-2 rounded-md  ${
       path === isActive
         ? "bg-brand text-brand-foreground"
         : "hover:bg-brand-hover hover:text-brand-foreground"
@@ -40,29 +40,33 @@ export function Nagivation() {
     <nav
       className={`flex fixed top-0 left-0 z-20 flex-col ${
         isOpen ? "min-w-[12rem]" : "min-w-[4rem]"
-      } h-screen border-r-2 transition-all`}>
+      } h-screen border-r-2 transition-all`}
+    >
       <div
         className={`flex items-center px-5 h-16 border-b-2 w-full cursor-pointer`}
-        onClick={toggleOpen}>
+        onClick={toggleOpen}
+      >
         <Menu />
       </div>
-      <div className='flex flex-col px-3 py-4 space-y-2'>
+      <div className="flex flex-col px-3 py-4 space-y-2">
         {links.map(({ path, icon, text }) => (
           <Link
             key={path}
             className={linkStyle(path)}
             onClick={() => setIsActive(path)}
-            href={path}>
+            href={path}
+          >
             {icon}
             <span className={textTransition}>{text}</span>
           </Link>
         ))}
       </div>
-      <div className='flex flex-col border-t-2 px-3 py-4 space-y-2'>
+      <div className="flex flex-col border-t-2 px-3 py-4 space-y-2">
         <Link
           className={linkStyle("/dashboard")}
           onClick={() => setIsActive("/dashboard")}
-          href='/dashboard'>
+          href="/dashboard"
+        >
           <LayoutDashboard />
           <span className={textTransition}>Portail</span>
         </Link>
