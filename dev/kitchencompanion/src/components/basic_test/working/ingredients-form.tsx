@@ -3,10 +3,12 @@ import {
   TableBody,
   TableCell,
   TableHead,
+  TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { actionCreateKitchenWhenUserCreate } from "@/app/(public)/test/kitchen/_action/kitchen-action";
 
 const data = [
   {
@@ -39,13 +41,19 @@ const data = [
 ];
 
 export function IngredientForm() {
-  async function handleCreateIngredient(formData: FormData) {}
+  // const [isPending, startTransition] = useTransition();
+
+  async function handleCreateIngredient(formData: FormData) {
+    const userId = formData.get("userId") as string;
+
+    await actionCreateKitchenWhenUserCreate(userId);
+  }
 
   return (
     <>
       <Card className="w-[350px] h-[450px] grid place-content-center">
+        <CardHeader>Create Ingredient</CardHeader>
         <CardContent>
-          <CardHeader>Create Ingredient</CardHeader>
           <form action={handleCreateIngredient} className="grid gap-2">
             <input
               type="text"
@@ -53,31 +61,56 @@ export function IngredientForm() {
               id="userId"
               placeholder="Enter userId"
             />
+            <input type="text" name="name" id="name" placeholder="Enter name" />
             <input
               type="text"
-              name="kitchenId"
-              id="kitchenId"
-              placeholder="Enter kitchenId"
+              name="price"
+              id="price"
+              placeholder="Enter price"
             />
-            <Button type="submit">Link</Button>
+            <input
+              type="text"
+              name="measure"
+              id="measure"
+              placeholder="Enter measure"
+            />
+            <input
+              type="text"
+              name="supplierName"
+              id="supplierName"
+              placeholder="Enter supplierName"
+            />
+            <input
+              type="text"
+              name="categorie"
+              id="categorie"
+              placeholder="Enter categorie"
+            />
+            <input
+              type="text"
+              name="quantite"
+              id="quantite"
+              placeholder="Enter quantité"
+            />
+            <Button type="submit">Create ingredient</Button>
           </form>
         </CardContent>
       </Card>
       <Table>
-        <TableHead>
+        <TableHeader>
           <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>Categorie</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell>Origine</TableCell>
-            <TableCell>Price</TableCell>
-            <TableCell>Quantity</TableCell>
-            <TableCell>Unit</TableCell>
+            <TableHead>ID</TableHead>
+            <TableHead>Categorie</TableHead>
+            <TableHead>Name</TableHead>
+            <TableHead>Origine</TableHead>
+            <TableHead>Price</TableHead>
+            <TableHead>Quantity</TableHead>
+            <TableHead>Unit</TableHead>
           </TableRow>
-        </TableHead>
+        </TableHeader>
         <TableBody>
-          {data.map((row: any) => (
-            <TableRow key={row.id} className="flex flex-row">
+          {data.map((row, key) => (
+            <TableRow key={key}>
               <TableCell>{row.id}</TableCell>
               <TableCell>{row.category}</TableCell>
               <TableCell>{row.name}</TableCell>
