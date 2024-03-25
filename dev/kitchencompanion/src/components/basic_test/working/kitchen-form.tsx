@@ -13,7 +13,7 @@ import {
   actionCreateKitchen,
   actionCreateSupplierSupported,
   actionRemoveSupplierSupported,
-} from "@/app/(public)/test/kitchen/_action/kitchen-action";
+} from "@/app/[locale]/(public)/test/kitchen/_action/kitchen-action";
 import { createKitchen } from "@/db/data-access/kitchen";
 
 export function KitchenForm() {
@@ -60,28 +60,32 @@ export function KitchenForm() {
 
   return (
     <>
-      <Card className="w-[350px] h-[450px] grid place-content-center">
+      <Card className='w-[350px] h-[450px] grid place-content-center'>
         <CardHeader>Init User</CardHeader>
         <CardContent>
-          <form action={handleCreateDefaultKitchen} className="grid gap-2">
+          <form
+            action={handleCreateDefaultKitchen}
+            className='grid gap-2'>
             <input
-              type="text"
-              name="userId"
-              id="userId"
-              placeholder="Enter userId"
+              type='text'
+              name='userId'
+              id='userId'
+              placeholder='Enter userId'
             />
-            <Button type="submit">
+            <Button type='submit'>
               Init User (default supplier, recipebook)
             </Button>
           </form>
-          <form action={handleRemoveDefaultKitchen} className="grid gap-2">
+          <form
+            action={handleRemoveDefaultKitchen}
+            className='grid gap-2'>
             <input
-              type="text"
-              name="userId"
-              id="userId"
-              placeholder="Enter userId"
+              type='text'
+              name='userId'
+              id='userId'
+              placeholder='Enter userId'
             />
-            <Button type="submit">
+            <Button type='submit'>
               Remove Init User (suppliers, recipebooks)
             </Button>
           </form>
@@ -89,29 +93,38 @@ export function KitchenForm() {
 
         <CardHeader>Create Kitchens</CardHeader>
         <CardContent>
-          <form action={handleCreateKitchen} className="grid gap-2">
+          <form
+            action={handleCreateKitchen}
+            className='grid gap-2'>
             <input
-              type="text"
-              name="userId"
-              id="userId"
-              placeholder="Enter userId"
+              type='text'
+              name='userId'
+              id='userId'
+              placeholder='Enter userId'
             />
-            <input type="text" name="name" id="name" placeholder="Enter name" />
             <input
-              type="text"
-              name="costObj"
-              id="costObj"
-              placeholder="Enter costObj"
+              type='text'
+              name='name'
+              id='name'
+              placeholder='Enter name'
             />
-            <Button type="submit">Create kitchen</Button>
+            <input
+              type='text'
+              name='costObj'
+              id='costObj'
+              placeholder='Enter costObj'
+            />
+            <Button type='submit'>Create kitchen</Button>
           </form>
         </CardContent>
       </Card>
       <Card>
         <CardHeader>Create SupplierSupported</CardHeader>
         <CardContent>
-          <form action={handleSupplierSupported} className="grid gap-2">
-            <Button type="submit">Create SupplierSupported</Button>
+          <form
+            action={handleSupplierSupported}
+            className='grid gap-2'>
+            <Button type='submit'>Create SupplierSupported</Button>
           </form>
         </CardContent>
       </Card>

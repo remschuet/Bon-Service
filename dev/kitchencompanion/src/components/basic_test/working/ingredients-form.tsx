@@ -39,27 +39,31 @@ const data = [
 ];
 
 export function IngredientForm() {
-  async function handleCreateIngredient(formData: FormData) {}
+  async function handleCreateIngredient(formData: FormData) {
+    "use server";
+  }
 
   return (
     <>
-      <Card className="w-[350px] h-[450px] grid place-content-center">
+      <Card className='w-[350px] h-[450px] grid place-content-center'>
         <CardContent>
           <CardHeader>Create Ingredient</CardHeader>
-          <form action={handleCreateIngredient} className="grid gap-2">
+          <form
+            action={handleCreateIngredient}
+            className='grid gap-2'>
             <input
-              type="text"
-              name="userId"
-              id="userId"
-              placeholder="Enter userId"
+              type='text'
+              name='userId'
+              id='userId'
+              placeholder='Enter userId'
             />
             <input
-              type="text"
-              name="kitchenId"
-              id="kitchenId"
-              placeholder="Enter kitchenId"
+              type='text'
+              name='kitchenId'
+              id='kitchenId'
+              placeholder='Enter kitchenId'
             />
-            <Button type="submit">Link</Button>
+            <Button type='submit'>Link</Button>
           </form>
         </CardContent>
       </Card>
@@ -77,7 +81,9 @@ export function IngredientForm() {
         </TableHead>
         <TableBody>
           {data.map((row: any) => (
-            <TableRow key={row.id} className="flex flex-row">
+            <TableRow
+              key={row.id}
+              className='flex flex-row'>
               <TableCell>{row.id}</TableCell>
               <TableCell>{row.category}</TableCell>
               <TableCell>{row.name}</TableCell>
