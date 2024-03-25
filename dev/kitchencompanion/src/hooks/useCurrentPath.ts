@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { CurrentPath } from "@/app/_contexts/current-path";
+import { CurrentPath } from "@/contexts/current-path";
 
 export function useCurrentPath() {
   const current = useContext(CurrentPath);

@@ -6,8 +6,8 @@ import { UserSession } from "@/lib/type";
 import type { Metadata } from "next";
 import { Lato } from "next/font/google";
 
-import { ThemeProvider } from "@/app/_providers/theme";
-import { NavigationStateProvider } from "@/app/_providers/navigation-state";
+import { ThemeProvider } from "@/providers/theme";
+import { NavigationStateProvider } from "@/providers/navigation-state";
 
 import { Toaster } from "@/components/ui/toaster";
 import { Nagivation } from "@/app/(protected)/_components/navigation/navigation";
@@ -33,16 +33,15 @@ export default async function RootLayout({
 
   return (
     <html
-      lang='en'
+      lang='fr'
       className='scrollbar-none'
       suppressHydrationWarning>
       <body className={lato.className}>
-        <ThemeProvider
-          attribute='class'
-          defaultTheme='system'
-          enableSystem
-          disableTransitionOnChange>
-          <main>
+        <main>
+          <ThemeProvider
+            attribute='class'
+            defaultTheme='dark'
+            disableTransitionOnChange>
             <div className='flex h-screen'>
               <NavigationStateProvider>
                 <Nagivation />
@@ -51,8 +50,8 @@ export default async function RootLayout({
                 </PageLayout>
               </NavigationStateProvider>
             </div>
-          </main>
-        </ThemeProvider>
+          </ThemeProvider>
+        </main>
         <Toaster />
       </body>
     </html>

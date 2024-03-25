@@ -11,7 +11,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function DashboardPage() {
   const today = new Date().toLocaleDateString("fr-FR", {
@@ -112,12 +111,14 @@ export default function DashboardPage() {
 
   return (
     <div className='grid gap-5 sm:grid-cols-7 sm:grid-rows-10 '>
-      <div className='bg-emerald-100/30 flex flex-col gap-3 shadow-md min-h-[100px] rounded-sm border-2 p-6 sm:col-span-4 row-span-2 '>
-        <h1 className='text-xl font-semibold text-stone-700 tracking-tight sm:text-2xl'>
+      <div className='bg-brand-hover flex flex-col gap-3 shadow-md min-h-[100px] rounded-sm border-2 border-border-brand p-6 sm:col-span-4 row-span-2 '>
+        <h1 className='text-xl font-semibold text-brand-foreground tracking-tight sm:text-2xl'>
           Bienvenue sur votre portail !
         </h1>
-        <h2 className='text-lg sm:text-xl italic'>Guide de démarrage</h2>
-        <p className='text-sm sm:text-base'>
+        <h2 className='text-lg text-brand-foreground sm:text-xl italic'>
+          Guide de démarrage
+        </h2>
+        <p className='text-sm text-brand-foreground sm:text-base'>
           Bon Service est un outil de gestion et de partage de recettes pour les
           chefs modernes. Vous pouvez rapidement créer, organiser et partager à
           votre équipes vos recettes et menus. Ajoutez facilements des
@@ -126,7 +127,7 @@ export default function DashboardPage() {
           l'administration.
         </p>
         <Link
-          className='self-center font-bold text-emerald-700 hover:text-emerald-500 mt-2 sm:self-end'
+          className='self-center font-bold text-brand-foreground hover:text-brand-link mt-2 sm:self-end'
           href='/documentation'>
           <div className='flex items-center gap-3'>
             <p>En savoir plus</p>
@@ -137,7 +138,7 @@ export default function DashboardPage() {
 
       <div className='flex flex-col shadow-md min-h-[100px] rounded-sm border-2 p-6 sm:col-span-3 row-span-5 '>
         <div className='flex flex-col gap-5'>
-          <h1 className='text-xl font-semibold text-stone-700 tracking-tight sm:text-2xl'>
+          <h1 className='text-xl font-semibold text-brand-dark tracking-tight sm:text-2xl'>
             Vos contacts favoris
           </h1>
           <h2 className='text-lg sm:text-xl italic'>
@@ -146,11 +147,11 @@ export default function DashboardPage() {
         </div>
         <Table className='mt-10'>
           <TableHeader>
-            <TableRow>
-              <TableHead className='w-[150px]'>Role</TableHead>
+            <TableRow className='hover:bg-background'>
               <TableHead>Nom</TableHead>
               <TableHead>Entreprise</TableHead>
               <TableHead>Notes</TableHead>
+              <TableHead className='w-[120px]'>Role</TableHead>
               <TableHead className='text-right w-[140px]'>
                 Numéro de téléphone
               </TableHead>
@@ -159,21 +160,21 @@ export default function DashboardPage() {
           <TableBody>
             {contacts.map((contact, key) => (
               <TableRow key={key}>
-                <TableCell className='font-medium'>{contact.role}</TableCell>
                 <TableCell>{contact.name}</TableCell>
                 <TableCell>{contact.business}</TableCell>
                 <TableCell>{contact.note}</TableCell>
+                <TableCell>{contact.role}</TableCell>
                 <TableCell className='text-right'>{contact.phone}</TableCell>
               </TableRow>
             ))}
           </TableBody>
           <TableFooter>
-            <TableRow>
+            <TableRow className='hover:bg-muted-foreground'>
               <TableCell colSpan={6}>
                 <Link
                   href='/contacts'
                   className='grid place-content-end'>
-                  <div className='flex items-center gap-3 font-semibold text-emerald-700 hover:text-emerald-500'>
+                  <div className='flex items-center gap-3 font-semibold text-brand-dark hover:text-brand-link'>
                     <p>Voir tous les contacts</p>
                     <ChevronsRight className='pt-[0.12rem] w-4 h-4' />
                   </div>
@@ -184,46 +185,36 @@ export default function DashboardPage() {
         </Table>
       </div>
 
-      <div className='flex flex-col gap-3 shadow-md min-h-[100px] rounded-sm border-2 p-6 sm:col-span-1 row-span-2'>
-        <h1 className='m-auto text-xl font-semibold text-stone-700 tracking-tight sm:text-2xl'>
+      <div className='flex flex-col shadow-md min-h-[100px] rounded-sm border-2 p-6 sm:col-span-1 row-span-2'>
+        <h1 className='m-auto text-xl font-semibold text-brand-dark tracking-tight sm:text-2xl'>
           Cuisines
         </h1>
-        <h2 className='m-auto text-lg sm:text-xl italic'>
-          À ce jour vous avez créé
-        </h2>
+
         <p className='m-auto text-7xl font-black'>5</p>
       </div>
-      <div className='flex flex-col gap-3 shadow-md min-h-[100px] rounded-sm border-2 p-6 sm:col-span-1 row-span-2'>
-        <h1 className='m-auto text-xl font-semibold text-stone-700 tracking-tight sm:text-2xl'>
+      <div className='flex flex-col shadow-md min-h-[100px] rounded-sm border-2 p-6 sm:col-span-1 row-span-2'>
+        <h1 className='m-auto text-xl font-semibold text-brand-dark tracking-tight sm:text-2xl'>
           Recettes
         </h1>
-        <h2 className='m-auto text-lg sm:text-xl italic'>
-          À ce jour vous avez ajouté
-        </h2>
+
         <p className='m-auto text-7xl font-black'>120</p>
       </div>
-      <div className='flex flex-col gap-3 shadow-md min-h-[100px] rounded-sm border-2 p-6 sm:col-span-1 row-span-2'>
-        <h1 className='m-auto text-xl font-semibold text-stone-700 tracking-tight sm:text-2xl'>
+      <div className='flex flex-col shadow-md min-h-[100px] rounded-sm border-2 p-6 sm:col-span-1 row-span-2'>
+        <h1 className='m-auto text-xl font-semibold text-brand-dark tracking-tight sm:text-2xl'>
           Menus
         </h1>
-        <h2 className='m-auto text-lg sm:text-xl italic'>
-          À ce jour vous avez ajouté
-        </h2>
         <p className='m-auto text-7xl font-black'>13</p>
       </div>
-      <div className='flex flex-col gap-3 shadow-md min-h-[100px] rounded-sm border-2 p-6 sm:col-span-1 row-span-2'>
-        <h1 className='m-auto text-xl font-semibold text-stone-700 tracking-tight sm:text-2xl'>
+      <div className='flex flex-col shadow-md min-h-[100px] rounded-sm border-2 p-6 sm:col-span-1 row-span-2'>
+        <h1 className='m-auto text-xl font-semibold text-brand-dark tracking-tight sm:text-2xl'>
           Employés
         </h1>
-        <h2 className='m-auto text-lg sm:text-xl italic'>
-          À ce jour vous avez ajouté
-        </h2>
         <p className='m-auto text-7xl font-black'>24</p>
       </div>
 
       <div className='flex flex-col shadow-md min-h-[100px] space-y-12 rounded-sm border-2 p-6 sm:col-span-4 row-span-6 '>
         <div className='flex flex-col gap-5'>
-          <h1 className='text-xl font-semibold text-stone-700 tracking-tight sm:text-2xl'>
+          <h1 className='text-xl font-semibold text-brand-dark tracking-tight sm:text-2xl'>
             Au menu cette semaine
           </h1>
           <h2 className='text-lg sm:text-xl italic'>
@@ -237,7 +228,7 @@ export default function DashboardPage() {
         <Table>
           <TableCaption>Liste de vos menus partagé</TableCaption>
           <TableHeader>
-            <TableRow>
+            <TableRow className='hover:bg-background'>
               <TableHead className='w-[100px]'>Type</TableHead>
               <TableHead>Nom</TableHead>
               <TableHead>Cuisine</TableHead>
@@ -259,12 +250,12 @@ export default function DashboardPage() {
             ))}
           </TableBody>
           <TableFooter>
-            <TableRow>
+            <TableRow className='hover:bg-muted-foreground'>
               <TableCell colSpan={6}>
                 <Link
                   href='/menus'
                   className='grid place-content-end'>
-                  <div className='flex items-center gap-3 font-semibold text-emerald-700 hover:text-emerald-500'>
+                  <div className='flex items-center gap-3 font-semibold text-brand-dark hover:text-brand-link'>
                     <p>Voir tous les menus</p>
                     <ChevronsRight className='pt-[0.12rem] w-4 h-4' />
                   </div>
@@ -276,7 +267,7 @@ export default function DashboardPage() {
       </div>
 
       <div className='flex flex-col gap-3 shadow-md min-h-[100px] rounded-sm border-2 p-6 sm:col-span-3 row-span-5 '>
-        <h1 className='text-xl font-semibold text-stone-700 tracking-tight sm:text-2xl'>
+        <h1 className='text-xl font-semibold text-brand-dark tracking-tight sm:text-2xl'>
           Dernière entrée de température des réfrigérateurs
         </h1>
       </div>

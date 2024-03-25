@@ -2,8 +2,8 @@
 
 import { UserSession } from "@/lib/type";
 import { Header } from "@/app/(protected)/_components/header/header";
-import { useNavigation } from "@/app/_hooks/useNavigation";
-import { CurrentPathProvider } from "@/app/_providers/current-path";
+import { useNavigation } from "@/hooks/useNavigation";
+import { CurrentPathProvider } from "@/providers/current-path";
 
 export function PageLayout({
   children,

@@ -58,7 +58,7 @@ export function LoginForm() {
       <div className='flex flex-col justify-center min-w-[500px]'>
         <CardHeader className='flex flex-col space-y-2 text-center'>
           <h1 className='text-2xl font-semibold tracking-tight'>Connexion</h1>
-          <p className='text-sm text-muted-foreground'>
+          <p className='text-sm text-muted'>
             Entrez votre adresse courriel et votre mot de passe
           </p>
         </CardHeader>
@@ -104,7 +104,7 @@ export function LoginForm() {
               {isPending ? <PulseLoader size={5} /> : "Connexion"}
             </Button>
             <div>
-              <p className='text-[0.75rem] text-center font-normal text-muted-foreground'>
+              <p className='text-[0.75rem] text-center font-normal text-muted'>
                 Vous n'avez pas de compte?{" "}
                 <Link
                   className='underline italic font-semibold'
@@ -112,7 +112,7 @@ export function LoginForm() {
                   Inscrivez-vous!
                 </Link>
               </p>
-              <p className='px-5 text-[0.7rem] text-muted-foreground text-center'>
+              <p className='px-5 text-[0.7rem] text-muted text-center'>
                 <Link
                   className='underline italic font-semibold'
                   href='/forgot-password'>

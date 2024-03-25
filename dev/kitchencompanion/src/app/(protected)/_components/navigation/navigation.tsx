@@ -10,7 +10,7 @@ import {
   BookOpen,
 } from "lucide-react";
 
-import { useNavigation } from "@/app/_hooks/useNavigation";
+import { useNavigation } from "@/hooks/useNavigation";
 import Link from "next/link";
 
 export function Nagivation() {
@@ -19,7 +19,9 @@ export function Nagivation() {
 
   const linkStyle = (path: string) =>
     `${isOpen ? "flex gap-5 items-center " : ""} p-2 rounded-md  ${
-      path === isActive ? "bg-emerald-500/60" : "hover:bg-emerald-300/30"
+      path === isActive
+        ? "bg-brand text-brand-foreground"
+        : "hover:bg-brand-hover hover:text-brand-foreground"
     }`;
 
   const textTransition = `origin-left transition-opacity duration-1000 opacity-0 whitespace-nowrap ${
