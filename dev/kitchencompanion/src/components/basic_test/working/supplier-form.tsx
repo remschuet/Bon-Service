@@ -53,8 +53,8 @@ export function SupplierForm() {
               className='flex flex-row'>
               <TableCell>{row.id}</TableCell>
               <TableCell>{row.name}</TableCell>
-              <TableCell>{row.unitPrice}</TableCell>
-              <TableCell>{row.unitMeasure}</TableCell>
+              <TableCell>{row.price}</TableCell>
+              <TableCell>{row.unit}</TableCell>
             </TableRow>
           ))}
         </TableBody>
