@@ -197,6 +197,11 @@ export async function getAllUserKitchensById(id: string) {
   }
 }
 
+/**
+ * Retrieves the user's role.
+ * @param id - The user ID.
+ * @returns The user's userType.
+ */
 export async function getUserUserType(id: string) {
   try {
     return await db.user.findFirst({
