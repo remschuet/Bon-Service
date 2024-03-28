@@ -4,6 +4,7 @@ import { db } from "@/db/prisma-db";
 ////////////////////////////////
 // TABLES
 // Contact
+// ContactKitchen
 ////////////////////////////////
 
 /**
@@ -139,5 +140,33 @@ export async function updateContact(contactId: string, contact: Contact) {
     });
   } catch (error) {
     console.error("Error data-access/contact: updateContact(), error: ", error);
+  }
+}
+
+/**
+ * Creates a new link between a contact and a kitchen in the database.
+ * @param contactId - The ID of the contact to link.
+ * @param kitchenId - The ID of the kitchen to link.
+ * @param isPublic - Whether the link should be public or private.
+ * @returns The created link object.
+ */
+export async function linkContactKitchen(
+  contactId: string,
+  kitchenId: string,
+  isPublic: boolean
+) {
+  try {
+    return await db.contactKitchen.create({
+      data: {
+        contactId: contactId,
+        kitchenId: kitchenId,
+        isPublic: isPublic,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/contact: linkContactKitchen(), error: ",
+      error
+    );
   }
 }

@@ -279,6 +279,8 @@ model ContactKitchen {
 
   contact   Contact @relation(fields: [contactId], references: [id])
   contactId String
+
+  @@unique([contactId, kitchenId])
 }
 
 model CheckTemp {
