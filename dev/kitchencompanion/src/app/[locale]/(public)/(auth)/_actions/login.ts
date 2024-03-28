@@ -15,7 +15,6 @@ import { sendVerificationEmail } from "@/lib/mail";
 
 import { headers } from "next/headers";
 import {
-  blockEmailIp,
   clearLoginLimit,
   getEmailIPkey,
   isAccountBlocked,
@@ -84,6 +83,7 @@ export async function login(values: z.infer<typeof LoginSchema>) {
 
   try {
     await clearLoginLimit(emailIPKey);
+
     await signIn("credentials", {
       email,
       password,

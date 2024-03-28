@@ -15,9 +15,9 @@ export function Location() {
   const current = useCurrentPath();
 
   return (
-    <div className="flex items-center space-x-2">
+    <div className='flex items-center space-x-2'>
       <Breadcrumb>
-        <BreadcrumbList className="flex items-center text-foreground">
+        <BreadcrumbList className='flex items-center text-foreground'>
           {current.map((p, index) => {
             let pathName = p.charAt(0).toUpperCase() + p.slice(1);
 
@@ -30,8 +30,7 @@ export function Location() {
             return (
               <BreadcrumbItem
                 className={`${isLast ? "text-xl font-semibold" : "text-lg"}`}
-                key={index}
-              >
+                key={index}>
                 {isLast ? (
                   `${pathName}`
                 ) : (

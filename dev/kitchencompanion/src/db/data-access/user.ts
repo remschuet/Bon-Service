@@ -107,12 +107,14 @@ export async function getUserById(id: string) {
  */
 export async function updateUserRole(email: string) {
   try {
-    return await db.user.update({
+    const result = await db.user.update({
       where: { email },
       data: {
         userType: UserTypes.ADMIN,
       },
     });
+
+    return result;
   } catch (error) {
     console.error("Error data-access/user: updateUserRole(), error: ", error);
     throw error;
@@ -197,20 +199,16 @@ export async function getAllUserKitchensById(id: string) {
   }
 }
 
-/**
- * Retrieves the user's role.
- * @param id - The user ID.
- * @returns The user's userType.
- */
-export async function getUserUserType(id: string) {
+export async function getUserUserType(email: string) {
   try {
     return await db.user.findFirst({
       where: {
-        id,
+        email,
       },
       select: {
         userType: true,
       },
+      // cacheStrategy: { swr: 60, ttl: 60 },
     });
   } catch (error) {
     console.error("Error data-access/user: getUserUserType(), error: ", error);

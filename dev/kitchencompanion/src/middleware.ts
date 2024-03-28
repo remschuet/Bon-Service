@@ -8,7 +8,6 @@ import {
   apiRoutesPrefix,
   authRoutes,
   publicRoutes,
-  adminRoutes,
 } from "@/route";
 
 const intlMiddleware = createMiddleware({
@@ -24,14 +23,10 @@ const { auth } = NextAuth(authConfig);
 export default auth((req) => {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
-  const userType = getUserUserType(req.auth?.user.id as string);
-
-  console.log("User type", userType);
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiRoutesPrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
-  const isAdminRoute = adminRoutes.includes(nextUrl.pathname);
 
   if (isApiAuthRoute) {
     return;
@@ -47,11 +42,6 @@ export default auth((req) => {
 
   if (!isLoggedIn && !isPublicRoute) {
     return Response.redirect(new URL("/login", nextUrl));
-  }
-
-  if (isAdminRoute && userType === "MEMBER") {
-    console.log("User is not an admin");
-    return Response.redirect(new URL(DEFAULT_REDIRECT_URL, nextUrl));
   }
 
   return intlMiddleware(req);
