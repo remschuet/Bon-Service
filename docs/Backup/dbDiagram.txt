@@ -220,7 +220,6 @@ Table ContactKitchen {
   id int [pk]
   kitchen int [ref: > Kitchen.id]
   contact int [ref: > Contact.id]
-  isPublic bool [default: false]
 }
 
 Table CheckTemp {
