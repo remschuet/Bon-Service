@@ -8,7 +8,8 @@ import {
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { actionCreateKitchenWhenUserCreate } from "@/app/[locale]/(public)/test/kitchen/_action/kitchen-action";
+import { actionCreateIngredient } from "@/app/[locale]/(public)/test/ingredient/_action/ingredient-action";
+import { Ingredient, UnitMeasure } from "@prisma/client";
 
 const data = [
   {
@@ -44,9 +45,17 @@ export function IngredientForm() {
   // const [isPending, startTransition] = useTransition();
 
   async function handleCreateIngredient(formData: FormData) {
-    const userId = formData.get("userId") as string;
+    const ingredient = {
+      name: formData.get("name") as string,
+      price: parseInt(formData.get("price") as string),
+      unit: formData.get("measure") as string as UnitMeasure,
+      category: formData.get("categorie") as string,
+      origin: formData.get("origin") as string,
+      supplierName: formData.get("supplierName") as string,
+      userId: formData.get("userId") as string,
+    };
 
-    await actionCreateKitchenWhenUserCreate(userId);
+    await actionCreateIngredient(ingredient as Ingredient);
   }
 
   return (
@@ -66,7 +75,7 @@ export function IngredientForm() {
               type="text"
               name="price"
               id="price"
-              placeholder="Enter price"
+              placeholder="Enter price (INT)"
             />
             <input
               type="text"
@@ -85,6 +94,12 @@ export function IngredientForm() {
               name="categorie"
               id="categorie"
               placeholder="Enter categorie"
+            />
+            <input
+              type="text"
+              name="origin"
+              id="origin"
+              placeholder="Enter origin"
             />
             <input
               type="text"
