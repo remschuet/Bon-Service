@@ -26,10 +26,17 @@ export default function Home() {
 
       <Button
         onClick={() => {
-          router.push("/test/supplier");
+          router.push("/test/recipe");
         }}
       >
-        supplier
+        recipe
+      </Button>
+      <Button
+        onClick={() => {
+          router.push("/test/contact");
+        }}
+      >
+        contact
       </Button>
       <Button
         onClick={() => {
