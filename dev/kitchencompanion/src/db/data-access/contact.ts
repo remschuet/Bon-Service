@@ -1,6 +1,11 @@
 import { RecipeBook, Allergen, Recipe, Contact } from "@prisma/client";
 import { db } from "@/db/prisma-db";
 
+////////////////////////////////
+// TABLES
+// Contact
+////////////////////////////////
+
 /**
  * Description: Create a new contact in the database.
  * @param contact - The contact object to be created.
