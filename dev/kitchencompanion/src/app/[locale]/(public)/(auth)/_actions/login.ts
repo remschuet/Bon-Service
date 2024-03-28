@@ -15,6 +15,7 @@ import { sendVerificationEmail } from "@/lib/mail";
 
 import { headers } from "next/headers";
 import {
+  blockEmailIp,
   clearLoginLimit,
   getEmailIPkey,
   isAccountBlocked,
@@ -56,7 +57,9 @@ export async function login(values: z.infer<typeof LoginSchema>) {
 
   const validPassword = await bcrypt.compare(password, existingUser.password);
 
-  if (await isAccountBlocked(emailIPKey)) {
+  const isBlocked = await isAccountBlocked(emailIPKey);
+
+  if (isBlocked) {
     return {
       error: "Trop de tentatives de connexion. Réessayez plus tard.",
       status: 429,
