@@ -24,10 +24,7 @@ export async function createContact(contact: Contact) {
       },
     });
   } catch (error) {
-    console.error(
-      "Error data-access/phoneBook: createContact(), error: ",
-      error
-    );
+    console.error("Error data-access/contact: createContact(), error: ", error);
   }
 }
 
@@ -43,7 +40,7 @@ export async function createManyContact(contact: Contact[]) {
     });
   } catch (error) {
     console.error(
-      "Error data-access/phoneBook: createManyContact(), error: ",
+      "Error data-access/contact: createManyContact(), error: ",
       error
     );
   }
@@ -60,10 +57,7 @@ export async function getAllContactForAdmin(userId: string) {
       where: { userId: userId },
     });
   } catch (error) {
-    console.error(
-      "Error data-access/phoneBook: getAllContact(), error: ",
-      error
-    );
+    console.error("Error data-access/contact: getAllContact(), error: ", error);
   }
 }
 
@@ -78,10 +72,7 @@ export async function getAllContactForMember(userId: string) {
       where: { userId: userId, isPublic: true },
     });
   } catch (error) {
-    console.error(
-      "Error data-access/phoneBook: getAllContact(), error: ",
-      error
-    );
+    console.error("Error data-access/contact: getAllContact(), error: ", error);
   }
 }
 
@@ -97,8 +88,56 @@ export async function deleteAllContact(userId: string) {
     });
   } catch (error) {
     console.error(
-      "Error data-access/phoneBook: deleteAllContact(), error: ",
+      "Error data-access/contact: deleteAllContact(), error: ",
       error
     );
+  }
+}
+
+/**
+ * Updates the status of a contact in the database.
+ * @param contactId - The ID of the contact to update.
+ * @param isPublic - Whether the contact should be marked as public or private.
+ * @returns The updated contact object.
+ */
+export async function updateContactStatus(
+  contactId: string,
+  isPublic: boolean
+) {
+  try {
+    return await db.contact.update({
+      where: { id: contactId },
+      data: {
+        isPublic: isPublic,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/contact: updateContactStatus(), error: ",
+      error
+    );
+  }
+}
+
+/**
+ * Updates the status of a contact in the database.
+ * @param contactId - The ID of the contact to update.
+ * @param isPublic - Whether the contact should be marked as public or private.
+ * @returns The updated contact object.
+ */
+export async function updateContact(contactId: string, contact: Contact) {
+  try {
+    return await db.contact.update({
+      where: { id: contactId },
+      data: {
+        name: contact.name,
+        description: contact.description,
+        phoneNumber: contact.phoneNumber,
+        compteNumber: contact.compteNumber,
+        isPublic: contact.isPublic,
+      },
+    });
+  } catch (error) {
+    console.error("Error data-access/contact: updateContact(), error: ", error);
   }
 }
