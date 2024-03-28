@@ -266,6 +266,8 @@ model Contact {
   isPublic     Boolean @default(false)
 
   contactKitchens ContactKitchen[]
+
+  @@unique([userId, name, phoneNumber])
 }
 
 model ContactKitchen {
