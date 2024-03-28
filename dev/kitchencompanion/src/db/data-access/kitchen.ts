@@ -1,9 +1,16 @@
 import { Kitchen } from "@prisma/client";
 import { db } from "@/db/prisma-db";
 
+////////////////////////////////
+// TABLES
+// Kitchen
+////////////////////////////////
+
 /**
+ *
+ *
  * Creates a new kitchen.
- * @param kitchen - The kitchen object containing the userId and name.
+ * @param kitchen - The kitchen object.
  * @returns A promise that resolves to the created kitchen.
  */
 export async function createKitchen(kitchen: Kitchen) {
@@ -21,6 +28,12 @@ export async function createKitchen(kitchen: Kitchen) {
   }
 }
 
+/**
+ * Get a kitchen by its name and user ID (admin).
+ * @param userId - The ID of the user who owns the kitchen.
+ * @param name - The name of the kitchen to get.
+ * @returns The kitchen, if found; otherwise, null.
+ */
 export async function getKitchenByAdminAndName(userId: string, name: string) {
   try {
     return await db.kitchen.findFirst({
@@ -38,8 +51,10 @@ export async function getKitchenByAdminAndName(userId: string, name: string) {
   }
 }
 
-/*
- * Get all the kitchens from specified user admin
+/**
+ * Get all the kitchens from specified user_id (admin)
+ * @param userId - The ID of the user who owns the kitchen.
+ * @returns An array of kitchens, or an empty array if none found.
  */
 export async function getAllKitchenByAdminId(userId: string) {
   try {
@@ -73,6 +88,12 @@ export async function deleteKitchen(kitchen: Kitchen) {
   }
 }
 
+/**
+ * Deletes all kitchens owned by a user with a given name.
+ * @param userId - The ID of the user who owns the kitchens.
+ * @param name - The name of the kitchens to delete.
+ * @returns A promise that resolves when the kitchens are deleted.
+ */
 export async function deleteKitchenByUserAndName(userId: string, name: string) {
   try {
     return await db.kitchen.deleteMany({
@@ -88,7 +109,7 @@ export async function deleteKitchenByUserAndName(userId: string, name: string) {
 }
 
 /**
- * Retrieves the users associated with a kitchen.
+ * Get the users associated with a kitchen.
  * @param kitchen - The kitchen object for which to retrieve the users.
  * @returns A promise that resolves to an array of kitchen users.
  */
@@ -111,7 +132,7 @@ export async function getAllKitchenUser(kitchen: Kitchen) {
 }
 
 /**
- * Retrieves the users associated with a kitchen by kitchen ID.
+ * Get the users associated with a kitchen by kitchen ID.
  * @param kitchenId - The ID of the kitchen for which to retrieve the users.
  * @returns A promise that resolves to an array of kitchen users.
  */
