@@ -263,7 +263,6 @@ model Contact {
   description  String?
   phoneNumber  String
   compteNumber String?
-  isPublic     Boolean @default(false)
 
   contactKitchens ContactKitchen[]
 
@@ -272,7 +271,6 @@ model Contact {
 
 model ContactKitchen {
   id       String   @id @default(cuid())
-  isPublic Boolean? @default(false)
 
   kitchen   Kitchen @relation(fields: [kitchenId], references: [id])
   kitchenId String

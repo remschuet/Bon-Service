@@ -5,6 +5,9 @@ import { db } from "@/db/prisma-db";
 // TABLES
 // Contact
 // ContactKitchen
+// besoin d action quand on créer en fonction si publique de creer le link
+// get ta kitchen
+// get les contacts en lien
 ////////////////////////////////
 
 /**
@@ -48,29 +51,14 @@ export async function createManyContact(contact: Contact[]) {
 }
 
 /**
- * Description: Get all contacts associated with a given user ID (public and private).
+ * Description: Get all contacts associated with a given user ID (ADMIN).
  * @param userId - The ID of the user whose contacts should be retrieved.
  * @returns An array of contact objects.
  */
-export async function getAllContactForAdmin(userId: string) {
+export async function getAllContact(userId: string) {
   try {
     return await db.contact.findMany({
       where: { userId: userId },
-    });
-  } catch (error) {
-    console.error("Error data-access/contact: getAllContact(), error: ", error);
-  }
-}
-
-/**
- * Description: Get all contacts associated with a given user ID (public only).
- * @param userId - The ID of the user whose contacts should be retrieved.
- * @returns An array of contact objects.
- */
-export async function getAllContactForMember(userId: string) {
-  try {
-    return await db.contact.findMany({
-      where: { userId: userId, isPublic: true },
     });
   } catch (error) {
     console.error("Error data-access/contact: getAllContact(), error: ", error);
@@ -90,31 +78,6 @@ export async function deleteAllContact(userId: string) {
   } catch (error) {
     console.error(
       "Error data-access/contact: deleteAllContact(), error: ",
-      error
-    );
-  }
-}
-
-/**
- * Updates the status of a contact in the database.
- * @param contactId - The ID of the contact to update.
- * @param isPublic - Whether the contact should be marked as public or private.
- * @returns The updated contact object.
- */
-export async function updateContactStatus(
-  contactId: string,
-  isPublic: boolean
-) {
-  try {
-    return await db.contact.update({
-      where: { id: contactId },
-      data: {
-        isPublic: isPublic,
-      },
-    });
-  } catch (error) {
-    console.error(
-      "Error data-access/contact: updateContactStatus(), error: ",
       error
     );
   }
@@ -150,17 +113,37 @@ export async function updateContact(contactId: string, contact: Contact) {
  * @param isPublic - Whether the link should be public or private.
  * @returns The created link object.
  */
-export async function linkContactKitchen(
-  contactId: string,
-  kitchenId: string,
-  isPublic: boolean
-) {
+export async function linkContactKitchen(contactId: string, kitchenId: string) {
   try {
     return await db.contactKitchen.create({
       data: {
         contactId: contactId,
         kitchenId: kitchenId,
-        isPublic: isPublic,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/contact: linkContactKitchen(), error: ",
+      error
+    );
+  }
+}
+
+/**
+ * Delete a link between a contact and a kitchen in the database.
+ * @param contactId - The ID of the contact to unlink.
+ * @param kitchenId - The ID of the kitchen to unlink.
+ * @returns A promise that resolves to the delete kitchen.
+ */
+export async function deleteLinkContactKitchen(
+  contactId: string,
+  kitchenId: string
+) {
+  try {
+    return await db.contactKitchen.deleteMany({
+      where: {
+        contactId: contactId,
+        kitchenId: kitchenId,
       },
     });
   } catch (error) {

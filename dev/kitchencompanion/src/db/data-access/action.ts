@@ -124,3 +124,11 @@ export async function action_removeDataUser(userId: string) {
 }
 
 export async function action_initSupplierSupported() {}
+
+//// CONTACT ////
+export async function action_NewContactPublicForKitchen() {}
+export async function action_DeleteContactPublicForKitchen() {}
+export async function action_GetContactPublicForKitchenByUser(userId: string) {}
+export async function action_GetContactPublicForKitchenByKitchenId(
+  kitchenId: string
+) {}
