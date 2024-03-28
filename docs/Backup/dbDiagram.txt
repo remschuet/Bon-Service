@@ -68,6 +68,7 @@ Table User {
   avatar_key int [ref: > Avatar.key]
   created_at Date [default: 0] /*NOW()*/
   updated_at Date
+  isPremium bool [default: false]
 }
 
 Table Kitchen {

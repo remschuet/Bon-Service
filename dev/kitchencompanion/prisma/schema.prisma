@@ -72,6 +72,7 @@ model User {
   userType      UserTypes? @default(ADMIN)
   createdAt     DateTime?  @default(now())
   updatedAt     DateTime?  @updatedAt
+  isPremium     Boolean? @default(false)
 
   kitchens         Kitchen[]
   kitchenUsers     KitchenUser[]
