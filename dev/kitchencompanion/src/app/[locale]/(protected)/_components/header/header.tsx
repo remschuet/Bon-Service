@@ -1,16 +1,9 @@
-import { UserSession } from "@/lib/type";
 import { UserMenu } from "@/app/[locale]/(protected)/_components/header/user-menu";
 import { Notification } from "@/app/[locale]/(protected)/_components/header/notifications/notification-menu";
 import { HelpMenu } from "@/app/[locale]/(protected)/_components/header/help-menu";
 import { Location } from "./location";
 
-export function Header({
-  session,
-  className,
-}: {
-  session: UserSession;
-  className?: string;
-}) {
+export function Header({ className }: { className?: string }) {
   return (
     <div
       className={`flex fixed top-0 justify-between py-2 px-6 border-b-2 z-10 bg-background min-h-[6vh] ${className}`}>
@@ -18,7 +11,7 @@ export function Header({
       <div className='flex items-center space-x-3'>
         <Notification />
         <HelpMenu />
-        <UserMenu session={session} />
+        <UserMenu />
       </div>
     </div>
   );

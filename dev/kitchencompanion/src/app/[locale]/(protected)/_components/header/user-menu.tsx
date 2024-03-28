@@ -15,10 +15,11 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { LogOut, Settings, Receipt } from "lucide-react";
 
-import { UserSession } from "@/lib/type";
+import { useSession } from "@/hooks/useSession";
 import logout from "@/app/[locale]/(protected)/_actions/logout";
 
-export function UserMenu({ session }: { session: UserSession }) {
+export function UserMenu() {
+  const session = useSession();
   const [open, setOpen] = useState(false);
 
   return (
@@ -30,19 +31,19 @@ export function UserMenu({ session }: { session: UserSession }) {
           <Avatar className='cursor-pointer'>
             <AvatarImage
               src={undefined}
-              alt={session.user.name}
+              alt={session?.user.name}
             />
             <AvatarFallback className='bg-brand text-stone-900 font-black'>
-              {session.user.name[0]}
+              {session?.user.name[0]}
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align='end'
           className='min-w-[200px] p-1'>
-          <DropdownMenuLabel>{session.user.name}</DropdownMenuLabel>
+          <DropdownMenuLabel>{session?.user.name}</DropdownMenuLabel>
           <DropdownMenuLabel className='text-xs font-normal mt-[-10px]'>
-            {session.user.email}
+            {session?.user.email}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
