@@ -197,6 +197,22 @@ export async function getAllUserKitchensById(id: string) {
   }
 }
 
+export async function getUserUserType(id: string) {
+  try {
+    return await db.user.findFirst({
+      where: {
+        id,
+      },
+      select: {
+        userType: true,
+      },
+    });
+  } catch (error) {
+    console.error("Error data-access/user: getUserUserType(), error: ", error);
+    throw error;
+  }
+}
+
 // DEV FUNCTIONS
 
 /**
