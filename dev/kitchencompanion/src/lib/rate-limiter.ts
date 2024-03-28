@@ -7,8 +7,7 @@ const rateLimiter = new RateLimiterPrisma({
   storeClient: db,
   keyPrefix: "login_fail_email_ip",
   points: maxFailsByEmailAndIP,
-  duration: 60 * 60 * 24 * 30, // Store number of attempts for 30 days after first fail
-  blockDuration: 60 * 60, // Block for 1 hour,
+  duration: 60 * 60, // Store number of attempts for 30 days after first fail
 });
 
 export const getEmailIPkey = (email: string, ip: string) => {
