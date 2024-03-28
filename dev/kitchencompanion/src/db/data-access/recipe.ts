@@ -2,6 +2,70 @@ import { RecipeBook, Allergen, Recipe } from "@prisma/client";
 import { db } from "@/db/prisma-db";
 import { Prisma } from "@prisma/client";
 
+////////////////////////////////
+// TABLES
+// Recipe
+// Allergen
+////////////////////////////////
+
+/**
+ * Create a Recipe.
+ * @param recipe - The recipe object containing the recipes's details.
+ * @returns A promise that resolves to the created recipe.
+ */
+export async function createRecipe(recipe: Recipe) {
+  try {
+    let steps = recipe.steps as Prisma.JsonArray;
+    let ingredients = recipe.ingredients as Prisma.JsonArray;
+
+    return await db.recipe.create({
+      data: {
+        versionNumber: recipe.versionNumber,
+        name: recipe.name,
+        recipeBookId: recipe.recipeBookId,
+        recipeCategoryId: recipe.recipeCategoryId,
+        recipeState: recipe.recipeState,
+        preparationTime: recipe.preparationTime,
+        cookingTime: recipe.cookingTime,
+        steps: steps,
+        ingredients: ingredients,
+        yield: recipe.yield,
+        unitMeasure: recipe.unitMeasure,
+        objInvestment: recipe.objInvestment,
+        createdAt: recipe.createdAt,
+        updatedAt: recipe.updatedAt,
+      },
+    });
+  } catch (error) {
+    console.error("Error data-access/recipe: createRecipe(), error: ", error);
+    throw error;
+  }
+}
+
+/**
+ * Get all recipes associated with the given recipe book IDs.
+ *
+ * @param recipeBookIds - The IDs of the recipe books to search.
+ * @returns The matching recipes.
+ */
+export async function getAllRecipeByRecipeBookIds(recipeBookIds: string[]) {
+  try {
+    return await db.recipe.findMany({
+      where: {
+        recipeBookId: {
+          in: recipeBookIds,
+        },
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/recipe: getAllRecipeByRecipeBookId(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
 /**
  * Creates a new RecipeBook.
  * @param recipeBook - The recipeBook object containing the recipeBook's details.
@@ -100,24 +164,6 @@ export async function getRecipeBookByName(
   }
 }
 
-export async function getAllRecipeByRecipeBookIds(recipeBookIds: string[]) {
-  try {
-    return await db.recipe.findMany({
-      where: {
-        recipeBookId: {
-          in: recipeBookIds,
-        },
-      },
-    });
-  } catch (error) {
-    console.error(
-      "Error data-access/recipe: getAllRecipeByRecipeBookId(), error: ",
-      error
-    );
-    throw error;
-  }
-}
-
 /**
  * Get all RecipeBook by userId.
  * @param userId - The user id
@@ -133,40 +179,6 @@ export async function getAllRecipeBookByUserId(userId: string) {
       "Error data-access/recipe: getAllRecipeBookByUserId(), error: ",
       error
     );
-    throw error;
-  }
-}
-
-/**
- * Create a Recipe.
- * @param recipe - The recipe object containing the recipes's details.
- * @returns A promise that resolves to the created recipe.
- */
-export async function createRecipe(recipe: Recipe) {
-  try {
-    let steps = recipe.steps as Prisma.JsonArray;
-    let ingredients = recipe.ingredients as Prisma.JsonArray;
-
-    return await db.recipe.create({
-      data: {
-        versionNumber: recipe.versionNumber,
-        name: recipe.name,
-        recipeBookId: recipe.recipeBookId,
-        recipeCategoryId: recipe.recipeCategoryId,
-        recipeState: recipe.recipeState,
-        preparationTime: recipe.preparationTime,
-        cookingTime: recipe.cookingTime,
-        steps: steps,
-        ingredients: ingredients,
-        yield: recipe.yield,
-        unitMeasure: recipe.unitMeasure,
-        objInvestment: recipe.objInvestment,
-        createdAt: recipe.createdAt,
-        updatedAt: recipe.updatedAt,
-      },
-    });
-  } catch (error) {
-    console.error("Error data-access/recipe: createRecipe(), error: ", error);
     throw error;
   }
 }
