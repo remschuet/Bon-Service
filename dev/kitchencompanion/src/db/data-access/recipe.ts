@@ -5,7 +5,9 @@ import { Prisma } from "@prisma/client";
 ////////////////////////////////
 // TABLES
 // Recipe
-// Allergen
+// recipeAllergen
+// recipeCategory
+// recipePhoto
 ////////////////////////////////
 
 /**
@@ -46,7 +48,7 @@ export async function createRecipe(recipe: Recipe) {
  * Get all recipes associated with the given recipe book IDs.
  *
  * @param recipeBookIds - The IDs of the recipe books to search.
- * @returns The matching recipes.
+ * @returns a lists containing the matching recipes.
  */
 export async function getAllRecipeByRecipeBookIds(recipeBookIds: string[]) {
   try {
@@ -67,126 +69,10 @@ export async function getAllRecipeByRecipeBookIds(recipeBookIds: string[]) {
 }
 
 /**
- * Creates a new RecipeBook.
- * @param recipeBook - The recipeBook object containing the recipeBook's details.
- * @returns A promise that resolves to the created user.
- */
-export async function createRecipeBook(recipeBook: RecipeBook) {
-  try {
-    return await db.recipeBook.create({
-      data: {
-        name: recipeBook.name,
-        userId: recipeBook.userId,
-      },
-    });
-  } catch (error) {
-    console.error(
-      "Error data-access/recipe: createRecipeBook(), error: ",
-      error
-    );
-    throw error;
-  }
-}
-
-export async function deleteRecipeBook(recipeBook: RecipeBook) {
-  try {
-    return await db.recipeBook.delete({
-      where: { id: recipeBook.id },
-    });
-  } catch (error) {
-    console.error(
-      "Error data-access/recipe: deleteRecipeBook(), error: ",
-      error
-    );
-    throw error;
-  }
-}
-
-export async function deleteRecipeBookByUserIdAndName(
-  userId: string,
-  name: string
-) {
-  try {
-    return await db.recipeBook.deleteMany({
-      where: { userId, name },
-    });
-  } catch (error) {
-    console.error(
-      "Error data-access/recipe: deleteRecipeBookByUserIdAndName(), error: ",
-      error
-    );
-    throw error;
-  }
-}
-
-/**
- * Get a RecipeBook by id.
- * @param recipeBookId - The recipeBook id.
- * @returns a recipeBook.
- */
-export async function getRecipeBookById(recipeBookId: string) {
-  try {
-    return await db.recipeBook.findFirst({
-      where: { id: recipeBookId },
-    });
-  } catch (error) {
-    console.error(
-      "Error data-access/recipe: getRecipeBookById(), error: ",
-      error
-    );
-    throw error;
-  }
-}
-
-/**
- * Get a RecipeBook by name.
- * @param recipeBookName - The recipeBook name.
- * @param userId - The user id
- * @returns a recipeBook.
- */
-export async function getRecipeBookByName(
-  recipeBookName: string,
-  userId: string
-) {
-  try {
-    return await db.recipeBook.findFirst({
-      where: {
-        name: recipeBookName,
-        userId: userId,
-      },
-    });
-  } catch (error) {
-    console.error(
-      "Error data-access/recipe: getRecipeBookByName(), error: ",
-      error
-    );
-    throw error;
-  }
-}
-
-/**
- * Get all RecipeBook by userId.
- * @param userId - The user id
- * @returns a lists of recipeBook.
- */
-export async function getAllRecipeBookByUserId(userId: string) {
-  try {
-    return await db.recipeBook.findMany({
-      where: { userId: userId },
-    });
-  } catch (error) {
-    console.error(
-      "Error data-access/recipe: getAllRecipeBookByUserId(), error: ",
-      error
-    );
-    throw error;
-  }
-}
-
-/**
  * link recipe to alergen.
  * @param recipe - The recipe object containing the recipes's details.
  * @param allergen - An element of the allergen enum
+ * @returns A promise that resolves to the link recipeAllergen.
  */
 export async function linkRecipeAllergen(recipe: Recipe, allergen: Allergen) {
   try {
@@ -206,31 +92,10 @@ export async function linkRecipeAllergen(recipe: Recipe, allergen: Allergen) {
 }
 
 /**
- * link recipe to photo.
- * @param recipe - The recipe object containing the recipes's details.
- * @param photo - The Amazon S3 key for the photo
- */
-export async function linkRecipePhoto(recipe: Recipe, photo: string) {
-  try {
-    return await db.recipePhoto.create({
-      data: {
-        recipeId: recipe.id,
-        photo: photo,
-      },
-    });
-  } catch (error) {
-    console.error(
-      "Error data-access/recipe: linkRecipePhoto(), error: ",
-      error
-    );
-    throw error;
-  }
-}
-
-/**
  * Create RecipeCategory
  * @param userId - The id of the user.
  * @param category - An string describing the category
+ * @returns A promise that resolves to the created recipeCategory.
  */
 export async function createRecipeCategory(userId: string, category: string) {
   try {
@@ -252,6 +117,7 @@ export async function createRecipeCategory(userId: string, category: string) {
 /**
  * Get all the categories for an user.
  * @param userId - the user id.
+ * @returns An array of recipe categories.
  */
 export async function getRecipeCategoriesByUserId(userId: string) {
   try {
@@ -261,6 +127,29 @@ export async function getRecipeCategoriesByUserId(userId: string) {
   } catch (error) {
     console.error(
       "Error data-access/recipe: getRecipeCategoriesByUserId(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
+/**
+ * link recipe to photo.
+ * @param recipe - The recipe object containing the recipes's details.
+ * @param photo - The Amazon S3 key for the photo
+ * @returns A promise that resolves to the link recipePhoto.
+ */
+export async function linkRecipePhoto(recipe: Recipe, photo: string) {
+  try {
+    return await db.recipePhoto.create({
+      data: {
+        recipeId: recipe.id,
+        photo: photo,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/recipe: linkRecipePhoto(), error: ",
       error
     );
     throw error;
