@@ -53,7 +53,7 @@ export async function getAllIngredientBySupplierNameAndUserId(
   }
 }
 
-export async function getAllIngredientByUserId(userId: string) {
+export async function getAllIngredient(userId: string) {
   try {
     return await db.ingredient.findMany({
       where: {
@@ -62,7 +62,7 @@ export async function getAllIngredientByUserId(userId: string) {
     });
   } catch (error) {
     console.error(
-      "Error data-access/ingredient: getAllIngredientByUserId(), error: ",
+      "Error data-access/ingredient: getAllIngredient(), error: ",
       error
     );
     throw error;
