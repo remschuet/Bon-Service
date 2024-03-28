@@ -1,7 +1,7 @@
 // import { CreateSupplier } from "@/components/basic_test/supplier";
 // import { DataTableDemo } from "@/components/basic_test/supplierTest";
-import { SupplierForm } from "@/components/basic_test/working/supplier-form";
+import { RecipeForm } from "@/components/basic_test/working/recipe-form";
 
 export default function Home() {
-  return <SupplierForm />;
+  return <RecipeForm />;
 }
