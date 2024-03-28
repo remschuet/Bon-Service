@@ -22,7 +22,8 @@ export function ContactForm() {
   return (
     <div>
       <Card className="w-[350px] h-[450px] grid place-content-center">
-        <CardHeader>Create Contact</CardHeader>
+        <CardHeader>Create Contact (non fonctionnel)</CardHeader>
+        En attente du currentIdUuser pour chercher les bonnes cuisines
         <CardContent>
           <form action={handleCreateContact} className="grid gap-2">
             <input
