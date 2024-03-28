@@ -16,12 +16,14 @@ import {
 import { getUserById } from "@/db/data-access/user";
 
 import { Supplier, RecipeBook, User } from "@prisma/client";
+import { getAllRecipeByRecipeBookIds } from "@/db/data-access/recipe";
+
 import {
   createRecipeBook,
   deleteRecipeBookByUserIdAndName,
   getAllRecipeBookByUserId,
-  getAllRecipeByRecipeBookIds,
-} from "@/db/data-access/recipe";
+} from "@/db/data-access/recipe-book";
+
 import { createManyContact, deleteAllContact } from "@/db/data-access/contact";
 
 /////////// DASHBOARD ///////////
