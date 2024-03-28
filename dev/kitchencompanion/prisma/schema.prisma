@@ -35,9 +35,10 @@ model Account {
 }
 
 model RateLimiterFlexible {
-  key    String    @id
-  points Int
-  expire DateTime?
+  key     String    @id
+  points  Int
+  expire  DateTime?
+  blocked Boolean?
 }
 
 model VerificationToken {
@@ -78,10 +79,10 @@ model User {
   recipeCategories RecipeCategory[]
   structMenus      StructMenu[]
   checkTemps       CheckTemp[]
-  suppliers Supplier[]
-  notifications Notification[]
-  ingredients Ingredient[]
-  contacts Contact[]
+  suppliers        Supplier[]
+  notifications    Notification[]
+  ingredients      Ingredient[]
+  contacts         Contact[]
 
   /// For NextAuth
   accounts Account[]
@@ -96,10 +97,10 @@ model Kitchen {
   name          String
   costObjective Int    @default(20)
 
-  kitchenRoles     KitchenRole[]
-  kitchenUsers     KitchenUser[]
-  menus            Menu[]
-  checkTemps       CheckTemp[]
+  kitchenRoles    KitchenRole[]
+  kitchenUsers    KitchenUser[]
+  menus           Menu[]
+  checkTemps      CheckTemp[]
   contactKitchens ContactKitchen[]
 
   @@unique([userId, name])
@@ -123,21 +124,21 @@ model KitchenUser {
 }
 
 model Supplier {
-  id   String @id @default(cuid())
-  name String
-  prompt String?
+  id          String  @id @default(cuid())
+  name        String
+  prompt      String?
   description String?
-  user User @relation(fields: [userId], references: [id])
-  userId String 
+  user        User    @relation(fields: [userId], references: [id])
+  userId      String
 
   @@unique([userId, name])
 }
 
 model SupplierSupported {
-  id String @id @default(cuid())
-  name String @unique
+  id          String  @id @default(cuid())
+  name        String  @unique
   phoneNumber String?
-  prompt String?
+  prompt      String?
   description String?
 
   // For dev part
@@ -145,18 +146,18 @@ model SupplierSupported {
 }
 
 model Ingredient {
-  id          String      @id @default(cuid())
-  name        String
-  price       Int
-  unit        UnitMeasure
-  category    String
-  origin      String
+  id           String      @id @default(cuid())
+  name         String
+  price        Int
+  unit         UnitMeasure
+  category     String
+  origin       String
   supplierName String
 
   // supplier    Supplier    @relation(fields: [supplierId], references: [id])
   // supplierId  String
-  user    User    @relation(fields: [userId], references: [id])
-  userId  String
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
 
   @@unique([name, supplierName, userId])
 }
@@ -214,9 +215,9 @@ model Recipe {
 }
 
 model RecipeAllergen {
-  recipe   Recipe  @relation(fields: [recipeId], references: [id])
+  recipe   Recipe   @relation(fields: [recipeId], references: [id])
   recipeId String
-  allergen  Allergen
+  allergen Allergen
 
   @@id([recipeId, allergen])
 }
@@ -255,8 +256,8 @@ model StructMenu {
 model Contact {
   id String @id @default(cuid())
 
-  user      User  @relation(fields: [userId], references: [id])
-  userId    String
+  user         User    @relation(fields: [userId], references: [id])
+  userId       String
   name         String
   description  String?
   phoneNumber  String
@@ -267,15 +268,14 @@ model Contact {
 }
 
 model ContactKitchen {
-  id String @id @default(cuid())
+  id       String   @id @default(cuid())
   isPublic Boolean? @default(false)
 
-  kitchen      Kitchen  @relation(fields: [kitchenId], references: [id])
-  kitchenId    String
+  kitchen   Kitchen @relation(fields: [kitchenId], references: [id])
+  kitchenId String
 
-  contact      Contact  @relation(fields: [contactId], references: [id])
-  contactId    String
-
+  contact   Contact @relation(fields: [contactId], references: [id])
+  contactId String
 }
 
 model CheckTemp {
@@ -291,12 +291,12 @@ model CheckTemp {
 }
 
 model Notification {
-  id String @id @default(cuid())
-  content String
+  id        String    @id @default(cuid())
+  content   String
   notifType NotifType
-  reciver User @relation(fields: [reciverId], references: [id])
+  reciver   User      @relation(fields: [reciverId], references: [id])
   reciverId String
-  read DateTime?
+  read      DateTime?
 }
 
 /// Enums

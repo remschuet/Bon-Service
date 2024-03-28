@@ -228,7 +228,12 @@ export function RegisterForm() {
               </div>
             </div>
             <div>
-              <p className='px-5 text-[0.8rem] text-muted text-center'>
+              <p
+                className={`${
+                  !passwordValid && passwordValid !== null
+                    ? "text-destructive font-semibold"
+                    : " text-muted"
+                } px-5 text-[0.8rem] text-center`}>
                 Votre mot de passe doit contenir au moins 8 caractères, une
                 majuscule, une minuscule et un chiffre.
               </p>
