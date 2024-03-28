@@ -8,7 +8,7 @@ export function SessionProvider({
   session,
 }: {
   children: React.ReactNode;
-  session: UserSession | null;
+  session: UserSession;
 }) {
   return (
     <SessionContext.Provider value={session}>

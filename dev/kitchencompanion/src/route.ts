@@ -41,5 +41,7 @@ export const authRoutes = [
   "/reinitialiser-mot-de-passe",
 ];
 
+export const adminRoutes = ["/market", "/contacts", "/recipes", "/menus"];
+
 export const apiRoutesPrefix = "/api/auth";
 export const DEFAULT_REDIRECT_URL = "/dashboard";

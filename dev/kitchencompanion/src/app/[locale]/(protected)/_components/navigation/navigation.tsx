@@ -12,8 +12,11 @@ import {
 
 import { useNavigation } from "@/hooks/useNavigation";
 import Link from "next/link";
+import { useSession } from "@/hooks/useSession";
 
 export function Nagivation() {
+  const { userType } = useSession();
+
   const { isOpen, setIsOpen, isActive, setIsActive } = useNavigation();
   const toggleOpen = () => setIsOpen(!isOpen);
 
@@ -29,44 +32,69 @@ export function Nagivation() {
   } transition-all duration-1000 ease ${isOpen ? "scale-x-100" : "scale-x-0"}`;
 
   const links = [
-    { path: "/kitchen", icon: <UsersRound />, text: "Cuisines" },
-    { path: "/menus", icon: <NotebookPen />, text: "Menus" },
-    { path: "/recipes", icon: <BookOpen />, text: "Recettes" },
-    { path: "/market", icon: <Store />, text: "Marché" },
-    { path: "/contacts", icon: <Phone />, text: "Contacts" },
+    {
+      path: "/kitchen",
+      icon: <UsersRound />,
+      text: "Cuisines",
+      visibility: ["MEMBER", "ADMIN", "DEV"],
+    },
+    {
+      path: "/menus",
+      icon: <NotebookPen />,
+      text: "Menus",
+      visibility: ["ADMIN", "DEV"],
+    },
+    {
+      path: "/recipes",
+      icon: <BookOpen />,
+      text: "Recettes",
+      visibility: ["ADMIN", "DEV"],
+    },
+    {
+      path: "/market",
+      icon: <Store />,
+      text: "Marché",
+      visibility: ["ADMIN", "DEV"],
+    },
+    {
+      path: "/contacts",
+      icon: <Phone />,
+      text: "Contacts",
+      visibility: ["ADMIN", "DEV"],
+    },
   ];
 
   return (
     <nav
       className={`flex fixed top-0 left-0 z-20 flex-col ${
         isOpen ? "min-w-[12rem]" : "min-w-[4rem]"
-      } h-screen border-r-2 transition-all`}
-    >
+      } h-screen border-r-2 transition-all`}>
       <div
         className={`flex items-center px-5 h-16 border-b-2 w-full cursor-pointer`}
-        onClick={toggleOpen}
-      >
+        onClick={toggleOpen}>
         <Menu />
       </div>
-      <div className="flex flex-col px-3 py-4 space-y-2">
-        {links.map(({ path, icon, text }) => (
-          <Link
-            key={path}
-            className={linkStyle(path)}
-            onClick={() => setIsActive(path)}
-            href={path}
-          >
-            {icon}
-            <span className={textTransition}>{text}</span>
-          </Link>
-        ))}
+      <div className='flex flex-col px-3 py-4 space-y-2'>
+        {links.map(({ path, icon, text, visibility }) => {
+          if (!visibility.includes(userType)) return null;
+
+          return (
+            <Link
+              key={path}
+              className={linkStyle(path)}
+              onClick={() => setIsActive(path)}
+              href={path}>
+              {icon}
+              <span className={textTransition}>{text}</span>
+            </Link>
+          );
+        })}
       </div>
-      <div className="flex flex-col border-t-2 px-3 py-4 space-y-2">
+      <div className='flex flex-col border-t-2 px-3 py-4 space-y-2'>
         <Link
           className={linkStyle("/dashboard")}
           onClick={() => setIsActive("/dashboard")}
-          href="/dashboard"
-        >
+          href='/dashboard'>
           <LayoutDashboard />
           <span className={textTransition}>Portail</span>
         </Link>

@@ -19,7 +19,7 @@ import { useSession } from "@/hooks/useSession";
 import logout from "@/app/[locale]/(protected)/_actions/logout";
 
 export function UserMenu() {
-  const session = useSession();
+  const { name, email } = useSession();
   const [open, setOpen] = useState(false);
 
   return (
@@ -31,19 +31,19 @@ export function UserMenu() {
           <Avatar className='cursor-pointer'>
             <AvatarImage
               src={undefined}
-              alt={session?.user.name}
+              alt={name}
             />
             <AvatarFallback className='bg-brand text-stone-900 font-black'>
-              {session?.user.name[0]}
+              {name[0]}
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent
           align='end'
           className='min-w-[200px] p-1'>
-          <DropdownMenuLabel>{session?.user.name}</DropdownMenuLabel>
+          <DropdownMenuLabel>{name}</DropdownMenuLabel>
           <DropdownMenuLabel className='text-xs font-normal mt-[-10px]'>
-            {session?.user.email}
+            {email}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
