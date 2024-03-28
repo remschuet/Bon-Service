@@ -10,6 +10,7 @@ import { UserTypes } from "@prisma/client";
 type ExtendedUser = DefaultSession["user"] & {
   id: string;
   userType: UserTypes;
+  isPremium: boolean;
 };
 
 declare module "next-auth" {
@@ -46,6 +47,7 @@ export const {
       if (!existingUser) return token;
 
       token.userType = existingUser.userType;
+      token.isPremium = existingUser.isPremium;
 
       return token;
     },
@@ -56,6 +58,10 @@ export const {
 
       if (session.user && token.userType) {
         session.user.userType = token.userType as UserTypes;
+      }
+
+      if (session.user) {
+        session.user.isPremium = token.isPremium as boolean;
       }
 
       return session;
