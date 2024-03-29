@@ -60,54 +60,61 @@ export function IngredientForm() {
 
   return (
     <>
-      <Card className="w-[350px] h-[450px] grid place-content-center">
+      <Card className='w-[350px] h-[450px] grid place-content-center'>
         <CardHeader>Create Ingredient</CardHeader>
         <CardContent>
-          <form action={handleCreateIngredient} className="grid gap-2">
+          <form
+            action={handleCreateIngredient}
+            className='grid gap-2'>
             <input
-              type="text"
-              name="userId"
-              id="userId"
-              placeholder="Enter userId"
-            />
-            <input type="text" name="name" id="name" placeholder="Enter name" />
-            <input
-              type="text"
-              name="price"
-              id="price"
-              placeholder="Enter price (INT)"
+              type='text'
+              name='userId'
+              id='userId'
+              placeholder='Enter userId'
             />
             <input
-              type="text"
-              name="measure"
-              id="measure"
-              placeholder="Enter measure"
+              type='text'
+              name='name'
+              id='name'
+              placeholder='Enter name'
             />
             <input
-              type="text"
-              name="supplierName"
-              id="supplierName"
-              placeholder="Enter supplierName"
+              type='text'
+              name='price'
+              id='price'
+              placeholder='Enter price (INT)'
             />
             <input
-              type="text"
-              name="categorie"
-              id="categorie"
-              placeholder="Enter categorie"
+              type='text'
+              name='measure'
+              id='measure'
+              placeholder='Enter measure'
             />
             <input
-              type="text"
-              name="origin"
-              id="origin"
-              placeholder="Enter origin"
+              type='text'
+              name='supplierName'
+              id='supplierName'
+              placeholder='Enter supplierName'
             />
             <input
-              type="text"
-              name="quantite"
-              id="quantite"
-              placeholder="Enter quantité"
+              type='text'
+              name='categorie'
+              id='categorie'
+              placeholder='Enter categorie'
             />
-            <Button type="submit">Create ingredient</Button>
+            <input
+              type='text'
+              name='origin'
+              id='origin'
+              placeholder='Enter origin'
+            />
+            <input
+              type='text'
+              name='quantite'
+              id='quantite'
+              placeholder='Enter quantité'
+            />
+            <Button type='submit'>Create ingredient</Button>
           </form>
         </CardContent>
       </Card>

@@ -8,7 +8,7 @@ export function PageLayout({ children }: { children: React.ReactNode }) {
   const { isOpen } = useNavigation();
 
   const layoutStyle = isOpen
-    ? "left-[12rem] w-[calc(100%-12rem)]"
+    ? "left-[16rem] w-[calc(100%-16rem)]"
     : "left-[4rem] w-[calc(100%-4rem)]";
 
   return (

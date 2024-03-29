@@ -13,6 +13,6 @@ export async function actionCreateIngredient(ingredient: Ingredient) {
 }
 
 // return all ingredients for a specific id
-export async function actionGetAllIngredient(userId: string) {
-  getAllIngredient(userId);
+export async function getIngredients(userId: string) {
+  return await getAllIngredient(userId);
 }

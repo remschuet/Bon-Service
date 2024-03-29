@@ -72,7 +72,7 @@ model User {
   userType      UserTypes? @default(ADMIN)
   createdAt     DateTime?  @default(now())
   updatedAt     DateTime?  @updatedAt
-  isPremium     Boolean? @default(false)
+  isPremium     Boolean?   @default(false)
 
   kitchens         Kitchen[]
   kitchenUsers     KitchenUser[]
@@ -149,7 +149,7 @@ model SupplierSupported {
 model Ingredient {
   id           String      @id @default(cuid())
   name         String
-  price        Int
+  price        Float
   unit         UnitMeasure
   category     String
   origin       String
@@ -270,7 +270,7 @@ model Contact {
 }
 
 model ContactKitchen {
-  id       String   @id @default(cuid())
+  id String @id @default(cuid())
 
   kitchen   Kitchen @relation(fields: [kitchenId], references: [id])
   kitchenId String
@@ -312,12 +312,15 @@ enum NotifType {
 enum UnitMeasure {
   G
   ML
+  KG
+  L
+  UN
+  LB
   PORTION
   CUP
   OZ
   TBSP
   TSP
-  LBS
 }
 
 enum Allergen {

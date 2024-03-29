@@ -13,6 +13,14 @@ import {
 import { useNavigation } from "@/hooks/useNavigation";
 import Link from "next/link";
 import { useSession } from "@/hooks/useSession";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 
 export function Nagivation() {
   const { userType } = useSession();
@@ -67,7 +75,7 @@ export function Nagivation() {
   return (
     <nav
       className={`flex fixed top-0 left-0 z-20 flex-col ${
-        isOpen ? "min-w-[12rem]" : "min-w-[4rem]"
+        isOpen ? "min-w-[16rem]" : "min-w-[4rem]"
       } h-screen border-r-2 transition-all`}>
       <div
         className={`flex items-center px-5 h-16 border-b-2 w-full cursor-pointer`}
@@ -99,6 +107,24 @@ export function Nagivation() {
           <span className={textTransition}>Portail</span>
         </Link>
       </div>
+      {isOpen && (
+        <Card className='absolute grid place-items-center mx-2 top-[calc(100vh-238px)] bg-stone-200 max-w-[16rem] h-[230px]'>
+          <CardHeader className='space-y-5'>
+            <CardTitle className='text-xl text-center'>
+              Bon Service Pro
+            </CardTitle>
+            <CardDescription className='text-primary text-[0.8rem]'>
+              Accédez à des options exclusives, telles que l'importation de vos
+              reçus, la création de multiples cuisines et bien plus encore.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Link href='/premium'>
+              <Button className='font-semibold'>Devenir Pro</Button>
+            </Link>
+          </CardContent>
+        </Card>
+      )}
     </nav>
   );
 }

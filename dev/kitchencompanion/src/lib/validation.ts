@@ -20,4 +20,33 @@ export const PasswordResetSchema = z.object({
   email: z.string().email({ message: "Courriel invalide" }),
 });
 
+export const IngredientSchema = z.object({
+  name: z.string().min(1).max(36),
+  price: z.number().min(0.01),
+  unit: z.union([
+    z.literal("G"),
+    z.literal("KG"),
+    z.literal("L"),
+    z.literal("ML"),
+    z.literal("OZ"),
+    z.literal("UN"),
+    z.literal("LB"),
+  ]),
+  category: z.union([
+    z.literal("Fruit & Légume"),
+    z.literal("Viande"),
+    z.literal("Poisson"),
+    z.literal("Produit Laitier"),
+    z.literal("Pâtisserie"),
+    z.literal("Sec"),
+    z.literal("Charcuterie"),
+    z.literal("Congeler"),
+    z.literal("Fines Herbes"),
+    z.literal("Autre"),
+  ]),
+  origin: z.string().min(1).max(5),
+  supplierName: z.string().min(1).max(36),
+  userId: z.string().min(1).max(36),
+});
+
 export const partialRegistrationSchema = RegistrationSchema.partial();

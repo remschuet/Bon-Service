@@ -61,7 +61,7 @@ export function UserMenu() {
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem className='font-semibold'>
-              Premium
+              Bon Service Pro
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
