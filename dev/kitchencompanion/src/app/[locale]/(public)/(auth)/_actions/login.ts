@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { LoginSchema } from "@/lib/validation";
 
-import { createVerificationToken } from "@/lib/tokens";
+import { createVerificationToken } from "@/lib/auth/tokens";
 import { getUser } from "@/db/data-access/user";
 
 import { signIn } from "@/auth";
@@ -11,7 +11,7 @@ import { DEFAULT_REDIRECT_URL } from "@/route";
 import { AuthError } from "next-auth";
 
 import bcrypt from "bcryptjs";
-import { sendVerificationEmail } from "@/lib/mail";
+import { sendVerificationEmail } from "@/lib/auth/mail";
 
 import { headers } from "next/headers";
 import {
@@ -19,7 +19,7 @@ import {
   getEmailIPkey,
   isAccountBlocked,
   rateLimitLogin,
-} from "@/lib/rate-limiter";
+} from "@/lib/auth/rate-limiter";
 import { ResponseMessage } from "@/lib/type";
 
 /**

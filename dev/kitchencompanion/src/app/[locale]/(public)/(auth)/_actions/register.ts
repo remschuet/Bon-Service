@@ -1,8 +1,8 @@
 "use server";
 
 import { createUser, getUser } from "@/db/data-access/user";
-import { sendVerificationEmail } from "@/lib/mail";
-import { createVerificationToken } from "@/lib/tokens";
+import { sendVerificationEmail } from "@/lib/auth/mail";
+import { createVerificationToken } from "@/lib/auth/tokens";
 import { User } from "@prisma/client";
 import bcrypt from "bcryptjs";
 

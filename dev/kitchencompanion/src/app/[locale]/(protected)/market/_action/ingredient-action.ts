@@ -8,10 +8,18 @@ import {
 
 import { Ingredient } from "@prisma/client";
 import { IngredientSchema } from "@/lib/validation";
-import { revalidatePath } from "next/cache";
 
 export async function addIngredient(formData: FormData) {
-  const price =
+  const checkUnit = (unit: string) => {
+    if (unit === "G") {
+      return "KG";
+    } else if (unit === "ML") {
+      return "L";
+    }
+    return unit;
+  };
+
+  let price =
     parseFloat(formData.get("price") as string) /
     (parseInt(formData.get("quantity") as string) *
       (formData.get("amount-unit") !== null
@@ -20,10 +28,12 @@ export async function addIngredient(formData: FormData) {
 
   const unit = formData.get("unit") as string;
 
+  price = unit === "G" || unit === "ML" ? price * 1000 : price;
+
   const ingredient = {
     name: formData.get("name") as string,
     price: parseFloat(price.toFixed(5)),
-    unit: unit,
+    unit: checkUnit(unit),
     category: formData.get("category") as string,
     origin: formData.get("origin") as string,
     supplierName: formData.get("supplierName") as string,
@@ -38,7 +48,6 @@ export async function addIngredient(formData: FormData) {
 
   createIngredient(validatedIngredient.data as Ingredient);
 
-  revalidatePath("/market");
   return { success: "Ingrédient ajouté avec succès", status: 200 };
 }
 

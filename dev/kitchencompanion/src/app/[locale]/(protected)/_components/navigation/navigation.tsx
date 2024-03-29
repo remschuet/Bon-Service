@@ -24,7 +24,7 @@ import { useNavigation } from "@/hooks/useNavigation";
 import { useSession } from "@/hooks/useSession";
 
 export function Nagivation() {
-  const { userType } = useSession();
+  const { userType, isPremium } = useSession();
 
   const { isOpen, setIsOpen, isActive, setIsActive } = useNavigation();
   const toggleOpen = () => setIsOpen(!isOpen);
@@ -108,7 +108,7 @@ export function Nagivation() {
           <span className={textTransition}>Portail</span>
         </Link>
       </div>
-      {isOpen && (
+      {isOpen && !isPremium && (
         <Card className='absolute grid place-items-center mx-2 top-[calc(100vh-238px)] bg-stone-200 max-w-[16rem] h-[230px]'>
           <CardHeader className='space-y-5'>
             <CardTitle className='text-xl text-center'>
