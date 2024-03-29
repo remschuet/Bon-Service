@@ -36,7 +36,7 @@ export const columns: ColumnDef<Ingredient>[] = [
         <Button
           variant='ghost'
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          Name
+          Nom
           <ArrowUpDown className='ml-2 h-4 w-4 opacity-50' />
         </Button>
       );
@@ -49,7 +49,7 @@ export const columns: ColumnDef<Ingredient>[] = [
         <Button
           variant='ghost'
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          Supplier
+          Fournisseur
           <ArrowUpDown className='ml-2 h-4 w-4 opacity-50' />
         </Button>
       );
@@ -62,7 +62,7 @@ export const columns: ColumnDef<Ingredient>[] = [
         <Button
           variant='ghost'
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          Category
+          Catégorie
           <ArrowUpDown className='ml-2 h-4 w-4 opacity-50' />
         </Button>
       );
@@ -70,11 +70,11 @@ export const columns: ColumnDef<Ingredient>[] = [
   },
   {
     accessorKey: "origin",
-    header: "Origin",
+    header: "Origine",
   },
   {
     accessorKey: "price",
-    header: () => <div className='w-[25px]'>Price</div>,
+    header: () => <div className='w-[25px]'>Prix</div>,
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("price"));
       const formatted = new Intl.NumberFormat("en-CA", {
@@ -87,6 +87,6 @@ export const columns: ColumnDef<Ingredient>[] = [
   },
   {
     accessorKey: "unit",
-    header: () => <div className='w-[25px]'>Unit</div>,
+    header: () => <div className='w-[25px]'>Unité</div>,
   },
 ];
