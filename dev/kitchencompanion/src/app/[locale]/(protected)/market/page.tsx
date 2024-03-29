@@ -11,28 +11,19 @@ import { AddIngredient } from "@/app/[locale]/(protected)/market/_components/add
 export default function MarketPage() {
   useRedirectMembers();
 
-  const { isPremium, id } = useSession();
+  const { isPremium } = useSession();
 
   return (
-    <div className=' flex flex-col gap-2 max-w-[80%] mx-auto space-y-20'>
-      <div className='space-y-5'>
-        <div className='flex gap-5 justify-end mt-6'>
-          <AddIngredient />
+    <div className='container mx-auto pt-10'>
+      <div className='space-y-5'></div>
+      <div className='flex gap-5 justify-end mt-6'>
+        <AddIngredient />
 
-          {!isPremium ? (
-            <Button variant='outline'>Devenir membre premium</Button>
-          ) : (
-            <Button>Ajouter un reçu</Button>
-          )}
-        </div>
-
-        <div className='flex justify-end'>
-          <Input
-            className='md:w-[100px] lg:w-[300px]'
-            placeholder='Rechercher...'
-            type='search'
-          />
-        </div>
+        {!isPremium ? (
+          <Button variant='outline'>Devenir membre premium</Button>
+        ) : (
+          <Button>Ajouter un reçu</Button>
+        )}
       </div>
 
       <IngredientsList />

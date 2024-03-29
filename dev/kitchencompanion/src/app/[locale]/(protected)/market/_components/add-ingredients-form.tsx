@@ -1,10 +1,7 @@
 "use client";
 
 import { addIngredient } from "@/app/[locale]/(protected)/market/_action/ingredient-action";
-import {
-  AlertDialogAction,
-  AlertDialogCancel,
-} from "@/components/ui/alert-dialog";
+import { AlertDialogCancel } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {

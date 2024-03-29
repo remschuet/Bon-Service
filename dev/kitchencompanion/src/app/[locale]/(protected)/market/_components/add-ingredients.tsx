@@ -6,7 +6,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { AddIngredientsForm } from "./add-ingredients-form";
+import { AddIngredientsForm } from "@/app/[locale]/(protected)/market/_components/add-ingredients-form";
 import { BadgePlus } from "lucide-react";
 
 export function AddIngredient() {

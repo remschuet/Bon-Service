@@ -6,7 +6,7 @@ import { Location } from "./location";
 export function Header({ className }: { className?: string }) {
   return (
     <div
-      className={`flex fixed top-0 justify-between py-2 px-6 border-b-2 z-10 bg-background min-h-[6vh] ${className}`}>
+      className={`flex fixed top-0 justify-between py-2 px-6 border-b-2 z-10 bg-background h-[4rem] ${className}`}>
       <Location />
       <div className='flex items-center space-x-3'>
         <Notification />

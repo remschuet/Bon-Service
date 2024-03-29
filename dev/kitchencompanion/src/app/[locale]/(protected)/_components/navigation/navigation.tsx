@@ -10,9 +10,7 @@ import {
   BookOpen,
 } from "lucide-react";
 
-import { useNavigation } from "@/hooks/useNavigation";
 import Link from "next/link";
-import { useSession } from "@/hooks/useSession";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -21,6 +19,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
+import { useNavigation } from "@/hooks/useNavigation";
+import { useSession } from "@/hooks/useSession";
 
 export function Nagivation() {
   const { userType } = useSession();

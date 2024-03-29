@@ -8,6 +8,7 @@ import {
 
 import { Ingredient } from "@prisma/client";
 import { IngredientSchema } from "@/lib/validation";
+import { revalidatePath } from "next/cache";
 
 export async function addIngredient(formData: FormData) {
   const price =
@@ -32,11 +33,13 @@ export async function addIngredient(formData: FormData) {
   const validatedIngredient = IngredientSchema.safeParse(ingredient);
 
   if (!validatedIngredient.success) {
-    console.error("Invalid ingredient data: ", validatedIngredient.error);
-    return { error: "Invalid ingredient data", status: 400 };
+    return { error: "Les données saisies sont invalides.", status: 400 };
   }
 
   createIngredient(validatedIngredient.data as Ingredient);
+
+  revalidatePath("/market");
+  return { success: "Ingrédient ajouté avec succès", status: 200 };
 }
 
 // return all ingredients for a specific id
