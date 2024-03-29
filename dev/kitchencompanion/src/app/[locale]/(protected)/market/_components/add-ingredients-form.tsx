@@ -5,6 +5,7 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -130,8 +131,8 @@ export function AddIngredientsForm() {
           </div>
         </div>
         <div className='flex gap-2 justify-end'>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction type='submit'>Ajouter</AlertDialogAction>
+          <AlertDialogCancel>Quitter</AlertDialogCancel>
+          <Button type='submit'>Ajouter</Button>
         </div>
       </form>
     </div>
