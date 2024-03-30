@@ -154,6 +154,26 @@ export async function linkContactKitchen(contactId: string, kitchenId: string) {
 }
 
 /**
+ * Description: Get all links between a kitchen and its associated contacts.
+ * @param kitchenId - The ID of the kitchen.
+ * @returns An array of contact-kitchen link objects.
+ */
+export async function getAllContactLinksToKitchen(kitchenId: string) {
+  try {
+    return await db.contactKitchen.findMany({
+      where: {
+        kitchenId: kitchenId,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/contact: getAllContactLinksToKitchen(), error: ",
+      error
+    );
+  }
+}
+
+/**
  * Delete a link between a contact and a kitchen in the database.
  * @param contactId - The ID of the contact to unlink.
  * @param kitchenId - The ID of the kitchen to unlink.
