@@ -1,10 +1,11 @@
 "use client";
 
+import { useNotification } from "@/hooks/useNotification";
 import { Bell, Dot } from "lucide-react";
-import { useState } from "react";
 
 export function Notification() {
-  const [asNotifications, setAsNotifications] = useState(false);
+  const { notifications } = useNotification();
+  const asNotifications = notifications.length > 0;
 
   return (
     <div className='relative rounded-[100%] p-2 cursor-pointer hover:bg-stone-300/30'>

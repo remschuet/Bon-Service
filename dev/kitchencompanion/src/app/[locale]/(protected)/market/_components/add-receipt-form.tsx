@@ -1,4 +1,4 @@
-import processReceipt from "@/app/[locale]/(public)/test/upload/_action/process-receipt";
+import processReceipt from "@/app/[locale]/(protected)/market/_action/process-receipt";
 import { AlertDialogCancel } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,15 +10,40 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
+import { useNotification } from "@/hooks/useNotification";
 import { useSelectedSupplier } from "@/hooks/useSelectedSupplier";
+import { useSession } from "@/hooks/useSession";
 
 export function AddReceiptForm() {
   const { isOther, setSupplier } = useSelectedSupplier();
+  const { id } = useSession();
+  const { toast } = useToast();
+
+  function handleReceipt(formData: FormData) {
+    formData.append("userId", id);
+    try {
+      processReceipt(formData);
+
+      toast({
+        title: "Reçu téléversé",
+        description: "Votre reçu a été téléversé avec succès.",
+        action: (
+          <ToastAction altText='Process the receipt'>
+            Vérifier les données
+          </ToastAction>
+        ),
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <form
-      className='flex flex-col space-y-2 w-[80%] mx-auto'
-      action={processReceipt}>
+      className='flex flex-col w-[80%] space-y-2 mx-auto'
+      action={handleReceipt}>
       <Input
         type='file'
         name='file'
@@ -35,7 +60,7 @@ export function AddReceiptForm() {
             <SelectItem value='hector_larivee'>Hector Larivée</SelectItem>
             <SelectItem value='birri'>Birri</SelectItem>
             <SelectItem value='distribution_alsa'>Distribution Alsa</SelectItem>
-            <SelectItem value='Pmaison_du_roti'>Maison du rôti</SelectItem>
+            <SelectItem value='maison_du_roti'>Maison du rôti</SelectItem>
             <SelectItem value='marc_mushroom'>Marc's Mushroom</SelectItem>
             <SelectItem value='la_fermette'>La Fermette</SelectItem>
             <SelectItem value='krinos'>Krinos</SelectItem>
@@ -61,7 +86,7 @@ export function AddReceiptForm() {
         />
       )}
 
-      <div className='flex gap-2 self-end'>
+      <div className='flex gap-2 self-end pt-3'>
         <AlertDialogCancel>Quitter</AlertDialogCancel>
         <Button type='submit'>Téléverser</Button>
       </div>
