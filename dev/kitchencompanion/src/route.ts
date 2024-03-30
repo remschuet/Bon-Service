@@ -7,15 +7,21 @@
 
 export const publicRoutes = [
   "/",
+  "/not-found",
   "/privacy",
   "/account-verification",
+  "/verification-compte",
   "/forgot-password",
+  "/mot-de-passe-oublie",
   "/terms",
   "/test",
   "/test/kitchen",
   "/test/supplier",
   "/test/linkKitchenUser",
   "/test/upload",
+  "/test/ingredient",
+  "/test/recipe",
+  "/test/bottin",
 ];
 
 /**
@@ -26,7 +32,16 @@ export const publicRoutes = [
  * Will be used to redirect users to the dashboard if they are already authenticated.
  */
 
-export const authRoutes = ["/login", "/register", "/password-reset"];
+export const authRoutes = [
+  "/login",
+  "/connexion",
+  "/register",
+  "/enregistrement",
+  "/password-reset",
+  "/reinitialiser-mot-de-passe",
+];
+
+export const adminRoutes = ["/market", "/contacts", "/recipes", "/menus"];
 
 export const apiRoutesPrefix = "/api/auth";
 export const DEFAULT_REDIRECT_URL = "/dashboard";

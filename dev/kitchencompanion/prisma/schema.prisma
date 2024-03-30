@@ -35,9 +35,10 @@ model Account {
 }
 
 model RateLimiterFlexible {
-  key    String    @id
-  points Int
-  expire DateTime?
+  key     String    @id
+  points  Int
+  expire  DateTime?
+  blocked Boolean?
 }
 
 model VerificationToken {
@@ -71,6 +72,7 @@ model User {
   userType      UserTypes? @default(ADMIN)
   createdAt     DateTime?  @default(now())
   updatedAt     DateTime?  @updatedAt
+  isPremium     Boolean?   @default(false)
 
   kitchens         Kitchen[]
   kitchenUsers     KitchenUser[]
@@ -78,6 +80,10 @@ model User {
   recipeCategories RecipeCategory[]
   structMenus      StructMenu[]
   checkTemps       CheckTemp[]
+  suppliers        Supplier[]
+  notifications    Notification[]
+  ingredients      Ingredient[]
+  contacts         Contact[]
 
   /// For NextAuth
   accounts Account[]
@@ -92,12 +98,11 @@ model Kitchen {
   name          String
   costObjective Int    @default(20)
 
-  kitchenRoles     KitchenRole[]
-  kitchenUsers     KitchenUser[]
-  menus            Menu[]
-  phoneBooks       PhoneBook[]
-  checkTemps       CheckTemp[]
-  supplierKitchens SupplierKitchen[]
+  kitchenRoles    KitchenRole[]
+  kitchenUsers    KitchenUser[]
+  menus           Menu[]
+  checkTemps      CheckTemp[]
+  contactKitchens ContactKitchen[]
 
   @@unique([userId, name])
 }
@@ -120,32 +125,42 @@ model KitchenUser {
 }
 
 model Supplier {
-  id   String @id @default(cuid())
-  name String @unique
+  id          String  @id @default(cuid())
+  name        String
+  prompt      String?
+  description String?
+  user        User    @relation(fields: [userId], references: [id])
+  userId      String
 
-  ingredients      Ingredient[]
-  supplierKitchens SupplierKitchen[]
+  @@unique([userId, name])
 }
 
-model SupplierKitchen {
-  id         String   @id @default(cuid())
-  kitchen    Kitchen  @relation(fields: [kitchenId], references: [id])
-  kitchenId  String
-  supplier   Supplier @relation(fields: [supplierId], references: [id])
-  supplierId String
+model SupplierSupported {
+  id          String  @id @default(cuid())
+  name        String  @unique
+  phoneNumber String?
+  prompt      String?
+  description String?
 
-  @@unique([kitchenId, supplierId])
+  // For dev part
+  isPublic Boolean @default(false)
 }
 
 model Ingredient {
-  id          String      @id @default(cuid())
-  name        String
-  unitPrice   Int
-  unitMeasure UnitMeasure
-  supplier    Supplier    @relation(fields: [supplierId], references: [id])
-  supplierId  String
+  id           String      @id @default(cuid())
+  name         String
+  price        Float
+  unit         UnitMeasure
+  category     String
+  origin       String
+  supplierName String
 
-  @@unique([name, supplierId])
+  // supplier    Supplier    @relation(fields: [supplierId], references: [id])
+  // supplierId  String
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  @@unique([name, supplierName, userId])
 }
 
 model RecipeBook {
@@ -201,9 +216,9 @@ model Recipe {
 }
 
 model RecipeAllergen {
-  recipe   Recipe  @relation(fields: [recipeId], references: [id])
+  recipe   Recipe   @relation(fields: [recipeId], references: [id])
   recipeId String
-  allergen  Allergen
+  allergen Allergen
 
   @@id([recipeId, allergen])
 }
@@ -225,7 +240,7 @@ model Menu {
   kitchen   Kitchen @relation(fields: [kitchenId], references: [id])
   kitchenId String
 
-  isPublic Boolean? @default(false)
+  isPublic Boolean @default(false)
   dishs    Json?
 }
 
@@ -239,16 +254,31 @@ model StructMenu {
   @@unique([userId, category])
 }
 
-model PhoneBook {
+model Contact {
   id String @id @default(cuid())
 
-  kitchen      Kitchen  @relation(fields: [kitchenId], references: [id])
-  kitchenId    String
+  user         User    @relation(fields: [userId], references: [id])
+  userId       String
   name         String
   description  String?
   phoneNumber  String
-  compteNumber String
-  isPublic     Boolean? @default(false)
+  compteNumber String?
+
+  contactKitchens ContactKitchen[]
+
+  @@unique([userId, name, phoneNumber])
+}
+
+model ContactKitchen {
+  id String @id @default(cuid())
+
+  kitchen   Kitchen @relation(fields: [kitchenId], references: [id])
+  kitchenId String
+
+  contact   Contact @relation(fields: [contactId], references: [id])
+  contactId String
+
+  @@unique([contactId, kitchenId])
 }
 
 model CheckTemp {
@@ -259,20 +289,38 @@ model CheckTemp {
   user      User    @relation(fields: [userId], references: [id])
   userId    String
 
-  date DateTime? @default(now())
+  date DateTime @default(now())
   temp Float
 }
 
+model Notification {
+  id      String     @id @default(cuid())
+  content String
+  type    NotifTypes
+  user    User       @relation(fields: [userId], references: [id])
+  userId  String
+  read    DateTime?
+}
+
 /// Enums
+enum NotifTypes {
+  OPENAI_RETURN
+  UPDATE_RECIPE
+  GENERAL_UPDATE
+}
+
 enum UnitMeasure {
   G
   ML
+  KG
+  L
+  UN
+  LB
   PORTION
   CUP
   OZ
   TBSP
   TSP
-  LBS
 }
 
 enum Allergen {

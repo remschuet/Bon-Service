@@ -9,6 +9,7 @@ export type UserSession = {
     name: string;
     email: string;
     userType: string;
+    isPremium: boolean;
     id: string;
   };
 };

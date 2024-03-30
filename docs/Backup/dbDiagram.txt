@@ -68,6 +68,7 @@ Table User {
   avatar_key int [ref: > Avatar.key]
   created_at Date [default: 0] /*NOW()*/
   updated_at Date
+  isPremium bool [default: false]
 }
 
 Table Kitchen {
@@ -106,7 +107,6 @@ Table Supplier{
   id int [pk]
   name varchar
   description varchar
-  phoneNumber varchar
   prompt varchar
   user int [ref: > User.id]
 }
@@ -124,8 +124,10 @@ Table Ingredient {
   /*unitPrice 499 = 4.99*/
   id int [pk]
   name varchar
-  unitPrice int 
-  unitMeasure UnitMeasure
+  price int 
+  unit UnitMeasure
+  category varchar
+  origin varchar
   supplierName varchar
   user int [ref: > User.id]
 }
@@ -203,7 +205,7 @@ Table structMenu {
   category varchar [pk]
 }
 
-Table PhoneBook {
+Table Contact {
  /*When yield add, create to phone book*/ 
   id int [pk]
   user int [ref: > User.id]
@@ -214,11 +216,10 @@ Table PhoneBook {
   compteNumber varchar
 }
 
-Table PhoneBookKitchen {
+Table ContactKitchen {
   id int [pk]
   kitchen int [ref: > Kitchen.id]
-  phoneBook int [ref: > PhoneBook.id]
-  isPublic bool [default: false]
+  contact int [ref: > Contact.id]
 }
 
 Table CheckTemp {
@@ -245,3 +246,5 @@ Table Video {
   key int [pk]
   value varchar
 }
+
+Ref: "User"."id" < "User"."password"

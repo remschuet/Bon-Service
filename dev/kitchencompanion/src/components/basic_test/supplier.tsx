@@ -3,7 +3,6 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import {
   createSupplier,
   getAllSuppliers,
-  linkSupplierKitchen,
   getSupplier,
 } from "@/db/data-access/supplier";
 import { revalidatePath } from "next/cache";
@@ -25,29 +24,24 @@ export async function CreateSupplier() {
   async function linkSupplier(formData: FormData) {
     "use server";
 
+    /*
     const supplier = await getSupplier(formData.get("name") as string);
     if (supplier) {
       await linkSupplierKitchen(supplier.id, "kitchen Id");
     }
     revalidatePath("/test");
+  */
   }
 
   return (
     <>
-      <Card className='w-[350px] h-[450px] grid place-content-center'>
+      <Card className="w-[350px] h-[450px] grid place-content-center">
         <CardHeader>Link Supplier</CardHeader>
         <CardContent>
-          <form
-            action={handleCreateSupplier}
-            className='grid gap-2'>
-            <label htmlFor='name'>Name</label>
-            <input
-              type='text'
-              name='name'
-              id='name'
-              placeholder='Enter name'
-            />
-            <Button type='submit'>Create Supplier</Button>
+          <form action={handleCreateSupplier} className="grid gap-2">
+            <label htmlFor="name">Name</label>
+            <input type="text" name="name" id="name" placeholder="Enter name" />
+            <Button type="submit">Create Supplier</Button>
           </form>
         </CardContent>
 
@@ -58,20 +52,13 @@ export async function CreateSupplier() {
           ))}
         </ul>
       </Card>
-      <Card className='w-[350px] h-[450px] grid place-content-center'>
+      <Card className="w-[350px] h-[450px] grid place-content-center">
         <CardHeader>Create Supplier (DEV)</CardHeader>
         <CardContent>
-          <form
-            action={handleCreateSupplier}
-            className='grid gap-2'>
-            <label htmlFor='name'>Name</label>
-            <input
-              type='text'
-              name='name'
-              id='name'
-              placeholder='Enter name'
-            />
-            <Button type='submit'>Create Supplier</Button>
+          <form action={handleCreateSupplier} className="grid gap-2">
+            <label htmlFor="name">Name</label>
+            <input type="text" name="name" id="name" placeholder="Enter name" />
+            <Button type="submit">Create Supplier</Button>
           </form>
         </CardContent>
 

@@ -12,14 +12,10 @@ import { revalidatePath } from "next/cache";
 import {
   createSupplier,
   getAllSuppliers,
-  linkSupplierKitchen,
   getSupplier,
 } from "@/db/data-access/supplier";
 
-import {
-  createIngredient,
-  getAllIngredientBySupplierId,
-} from "@/db/data-access/ingredient";
+import { createIngredient } from "@/db/data-access/ingredient";
 import { $Enums, Ingredient, Supplier, UnitMeasure } from "@prisma/client";
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -33,8 +29,8 @@ const data = [
 ];
 
 export default async function handler(supplierId: string) {
-  const ingredients = await getAllIngredientBySupplierId(supplierId);
-  return ingredients;
+  // const ingredients = await getAllIngredientBySupplierId(supplierId);
+  //return ingredients;
 }
 
 export function DataTableDemo() {
@@ -42,7 +38,7 @@ export function DataTableDemo() {
 
   async function buildIngredientList(formData: FormData) {
     "use server";
-    const ingredientsList = await getAllIngredientBySupplierId(
+    /*const ingredientsList = await getAllIngredientBySupplierId(
       formData.get("supplierId") as string
     );
     ingredientsList.forEach((ingredient) => {
@@ -52,12 +48,12 @@ export function DataTableDemo() {
         price: ingredient.unitPrice, // Modification de unitPrice à price pour correspondre à la structure de data
         quantity: ingredient.unitMeasure, // Modification de unitMeasure à quantity pour correspondre à la structure de data
       });
-    });
+    });*/
   }
 
   async function linkSupplier(formData: FormData) {
     "use server";
-
+    /*
     const supplier = await getSupplier(formData.get("supplierName") as string);
 
     const kitchenId = formData.get("kitchenId") as string;
@@ -66,11 +62,12 @@ export function DataTableDemo() {
       await linkSupplierKitchen(supplier.id, kitchenId);
     }
     revalidatePath("/test");
+  */
   }
 
   async function handleCreateIngredient(formData: FormData) {
     "use server";
-    const priceValue = formData.get("price");
+    /*const priceValue = formData.get("price");
     const unitPrice =
       typeof priceValue === "string" ? parseInt(priceValue, 10) : 0;
 
@@ -82,6 +79,7 @@ export function DataTableDemo() {
     };
     await createIngredient(newIngredient as Ingredient);
     revalidatePath("/test");
+  */
   }
 
   async function handleCreateSupplier(formData: FormData) {

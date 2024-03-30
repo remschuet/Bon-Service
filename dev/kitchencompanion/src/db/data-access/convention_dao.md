@@ -28,6 +28,10 @@ update multiple ligne form the database
 `link`<br>
 midle table like n kitchen and n user
 
+`dev`<br>
+function just for the user "DEV"
+NOT SUPPOSED to be accessible for other users
+
 ### Ending with
 
 `ById`<br>
