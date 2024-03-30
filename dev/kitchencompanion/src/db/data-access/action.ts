@@ -86,7 +86,6 @@ export async function action_initUser(userId: string) {
             name: supplier.name,
             description: supplier.description,
             phoneNumber: supplier.phoneNumber,
-            isPublic: false,
           } as Contact);
         }
       });
