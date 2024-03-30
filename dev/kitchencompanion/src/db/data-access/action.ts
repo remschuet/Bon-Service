@@ -24,7 +24,14 @@ import {
   getAllRecipeBookByUserId,
 } from "@/db/data-access/recipe-book";
 
-import { createManyContact, deleteAllContact } from "@/db/data-access/contact";
+import {
+  createContact,
+  createManyContact,
+  deleteAllContact,
+  getContact,
+  linkContactKitchen,
+} from "@/db/data-access/contact";
+import { getKitchenByAdminAndName, linkKitchenUserById } from "./kitchen";
 
 /////////// DASHBOARD ///////////
 // kitchen: getAllKitchenByAdminId() -> return all kitchens created by specified admin
@@ -125,7 +132,40 @@ export async function action_removeDataUser(userId: string) {
 export async function action_initSupplierSupported() {}
 
 //// CONTACT ////
-export async function action_NewContactPublicForKitchen() {}
+
+/**
+ * Creates a new contact and links it to the specified kitchens.
+ * @param contact - the contact information to create
+ * @param kitchenNames - the names of the kitchens to link the contact to
+ */
+export async function action_CreateContact(
+  contact: Contact,
+  kitchenNames: string[]
+) {
+  let kitchenIds: string[] = [];
+  // Create contact
+  const newContact = await createContact(contact);
+  if (!newContact) {
+    return; // raise error
+  }
+
+  // build kitchenId array from name
+  for (let i = 0; i < kitchenNames.length; i++) {
+    let kitchen = await getKitchenByAdminAndName(
+      contact.userId,
+      kitchenNames[i]
+    );
+    if (kitchen === null || kitchen === undefined) {
+      return; // raise error
+    }
+
+    kitchenIds.push(kitchen.id);
+  }
+  // Adding link
+  for (let i = 0; i < kitchenIds.length; i++) {
+    linkContactKitchen(newContact.id, kitchenIds[i]);
+  }
+}
 export async function action_DeleteContactPublicForKitchen() {}
 export async function action_GetContactPublicForKitchenByUser(userId: string) {}
 export async function action_GetContactPublicForKitchenByKitchenId(

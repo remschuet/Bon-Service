@@ -24,7 +24,6 @@ export async function createContact(contact: Contact) {
         description: contact.description,
         phoneNumber: contact.phoneNumber,
         compteNumber: contact.compteNumber,
-        isPublic: contact.isPublic,
       },
     });
   } catch (error) {
@@ -66,6 +65,31 @@ export async function getAllContact(userId: string) {
 }
 
 /**
+ * Description: Get a contact by userId, name, and phoneNumber.
+ * @param userId - The userId of the contact.
+ * @param name - The name of the contact.
+ * @param phoneNumber - The phoneNumber of the contact.
+ * @returns The contact if found, or null if not found.
+ */
+export async function getContact(
+  userId: string,
+  name: string,
+  phoneNumber: string
+) {
+  try {
+    return await db.contact.findFirst({
+      where: {
+        userId: userId,
+        name: name,
+        phoneNumber: phoneNumber,
+      },
+    });
+  } catch (error) {
+    console.error("Error data-access/contact: getContact(), error: ", error);
+  }
+}
+
+/**
  * Delete all contacts associated with a given user ID (ADMIN).
  * @param userId - The ID of the user (ADMIN) whose contacts should be deleted.
  * @returns The number of contacts that were deleted.
@@ -98,7 +122,6 @@ export async function updateContact(contactId: string, contact: Contact) {
         description: contact.description,
         phoneNumber: contact.phoneNumber,
         compteNumber: contact.compteNumber,
-        isPublic: contact.isPublic,
       },
     });
   } catch (error) {
