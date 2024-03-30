@@ -4,6 +4,8 @@ import {} from "@/db/data-access/action";
 import {
   createIngredient,
   getAllIngredient,
+  getIngredientIfExist,
+  updateIngredientPrice,
 } from "@/db/data-access/ingredient";
 
 import { Ingredient } from "@prisma/client";
@@ -46,9 +48,31 @@ export async function addIngredient(formData: FormData) {
     return { error: "Les données saisies sont invalides.", status: 400 };
   }
 
-  createIngredient(validatedIngredient.data as Ingredient);
+  createOrUpdateIgredient(validatedIngredient.data as Ingredient);
 
   return { success: "Ingrédient ajouté avec succès", status: 200 };
+}
+
+// Create or update ingredient or price
+async function createOrUpdateIgredient(ingredient: Ingredient) {
+  if (
+    await getIngredientIfExist(
+      ingredient.name,
+      ingredient.userId,
+      ingredient.supplierName
+    )
+  ) {
+    // Avertissement usagé ?
+    console.log("L'ingredient existe deja");
+    updateIngredientPrice(
+      ingredient.name,
+      ingredient.userId,
+      ingredient.supplierName,
+      ingredient.price
+    );
+  } else {
+    createIngredient(ingredient);
+  }
 }
 
 // return all ingredients for a specific id
