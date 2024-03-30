@@ -60,6 +60,38 @@ export async function getAllIngredientBySupplierNameAndUserId(
 }
 
 /**
+ * Get if specific ingredient exist.
+ * @param name - The name of the ingredient to retrieve.
+ * @param userId - The id of the user who owns the ingredients.
+ * @param supplierName - The name of the ingredient's supplier.
+ * @returns true or false.
+ */
+export async function getIngredientIfExist(
+  name: string,
+  userId: string,
+  supplierName: string
+): Promise<boolean> {
+  try {
+    const isExisting = await db.ingredient.findFirst({
+      where: {
+        name: name,
+        userId: userId,
+        supplierName: supplierName,
+      },
+    });
+    console.log("values:", isExisting);
+
+    return !!isExisting;
+  } catch (error) {
+    console.error(
+      "Error data-access/ingredient: getIngredient(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
+/**
  * Get all ingredient by userId
  * @param userId - The id of the user who owns the ingredients.
  * @returns A promise that resolves to the created ingredient
@@ -95,6 +127,32 @@ export async function getPriceIngredientById(ingredientId: string) {
   } catch (error) {
     console.error(
       "Error data-access/ingredient: getPriceIngredientById(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
+export async function updateIngredientPrice(
+  name: string,
+  userId: string,
+  supplierName: string,
+  price: number
+) {
+  try {
+    return await db.ingredient.updateMany({
+      where: {
+        name,
+        userId,
+        supplierName,
+      },
+      data: {
+        price,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/ingredient: updateIngredientPrice(), error: ",
       error
     );
     throw error;
