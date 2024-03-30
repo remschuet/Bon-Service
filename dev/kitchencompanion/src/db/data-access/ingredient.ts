@@ -7,10 +7,10 @@ import { db } from "@/db/prisma-db";
 ////////////////////////////////
 
 /**
- * @description
- * @Table Kitchen
+ * Creates a new ingredient in the database.
+ * @param ingredient - The ingredient object containing the ingredient's details.
+ * @returns A promise that resolves to the created ingredient
  */
-
 export async function createIngredient(ingredient: Ingredient) {
   try {
     return await db.ingredient.create({
@@ -33,6 +33,12 @@ export async function createIngredient(ingredient: Ingredient) {
   }
 }
 
+/**
+ * Get all ingredient by supplier name and userId
+ * @param supplierName - The name of the ingredient's supplier.
+ * @param userId - The id of the user who owns the ingredients.
+ *@returns An array of ingredients
+ */
 export async function getAllIngredientBySupplierNameAndUserId(
   supplierName: string,
   userId: string
@@ -53,6 +59,11 @@ export async function getAllIngredientBySupplierNameAndUserId(
   }
 }
 
+/**
+ * Get all ingredient by userId
+ * @param userId - The id of the user who owns the ingredients.
+ * @returns A promise that resolves to the created ingredient
+ */
 export async function getAllIngredient(userId: string) {
   try {
     return await db.ingredient.findMany({
@@ -69,6 +80,11 @@ export async function getAllIngredient(userId: string) {
   }
 }
 
+/**
+ * Get an ingredient by its ID.
+ * @param ingredientId - The ID of the ingredient to retrieve.
+ * @returns The retrieved ingredient, or null.
+ */
 export async function getPriceIngredientById(ingredientId: string) {
   try {
     return await db.ingredient.findFirst({
