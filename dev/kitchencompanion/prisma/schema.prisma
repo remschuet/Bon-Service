@@ -294,17 +294,17 @@ model CheckTemp {
 }
 
 model Notification {
-  id        String    @id @default(cuid())
-  content   String
-  notifType NotifType
-  reciver   User      @relation(fields: [reciverId], references: [id])
-  reciverId String
-  read      DateTime?
+  id      String     @id @default(cuid())
+  content String
+  type    NotifTypes
+  user    User       @relation(fields: [userId], references: [id])
+  userId  String
+  read    DateTime?
 }
 
 /// Enums
-enum NotifType {
-  OPENIA_RETURN
+enum NotifTypes {
+  OPENAI_RETURN
   UPDATE_RECIPE
   GENERAL_UPDATE
 }

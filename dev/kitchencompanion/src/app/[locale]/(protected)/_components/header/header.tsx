@@ -1,3 +1,5 @@
+"use client";
+
 import { UserMenu } from "@/app/[locale]/(protected)/_components/header/user-menu";
 import { Notification } from "@/app/[locale]/(protected)/_components/header/notifications/notification-menu";
 import { HelpMenu } from "@/app/[locale]/(protected)/_components/header/help-menu";
