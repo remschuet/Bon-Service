@@ -1,14 +1,14 @@
 "use client";
 
 import { useIngredients } from "@/hooks/useIngredients";
-import { IngredientsDatatable } from "@/app/[locale]/(protected)/market/_components/datatable/ingredients-datatable";
-import { columns } from "@/app/[locale]/(protected)/market/_components/datatable/columns";
+import { Datatable } from "@/components/datatable";
+import { columns } from "@/app/[locale]/(protected)/market/_components/datatable/ingredients-columns";
 
 export function IngredientsList() {
   const { ingredients } = useIngredients();
 
   return (
-    <IngredientsDatatable
+    <Datatable
       data={ingredients}
       columns={columns}
     />

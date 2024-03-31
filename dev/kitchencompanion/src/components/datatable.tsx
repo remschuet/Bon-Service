@@ -44,7 +44,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
-export function IngredientsDatatable<TData, TValue>({
+export function Datatable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -124,7 +124,7 @@ export function IngredientsDatatable<TData, TValue>({
                 <TableCell
                   colSpan={columns.length}
                   className='h-24 text-center'>
-                  No results.
+                  Aucun résultats.
                 </TableCell>
               </TableRow>
             )}

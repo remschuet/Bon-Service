@@ -49,4 +49,16 @@ export const IngredientSchema = z.object({
   userId: z.string().min(1).max(36),
 });
 
+const phoneRegex = new RegExp(
+  /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/
+);
+
+export const ContactSchema = z.object({
+  userId: z.string().min(1).max(36),
+  name: z.string().min(1).max(36),
+  description: z.string().max(100),
+  compteNumber: z.string().max(36),
+  phoneNumber: z.string().regex(phoneRegex, "Numéro de téléphone invalide"),
+});
+
 export const partialRegistrationSchema = RegistrationSchema.partial();

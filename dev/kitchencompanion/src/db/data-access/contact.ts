@@ -29,6 +29,7 @@ export async function createContact(contact: Contact) {
     });
   } catch (error) {
     console.error("Error data-access/contact: createContact(), error: ", error);
+    throw error;
   }
 }
 
@@ -47,6 +48,7 @@ export async function createManyContact(contact: Contact[]) {
       "Error data-access/contact: createManyContact(), error: ",
       error
     );
+    throw error;
   }
 }
 
@@ -62,6 +64,7 @@ export async function getAllContact(userId: string) {
     });
   } catch (error) {
     console.error("Error data-access/contact: getAllContact(), error: ", error);
+    throw error;
   }
 }
 
@@ -87,6 +90,7 @@ export async function getContact(
     });
   } catch (error) {
     console.error("Error data-access/contact: getContact(), error: ", error);
+    throw error;
   }
 }
 
@@ -105,6 +109,7 @@ export async function deleteAllContact(userId: string) {
       "Error data-access/contact: deleteAllContact(), error: ",
       error
     );
+    throw error;
   }
 }
 
@@ -127,6 +132,7 @@ export async function updateContact(contactId: string, contact: Contact) {
     });
   } catch (error) {
     console.error("Error data-access/contact: updateContact(), error: ", error);
+    throw error;
   }
 }
 
@@ -150,6 +156,7 @@ export async function linkContactKitchen(contactId: string, kitchenId: string) {
       "Error data-access/contact: linkContactKitchen(), error: ",
       error
     );
+    throw error;
   }
 }
 
@@ -170,6 +177,7 @@ export async function getAllContactLinksToKitchen(kitchenId: string) {
       "Error data-access/contact: getAllContactLinksToKitchen(), error: ",
       error
     );
+    throw error;
   }
 }
 
@@ -195,5 +203,6 @@ export async function deleteLinkContactKitchen(
       "Error data-access/contact: linkContactKitchen(), error: ",
       error
     );
+    throw error;
   }
 }

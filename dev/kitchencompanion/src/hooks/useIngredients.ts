@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Ingredient } from "@prisma/client";
 import { useSession } from "@/hooks/useSession";
-import { getIngredients } from "@/app/[locale]/(protected)/market/_action/ingredient-action";
+import { getIngredients } from "@/hooks/_action/action";
 
 export function useIngredients(): { ingredients: Ingredient[] } {
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
@@ -9,9 +9,12 @@ export function useIngredients(): { ingredients: Ingredient[] } {
 
   useEffect(() => {
     const fetchIngredients = async () => {
-      const ingredients = await getIngredients(id);
-
-      setIngredients(ingredients);
+      try {
+        const ingredients = await getIngredients(id);
+        setIngredients(ingredients);
+      } catch (error) {
+        console.error(error);
+      }
     };
 
     fetchIngredients();

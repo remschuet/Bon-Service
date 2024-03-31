@@ -6,24 +6,28 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { AddIngredientForm } from "@/app/[locale]/(protected)/market/_components/add-ingredient-form";
+import { AddContactForm } from "@/app/[locale]/(protected)/contacts/_components/add-contact-form";
 import { BadgePlus } from "lucide-react";
 
-export function AddIngredient() {
+export function AddContact() {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button className='flex gap-2'>
           <BadgePlus className='w-4' />
-          Ajouter un ingrédient
+          Ajouter un contact
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent className='min-w-[700px]'>
-        <AlertDialogHeader className='m-auto'>
-          <AlertDialogTitle className='text-2xl text-center p-3'>
-            Ajouter un ingrédient à votre marché.
+        <AlertDialogHeader className=' flex flex-col gap-2 m-auto'>
+          <AlertDialogTitle className='text-xl text-center p-3'>
+            Ajouter un nouveau contact
           </AlertDialogTitle>
-          <AddIngredientForm />
+          <p className='self-center w-[80%] text-sm text-muted'>
+            Vous pouvez le lier avec l'une ou plusieurs de vos cuisines
+            existante directement si vous le souhaitez.
+          </p>
+          <AddContactForm />
         </AlertDialogHeader>
       </AlertDialogContent>
     </AlertDialog>

@@ -30,7 +30,7 @@ export function UploadReceipt() {
               <AlertDialogTitle className='text-2xl text-center p-3'>
                 Ajouter un reçu à votre marché.
               </AlertDialogTitle>
-              <p className='self-center w-[80%] text-sm text-muted'>
+              <p className='self-center w-[80%] text-sm text-muted pb-4'>
                 Vous pouvez importer des reçus pour ajouter des ingrédients à
                 votre marché. Cela vous permet de gagner du temps et de ne pas
                 avoir à entrer manuellement chaque ingrédient.{" "}

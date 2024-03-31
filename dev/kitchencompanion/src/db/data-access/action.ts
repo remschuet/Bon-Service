@@ -1,3 +1,5 @@
+"use server";
+
 import {
   Ingredient,
   Contact,
@@ -31,7 +33,11 @@ import {
   getContact,
   linkContactKitchen,
 } from "@/db/data-access/contact";
-import { getKitchenByAdminAndName, linkKitchenUserById } from "./kitchen";
+import {
+  getAllKitchenByAdminId,
+  getKitchenByAdminAndName,
+  linkKitchenUserById,
+} from "@/db/data-access/kitchen";
 
 /////////// DASHBOARD ///////////
 // kitchen: getAllKitchenByAdminId() -> return all kitchens created by specified admin

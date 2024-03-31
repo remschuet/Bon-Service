@@ -15,7 +15,7 @@ import {
 import { useSelectedUnit } from "@/hooks/useSelectedUnit";
 import { useSession } from "@/hooks/useSession";
 
-export function AddIngredientsForm() {
+export function AddIngredientForm() {
   const { id } = useSession();
   const { isCS, setUnit } = useSelectedUnit();
 

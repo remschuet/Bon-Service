@@ -11,7 +11,18 @@ import {
 import { Ingredient } from "@prisma/client";
 import { IngredientSchema } from "@/lib/validation";
 
+/**
+ * Adds an ingredient to the system.
+ * @param formData - The form data containing the ingredient details.
+ * @returns An object indicating the status of the operation.
+ */
+
 export async function addIngredient(formData: FormData) {
+  /**
+   * Checks and converts the unit if necessary.
+   * @param unit - The unit to check.
+   * @returns The converted unit if necessary, otherwise the original unit.
+   */
   const checkUnit = (unit: string) => {
     if (unit === "G") {
       return "KG";
@@ -53,7 +64,13 @@ export async function addIngredient(formData: FormData) {
   return { success: "Ingrédient ajouté avec succès", status: 200 };
 }
 
-// Create or update ingredient or price
+/**
+ * Creates or updates an ingredient.
+ * If the ingredient already exists, it updates the price.
+ * If the ingredient doesn't exist, it creates a new ingredient.
+ *
+ * @param ingredient - The ingredient to create or update.
+ */
 async function createOrUpdateIgredient(ingredient: Ingredient) {
   if (
     await getIngredientIfExist(
@@ -75,7 +92,16 @@ async function createOrUpdateIgredient(ingredient: Ingredient) {
   }
 }
 
-// return all ingredients for a specific id
+/**
+ * Retrieves all ingredients for a given user.
+ *
+ * @param userId - The ID of the user.
+ * @returns A promise that resolves to an array of ingredients, or an object with an error message and status code if an error occurs.
+ */
 export async function getIngredients(userId: string) {
-  return await getAllIngredient(userId);
+  try {
+    return await getAllIngredient(userId);
+  } catch (error) {
+    throw error;
+  }
 }
