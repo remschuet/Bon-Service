@@ -11,13 +11,16 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useContext, useEffect, useState } from "react";
 import { getAllKitchenByAdminId } from "@/db/data-access/kitchen";
+import { __test__ } from "@/app/[locale]/(protected)/contacts/_action/contact-action";
 
 export function ContactForm() {
   const [kitchen, setKitchen] = useState<string[]>([]);
 
   async function handleGetUser(formData: FormData) {}
 
-  async function handleCreateContact(formData: FormData) {}
+  async function handleCreateContact(formData: FormData) {
+    // __test__("clu2rmsyw00001bxxptqqgh9o");
+  }
 
   return (
     <div>

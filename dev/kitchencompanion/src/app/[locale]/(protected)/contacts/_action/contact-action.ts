@@ -7,12 +7,38 @@ import {
   getContact,
   linkContactKitchen,
 } from "@/db/data-access/contact";
-import { getKitchenByAdminAndName } from "@/db/data-access/kitchen";
-import { Contact } from "@prisma/client";
+import {
+  createKitchen,
+  getKitchenByAdminAndName,
+} from "@/db/data-access/kitchen";
+import { Contact, Kitchen } from "@prisma/client";
 
 // Test Rémi pour verifier les actions
-// PAS ENCORE TESTÉ
-export async function __test__() {}
+export async function __test__(userId: string) {
+  // Création d'un contact
+  const contact = {
+    userId: userId,
+    name: "__CONTACT__",
+    phoneNumber: "0612345678",
+  };
+
+  // Creation de cuisine
+  const kitchen1 = {
+    userId: userId,
+    name: "__KITCHEN1__",
+  };
+  const kitchen2 = {
+    userId: userId,
+    name: "__KITCHEN2__",
+  };
+  try {
+    await createKitchen(kitchen1 as Kitchen);
+    await createKitchen(kitchen2 as Kitchen);
+  } catch (error) {
+    console.log("une erreur est survenu");
+  }
+  await addContact(contact as Contact, ["__KITCHEN1__", "__KITCHEN2__"]);
+}
 
 /**
  * Creates a new contact and links it to the specified kitchens.
@@ -31,8 +57,7 @@ export async function addContact(contact: Contact, kitchenNames: string[]) {
       status: 500,
     };
   }
-
-  updateContactStatusIsPublic(kitchenNames, newContact, true);
+  await updateContactStatusIsPublic(kitchenNames, newContact, true);
 }
 /**
  * Updates the public status of a contact for a list of kitchens.
