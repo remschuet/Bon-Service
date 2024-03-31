@@ -97,6 +97,7 @@ model Kitchen {
   userId        String
   name          String
   costObjective Int    @default(20)
+  description   String
 
   kitchenRoles    KitchenRole[]
   kitchenUsers    KitchenUser[]

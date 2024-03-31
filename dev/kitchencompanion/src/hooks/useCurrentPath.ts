@@ -6,7 +6,8 @@ export function useCurrentPath() {
   const [path, setPath] = useState<string[]>([]);
 
   useEffect(() => {
-    const currentPath = current.split("/").slice(1);
+    const decodedCurrent = decodeURIComponent(current);
+    const currentPath = decodedCurrent.split("/").slice(1);
     setPath(currentPath);
   }, [current]);
 

@@ -9,8 +9,7 @@ export default function ContactPage() {
   useRedirectMembers();
 
   return (
-    <div className='container mx-auto pt-10'>
-      <div className='space-y-5'></div>
+    <div className='container mx-auto'>
       <div className='flex gap-5 justify-end mt-6'>
         <AddContact />
       </div>

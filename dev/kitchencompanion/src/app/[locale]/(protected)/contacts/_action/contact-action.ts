@@ -3,16 +3,12 @@
 import {
   createContact,
   deleteLinkContactKitchen,
-  getAllContact,
   getAllContactLinksToKitchen,
-  getContact,
   linkContactKitchen,
 } from "@/db/data-access/contact";
-import {
-  createKitchen,
-  getKitchenByAdminAndName,
-} from "@/db/data-access/kitchen";
+import { createKitchen } from "@/db/data-access/kitchen";
 import { Contact, Kitchen } from "@prisma/client";
+import { ResponseMessage } from "@/lib/type";
 
 /**
  * Creates a new contact and links it to the specified kitchens.
@@ -25,36 +21,29 @@ export async function addContact(contact: Contact, kitchenIds: string[]) {
 
   try {
     newContact = await createContact(contact);
-
-    if (!newContact) {
-      return {
-        error:
-          "Il existe déjà un contact portant ce nom avec ce numéro de téléphone.",
-        status: 500,
-      };
-    }
   } catch (error) {
     return {
-      error: "Erreur interne, impossible de créer le contact.",
+      error:
+        "Il existe déjà un contact portant ce nom avec ce numéro de téléphone.",
       status: 500,
     };
   }
 
   if (kitchenIds.length > 0) {
-    try {
-      const result = await updateContactStatusIsPublic(
-        kitchenIds,
-        newContact,
-        true
-      );
-      return result;
-    } catch (error) {
-      return {
-        error: "Erreur interne, impossible de lier le contact à la cuisine.",
-        status: 500,
-      };
+    const res: ResponseMessage = await updateContactStatusIsPublic(
+      kitchenIds,
+      newContact,
+      true
+    );
+    if (res.error) {
+      return res;
     }
   }
+
+  return {
+    success: "Le contact a été créé avec succès.",
+    status: 200,
+  };
 }
 
 /**
@@ -72,12 +61,27 @@ export async function updateContactStatusIsPublic(
   if (value) {
     // Adding link
     kitchenIds.forEach((kitchenId) => {
-      linkContactKitchen(contact.id, kitchenId);
+      try {
+        linkContactKitchen(contact.id, kitchenId);
+      } catch (error) {
+        return {
+          error: "Erreur interne, impossible de lier le contact à la cuisine.",
+          status: 500,
+        };
+      }
     });
   } else {
     // Removing link
     kitchenIds.forEach((kitchenId) => {
-      deleteLinkContactKitchen(contact.id, kitchenId);
+      try {
+        deleteLinkContactKitchen(contact.id, kitchenId);
+      } catch (error) {
+        return {
+          error:
+            "Erreur interne, impossible de retirer le contact de la cuisine.",
+          status: 500,
+        };
+      }
     });
   }
 

@@ -5,7 +5,6 @@ import {
   getNotifications,
 } from "@/db/data-access/notifications";
 import { NotifTypes, Notification } from "@prisma/client";
-import { get } from "http";
 
 export default async function processReceipt(formData: FormData) {
   const headers = new Headers();

@@ -7,17 +7,24 @@ import { Input } from "@/components/ui/input";
 import { useSession } from "@/hooks/useSession";
 import { addContact } from "@/app/[locale]/(protected)/contacts/_action/contact-action";
 import { Contact } from "@prisma/client";
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { PulseLoader } from "react-spinners";
 import { ContactSchema } from "@/lib/validation";
 import { useKitchens } from "@/hooks/useKitchens";
 import { MultipleKitchenSelect } from "@/app/[locale]/(protected)/contacts/_components/multiple-kitchen-select";
+import { FormError } from "@/components/form-error";
+import { FormSuccess } from "@/components/form-success";
+import { set } from "zod";
 
 export function AddContactForm() {
   const { id } = useSession();
   const { kitchens } = useKitchens();
+  const ref = useRef<HTMLFormElement>(null);
   const [selectedKitchenId, setSelectedKitchenId] = useState<string[]>([]);
   const [isPending, startTransition] = useTransition();
+
+  const [error, setError] = useState<string | undefined>(undefined);
+  const [success, setSuccess] = useState<string | undefined>(undefined);
 
   function handleAddContact(formData: FormData) {
     const contact = {
@@ -31,17 +38,25 @@ export function AddContactForm() {
     const validatedContact = ContactSchema.safeParse(contact);
 
     if (!validatedContact.success) {
-      return { error: "Les données saisies sont invalides.", status: 400 };
+      setError("Les données saisies sont invalides.");
+      return;
     }
 
     startTransition(() => {
-      addContact(contact as Contact, selectedKitchenId);
+      addContact(validatedContact.data as Contact, selectedKitchenId).then(
+        (res) => {
+          setError(res?.error);
+          setSuccess(res?.success);
+          ref.current?.reset();
+        }
+      );
     });
   }
 
   return (
     <div className='grid place-content-center w-[600px]'>
       <form
+        ref={ref}
         action={handleAddContact}
         className='flex flex-col space-y-7'>
         <div className='flex gap-2 flex-wrap w-full'>
@@ -75,6 +90,10 @@ export function AddContactForm() {
             name='description'
             placeholder='Description'
           />
+        </div>
+        <div>
+          {error !== undefined && <FormError error={error} />}
+          {success !== undefined && <FormSuccess success={success} />}
         </div>
         <div className='flex gap-2 justify-end'>
           <AlertDialogCancel disabled={isPending}>Quitter</AlertDialogCancel>

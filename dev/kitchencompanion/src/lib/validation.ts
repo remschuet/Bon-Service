@@ -61,4 +61,11 @@ export const ContactSchema = z.object({
   phoneNumber: z.string().regex(phoneRegex, "Numéro de téléphone invalide"),
 });
 
+export const KitchenSchema = z.object({
+  name: z.string().min(1).max(36),
+  costObjective: z.number().min(1).max(100),
+  userId: z.string().min(1).max(36),
+  description: z.string().min(1).max(128),
+});
+
 export const partialRegistrationSchema = RegistrationSchema.partial();

@@ -3,7 +3,6 @@
 import {} from "@/db/data-access/action";
 import {
   createIngredient,
-  getAllIngredient,
   getIngredientIfExist,
   updateIngredientPrice,
 } from "@/db/data-access/ingredient";
@@ -89,19 +88,5 @@ async function createOrUpdateIgredient(ingredient: Ingredient) {
     );
   } else {
     createIngredient(ingredient);
-  }
-}
-
-/**
- * Retrieves all ingredients for a given user.
- *
- * @param userId - The ID of the user.
- * @returns A promise that resolves to an array of ingredients, or an object with an error message and status code if an error occurs.
- */
-export async function getIngredients(userId: string) {
-  try {
-    return await getAllIngredient(userId);
-  } catch (error) {
-    throw error;
   }
 }

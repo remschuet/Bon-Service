@@ -20,6 +20,7 @@ export async function createKitchen(kitchen: Kitchen) {
         userId: kitchen.userId,
         name: kitchen.name,
         costObjective: kitchen.costObjective,
+        description: kitchen.description,
       },
     });
   } catch (error) {

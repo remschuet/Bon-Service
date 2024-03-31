@@ -1,6 +1,6 @@
 import {
   UnitMeasure,
-  NotifType,
+  NotifTypes,
   Allergen,
   UserTypes,
   RecipeState,
@@ -34,7 +34,7 @@ export async function getUnitMeasure() {
  */
 export async function getNotifType() {
   try {
-    return getAllEnumValues(NotifType);
+    return getAllEnumValues(NotifTypes);
   } catch (error) {
     console.error("Error data-access/enum: getNotifType(), error: ", error);
     throw error;
