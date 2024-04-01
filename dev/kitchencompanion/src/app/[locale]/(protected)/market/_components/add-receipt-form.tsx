@@ -1,5 +1,5 @@
 import processReceipt from "@/app/[locale]/(protected)/market/_action/process-receipt";
-import { AlertDialogCancel } from "@/components/ui/alert-dialog";
+import { DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -12,7 +12,6 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
-import { useNotification } from "@/hooks/useNotification";
 import { useSelectedSupplier } from "@/hooks/useSelectedSupplier";
 import { useSession } from "@/hooks/useSession";
 
@@ -87,7 +86,13 @@ export function AddReceiptForm() {
       )}
 
       <div className='flex gap-2 self-end pt-3'>
-        <AlertDialogCancel>Quitter</AlertDialogCancel>
+        <DialogClose asChild>
+          <Button
+            type='button'
+            variant='outline'>
+            Quitter
+          </Button>
+        </DialogClose>
         <Button type='submit'>Téléverser</Button>
       </div>
     </form>

@@ -3,7 +3,7 @@
 import { addIngredient } from "@/app/[locale]/(protected)/market/_action/ingredient-action";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
-import { AlertDialogCancel } from "@/components/ui/alert-dialog";
+import { DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -165,7 +165,14 @@ export function AddIngredientForm() {
           {success !== undefined && <FormSuccess success={success} />}
         </div>
         <div className='flex gap-2 justify-end'>
-          <AlertDialogCancel disabled={isPending}>Quitter</AlertDialogCancel>
+          <DialogClose asChild>
+            <Button
+              type='button'
+              variant='outline'
+              disabled={isPending}>
+              Quitter
+            </Button>
+          </DialogClose>
           <Button
             type='submit'
             disabled={isPending}>

@@ -1,6 +1,5 @@
 "use client";
 
-import { AlertDialogCancel } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -14,7 +13,7 @@ import { useKitchens } from "@/hooks/useKitchens";
 import { MultipleKitchenSelect } from "@/app/[locale]/(protected)/contacts/_components/multiple-kitchen-select";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
-import { set } from "zod";
+import { DialogClose } from "@/components/ui/dialog";
 
 export function AddContactForm() {
   const { id } = useSession();
@@ -96,7 +95,14 @@ export function AddContactForm() {
           {success !== undefined && <FormSuccess success={success} />}
         </div>
         <div className='flex gap-2 justify-end'>
-          <AlertDialogCancel disabled={isPending}>Quitter</AlertDialogCancel>
+          <DialogClose asChild>
+            <Button
+              type='button'
+              variant='outline'
+              disabled={isPending}>
+              Quitter
+            </Button>
+          </DialogClose>
           <Button
             type='submit'
             disabled={isPending}>

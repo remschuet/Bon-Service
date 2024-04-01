@@ -1,7 +1,6 @@
 "use client";
 
 import sanitizeHtml from "sanitize-html";
-import { AlertDialogCancel } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -15,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { Textarea } from "@/components/ui/textarea";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 export function AddKitchenForm() {
   const { id } = useSession();
@@ -71,7 +71,18 @@ export function AddKitchenForm() {
             <Input
               type='text'
               name='name'
+              disabled={isPending}
               placeholder='Mon entreprise de traiteur'
+            />
+          </div>
+          <div className='flex flex-col gap-2 w-full'>
+            <Label className='text-md font-semibold'>Description * </Label>
+            <Textarea
+              name='description'
+              placeholder='Courte description de la cuisine et de son objectif.'
+              maxLength={128}
+              disabled={isPending}
+              className='h-24'
             />
           </div>
           <div className='flex flex-col gap-2 w-full'>
@@ -91,16 +102,8 @@ export function AddKitchenForm() {
             <Input
               type='text'
               name='costObjective'
+              disabled={isPending}
               placeholder='20%'
-            />
-          </div>
-          <div className='flex flex-col gap-2 w-full'>
-            <Label className='text-md font-semibold'>Description * </Label>
-            <Textarea
-              name='description'
-              placeholder='Courte description de la cuisine et de son objectif.'
-              maxLength={128}
-              className='h-24'
             />
           </div>
         </div>
@@ -109,7 +112,14 @@ export function AddKitchenForm() {
           {success !== undefined && <FormSuccess success={success} />}
         </div>
         <div className='flex gap-2 justify-end'>
-          <AlertDialogCancel disabled={isPending}>Quitter</AlertDialogCancel>
+          <DialogClose asChild>
+            <Button
+              type='button'
+              variant='outline'
+              disabled={isPending}>
+              Quitter
+            </Button>
+          </DialogClose>
           <Button
             type='submit'
             disabled={isPending}>

@@ -14,8 +14,8 @@ import Link from "next/link";
 export function KitchenCard(kitchen: Kitchen) {
   return (
     <Link href={`/kitchen/${kitchen.name}`}>
-      <Card>
-        <CardHeader className='bg-brand-light rounded-t-lg mb-6'>
+      <Card className='min-h-[200px]'>
+        <CardHeader className='bg-brand-light rounded-t-lg mb-6 min-h-[125px]'>
           <CardTitle>{kitchen.name}</CardTitle>
           <CardDescription>{kitchen.description}</CardDescription>
         </CardHeader>
