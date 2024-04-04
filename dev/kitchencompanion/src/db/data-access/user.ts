@@ -121,6 +121,58 @@ export async function updateUserRole(email: string) {
   }
 }
 
+export async function updateUser(userId: string, user: User) {
+  try {
+    return await db.user.update({
+      where: { id: userId },
+      data: {
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        address: user.address,
+        avatar_key: user.avatar_key,
+      },
+    });
+  } catch (error) {
+    console.error("Error data-access/user: updateUser(), error: ", error);
+    throw error;
+  }
+}
+
+export async function updateUserPremium(userId: string, isPremium: boolean) {
+  try {
+    return await db.user.update({
+      where: { id: userId },
+      data: {
+        isPremium,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/user: updateUserPremium(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
+export async function updateUserUserType(userId: string) {
+  try {
+    return await db.user.update({
+      where: { id: userId },
+      data: {
+        userType: UserTypes.ADMIN,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/user: updateUserUserType(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
 export async function userVerification(user: User, token: VerificationToken) {
   try {
     return await db.user.update({
