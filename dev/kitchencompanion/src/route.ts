@@ -19,7 +19,7 @@ export const publicRoutes = [
   "/test/supplier",
   "/test/linkKitchenUser",
   "/test/upload",
-  "/test/ingredient",
+  "/test/pdf",
   "/test/recipe",
   "/test/bottin",
 ];
