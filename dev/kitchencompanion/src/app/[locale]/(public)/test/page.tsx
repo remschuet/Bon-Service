@@ -18,10 +18,10 @@ export default function Home() {
       </Button>
       <Button
         onClick={() => {
-          router.push("/test/ingredient");
+          router.push("/test/pdf");
         }}
       >
-        ingredient
+        pdf
       </Button>
 
       <Button
