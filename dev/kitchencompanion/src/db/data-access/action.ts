@@ -134,7 +134,7 @@ export async function action_initUser(userId: string) {
   }
   return {
     success: "Les contacts et les fournisseurs sont initalisé correctement.",
-    status: 400,
+    status: 200,
   };
 }
 
