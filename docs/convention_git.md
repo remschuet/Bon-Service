@@ -1,10 +1,13 @@
 # Convention Git
+
 ## Messages
-Correct format : 
-```<type>[scope]: <subject>```<br>
+
+Correct format :
+`<type>[scope]: <subject>`<br>
 Example: "docs: update README to add developer tips"
 
 ## Type
+
 **feat**<br>
 A new feature
 
@@ -24,7 +27,7 @@ A code change that neither fixes a big nor adds a feature
 Adding missing tests or correcting existing ones
 
 **chore**<br>
-Changes to your CI configuration files and scripts
+General changes that don't need specific classification
 
 **pref**<br>
 A code change that improves performance
@@ -38,10 +41,21 @@ Changes that affect the build system or external dependencies (example scopes : 
 **temp**<br>
 Temporary commit that won't be included in your CHANGELOG
 
+**db**<br>
+Change prisma schema or database configuration
+
+**BUG**<br>
+Pushing an error not resolved at the moment but discovered. May be waiting for a solution from a teammate
+
+**convention**<br>
+modify the git convention file
+
 ## scope
+
 Optional, can be anything specifying the scope of the commit change<br>
 In App Development, scope can be a page, a module or a component<br>
 
 ## subject
+
 Brief summary of the change in present tense <br>
 No period at the end

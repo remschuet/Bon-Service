@@ -1,34 +1,357 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
+/// Prisma Generator Client
+/// This section is used to specify the Prisma Client settings.
+/// The provider is set to "prisma-client-js" to use the Prisma Client for JavaScript and TypeScript.
 generator client {
   provider = "prisma-client-js"
 }
 
+/// Prisma Datasource DB
+/// This section is used to specify the database connection settings.
+/// The provider is set to "postgresql" to use the PostgreSQL database.
+/// The url is set to the "DATABASE_URL" environment variable which should contain the connection string to the PostgreSQL database.
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
+/// Mandatory for NextAuth to work
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model RateLimiterFlexible {
+  key     String    @id
+  points  Int
+  expire  DateTime?
+  blocked Boolean?
+}
+
+model VerificationToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+model PasswordResetToken {
+  id      String   @id @default(cuid())
+  email   String
+  token   String   @unique
+  expires DateTime
+
+  @@unique([email, token])
+}
+
+/// Model definitions
+model User {
+  id            String     @id @default(cuid())
+  email         String     @unique
+  password      String
+  emailVerified DateTime?
+  name          String?
+  phone         String?
+  address       String?
+  avatar_key    String?
+  userType      UserTypes? @default(ADMIN)
+  createdAt     DateTime?  @default(now())
+  updatedAt     DateTime?  @updatedAt
+  isPremium     Boolean?   @default(false)
+
+  kitchens         Kitchen[]
+  kitchenUsers     KitchenUser[]
+  recipeBooks      RecipeBook[]
+  recipeCategories RecipeCategory[]
+  structMenus      StructMenu[]
+  checkTemps       CheckTemp[]
+  suppliers        Supplier[]
+  notifications    Notification[]
+  ingredients      Ingredient[]
+  contacts         Contact[]
+
+  /// For NextAuth
+  accounts Account[]
+
+  @@index([email])
+}
+
+model Kitchen {
+  id            String @id @default(cuid())
+  user          User   @relation(fields: [userId], references: [id])
+  userId        String
+  name          String
+  costObjective Int    @default(20)
+  description   String
+
+  kitchenRoles    KitchenRole[]
+  kitchenUsers    KitchenUser[]
+  menus           Menu[]
+  checkTemps      CheckTemp[]
+  contactKitchens ContactKitchen[]
+
+  @@unique([userId, name])
+}
+
+model KitchenRole {
+  kitchen   Kitchen @relation(fields: [kitchenId], references: [id])
+  kitchenId String
+  role      String
+
+  @@id([kitchenId, role])
+}
+
+model KitchenUser {
+  kitchen   Kitchen @relation(fields: [kitchenId], references: [id])
+  kitchenId String
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String
+
+  @@id([kitchenId, userId])
+}
+
+model Supplier {
+  id          String  @id @default(cuid())
+  name        String
+  prompt      String?
+  description String?
+  user        User    @relation(fields: [userId], references: [id])
+  userId      String
+
+  @@unique([userId, name])
+}
+
+model SupplierSupported {
+  id          String  @id @default(cuid())
+  name        String  @unique
+  phoneNumber String?
+  prompt      String?
+  description String?
+
+  // For dev part
+  isPublic Boolean @default(false)
+}
+
+model Ingredient {
+  id           String      @id @default(cuid())
+  name         String
+  price        Float
+  unit         UnitMeasure
+  category     String
+  origin       String
+  supplierName String
+
+  // supplier    Supplier    @relation(fields: [supplierId], references: [id])
+  // supplierId  String
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  @@unique([name, supplierName, userId])
+}
+
+model RecipeBook {
+  id     String @id @default(cuid())
+  name   String
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  recipes Recipe[]
+
+  @@unique([name, userId])
+}
+
+model RecipeCategory {
+  id String @id @default(cuid())
+
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String
+  category String
+
+  recipes Recipe[]
+
+  @@unique([userId, category])
+}
+
+model Recipe {
+  id            String     @id @default(cuid())
+  versionNumber Int?       @default(0)
+  name          String
+  recipeBook    RecipeBook @relation(fields: [recipeBookId], references: [id])
+  recipeBookId  String
+
+  recipeCategory   RecipeCategory @relation(fields: [recipeCategoryId], references: [id])
+  recipeCategoryId String
+
+  recipeState     RecipeState? @default(RECIPE)
+  preparationTime Int?
+  cookingTime     Int?
+
+  steps       Json
+  ingredients Json
+
+  yield       Int
+  unitMeasure UnitMeasure
+
+  objInvestment Float? @default(20)
+
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+
+  recipeAllergens RecipeAllergen[]
+  recipePhotos    RecipePhoto[]
+}
+
+model RecipeAllergen {
+  recipe   Recipe   @relation(fields: [recipeId], references: [id])
+  recipeId String
+  allergen Allergen
+
+  @@id([recipeId, allergen])
+}
+
+model RecipePhoto {
+  id String @id @default(cuid())
+
+  recipe   Recipe @relation(fields: [recipeId], references: [id])
+  recipeId String
+  photo    String
+
+  @@unique([recipeId, photo])
+}
+
+model Menu {
+  id String @id @default(cuid())
+
+  name      String  @unique
+  kitchen   Kitchen @relation(fields: [kitchenId], references: [id])
+  kitchenId String
+
+  isPublic Boolean @default(false)
+  dishs    Json?
+}
+
+model StructMenu {
+  id String @id @default(cuid())
+
+  user     User   @relation(fields: [userId], references: [id])
+  userId   String
+  category String
+
+  @@unique([userId, category])
+}
+
+model Contact {
+  id String @id @default(cuid())
+
+  user         User    @relation(fields: [userId], references: [id])
+  userId       String
+  name         String
+  description  String?
+  phoneNumber  String
+  compteNumber String?
+
+  contactKitchens ContactKitchen[]
+
+  @@unique([userId, name, phoneNumber])
+}
+
+model ContactKitchen {
+  id String @id @default(cuid())
+
+  kitchen   Kitchen @relation(fields: [kitchenId], references: [id])
+  kitchenId String
+
+  contact   Contact @relation(fields: [contactId], references: [id])
+  contactId String
+
+  @@unique([contactId, kitchenId])
+}
+
+model CheckTemp {
+  id String @id @default(cuid())
+
+  kitchen   Kitchen @relation(fields: [kitchenId], references: [id])
+  kitchenId String
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String
+
+  date DateTime @default(now())
+  temp Float
+}
+
+model Notification {
+  id      String     @id @default(cuid())
+  content String
+  type    NotifTypes
+  user    User       @relation(fields: [userId], references: [id])
+  userId  String
+  read    DateTime?
+}
+
+/// Enums
+enum NotifTypes {
+  OPENAI_RETURN
+  UPDATE_RECIPE
+  GENERAL_UPDATE
+}
+
+enum UnitMeasure {
+  G
+  ML
+  KG
+  L
+  UN
+  LB
+  PORTION
+  CUP
+  OZ
+  TBSP
+  TSP
+}
+
+enum Allergen {
+  LACTOSE
+  GLUTEN
+  PEANUT
+  NUT
+  EGG
+  FISH
+  CRUSTACEAN
+  MOLLUSCS
+  SOY
+  SULPHISTES
+  MUSTARD
+}
+
 enum UserTypes {
   ADMIN
   MEMBER
+  DEV
 }
 
-model User {
-  id       String   @id @default(cuid())
-  email    String   @unique
-  password String
-  firstName String?
-  name     String?
-  phone    String?
-  adress   String?
-  avatar_key String?
-  isVerified Boolean @default(false)
-  createdAt DateTime @default(now())
-  userTypes UserTypes[]
-  updatedAt DateTime @updatedAt
+enum ActionMapaq {
+  PLANK_BLUE
+  PLANK_RED
+  PLANK_YELLOW
+  COOL_QUICKLY
+}
+
+enum RecipeState {
+  RECIPE
+  DISH
 }
