@@ -33,3 +33,19 @@ export async function addKitchen(kitchen: Kitchen) {
     };
   }
 }
+
+/*
+FIXME: EN COURS DE PROGRAMMATION
+*/
+
+// lier un menu
+export async function addMenuToKitchen(form: FormData) {}
+// ajouter un utilisateur
+export async function addMemberToKitchen(form: FormData) {}
+// voir membre
+export async function getMembersForKitchen() {}
+// voir contact
+export async function getContactForKitchen(
+  kitchenId: string,
+  isAdmin: boolean
+) {}
