@@ -1,6 +1,7 @@
 import { Component } from "@/lib/composite/class/component";
-import { RecipeIngredient } from "@/lib/composite/class/recipe";
+import { RecipeComponent } from "@/lib/composite/class/recipe";
 import { UnitMeasure } from "@prisma/client";
+import { unitConversions } from "./unit-convertion";
 
 export class Ingredient extends Component {
   private _id: string;
@@ -18,11 +19,11 @@ export class Ingredient extends Component {
     return this._id;
   }
 
-  public add(component: Component | RecipeIngredient): void {
+  public add(component: Component | RecipeComponent): void {
     throw new Error("Ingredient is not a composite.");
   }
 
-  public remove(component: Component | RecipeIngredient): void {
+  public remove(component: Component | RecipeComponent): void {
     throw new Error("Ingredient is not a composite.");
   }
 
@@ -38,7 +39,14 @@ export class Ingredient extends Component {
     let price = this._price;
 
     if (unit !== this._unit) {
-      //TODO: Implement conversion logic
+      if (unitConversions[this._unit] && unitConversions[this._unit][unit]) {
+        const conversionFactor = unitConversions[this._unit][unit];
+        price /= conversionFactor;
+      } else {
+        throw new Error(
+          `No conversion available from ${this._unit} to ${unit}`
+        );
+      }
     }
 
     return price * quantity;

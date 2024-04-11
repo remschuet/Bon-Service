@@ -1,5 +1,6 @@
 import { RecipeState, UnitMeasure } from "@prisma/client";
 import { Component } from "@/lib/composite/class/component";
+import { unitConversions } from "./unit-convertion";
 
 export interface RecipeData {
   name: string;
@@ -14,14 +15,14 @@ export interface RecipeData {
   steps: string[];
 }
 
-export interface RecipeIngredient {
+export interface RecipeComponent {
   component: Component;
   quantity: number;
   unit: UnitMeasure;
 }
 
 export class Recipe extends Component {
-  private _ingredients: RecipeIngredient[] = [];
+  private _ingredients: RecipeComponent[] = [];
   private _recipeData: RecipeData;
 
   constructor(recipeData: RecipeData) {
@@ -37,12 +38,12 @@ export class Recipe extends Component {
     return this._recipeData;
   }
 
-  public add(ingredient: RecipeIngredient): void {
+  public add(ingredient: RecipeComponent): void {
     this._ingredients.push(ingredient);
     ingredient.component.parent = this;
   }
 
-  public remove(ingredient: RecipeIngredient): void {
+  public remove(ingredient: RecipeComponent): void {
     //Removes the parent reference for garbage collection
     ingredient.component.parent = null;
 
@@ -61,18 +62,38 @@ export class Recipe extends Component {
         curr.quantity,
         curr.unit
       ) as number;
-
       return acc + currIngredientCost;
     }, 0);
 
-    if (quantity === undefined || unit === undefined) {
-      this._recipeData.cost = rawCost / this._recipeData.yield;
+    if (this.parent === null) {
+      // This recipe is a standalone recipe, calculate cost for the yield
+      this._recipeData.cost = rawCost / this._recipeData.yield; // Average cost per unit yield
       return this._recipeData.cost;
     } else {
-      if (this._recipeData.cost === null) {
-        throw new Error("Cost of recipe is not defined.");
+      // When the recipe is used as an ingredient, ensure quantity and unit are specified
+      if (quantity === undefined || unit === undefined) {
+        throw new Error(
+          "Quantity and unit must be provided when a recipe is used as an ingredient."
+        );
       }
-      return this._recipeData.cost * quantity;
+
+      // Convert the calculated cost to the specified unit if different from the recipe's base unit
+      if (unit !== this._recipeData.unit) {
+        if (
+          unitConversions[this._recipeData.unit] &&
+          unitConversions[this._recipeData.unit][unit]
+        ) {
+          const conversionFactor = unitConversions[this._recipeData.unit][unit];
+          const unitCost = rawCost / this._recipeData.yield / conversionFactor;
+          return unitCost * quantity;
+        } else {
+          throw new Error(
+            `No conversion available from ${this._recipeData.unit} to ${unit}`
+          );
+        }
+      }
+
+      return (rawCost / this._recipeData.yield) * quantity;
     }
   }
 }
@@ -90,16 +111,36 @@ export class Recipe extends Component {
 //   steps: ["Etape 1", "Etape 2", "Etape 3"],
 // };
 
-// const mesIngredients: RecipeIngredient[] = [
+// const mesIngredients: RecipeComponent[] = [
 //   {
-//     component: new Recipe(data),
+//     component: new Ingredient("0-917823kljih1234", 2, "KG"),
+//     quantity: 150,
+//     unit: "G",
+//   },
+//   {
+//     component: new Ingredient("0-917823kljih1234", 2, "KG"),
+//     quantity: 150,
+//     unit: "G",
+//   },
+//   {
+//     component: new Ingredient("0-917823kljih1234", 2, "KG"),
 //     quantity: 150,
 //     unit: "G",
 //   },
 //   {
 //     component: new Recipe(data),
-//     quantity: 30,
-//     unit: "ML",
+//     quantity: 1,
+//     unit: "KG",
+//   },
+//   {
+//     component: new Ingredient("0-917823kljih1234", 2, "KG"),
+//     quantity: 150,
+//     unit: "G",
+//   },
+//   {
+//     component: new Ingredient("0-917823kljih1234", 2, "KG"),
+//     quantity: 150,
+//     unit: "G",
 //   },
 // ];
 
@@ -109,4 +150,4 @@ export class Recipe extends Component {
 //   maRecette.add(ingredient);
 // });
 
-// console.log(maRecette.calculateCost(1, "KG"));
+// console.log(maRecette.calculateCost());
