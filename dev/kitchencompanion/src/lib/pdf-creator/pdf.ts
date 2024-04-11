@@ -1,6 +1,35 @@
 import { Template, BLANK_PDF } from "@pdfme/common";
 import { generate } from "@pdfme/generator";
 import * as fs from "fs"; // Importez le module fs si vous utilisez Node.js
+/*
+interligne: float
+police: string
+policeSize: int
+policeWeight: int
+orientation: enum
+template: json|html|md
+currentPosiition: tuple
+sectionVerticalCount: int
+selectionHorizontalCount: int
+currentSection: int
+sectionList: list
+currentPage: int
+
+CreatePDF(name, orientation)
+modifyParams(interligne, police, policeSize, policeWeight)
+exportPDF(): pdf
+resetPDF(): void
+addTexte(data: list, sectionId: int): void
+addSection(titre: json)
+setupSection(default 3)
+addTittle(nom: string, sectionId: int): void
+addGraph (titre: list, data: json)
+addLogo(logo: binary)
+addSPdfBg(bg: binary)
+setUppdfParams(name, author, description):
+addPage(pageName: string)
+calculPosition()
+*/
 
 export async function generatePDF(
   template: Template = template123,
