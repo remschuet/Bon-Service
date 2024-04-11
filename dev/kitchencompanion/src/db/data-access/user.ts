@@ -100,27 +100,6 @@ export async function getUserById(id: string) {
   }
 }
 
-/**
- * Updates the role of a user to ADMIN.
- * @param email - The email address of the user.
- * @returns A promise that resolves to the updated user object.
- */
-export async function updateUserRole(email: string) {
-  try {
-    const result = await db.user.update({
-      where: { email },
-      data: {
-        userType: UserTypes.ADMIN,
-      },
-    });
-
-    return result;
-  } catch (error) {
-    console.error("Error data-access/user: updateUserRole(), error: ", error);
-    throw error;
-  }
-}
-
 export async function updateUser(userId: string, user: User) {
   try {
     return await db.user.update({
