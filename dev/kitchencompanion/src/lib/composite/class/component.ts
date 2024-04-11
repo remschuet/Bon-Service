@@ -1,5 +1,5 @@
 import { UnitMeasure } from "@prisma/client";
-import { RecipeIngredient } from "./recipe";
+import { RecipeIngredient } from "@/lib/composite/class/recipe";
 
 export abstract class Component {
   private _parent!: Component | null;
@@ -22,11 +22,9 @@ export abstract class Component {
     return this._isComposite;
   }
 
-  public abstract addComponent(component: Component | RecipeIngredient): void;
+  public abstract add(component: Component | RecipeIngredient): void;
 
-  public abstract removeComponent(
-    component: Component | RecipeIngredient
-  ): void;
+  public abstract remove(component: Component | RecipeIngredient): void;
 
   public abstract suggestSalePrice(): number;
 
