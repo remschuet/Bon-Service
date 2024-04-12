@@ -16,15 +16,14 @@ export type UserSession = {
   };
 };
 
-
-enum IngredientType {
-"RECIPE",
-"INGREDIENT"
-} 
+export enum IngredientType {
+  "RECIPE",
+  "INGREDIENT",
+}
 
 export type IngredientDTO = {
   type: IngredientType;
   id: string;
   quantity: number;
   unit: Unit;
-}
+};
