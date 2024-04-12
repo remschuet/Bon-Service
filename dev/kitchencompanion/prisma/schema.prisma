@@ -104,6 +104,7 @@ model Kitchen {
   menus           Menu[]
   checkTemps      CheckTemp[]
   contactKitchens ContactKitchen[]
+  menuKitchens MenuKitchen[]
 
   @@unique([userId, name])
 }
@@ -151,7 +152,7 @@ model Ingredient {
   id           String      @id @default(cuid())
   name         String
   price        Float
-  unit         UnitMeasure
+  unit         Unit
   category     String
   origin       String
   supplierName String
@@ -160,6 +161,7 @@ model Ingredient {
   // supplierId  String
   user   User   @relation(fields: [userId], references: [id])
   userId String
+  recipeIngredients RecipeIngredient[]
 
   @@unique([name, supplierName, userId])
 }
@@ -202,10 +204,9 @@ model Recipe {
   cookingTime     Int?
 
   steps       Json
-  ingredients Json
 
-  yield       Int
-  unitMeasure UnitMeasure
+  yield       Float
+  unit        Unit
 
   objInvestment Float? @default(20)
 
@@ -214,6 +215,26 @@ model Recipe {
 
   recipeAllergens RecipeAllergen[]
   recipePhotos    RecipePhoto[]
+  recipe RecipeIngredient[] @relation("recipe")
+  recipeIngredient RecipeIngredient[] @relation("ingredient")
+  menuRecipes MenuRecipe[]
+}
+
+model RecipeIngredient {
+  id            Int             @id @default(autoincrement())
+  recipe        Recipe          @relation("recipe", fields: [recipeId], references: [id])
+  recipeId      String
+
+  ingredient    Ingredient?     @relation(fields: [ingredientId], references: [id])
+  ingredientId  String?
+  
+  recipeIngredient    Recipe?   @relation("ingredient", fields: [recipeIngredientId], references: [id])
+  recipeIngredientId  String?
+  
+  yield Float
+  unit Unit
+
+  @@unique([recipeId, ingredientId, recipeIngredientId])
 }
 
 model RecipeAllergen {
@@ -242,8 +263,32 @@ model Menu {
   kitchenId String
 
   isPublic Boolean @default(false)
-  dishs    Json?
+
+  menuKitchens MenuKitchen[]
+  menuRecipes MenuRecipe[]
 }
+
+model MenuRecipe {
+  id            Int             @id @default(autoincrement())
+
+  menu          Menu            @relation(fields: [menuId], references: [id])
+  menuId       String
+  
+  recipe        Recipe          @relation(fields: [recipeId], references: [id])
+  recipeId      String
+  
+  @@unique([recipeId, menuId])
+}
+
+model MenuKitchen {
+  id String @id @default(cuid())
+  kitchen   Kitchen @relation(fields: [kitchenId], references: [id])
+  kitchenId String
+  
+  menu   Menu @relation(fields: [menuId], references: [id])
+  menuId String
+}
+
 
 model StructMenu {
   id String @id @default(cuid())
@@ -310,7 +355,7 @@ enum NotifTypes {
   GENERAL_UPDATE
 }
 
-enum UnitMeasure {
+enum Unit {
   G
   ML
   KG
