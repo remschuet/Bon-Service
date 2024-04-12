@@ -22,49 +22,59 @@ export async function createRecipe(
   recipe: Recipe,
   ingredients: IngredientDTO[]
 ) {
-  try {
-    let steps = recipe.steps as Prisma.JsonArray;
-
-    await db.recipe.create({
-      data: {
-        versionNumber: recipe.versionNumber,
-        name: recipe.name,
-        recipeBookId: recipe.recipeBookId,
-        recipeCategoryId: recipe.recipeCategoryId,
-        recipeState: recipe.recipeState,
-        preparationTime: recipe.preparationTime,
-        cookingTime: recipe.cookingTime,
-        steps: steps,
-        yield: recipe.yield,
-        unit: recipe.unit,
-        objInvestment: recipe.objInvestment,
-        createdAt: recipe.createdAt,
-        updatedAt: recipe.updatedAt,
-      },
-    });
-    for (let ingredient of ingredients) {
-      if (ingredient.type === IngredientType.RECIPE) {
-        await db.recipeIngredient.create({
+  let _recipes: IngredientDTO[] = [];
+  let _ingredients: IngredientDTO[] = [];
+  // For ingredients
+  for (let ingredient of ingredients) {
+    if (ingredient.type === IngredientType.RECIPE) {
+      _recipes.push(ingredient);
+    } else if (ingredient.type === IngredientType.INGREDIENT) {
+      _ingredients.push(ingredient);
+    } else {
+      throw new Error("Invalid ingredient type");
+    }
+    try {
+      let steps = recipe.steps as Prisma.JsonArray;
+      await db.$transaction([
+        db.recipe.create({
+          data: {
+            versionNumber: recipe.versionNumber,
+            name: recipe.name,
+            recipeBookId: recipe.recipeBookId,
+            recipeCategoryId: recipe.recipeCategoryId,
+            recipeState: recipe.recipeState,
+            preparationTime: recipe.preparationTime,
+            cookingTime: recipe.cookingTime,
+            steps: steps,
+            yield: recipe.yield,
+            unit: recipe.unit,
+            objInvestment: recipe.objInvestment,
+            createdAt: recipe.createdAt,
+            updatedAt: recipe.updatedAt,
+          },
+        }),
+        db.recipeIngredient.create({
           data: {
             recipeId: recipe.id,
             recipeIngredientId: ingredient.id,
             quantity: ingredient.quantity,
             unit: ingredient.unit,
           },
-        });
-      } else if (ingredient.type === IngredientType.INGREDIENT) {
-      } else {
-        throw new Error("Invalid ingredient type");
-      }
+        }),
+
+        db.recipeIngredient.create({
+          data: {
+            recipeId: recipe.id,
+            ingredientId: ingredient.id,
+            quantity: ingredient.quantity,
+            unit: ingredient.unit,
+          },
+        }),
+      ]);
+    } catch (error) {
+      console.error("Error data-access/recipe: createRecipe(), error: ", error);
+      throw error;
     }
-    /*
-    await db.recipeIngredient.createMany({
-      data: {recipeId: "", ingredient},
-    });
-*/
-  } catch (error) {
-    console.error("Error data-access/recipe: createRecipe(), error: ", error);
-    throw error;
   }
 }
 
