@@ -1,11 +1,6 @@
 "use server";
 
-import {
-  Ingredient,
-  Contact,
-  SupplierSupported,
-  UnitMeasure,
-} from "@prisma/client";
+import { Ingredient, Contact, SupplierSupported } from "@prisma/client";
 import { db } from "@/db/prisma-db";
 import {
   createManySupplier,

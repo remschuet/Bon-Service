@@ -1,5 +1,5 @@
-import { Component } from "@/lib/composite/class/component";
-import { RecipeComponent } from "@/lib/composite/class/recipe";
+import { Component } from "@/lib/composite/component";
+import { RecipeComponent } from "@/lib/composite/recipe";
 import { UnitMeasure } from "@prisma/client";
 import { unitConversions } from "./unit-convertion";
 

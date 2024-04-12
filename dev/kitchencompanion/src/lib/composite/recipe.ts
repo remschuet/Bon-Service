@@ -1,12 +1,12 @@
-import { RecipeState, UnitMeasure } from "@prisma/client";
-import { Component } from "@/lib/composite/class/component";
+import { RecipeState, Unit } from "@prisma/client";
+import { Component } from "@/lib/composite/component";
 import { unitConversions } from "./unit-convertion";
 
 export interface RecipeData {
   name: string;
   cost: number | null;
   yield: number;
-  unit: UnitMeasure;
+  unit: Unit;
   description: string;
   category: string;
   recipeType: RecipeState;
@@ -18,7 +18,7 @@ export interface RecipeData {
 export interface RecipeComponent {
   component: Component;
   quantity: number;
-  unit: UnitMeasure;
+  unit: Unit;
 }
 
 export class Recipe extends Component {
@@ -56,12 +56,13 @@ export class Recipe extends Component {
     throw new Error("Method not implemented.");
   }
 
-  public calculateCost(quantity?: number, unit?: UnitMeasure): number {
+  public calculateCost(quantity?: number, unit?: Unit): number {
     const rawCost = this._ingredients.reduce((acc, curr) => {
       const currIngredientCost = curr.component.calculateCost(
         curr.quantity,
         curr.unit
       ) as number;
+
       return acc + currIngredientCost;
     }, 0);
 

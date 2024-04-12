@@ -1,6 +1,5 @@
 import { RecipeBook } from "@prisma/client";
 import { db } from "@/db/prisma-db";
-import { Prisma } from "@prisma/client";
 
 ////////////////////////////////
 // TABLES
