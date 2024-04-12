@@ -1,25 +1,20 @@
-/*Fournisseur -> Supplier*/
-/*yield -> rendement*/
-/*
-supplier -> default supplier
-location
-phone book -> user
-*/
-
 enum NotifType {
-  "OpenIaReturn"
-  "UpdateRecipe"
+  "OPENAI_RETURN"
+  "UPDATE_RECIPE"
+  "GENERAL_UPDATE"
 }
 
 enum UnitMeasure {
-  "g"
-  "ml"
-  "portion"
-  "cup"
-  "oz"
-  "tbsp"
-  "tsp"
-  "lbs"
+  "G"
+  "ML"
+  "KG"
+  "L"
+  "UN"
+  "LB"
+  "PORTION"
+  "CUP"
+  "OZ"
+  "TBSP"
 }
 
 enum ActionMapaq {
@@ -30,29 +25,29 @@ enum ActionMapaq {
 }
 
 enum Alergen {
-  "lactose"
-  "gluten"
-  "peanut"
-  "nut"
-  "egg"
-  "fish"
-  "crustacean"
-  "molluscs"
-  "soy"
-  "sulphites"
-  "mustard"
+  "LACTOSE"
+  "GLUTEN"
+  "PEANUT"
+  "NUT"
+  "EGG"
+  "FISH"
+  "CRUSTACEAN"
+  "MOLLUSCS"
+  "SOY"
+  "SULPHISTES"
+  "MUSTARD"
 }
 
 enum UserType {
-  "Admin"
-  "Membre"
-  "Dev"
+  "ADMIN"
+  "MEMBER"
+  "DEV"
 }
 
 Enum RecipeState{
   /*FIXE*/
-  "Recipe"
-  "Dish"
+  "RECIPE"
+  "DISH"
 }
 
 Table User {
@@ -103,7 +98,6 @@ Table SupplierSupported{
 }
 
 Table Supplier{
-  /*dev*/
   id int [pk]
   name varchar
   description varchar
@@ -121,10 +115,9 @@ Table Notification {
 
 Table Ingredient {
   /*unique (user, name, supplierName)*/
-  /*unitPrice 499 = 4.99*/
   id int [pk]
   name varchar
-  price int 
+  price float 
   unit UnitMeasure
   category varchar
   origin varchar
@@ -152,8 +145,6 @@ Table RecipeCategory {
 
 Table Recipe { 
   /*name maybe unique*/
-  /*yield: 3000 ml or 3 portions*/
-  /*objYield = ]0-1[*/
   id int [pk]
   versionNumber int [default: 0]
   name varchar
@@ -163,9 +154,7 @@ Table Recipe {
   preparationTimeMin int
   cookingTimeMin int
   
-  steps json
-  ingredients json
-  yield Int
+  yield Float
   unitMeasure UnitMeasure
   
   dateAdded date [default: 0] /*NOW()*/
@@ -173,6 +162,14 @@ Table Recipe {
 
   createdAt date
   updatedAt Date
+}
+
+Table RecipeIngredient {
+  recipe int [ref: > Recipe.id]
+  ingredient int /*non obligatoire*/
+  recipeIngredient int /*non obligatoire*/
+  yield float
+  unit UnitMeasure
 }
 
 Table RecipeAllergen {
@@ -186,16 +183,25 @@ Table RecipePhoto {
 }
 
 Table Menu {
-  /*
-  dishs exemple
-  structMenu_1{id_1_plat, id_2_plat, id_3_plat}
-  structMenu_2{id_1_plat, id_2_plat, id_3_plat}
-  structMenu_3{id_1_plat, id_2_plat, id_3_plat}*/
   id int [pk]
   name varchar [unique]
-  kitchen int [ref: > Kitchen.id]
+  user int [ref: > User.id]
   isPublic bool [default: false]
-  dishs json 
+}
+
+/* link between all the recipe in a menu*/
+Table MenuRecipe {
+  id int [pk]
+  menu int [ref:> Menu.id]
+  recipe int [ref:> Recipe.id]
+}
+
+
+/* link between the kitchen where a menu is public */
+Table MenuKitchen {
+  id int [pk]
+  kitchen int [ref: > Kitchen.id]
+  menu int [ref: > Menu.id]
 }
 
 Table structMenu {
@@ -246,5 +252,3 @@ Table Video {
   key int [pk]
   value varchar
 }
-
-Ref: "User"."id" < "User"."password"
