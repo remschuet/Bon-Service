@@ -1,8 +1,3 @@
-
 export default async function KitchenPage() {
-
-  return (
-    <>
-    </>
-  );
+  return <></>;
 }
