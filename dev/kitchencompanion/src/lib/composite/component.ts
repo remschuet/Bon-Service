@@ -1,5 +1,5 @@
-import { UnitMeasure } from "@prisma/client";
-import { RecipeComponent } from "@/lib/composite/class/recipe";
+import { Unit } from "@prisma/client";
+import { RecipeComponent } from "@/lib/composite/recipe";
 
 export abstract class Component {
   private _parent!: Component | null;
@@ -28,5 +28,5 @@ export abstract class Component {
 
   public abstract suggestSalePrice(): number;
 
-  public abstract calculateCost(quantity?: number, unit?: UnitMeasure): number;
+  public abstract calculateCost(quantity?: number, unit?: Unit): number;
 }
