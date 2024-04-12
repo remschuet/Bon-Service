@@ -231,7 +231,7 @@ model RecipeIngredient {
   recipeIngredient    Recipe?   @relation("ingredient", fields: [recipeIngredientId], references: [id])
   recipeIngredientId  String?
   
-  yield Float
+  quantity Float
   unit Unit
 
   @@unique([recipeId, ingredientId, recipeIngredientId])
