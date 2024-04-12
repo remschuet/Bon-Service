@@ -100,6 +100,13 @@ export async function getUserById(id: string) {
   }
 }
 
+/**
+ * Updates a user's personal information in the database.
+ *
+ * @param userId - The unique identifier of the user to be updated.
+ * @param user - An object containing the updated user information.
+ * @returns A promise that resolves to the updated user object.
+ */
 export async function updateUser(userId: string, user: User) {
   try {
     return await db.user.update({
@@ -118,6 +125,13 @@ export async function updateUser(userId: string, user: User) {
   }
 }
 
+/**
+ * Updates a user's premium status in the database.
+ *
+ * @param userId - The unique identifier of the user to be updated.
+ * @param isPremium - A boolean value if the user is premium or not.
+ * @returns A promise that resolves to the updated user object.
+ */
 export async function updateUserPremium(userId: string, isPremium: boolean) {
   try {
     return await db.user.update({
@@ -135,6 +149,12 @@ export async function updateUserPremium(userId: string, isPremium: boolean) {
   }
 }
 
+/**
+ * Updates a user's user type in the database to Admin.
+ *
+ * @param userId - The unique identifier of the user to be updated.
+ * @returns A promise that resolves to the updated user object.
+ */
 export async function updateUserUserType(userId: string) {
   try {
     return await db.user.update({
@@ -152,6 +172,13 @@ export async function updateUserUserType(userId: string) {
   }
 }
 
+/**
+ * Updates a user's email verification status in the database.
+ *
+ * @param user - The user object containing the user's details.
+ * @param token - The verification token object containing the email and token.
+ * @returns A promise that resolves to the updated user object.
+ */
 export async function userVerification(user: User, token: VerificationToken) {
   try {
     return await db.user.update({
@@ -183,10 +210,9 @@ export async function deleteUser(email: string) {
   }
 }
 
-// KITCHENS
-
 /**
  * Retrieves all kitchens where the user is the administrator.
+ *
  * @param user - The user object.
  * @returns A promise that resolves to the user object with the associated kitchens.
  */
@@ -208,6 +234,7 @@ export async function getUserKitchens(user: User) {
 
 /**
  * Retrieves all kitchens where the user with the specified ID is the administrator.
+ *
  * @param id - The ID of the user.
  * @returns A promise that resolves to the user object with the associated kitchens.
  */
@@ -230,6 +257,12 @@ export async function getAllUserKitchensById(id: string) {
   }
 }
 
+/**
+ * Retrieves the user type of a user by their email address (MEMBER or ADMIN).
+ *
+ * @param email - The email address of the user.
+ * @returns A promise that resolves to the user type of the user.
+ */
 export async function getUserUserType(email: string) {
   try {
     return await db.user.findFirst({
@@ -239,7 +272,6 @@ export async function getUserUserType(email: string) {
       select: {
         userType: true,
       },
-      // cacheStrategy: { swr: 60, ttl: 60 },
     });
   } catch (error) {
     console.error("Error data-access/user: getUserUserType(), error: ", error);
