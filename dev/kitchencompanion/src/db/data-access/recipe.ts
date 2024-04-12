@@ -1,6 +1,8 @@
-import { RecipeBook, Allergen, Recipe } from "@prisma/client";
+import { RecipeBook, Allergen, Recipe, Ingredient } from "@prisma/client";
 import { db } from "@/db/prisma-db";
 import { Prisma } from "@prisma/client";
+import { RecipeComponent } from "@/lib/composite/recipe";
+import { IngredientDTO } from "@/lib/type";
 
 ////////////////////////////////
 // TABLES
@@ -11,16 +13,16 @@ import { Prisma } from "@prisma/client";
 ////////////////////////////////
 
 /**
- * Create a Recipe.
+ * Create a Recipe with the ingredient (primitive and recipe).
  * @param recipe - The recipe object containing the recipes's details.
+ * @param ingredients - The DTO object representing ingredient or recipe.
  * @returns A promise that resolves to the created recipe.
  */
-export async function createRecipe(recipe: Recipe) {
+export async function createRecipe(recipe: Recipe, ingredients: IngredientDTO[]) {
   try {
     let steps = recipe.steps as Prisma.JsonArray;
-    let ingredients = recipe.ingredients as Prisma.JsonArray;
-
-    return await db.recipe.create({
+    
+    await db.recipe.create({
       data: {
         versionNumber: recipe.versionNumber,
         name: recipe.name,
@@ -30,14 +32,19 @@ export async function createRecipe(recipe: Recipe) {
         preparationTime: recipe.preparationTime,
         cookingTime: recipe.cookingTime,
         steps: steps,
-        ingredients: ingredients,
         yield: recipe.yield,
-        unitMeasure: recipe.unitMeasure,
+        unit: recipe.unit,
         objInvestment: recipe.objInvestment,
         createdAt: recipe.createdAt,
         updatedAt: recipe.updatedAt,
       },
     });
+/*
+    await db.recipeIngredient.createMany({
+      data: {recipeId: "", ingredient},
+    });
+*/
+
   } catch (error) {
     console.error("Error data-access/recipe: createRecipe(), error: ", error);
     throw error;
