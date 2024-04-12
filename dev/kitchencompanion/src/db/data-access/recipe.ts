@@ -2,7 +2,7 @@ import { RecipeBook, Allergen, Recipe, Ingredient } from "@prisma/client";
 import { db } from "@/db/prisma-db";
 import { Prisma } from "@prisma/client";
 import { RecipeComponent } from "@/lib/composite/recipe";
-import { IngredientDTO } from "@/lib/type";
+import { IngredientDTO, IngredientType } from "@/lib/type";
 
 ////////////////////////////////
 // TABLES
@@ -18,10 +18,13 @@ import { IngredientDTO } from "@/lib/type";
  * @param ingredients - The DTO object representing ingredient or recipe.
  * @returns A promise that resolves to the created recipe.
  */
-export async function createRecipe(recipe: Recipe, ingredients: IngredientDTO[]) {
+export async function createRecipe(
+  recipe: Recipe,
+  ingredients: IngredientDTO[]
+) {
   try {
     let steps = recipe.steps as Prisma.JsonArray;
-    
+
     await db.recipe.create({
       data: {
         versionNumber: recipe.versionNumber,
@@ -39,12 +42,26 @@ export async function createRecipe(recipe: Recipe, ingredients: IngredientDTO[])
         updatedAt: recipe.updatedAt,
       },
     });
-/*
+    for (let ingredient of ingredients) {
+      if (ingredient.type === IngredientType.RECIPE) {
+        await db.recipeIngredient.create({
+          data: {
+            recipeId: recipe.id,
+            recipeIngredientId: ingredient.id,
+            quantity: ingredient.quantity,
+            unit: ingredient.unit,
+          },
+        });
+      } else if (ingredient.type === IngredientType.INGREDIENT) {
+      } else {
+        throw new Error("Invalid ingredient type");
+      }
+    }
+    /*
     await db.recipeIngredient.createMany({
       data: {recipeId: "", ingredient},
     });
 */
-
   } catch (error) {
     console.error("Error data-access/recipe: createRecipe(), error: ", error);
     throw error;
