@@ -22,14 +22,6 @@ export async function addIngredient(formData: FormData) {
    * @param unit - The unit to check.
    * @returns The converted unit if necessary, otherwise the original unit.
    */
-  const checkUnit = (unit: string) => {
-    if (unit === "G") {
-      return "KG";
-    } else if (unit === "ML") {
-      return "L";
-    }
-    return unit;
-  };
 
   let price =
     parseFloat(formData.get("price") as string) /
@@ -70,7 +62,7 @@ export async function addIngredient(formData: FormData) {
  *
  * @param ingredient - The ingredient to create or update.
  */
-async function createOrUpdateIgredient(ingredient: Ingredient) {
+export async function createOrUpdateIgredient(ingredient: Ingredient) {
   if (
     await getIngredientIfExist(
       ingredient.name,
@@ -90,3 +82,12 @@ async function createOrUpdateIgredient(ingredient: Ingredient) {
     createIngredient(ingredient);
   }
 }
+
+export const checkUnit = (unit: string) => {
+  if (unit === "G") {
+    return "KG";
+  } else if (unit === "ML") {
+    return "L";
+  }
+  return unit;
+};
