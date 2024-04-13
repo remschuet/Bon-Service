@@ -95,6 +95,25 @@ export async function getContact(
 }
 
 /**
+ * Deletes a contact from the database by its ID.
+ * @param id - The ID of the contact to delete.
+ * @returns A promise that resolves to the deleted contact.
+ * @throws An error if the contact does not exist or if there is an issue with the database operation.
+ */
+export async function deleteContact(id: string) {
+  try {
+    return await db.contact.delete({
+      where: {
+        id: id,
+      },
+    });
+  } catch (error) {
+    console.error("Error data-access/contact: deleteContact(), error: ", error);
+    throw error;
+  }
+}
+
+/**
  * Delete all contacts associated with a given user ID (ADMIN).
  * @param userId - The ID of the user (ADMIN) whose contacts should be deleted.
  * @returns The number of contacts that were deleted.

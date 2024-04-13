@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Ingredient, UnitMeasure } from "@prisma/client";
+import { Ingredient, Unit } from "@prisma/client";
 import {
   updateUserFacturation,
   updateToAdmin,

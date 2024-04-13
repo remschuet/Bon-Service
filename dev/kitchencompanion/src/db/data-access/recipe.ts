@@ -53,7 +53,7 @@ export async function createRecipe(
             updatedAt: recipe.updatedAt,
           },
         }),
-        db.recipeIngredient.create({
+        db.recipeIngredient.createMany({
           data: {
             recipeId: recipe.id,
             recipeIngredientId: ingredient.id,

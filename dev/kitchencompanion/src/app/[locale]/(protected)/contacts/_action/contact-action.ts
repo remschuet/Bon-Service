@@ -2,6 +2,7 @@
 
 import {
   createContact,
+  deleteContact,
   deleteLinkContactKitchen,
   getAllContactLinksToKitchen,
   linkContactKitchen,
@@ -97,6 +98,21 @@ export async function updateContactStatusIsPublic(
  */
 export async function getAllContactForMember(kitchenId: string) {
   return getAllContactLinksToKitchen(kitchenId);
+}
+
+export async function removeSpecificContact(contactId: string) {
+  try {
+    await deleteContact(contactId);
+  } catch (error) {
+    return {
+      error: "Erreur interne, impossible de supprimer le contact.",
+      status: 500,
+    };
+  }
+  return {
+    success: "Le contact a été supprimé avec succès.",
+    status: 200,
+  };
 }
 
 // Test Rémi pour verifier les actions
