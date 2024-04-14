@@ -68,4 +68,10 @@ export const KitchenSchema = z.object({
   description: z.string().min(1).max(128),
 });
 
+export const RecipeBookSchema = z.object({
+  name: z.string().min(1).max(36),
+  userId: z.string().min(1).max(36),
+  description: z.string().min(1).max(128),
+});
+
 export const partialRegistrationSchema = RegistrationSchema.partial();

@@ -5,10 +5,7 @@ import {
   getNotifications,
 } from "@/db/data-access/notifications";
 import { NotifTypes, Notification, Unit } from "@prisma/client";
-import {
-  checkUnit,
-  createOrUpdateIgredient,
-} from "@/app/[locale]/(protected)/market/_action/ingredient-action";
+import { createOrUpdateIgredient } from "@/app/[locale]/(protected)/market/_action/ingredient-action";
 import { Ingredient } from "@prisma/client";
 
 export default async function processReceipt(formData: FormData) {
