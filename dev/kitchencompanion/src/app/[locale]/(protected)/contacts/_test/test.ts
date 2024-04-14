@@ -1,16 +1,9 @@
-import { Contact, User, UserTypes } from "@prisma/client";
+import { Contact } from "@prisma/client";
 import { addContact, removeSpecificContact } from "../_action/contact-action";
-import { describe, expect, test } from "@jest/globals";
-import { createUser, deleteUser, getUser } from "@/db/data-access/user";
-import { deleteContact, getContact } from "@/db/data-access/contact";
-
-let userTest = {
-  id: "To be getting",
-  name: "__TEST_MARTIN",
-  email: "__TEST_.test@test.com",
-  password: "__TEST_secret",
-  userType: UserTypes.ADMIN,
-};
+import { describe, expect } from "@jest/globals";
+import { getUser } from "@/db/data-access/user";
+import { getContact } from "@/db/data-access/contact";
+import { userTest } from "@/jest.setup";
 
 let contact = {
   id: "To be getting",
@@ -21,54 +14,34 @@ let contact = {
   compteNumber: "test compte",
 };
 
-// Before all the tests
-// Create user and get the id
+/*
+ * Setup the contact tests
+ * get the userTest real id
+ */
 beforeAll(async () => {
   try {
-    await createUser(userTest as User);
     const createdUser = await getUser(userTest.email);
     if (createdUser) {
       userTest.id = createdUser.id;
-      contact.userId = createdUser.id;
-    } else {
-      console.log("UserTest not created");
+      contact.userId = userTest.id;
     }
-  } catch (err) {
-    // try to destroy user
-    await deleteUser(userTest.email);
-    console.error(
-      "Erreur initialisation userTest (user existe deja, clé étrangère, problème interne)"
-    );
+  } catch {
+    console.error("beforeAll contacts/test");
+    console.log("userTestId: " + userTest.id);
+    console.log("contactUserI: " + contact.userId);
   }
-});
-
-// After all the tests
-// Remove the user
-afterAll(async () => {
-  try {
-    await deleteUser(userTest.email);
-  } catch (err) {
-    console.error("Erreur suppression du user pour les tests");
-  }
-});
-
-// Test if the tests workings
-describe("Verify if test working", () => {
-  test("adds 1 + 2 to equal 3", () => {
-    expect(1 + 2).toBe(3);
-  });
 });
 
 describe("Test contact", () => {
-  // Test creation contact
-  it("Créer contact: succès", async () => {
+  // Test create contact
+  it("Create contact: success", async () => {
     const result = await addContact(contact as Contact, []);
+    // Get the id of the created contact to remove it
     const createdContact = await getContact(
       contact.userId,
       contact.name,
       contact.phoneNumber
     );
-
     if (createdContact) {
       contact.id = createdContact.id;
     } else {
@@ -79,8 +52,8 @@ describe("Test contact", () => {
       status: 200,
     });
   });
-  // Test suppression contact
-  it("Supprimer contact: succès", async () => {
+  // Test remove contact
+  it("Remove contact: success", async () => {
     const result = await removeSpecificContact(contact.id);
     expect(result).toEqual({
       success: "Le contact a été supprimé avec succès.",
