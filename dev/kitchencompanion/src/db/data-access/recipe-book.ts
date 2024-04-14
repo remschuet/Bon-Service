@@ -16,6 +16,7 @@ export async function createRecipeBook(recipeBook: RecipeBook) {
     return await db.recipeBook.create({
       data: {
         name: recipeBook.name,
+        description: recipeBook.description,
         userId: recipeBook.userId,
       },
     });

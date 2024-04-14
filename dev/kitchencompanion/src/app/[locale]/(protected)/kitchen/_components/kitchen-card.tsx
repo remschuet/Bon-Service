@@ -15,7 +15,7 @@ export function KitchenCard(kitchen: Kitchen) {
   return (
     <Link href={`/kitchen/${kitchen.name}`}>
       <Card className='min-h-[200px]'>
-        <CardHeader className='bg-brand-light rounded-t-lg mb-6 min-h-[125px]'>
+        <CardHeader className='bg-brand-light rounded-t-lg mb-6 min-h-[125px] space-y-4'>
           <CardTitle>{kitchen.name}</CardTitle>
           <CardDescription>{kitchen.description}</CardDescription>
         </CardHeader>
