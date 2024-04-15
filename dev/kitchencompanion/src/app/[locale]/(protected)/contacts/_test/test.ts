@@ -52,6 +52,19 @@ describe("Test contact", () => {
       status: 200,
     });
   });
+
+  // Test create contact, already exist
+  it("Create contact: error, already exist", async () => {
+    try {
+      const result = await addContact(contact as Contact, []);
+      expect(result).toEqual({
+        error:
+          "Il existe déjà un contact portant ce nom avec ce numéro de téléphone.",
+        status: 500,
+      });
+    } catch (err) {}
+  });
+
   // Test remove contact
   it("Remove contact: success", async () => {
     const result = await removeSpecificContact(contact.id);
