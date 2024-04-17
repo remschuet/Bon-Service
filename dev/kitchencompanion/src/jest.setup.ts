@@ -12,7 +12,33 @@ import { createUser, deleteUser } from "./db/data-access/user";
  * consoleLogSpy: controls the spy on console.log
  * consoleErrorSpy: controls the spy on console.error
  */
+/*
+const fs = require("fs");
+const { execSync } = require("child_process");
 
+// Chemin du fichier schema.prisma
+const filePath = "./prisma/schema.prisma";
+
+try {
+  // Lire le contenu du fichier
+  let fileContent = fs.readFileSync(filePath, "utf8");
+
+  // Remplacer les occurrences spécifiques
+  fileContent = fileContent.replace(
+    /env\("DATABASE_URL"\)/g,
+    'env("DATABASE_URL_JEST")'
+  );
+
+  // Écrire le contenu modifié dans le fichier
+  fs.writeFileSync(filePath, fileContent);
+
+  // Exécuter les commandes prisma nécessaires
+  execSync("npx prisma db push");
+  execSync("npx prisma generate");
+} catch (err) {
+  console.error(`Error modifying file ${filePath}:`, err);
+}
+*/
 const isSilent: boolean = true;
 
 let consoleLogSpy: any = null;
