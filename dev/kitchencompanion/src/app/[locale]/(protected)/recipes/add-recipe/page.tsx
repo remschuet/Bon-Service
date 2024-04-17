@@ -1,5 +1,5 @@
-import { RecipeGeneral } from "@/app/[locale]/(protected)/recipes/add/_components/recipe-general";
-import { RecipeInputBox } from "@/app/[locale]/(protected)/recipes/add/_components/recipe-input-box";
+import { RecipeGeneral } from "@/app/[locale]/(protected)/recipes/add-recipe/_components/recipe-general";
+import { RecipeInputBox } from "@/app/[locale]/(protected)/recipes/add-recipe/_components/recipe-input-box";
 
 export default async function RecipeBookPage() {
   return (
