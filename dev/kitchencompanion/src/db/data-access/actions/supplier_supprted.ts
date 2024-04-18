@@ -1,5 +1,5 @@
 import { SupplierSupported } from "@prisma/client";
-import { dev_createManySupplierSupported, dev_removeAllSupplierSupported } from "./supplier";
+import { dev_createManySupplierSupported, dev_removeAllSupplierSupported } from "../supplier";
 
 
 /*

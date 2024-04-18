@@ -1,10 +1,10 @@
 /////////// INIT USER ///////////
 
 import { Contact, RecipeBook, Supplier, SupplierSupported, User } from "@prisma/client";
-import { getUserById } from "./user";
-import { createManySupplier, createSupplier, deleteAllSupplierByUserId, getAllSupplierSupported } from "./supplier";
-import { createRecipeBook, deleteRecipeBookByUserIdAndName } from "./recipe-book";
-import { createManyContact, deleteAllContact } from "./contact";
+import { getUserById } from "../user";
+import { createManySupplier, createSupplier, deleteAllSupplierByUserId, getAllSupplierSupported } from "../supplier";
+import { createRecipeBook, deleteRecipeBookByUserIdAndName } from "../recipe-book";
+import { createManyContact, deleteAllContact } from "../contact";
 
 /**
  * Initializes the recipeBook and market for a user.
