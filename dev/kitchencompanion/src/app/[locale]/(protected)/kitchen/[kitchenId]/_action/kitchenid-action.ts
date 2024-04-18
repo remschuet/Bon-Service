@@ -1,50 +1,45 @@
 "use server";
 
 import {
-  createKitchen,
-  getAllKitchenUserById,
-  getKitchenByAdminAndName,
   linkKitchenUserById,
 } from "@/db/data-access/kitchen";
-import { linkMenuToKitchen } from "@/db/data-access/menu";
+import { getMenu, linkMenuToKitchen } from "@/db/data-access/menu";
 import { createUser, getUser } from "@/db/data-access/user";
 import { Kitchen, User } from "@prisma/client";
 
-// lier un menu
+/**
+ * Link a menu to a kitchen
+ *
+ * @param form - FormData.
+ * @returns an objet with message error or success.
+ */
 export async function addMenuToKitchen(form: FormData) {
   const userId = form.get("userId") as string;
   const kitchenId = form.get("kitchenId") as string;
   const menuToAdd = form.get("menuName") as string;
-  const menuId = menuToAdd
-  
-  await linkMenuToKitchen(kitchenId, menuId);
 
-}
-
-/**
- * Creates a new user with the provided email.
- *
- * @param email - The email address of the new user.
- * @returns An object containing a success message or an error message
- */
-async function createMemberUser(email: string) {
-  try {
-    const user = {
-      email: email,
-      // TODO mettre un mdp ? (si pas verifier il peut pas ce connecter?)
-      password: "AAAaaa111",
-    } as User;
-    createUser(user);
-    // TODO: envoyer un email
-  } catch {
+  let menu = null;
+  try{
+    menu = await getMenu(userId, menuToAdd);
+    if (!menu) throw new Error
+  }catch(error){
     return {
       error:
-        "Une erreur interne est survenue, impossible de créer l'utilisateur.",
+        "Le menu n'existe pas.",
+      status: 500,
+    };
+  }
+  try{
+  await linkMenuToKitchen(kitchenId, menu.id);
+  }catch(error){
+    return {
+      error:
+        "La liaison n'a pas ete realise.",
       status: 500,
     };
   }
   return {
-    success: "L'utilisateur a été créé avec succès.",
+    error: "Le menu est maintenant lie.",
     status: 200,
   };
 }
@@ -79,3 +74,34 @@ export async function addMemberToKitchen(form: FormData) {
     status: 200,
   };
 }
+
+
+/**
+ * Creates a new user with the provided email.
+ *
+ * @param email - The email address of the new user.
+ * @returns An object containing a success message or an error message
+ */
+async function createMemberUser(email: string) {
+    // TODO mettre un mdp ? (si pas verifier il peut pas ce connecter?)
+    const user = {
+    email: email,
+    password: "AAAaaa111",
+  } as User;
+
+  try {
+    createUser(user);
+    // TODO: envoyer un email
+  } catch {
+    return {
+      error:
+        "Une erreur interne est survenue, impossible de créer l'utilisateur.",
+      status: 500,
+    };
+  }
+  return {
+    success: "L'utilisateur a été créé avec succès.",
+    status: 200,
+  };
+}
+
