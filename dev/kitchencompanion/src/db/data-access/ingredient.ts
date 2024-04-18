@@ -59,6 +59,28 @@ export async function getAllIngredientBySupplierNameAndUserId(
   }
 }
 
+export async function getIngredient(
+  name: string,
+  supplierName: string,
+  userId: string
+) {
+  try {
+    return await db.ingredient.findFirst({
+      where: {
+        name: name,
+        supplierName: supplierName,
+        userId: userId,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/ingredient: getIngredient(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
 /**
  * Get if specific ingredient exist.
  * @param name - The name of the ingredient to retrieve.
@@ -153,6 +175,22 @@ export async function updateIngredientPrice(
   } catch (error) {
     console.error(
       "Error data-access/ingredient: updateIngredientPrice(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
+export async function deleteIngredient(ingredientId: string) {
+  try {
+    return await db.ingredient.deleteMany({
+      where: {
+        id: ingredientId,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/ingredient: deleteIngredient(), error: ",
       error
     );
     throw error;
