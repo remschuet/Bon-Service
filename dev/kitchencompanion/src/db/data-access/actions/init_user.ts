@@ -3,7 +3,7 @@
 import { Contact, RecipeBook, Supplier, SupplierSupported, User } from "@prisma/client";
 import { getUserById } from "../user";
 import { createManySupplier, createSupplier, deleteAllSupplierByUserId, getAllSupplierSupported } from "../supplier";
-import { createRecipeBook, deleteRecipeBookByUserIdAndName } from "../recipe-book";
+import { createRecipeBook, deleteAllRecipeBook, deleteRecipeBookByUserIdAndName } from "../recipe-book";
 import { createManyContact, deleteAllContact } from "../contact";
 
 /**
@@ -24,27 +24,23 @@ export async function action_initUser(userId: string) {
       status: 400,
     };
   }
-  try {
-    if (!user) {
-      return {
-        error: "Il n'existe pas de compte lié à cet utilisateur.",
-        status: 400,
-      };
-    }
-    const recipeBook = {
-      name: "Default_" + user.name,
-      userId: user.id,
-    };
+  // Default recipeBook
+  const recipeBook = {
+    name: "Toutes les recettes, " + user.name,
+    userId: user.id,
+  };
 
-    let supplier = {
-      name: "Market_" + user.name,
-      userId: user.id,
-      description: "Default market",
-    };
-    // create supplier
-    await createSupplier(supplier as Supplier);
-    // create recipeBook
+  // create recipeBook
+  try {
     await createRecipeBook(recipeBook as RecipeBook);
+  }catch(error){
+    return {
+      error: "Erreur lors de la creation du livre de recette.",
+      status: 400,
+    };
+  }
+  // Link default supplier supported
+  try{
     const supplierSupported: SupplierSupported[] =
       await getAllSupplierSupported();
 
@@ -74,26 +70,33 @@ export async function action_initUser(userId: string) {
     await createManyContact(contactToAdd);
   } catch (error) {
     return {
-      error: "Une erreur interne est survenu.",
-      status: 500,
+      error: "Erreur lors de la creation des fournisseur et des contacts par default.",
+      status: 400,
     };
   }
   return {
-    success: "Les contacts et les fournisseurs sont initalisé correctement.",
+    success: "L'initialiser des informations par default c'est executer avec succes.",
     status: 200,
   };
 }
 
-// REMOVE USER
-export async function action_removeDataUser(userId: string) {
+/**
+ * Removes all data associated with a user. (dev fonction)
+ * ! DANGER !: remove all recipebook, supplier, contact.
+ * @param userId - The id of the user whose data should be removed.
+ * @returns A Promise that resolves when the data removal is complete.
+ * @throws An error if there is an issue removing the data.
+ */
+export async function dev_action_removeAllDataUser(userId: string) {
   try {
     const user = await getUserById(userId);
 
     if (user) {
-      // Remove recipe book
-      await deleteRecipeBookByUserIdAndName(userId, "Default_" + user.name);
+      // Remove all recipeBook
+      await deleteAllRecipeBook(userId);
       // Remove all Supplier
       await deleteAllSupplierByUserId(userId);
+      // Remove all contact
       await deleteAllContact(userId);
     }
   } catch (error) {
