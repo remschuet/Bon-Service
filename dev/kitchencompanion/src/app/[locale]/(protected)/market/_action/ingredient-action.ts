@@ -37,7 +37,7 @@ export async function addIngredient(formData: FormData) {
   const ingredient = {
     name: formData.get("name") as string,
     price: parseFloat(price.toFixed(5)),
-    unit: checkUnit(unit),
+    unit: await checkUnit(unit),
     category: formData.get("category") as string,
     origin: formData.get("origin") as string,
     supplierName: formData.get("supplierName") as string,
@@ -70,8 +70,6 @@ export async function createOrUpdateIgredient(ingredient: Ingredient) {
       ingredient.supplierName
     )
   ) {
-    // Avertissement usagé ?
-    console.log("L'ingredient existe deja");
     updateIngredientPrice(
       ingredient.name,
       ingredient.userId,
