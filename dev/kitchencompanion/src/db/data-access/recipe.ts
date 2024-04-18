@@ -189,3 +189,98 @@ export async function linkRecipePhoto(recipe: Recipe, photo: string) {
     throw error;
   }
 }
+
+/**
+ * Get all the ingredientsId and recipesId in a specific recipeId.
+ *
+ * @param recipeId - The ID of the recipe to search for ingredients and recipes.
+ * @returns two arrays: 'ingredients' and 'recipeIngredients'.
+ * @return example: ["1", "2", "3"] ["1", "2"]
+ */
+export async function getRecipeIngredientAndRecipe(recipeId: string) {
+  try {
+    // Get the ingredients
+    const ingredientsResult = await db.recipeIngredient.findMany({
+      where: { recipeId: recipeId, ingredientId: { not: null } },
+      include: { ingredient: true },
+    });
+
+    // Extract ingredients from the result
+    const ingredients = ingredientsResult.map((ri) => ri.ingredient);
+
+    // Get the recipe ingredients
+    const recipeIngredientsResult = await db.recipeIngredient.findMany({
+      where: { recipeId: recipeId, recipeIngredientId: { not: null } },
+      include: { recipeIngredient: true },
+    });
+
+    // Extract recipe ingredients from the result
+    const recipeIngredients = recipeIngredientsResult.map(
+      (ri) => ri.recipeIngredient
+    );
+
+    return { ingredients, recipeIngredients };
+  } catch (error) {
+    console.error(
+      "Error data-access/recipe: getRecipeIngredientRecipe(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
+/**
+ * Get all recipes that contain the specified ingredient.
+ *
+ * @param ingredientId - The ID of the ingredient to search for in recipes.
+ * @returns An array of recipe IDs where the specified ingredient is used.
+ * @returns example: ["3", "4", "5", "6"]
+ */
+export async function getAllRecipeFromIngredient(ingredientId: String) {
+  try {
+    // Prisma.StringFilter to remove possibility of null values
+    const recipeIngredients = await db.recipeIngredient.findMany({
+      where: { ingredientId: { equals: ingredientId } as Prisma.StringFilter },
+      select: { recipeId: true },
+    });
+    const recipeIds = recipeIngredients.map((ri) => ri.recipeId);
+    return recipeIds;
+  } catch (error) {
+    console.error(
+      "Error data-access/recipe: getAllRecipeFromIngredient(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
+/**
+ * Get all recipes that contain the specified recipeIngredient.
+ *
+ * @param RecipeIngredientId - The ID of the recipeIngredient to search for in recipes.
+ * @returns An array of recipe IDs where the specified ingredient is used.
+ * @returns example: ["3", "4", "5", "6"]
+ */
+export async function getAllRecipeFromRecipeIngredient(
+  RecipeIngredientId: String
+) {
+  try {
+    // Prisma.StringFilter to remove possibility of null values
+    const recipeIngredients = await db.recipeIngredient.findMany({
+      where: {
+        recipeIngredientId: {
+          equals: RecipeIngredientId,
+        } as Prisma.StringFilter,
+      },
+      select: { recipeId: true },
+    });
+    const recipeIds = recipeIngredients.map((ri) => ri.recipeId);
+    return recipeIds;
+  } catch (error) {
+    console.error(
+      "Error data-access/recipe: getAllRecipeFromIngredient(), error: ",
+      error
+    );
+    throw error;
+  }
+}
