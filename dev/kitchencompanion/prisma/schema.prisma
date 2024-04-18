@@ -265,6 +265,8 @@ model Menu {
 
   isPublic Boolean @default(false)
 
+  @@unique([name, userId])
+
   menuKitchens MenuKitchen[]
   menuRecipes  MenuRecipe[]
 }
