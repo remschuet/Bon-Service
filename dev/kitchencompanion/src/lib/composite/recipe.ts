@@ -1,8 +1,9 @@
 import { RecipeState, Unit } from "@prisma/client";
 import { Component } from "@/lib/composite/component";
-import { unitConversions } from "./unit-convertion";
+import { unitConversions } from "@/lib/composite/unit-convertion";
 
 export interface RecipeData {
+  id?: string;
   name: string;
   cost: number | null;
   yield: number;
@@ -26,7 +27,7 @@ export class Recipe extends Component {
   private _recipeData: RecipeData;
 
   constructor(recipeData: RecipeData) {
-    super(true);
+    super({ id: recipeData.id, isComposite: true });
     this._recipeData = recipeData;
   }
 

@@ -1,22 +1,16 @@
 import { Component } from "@/lib/composite/component";
 import { RecipeComponent } from "@/lib/composite/recipe";
+import { unitConversions } from "@/lib/composite/unit-convertion";
 import { Unit } from "@prisma/client";
-import { unitConversions } from "./unit-convertion";
 
 export class Ingredient extends Component {
-  private _id: string;
   private _price: number;
   private _unit: Unit;
 
   constructor(id: string, price: number, unit: Unit) {
-    super();
-    this._id = id;
+    super({ id: id });
     this._price = price;
     this._unit = unit;
-  }
-
-  public get id(): string {
-    return this._id;
   }
 
   public add(component: Component | RecipeComponent): void {

@@ -28,6 +28,8 @@ export function AddIngredientForm() {
   const [error, setError] = useState<string | undefined>(undefined);
   const [success, setSuccess] = useState<string | undefined>(undefined);
 
+  const units = ["LB", "KG", "G", "L", "ML", "OZ", "UN", "CS"];
+
   function handleAddIngredient(formData: FormData) {
     startTransition(() => {
       addIngredient(formData).then((res) => {
@@ -39,123 +41,116 @@ export function AddIngredientForm() {
   }
 
   return (
-    <div className='grid place-content-center w-[600px]'>
+    <div className="grid place-content-center w-[600px]">
       <form
         ref={ref}
         action={handleAddIngredient}
-        className='flex flex-col space-y-7'>
-        <div className='flex gap-2 flex-wrap w-full'>
+        className="flex flex-col space-y-7"
+      >
+        <div className="flex gap-2 flex-wrap w-full">
           <Input
             disabled={isPending}
-            type='text'
-            name='name'
+            type="text"
+            name="name"
             placeholder="Nom de l'ingrédient"
           />
-          <div className='flex gap-6 w-full'>
-            <div className='flex gap-2 w-full'>
+          <div className="flex gap-6 w-full">
+            <div className="flex gap-2 w-full">
               <Input
                 disabled={isPending}
-                type='text'
-                name='price'
-                placeholder='12.99'
+                type="text"
+                name="price"
+                placeholder="12.99"
               />
               <Input
                 disabled={isPending}
-                type='text'
+                type="text"
                 name={!isCS ? "quantity" : ""}
-                placeholder='20'
+                placeholder="20"
               />
               <Select
                 disabled={isPending}
                 name={!isCS ? "unit" : ""}
-                onValueChange={(e) => setUnit(e as string)}>
-                <SelectTrigger className='w-[100px]'>
-                  <SelectValue placeholder='Unité' />
+                onValueChange={(e) => setUnit(e as string)}
+              >
+                <SelectTrigger className="w-[100px]">
+                  <SelectValue placeholder="Unité" />
                 </SelectTrigger>
-                <SelectContent className='w-[80px]'>
-                  <SelectItem value='LB'>LB</SelectItem>
-                  <SelectItem value='KG'>KG</SelectItem>
-                  <SelectItem value='G'>G</SelectItem>
-                  <SelectItem value='L'>L</SelectItem>
-                  <SelectItem value='ML'>ML</SelectItem>
-                  <SelectItem value='OZ'>OZ</SelectItem>
-                  <SelectItem value='UN'>UN</SelectItem>
-                  <SelectItem value='CS'>CS</SelectItem>
+                <SelectContent className="w-[80px]">
+                  {units.map((unit) => (
+                    <SelectItem key={unit} value={unit}>
+                      {unit}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
             </div>
 
             {isCS && (
-              <div className='flex gap-2'>
+              <div className="flex gap-2">
                 <Input
                   disabled={isPending}
-                  type='text'
-                  name='amount-unit'
-                  placeholder='6'
+                  type="text"
+                  name="amount-unit"
+                  placeholder="6"
                 />
-                <p className='my-auto font-semibold'> x </p>
+                <p className="my-auto font-semibold"> x </p>
                 <Input
                   disabled={isPending}
-                  type='text'
-                  name='quantity'
-                  placeholder='20'
+                  type="text"
+                  name="quantity"
+                  placeholder="20"
                 />
-                <Select
-                  disabled={isPending}
-                  name='unit'>
-                  <SelectTrigger className='w-[200px]'>
-                    <SelectValue placeholder='Unité' />
+                <Select disabled={isPending} name="unit">
+                  <SelectTrigger className="w-[200px]">
+                    <SelectValue placeholder="Unité" />
                   </SelectTrigger>
-                  <SelectContent className='w-[80px]'>
-                    <SelectItem value='LB'>LB</SelectItem>
-                    <SelectItem value='KG'>KG</SelectItem>
-                    <SelectItem value='G'>G</SelectItem>
-                    <SelectItem value='L'>L</SelectItem>
-                    <SelectItem value='ML'>ML</SelectItem>
-                    <SelectItem value='OZ'>OZ</SelectItem>
-                    <SelectItem value='UN'>UN</SelectItem>
+                  <SelectContent className="w-[80px]">
+                    {units.map((unit) => (
+                      <SelectItem key={unit} value={unit}>
+                        {unit}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
             )}
           </div>
-          <div className='flex gap-2 w-full'>
+          <div className="flex gap-2 w-full">
             <Input
               disabled={isPending}
-              type='text'
-              name='supplierName'
-              placeholder='Nom du fournisseur'
+              type="text"
+              name="supplierName"
+              placeholder="Nom du fournisseur"
             />
-            <Select
-              disabled={isPending}
-              name='category'>
-              <SelectTrigger className='w-[300px]'>
-                <SelectValue placeholder='Catégorie' />
+            <Select disabled={isPending} name="category">
+              <SelectTrigger className="w-[300px]">
+                <SelectValue placeholder="Catégorie" />
               </SelectTrigger>
-              <SelectContent className='w-[170px]'>
-                <SelectItem value='Fruit & Légume'>Fruit & Légume</SelectItem>
-                <SelectItem value='Viande'>Viande</SelectItem>
-                <SelectItem value='Poisson'>Poisson</SelectItem>
-                <SelectItem value='Produit Laitier'>Produit Laitier</SelectItem>
-                <SelectItem value='Pâtisserie'>Pâtisserie</SelectItem>
-                <SelectItem value='Congeler'>Congeler</SelectItem>
-                <SelectItem value='Sec'>Sec</SelectItem>
-                <SelectItem value='Fines Herbes'>Fines Herbes</SelectItem>
-                <SelectItem value='Charcuterie'>Charcuterie</SelectItem>
-                <SelectItem value='Autre'>Autre</SelectItem>
+              <SelectContent className="w-[170px]">
+                <SelectItem value="Fruit & Légume">Fruit & Légume</SelectItem>
+                <SelectItem value="Viande">Viande</SelectItem>
+                <SelectItem value="Poisson">Poisson</SelectItem>
+                <SelectItem value="Produit Laitier">Produit Laitier</SelectItem>
+                <SelectItem value="Pâtisserie">Pâtisserie</SelectItem>
+                <SelectItem value="Congeler">Congeler</SelectItem>
+                <SelectItem value="Sec">Sec</SelectItem>
+                <SelectItem value="Fines Herbes">Fines Herbes</SelectItem>
+                <SelectItem value="Charcuterie">Charcuterie</SelectItem>
+                <SelectItem value="Autre">Autre</SelectItem>
               </SelectContent>
             </Select>
             <Input
               disabled={isPending}
-              className='w-[100px]'
-              type='text'
-              name='origin'
-              placeholder='QC, US...'
+              className="w-[100px]"
+              type="text"
+              name="origin"
+              placeholder="QC, US..."
             />
             <Input
               disabled={isPending}
-              type='hidden'
-              name='userId'
+              type="hidden"
+              name="userId"
               value={id}
             />
           </div>
@@ -164,18 +159,13 @@ export function AddIngredientForm() {
           {error !== undefined && <FormError error={error} />}
           {success !== undefined && <FormSuccess success={success} />}
         </div>
-        <div className='flex gap-2 justify-end'>
+        <div className="flex gap-2 justify-end">
           <DialogClose asChild>
-            <Button
-              type='button'
-              variant='outline'
-              disabled={isPending}>
+            <Button type="button" variant="outline" disabled={isPending}>
               Quitter
             </Button>
           </DialogClose>
-          <Button
-            type='submit'
-            disabled={isPending}>
+          <Button type="submit" disabled={isPending}>
             {isPending ? <PulseLoader size={5} /> : "Ajouter"}
           </Button>
         </div>

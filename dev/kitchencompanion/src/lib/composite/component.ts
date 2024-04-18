@@ -2,12 +2,24 @@ import { Unit } from "@prisma/client";
 import { RecipeComponent } from "@/lib/composite/recipe";
 
 export abstract class Component {
+  private _id: string;
   private _parent!: Component | null;
   private _isComposite!: boolean;
 
-  constructor(isComposite: boolean = false) {
+  constructor({
+    id = "",
+    isComposite = false,
+  }: {
+    id?: string;
+    isComposite?: boolean;
+  }) {
+    this._id = id;
     this._parent = null;
     this._isComposite = isComposite;
+  }
+
+  public get id(): string {
+    return this._id;
   }
 
   public set parent(parent: Component | null) {

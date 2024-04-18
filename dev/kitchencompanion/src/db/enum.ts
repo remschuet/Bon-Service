@@ -20,7 +20,7 @@ function getAllEnumValues<T extends EnumType>(enumObject: T): string[] {
 /**
  * Return an array containing the values of enum UnitMeasure.
  */
-export async function getUnitMeasure() {
+export async function getUnitEnum() {
   try {
     return getAllEnumValues(Unit);
   } catch (error) {
