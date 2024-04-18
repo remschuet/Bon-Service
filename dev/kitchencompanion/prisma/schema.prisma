@@ -84,6 +84,7 @@ model User {
   notifications    Notification[]
   ingredients      Ingredient[]
   contacts         Contact[]
+  menus           Menu[]
 
   /// For NextAuth
   accounts Account[]
@@ -101,7 +102,6 @@ model Kitchen {
 
   kitchenRoles    KitchenRole[]
   kitchenUsers    KitchenUser[]
-  menus           Menu[]
   checkTemps      CheckTemp[]
   contactKitchens ContactKitchen[]
   menuKitchens    MenuKitchen[]
@@ -260,8 +260,8 @@ model Menu {
   id String @id @default(cuid())
 
   name      String  @unique
-  kitchen   Kitchen @relation(fields: [kitchenId], references: [id])
-  kitchenId String
+  user      User @relation(fields: [userId], references: [id])
+  userId    String
 
   isPublic Boolean @default(false)
 
