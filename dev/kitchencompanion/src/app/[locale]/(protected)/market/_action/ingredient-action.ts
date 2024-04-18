@@ -80,6 +80,7 @@ export async function createOrUpdateIgredient(ingredient: Ingredient) {
     );
   } else {
     createIngredient(ingredient);
+    return { success: "Ingrédient ajouté avec succès", status: 200 };
   }
 }
 
