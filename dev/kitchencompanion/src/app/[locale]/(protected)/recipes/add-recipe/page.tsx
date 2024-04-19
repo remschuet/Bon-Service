@@ -10,10 +10,14 @@ export default async function RecipeBookPage() {
   const session = await auth();
 
   if (session) {
-    const recipes: Recipe[] = fetchRecipeComponents(session.user.id as string);
-    const ingredients: Ingredient[] = fetchIngredientComponents(
-      session.user.id as string
-    );
+    const recipes: Recipe[] =
+      (await fetchRecipeComponents(session.user.id as string)) || [];
+    const ingredients: Ingredient[] =
+      (await fetchIngredientComponents(session.user.id as string)) || [];
+
+    console.log("recipes", recipes);
+    console.log("ingredients", ingredients);
+
     return (
       <div>
         <RecipeBuilder ingredients={[]} />
@@ -28,27 +32,28 @@ async function fetchRecipeComponents(id: string) {
   try {
     const recipes = await getRecipes(id);
 
-    if (recipes) {
-      const recipeComponents = recipes.map((recipe) => {
-        const recipeData: RecipeData = {
-          id: recipe.id,
-          name: recipe.name,
-          cost: recipe.cost,
-          yield: recipe.yield,
-          unit: recipe.unit,
-          description: recipe.description,
-          category: recipe.recipeCategoryId,
-          recipeType: recipe.recipeState,
-          prepTime: recipe.preparationTime,
-          cookTime: recipe.preparationTime,
-          steps: JSON.parse(recipe.steps),
-          version: recipe.versionNumber,
-        };
-
-        return new Recipe(recipeData);
-      });
-      return recipeComponents;
+    if (!recipes) {
+      return [];
     }
+    const recipeComponents = recipes.map((recipe) => {
+      const recipeData: RecipeData = {
+        id: recipe.id,
+        name: recipe.name,
+        cost: recipe.cost,
+        yield: recipe.yield,
+        unit: recipe.unit,
+        description: recipe.description,
+        category: recipe.recipeCategoryId,
+        recipeType: recipe.recipeState,
+        prepTime: recipe.preparationTime,
+        cookTime: recipe.preparationTime,
+        steps: JSON.parse(recipe.steps),
+        version: recipe.versionNumber,
+      };
+
+      return new Recipe(recipeData);
+    });
+    return recipeComponents;
   } catch (error) {
     console.error("Failed to fetch recipes:", error);
   }
@@ -57,6 +62,10 @@ async function fetchRecipeComponents(id: string) {
 async function fetchIngredientComponents(id: string) {
   try {
     const result = await getIngredients(id);
+
+    if (!result) {
+      return [];
+    }
 
     const ingredientComponent = result.map((ingredient) => {
       const ingredientData = {
