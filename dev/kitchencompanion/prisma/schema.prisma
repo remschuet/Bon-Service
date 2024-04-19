@@ -84,7 +84,7 @@ model User {
   notifications    Notification[]
   ingredients      Ingredient[]
   contacts         Contact[]
-  menus           Menu[]
+  menus            Menu[]
 
   /// For NextAuth
   accounts Account[]
@@ -192,7 +192,7 @@ model RecipeCategory {
 
 model Recipe {
   id            String     @id @default(cuid())
-  versionNumber Int?       @default(0)
+  versionNumber String     @default("1.0.0")
   name          String
   recipeBook    RecipeBook @relation(fields: [recipeBookId], references: [id])
   recipeBookId  String
@@ -200,16 +200,18 @@ model Recipe {
   recipeCategory   RecipeCategory @relation(fields: [recipeCategoryId], references: [id])
   recipeCategoryId String
 
-  recipeState     RecipeState? @default(RECIPE)
-  preparationTime Int?
-  cookingTime     Int?
+  recipeState     RecipeState @default(RECIPE)
+  preparationTime Int
+  cookingTime     Int
+  description     String
 
-  steps Json
+  steps String
 
+  cost  Float
   yield Float
   unit  Unit
 
-  objInvestment Float? @default(20)
+  objInvestment Float @default(20)
 
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
@@ -259,16 +261,16 @@ model RecipePhoto {
 model Menu {
   id String @id @default(cuid())
 
-  name      String  @unique
-  user      User @relation(fields: [userId], references: [id])
-  userId    String
+  name   String @unique
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
 
   isPublic Boolean @default(false)
 
-  @@unique([name, userId])
-
   menuKitchens MenuKitchen[]
   menuRecipes  MenuRecipe[]
+
+  @@unique([name, userId])
 }
 
 model MenuRecipe {

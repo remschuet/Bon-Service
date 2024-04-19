@@ -4,6 +4,9 @@ import { getAllContact } from "@/db/data-access/contact";
 import { getAllIngredient } from "@/db/data-access/ingredient";
 import { getAllKitchenByAdminId } from "@/db/data-access/kitchen";
 import { getAllRecipeBookByUserId } from "@/db/data-access/recipe-book";
+import { getAllRecipeByAdminId } from "@/db/data-access/actions/action";
+import { getAllRecipeByRecipeBookIds } from "@/db/data-access/recipe";
+import { Recipe } from "@prisma/client";
 
 /**
  * Retrieves all kitchens associated with a specific user ID.
@@ -53,5 +56,23 @@ export async function getIngredients(userId: string) {
     return await getAllIngredient(userId);
   } catch (error) {
     throw error;
+  }
+}
+
+export async function getRecipes(userId: string) {
+  try {
+    // Get recipe book id for admin
+    const recipeBooks = await getAllRecipeBookByUserId(userId);
+    if (recipeBooks && recipeBooks.length > 0) {
+      const recipeBookIds = recipeBooks.map((recipeId) => recipeId.id);
+      // get all recipes for admin
+      return (await getAllRecipeByRecipeBookIds(recipeBookIds)) as Recipe[];
+    }
+    return [];
+  } catch (error) {
+    console.error(
+      "Error data-access/kitchen: getAllRecipeByAdminId(), error: ",
+      error
+    );
   }
 }

@@ -34,7 +34,6 @@ export async function createRecipe(
       throw new Error("Invalid ingredient type");
     }
     try {
-      let steps = recipe.steps as Prisma.JsonArray;
       await db.$transaction([
         db.recipe.create({
           data: {
@@ -45,7 +44,9 @@ export async function createRecipe(
             recipeState: recipe.recipeState,
             preparationTime: recipe.preparationTime,
             cookingTime: recipe.cookingTime,
-            steps: steps,
+            cost: recipe.cost,
+            description: recipe.description,
+            steps: JSON.stringify(recipe.steps),
             yield: recipe.yield,
             unit: recipe.unit,
             objInvestment: recipe.objInvestment,

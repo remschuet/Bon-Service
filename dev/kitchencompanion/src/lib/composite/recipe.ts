@@ -2,32 +2,35 @@ import { RecipeState, Unit } from "@prisma/client";
 import { Component } from "@/lib/composite/component";
 import { unitConversions } from "@/lib/composite/unit-convertion";
 
-export interface RecipeData {
-  id?: string;
+export type RecipeData = {
+  id: string;
   name: string;
   cost: number | null;
   yield: number;
   unit: Unit;
-  description: string;
+  description?: string;
   category: string;
-  recipeType: RecipeState;
-  prepTime: number;
-  cookTime: number;
+  recipeType?: RecipeState;
+  prepTime?: number;
+  cookTime?: number;
   steps: string[];
-}
+  version: string;
+};
 
-export interface RecipeComponent {
+export type RecipeComponent = {
   component: Component;
+  id: string;
+  name: string;
   quantity: number;
   unit: Unit;
-}
+};
 
 export class Recipe extends Component {
   private _ingredients: RecipeComponent[] = [];
   private _recipeData: RecipeData;
 
   constructor(recipeData: RecipeData) {
-    super({ id: recipeData.id, isComposite: true });
+    super(true);
     this._recipeData = recipeData;
   }
 
@@ -36,6 +39,9 @@ export class Recipe extends Component {
   }
 
   public get recipeData(): RecipeData {
+    if (this._recipeData === undefined) {
+      throw new Error("Recipe data is not defined");
+    }
     return this._recipeData;
   }
 
@@ -69,6 +75,7 @@ export class Recipe extends Component {
 
     if (this.parent === null) {
       // This recipe is a standalone recipe, calculate cost for the yield
+
       this._recipeData.cost = rawCost / this._recipeData.yield; // Average cost per unit yield
       return this._recipeData.cost;
     } else {
@@ -80,6 +87,7 @@ export class Recipe extends Component {
       }
 
       // Convert the calculated cost to the specified unit if different from the recipe's base unit
+
       if (unit !== this._recipeData.unit) {
         if (
           unitConversions[this._recipeData.unit] &&
@@ -99,57 +107,3 @@ export class Recipe extends Component {
     }
   }
 }
-
-// const data: RecipeData = {
-//   name: "maRecette",
-//   cost: 10,
-//   yield: 4,
-//   unit: "KG",
-//   description: "Une recette de test",
-//   category: "Dessert",
-//   recipeType: "RECIPE",
-//   prepTime: 10,
-//   cookTime: 20,
-//   steps: ["Etape 1", "Etape 2", "Etape 3"],
-// };
-
-// const mesIngredients: RecipeComponent[] = [
-//   {
-//     component: new Ingredient("0-917823kljih1234", 2, "KG"),
-//     quantity: 150,
-//     unit: "G",
-//   },
-//   {
-//     component: new Ingredient("0-917823kljih1234", 2, "KG"),
-//     quantity: 150,
-//     unit: "G",
-//   },
-//   {
-//     component: new Ingredient("0-917823kljih1234", 2, "KG"),
-//     quantity: 150,
-//     unit: "G",
-//   },
-//   {
-//     component: new Recipe(data),
-//     quantity: 1,
-//     unit: "KG",
-//   },
-//   {
-//     component: new Ingredient("0-917823kljih1234", 2, "KG"),
-//     quantity: 150,
-//     unit: "G",
-//   },
-//   {
-//     component: new Ingredient("0-917823kljih1234", 2, "KG"),
-//     quantity: 150,
-//     unit: "G",
-//   },
-// ];
-
-// const maRecette = new Recipe(data);
-
-// mesIngredients.forEach((ingredient) => {
-//   maRecette.add(ingredient);
-// });
-
-// console.log(maRecette.calculateCost());

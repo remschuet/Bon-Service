@@ -1,13 +1,12 @@
-import React from "react";
-import IngredientItem from "./IngredientItem";
-import Ingredient from "../classes/Ingredient";
+import { IngredientItem } from "@/app/[locale]/(protected)/recipes/add-recipe/_components/ingredients/ingredient-item";
+import { RecipeComponent } from "@/lib/composite/recipe";
 
 export function IngredientList({
   ingredients,
   onRemoveIngredient,
 }: {
-  ingredients: Ingredient[];
-  onRemoveIngredient: (number: number) => void;
+  ingredients: RecipeComponent[];
+  onRemoveIngredient: (id: string) => void;
 }) {
   return (
     <>

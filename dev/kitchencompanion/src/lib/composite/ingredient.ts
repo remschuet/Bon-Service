@@ -4,13 +4,43 @@ import { unitConversions } from "@/lib/composite/unit-convertion";
 import { Unit } from "@prisma/client";
 
 export class Ingredient extends Component {
+  private _id: string;
   private _price: number;
   private _unit: Unit;
+  private _name: string;
 
-  constructor(id: string, price: number, unit: Unit) {
-    super({ id: id });
+  constructor({
+    id,
+    name,
+    price,
+    unit,
+  }: {
+    id: string;
+    name: string;
+    price: number;
+    unit: Unit;
+  }) {
+    super();
+    this._id = id;
     this._price = price;
+    this._name = name;
     this._unit = unit;
+  }
+
+  public get id(): string {
+    return this._id;
+  }
+
+  public get price(): number {
+    return this._price;
+  }
+
+  public get unit(): Unit {
+    return this._unit;
+  }
+
+  public get name(): string {
+    return this._name;
   }
 
   public add(component: Component | RecipeComponent): void {
