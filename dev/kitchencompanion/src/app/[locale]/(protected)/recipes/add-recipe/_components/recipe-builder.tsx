@@ -8,10 +8,10 @@ import { useNewRecipe } from "@/hooks/useNewRecipe";
 import { NewRecipeProvider } from "@/providers/new-recipe";
 
 export const RecipeBuilder = () => {
-  const { submitNewRecipe } = useNewRecipe();
+  const { ctx, submitNewRecipe } = useNewRecipe();
+
   return (
     <NewRecipeProvider>
-      <Button onClick={submitNewRecipe}>Créer recette</Button>
       <RecipeGeneral />
       <div className="space-y-2">
         <RecipeIngredientInput
@@ -19,6 +19,9 @@ export const RecipeBuilder = () => {
           setIngredientComponents={() => {}}
         />
         <RecipeStepsInput />
+        <Button disabled={!ctx.isComplete} onClick={submitNewRecipe}>
+          Créer recette
+        </Button>
       </div>
     </NewRecipeProvider>
   );

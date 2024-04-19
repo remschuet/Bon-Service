@@ -19,6 +19,8 @@ export function RecipeGeneral() {
   const { units } = useUnits();
   const { ctx } = useNewRecipe();
 
+  console.log(ctx.newRecipe);
+
   return (
     <div className="relative flex-col items-start gap-8 md:flex min-h-[80vh] min-w-[20vw]">
       <div className="grid w-full items-start gap-6">
@@ -57,7 +59,12 @@ export function RecipeGeneral() {
                   placeholder="30"
                   onChange={(e) => ctx.setPrepTime(parseFloat(e.target.value))}
                 />
-                <Label htmlFor="timeUnit">Minutes</Label>
+                <Label
+                  htmlFor="timeUnit"
+                  className="font-semibold mx-2 content-center"
+                >
+                  Minutes
+                </Label>
               </div>
             </div>
             <div className="grid gap-3">
@@ -68,7 +75,12 @@ export function RecipeGeneral() {
                   placeholder="60"
                   onChange={(e) => ctx.setCookTime(parseFloat(e.target.value))}
                 />
-                <Label htmlFor="timeUnit">Minutes</Label>
+                <Label
+                  htmlFor="timeUnit"
+                  className="font-semibold mx-2 content-center"
+                >
+                  Minutes
+                </Label>
               </div>
             </div>
           </div>

@@ -13,7 +13,7 @@ export type RecipeData = {
   recipeType?: RecipeState;
   prepTime?: number;
   cookTime?: number;
-  steps: string[];
+  steps: string;
   version: string;
 };
 
