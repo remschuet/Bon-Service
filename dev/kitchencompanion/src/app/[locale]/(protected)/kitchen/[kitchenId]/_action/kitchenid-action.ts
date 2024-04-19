@@ -1,12 +1,13 @@
 "use server";
 
+import { getAllContactLinksToKitchen } from "@/db/data-access/contact";
 import {
   getAllKitchenUserById,
   linkKitchenUserById,
 } from "@/db/data-access/kitchen";
 import { getMenu, linkMenuToKitchen } from "@/db/data-access/menu";
 import { createUser, getUser, getUserIfExist } from "@/db/data-access/user";
-import { Kitchen, User, UserTypes } from "@prisma/client";
+import { Contact, Kitchen, User, UserTypes } from "@prisma/client";
 
 /**
  * Link a menu to a kitchen
@@ -54,12 +55,13 @@ export async function addMenuToKitchen(form: FormData) {
 export async function addMemberToKitchen(form: FormData) {
   //email et userId
   const email = form.get("memberEmail") as string;
+  const name = form.get("memberName") as string;
   let userId = undefined;
 
   try {
     const isExist = await getUserIfExist(email);
     if (!isExist){
-      await createMemberUser(email);
+      await createMemberUser(email, name);
     }
     const user = await getUser(email);
     if (user == undefined) {throw new Error}
@@ -83,7 +85,7 @@ export async function addMemberToKitchen(form: FormData) {
     };
   }
   return {
-    error: "La personne à été ajouté avec succes.",
+    success: "La personne à été ajouté avec succes.",
     status: 200,
   };
 }
@@ -95,11 +97,13 @@ export async function addMemberToKitchen(form: FormData) {
  * @param email - The email address of the new user.
  * @returns An object containing a success message or an error message
  */
-async function createMemberUser(email: string) {
+async function createMemberUser(email: string, name: string) {
     // TODO mettre un mdp ? (si pas verifier il peut pas ce connecter?)
+
     const user = {
+    name: name,
     email: email,
-    password: "AAAaaa111",
+    password: "undefined",
     userType: UserTypes.MEMBER,
   } as User;
 
@@ -135,10 +139,9 @@ export async function getNameMemberKitchen(formData: FormData){
       throw new Error()
     }
     userList = await getAllKitchenUserById(kitchenId);
-    console.log("data", userList);
     userList.forEach((kitchen) => {
-      if (kitchen.user.email){
-        userListName.push(kitchen.user.email)
+      if (kitchen.user.name){
+        userListName.push(kitchen.user.name)
       }
     });
   }catch(error){
@@ -146,7 +149,44 @@ export async function getNameMemberKitchen(formData: FormData){
       error:
         "Impossible de recuperer les membres de la cuisine.",
       status: 500,
-    }
+    }  
   }
   return userListName;
+}
+
+/**
+ * Retrieves the contacts for a given kitchen.
+ * [UserId, id, compteNumber] are not retured
+ *  
+ * @param formData - A FormData object containing the id of the kitchen.
+ * @returns An array of Contact objects containing the contact information for the members of the kitchen.
+ * @throws If the kitchenId is not provided in the formData.
+ */
+export async function getContactForKitchen(formData: FormData){
+  const kitchenId = formData.get("kitchenId") as string;
+  let contact = undefined;
+  let contactList: Contact[] = []
+
+  try{
+    if (!kitchenId){
+      throw new Error()
+    }
+    contact = await getAllContactLinksToKitchen(kitchenId);
+    contact.forEach((contact) => {
+      if (contact.contact){
+        contact.contact.id = "not given";
+        contact.contact.userId = "not given";
+        contact.contact.compteNumber = "private info (to do)";
+
+        contactList.push(contact.contact)
+      }
+    });
+  }catch(error){
+    return{
+      error:
+        "Impossible de recuperer les contacts de la cuisine.",
+      status: 500,
+    }  
+  }
+  return contactList;
 }
