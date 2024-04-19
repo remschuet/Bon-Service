@@ -4,8 +4,8 @@ import {
   linkKitchenUserById,
 } from "@/db/data-access/kitchen";
 import { getMenu, linkMenuToKitchen } from "@/db/data-access/menu";
-import { createUser, getUser } from "@/db/data-access/user";
-import { Kitchen, User } from "@prisma/client";
+import { createUser, getUser, getUserIfExist } from "@/db/data-access/user";
+import { Kitchen, User, UserTypes } from "@prisma/client";
 
 /**
  * Link a menu to a kitchen
@@ -39,7 +39,7 @@ export async function addMenuToKitchen(form: FormData) {
     };
   }
   return {
-    error: "Le menu est maintenant lie.",
+    success: "Le menu est maintenant lie.",
     status: 200,
   };
 }
@@ -52,20 +52,32 @@ export async function addMenuToKitchen(form: FormData) {
  */
 export async function addMemberToKitchen(form: FormData) {
   //email et userId
-  const email = form.get("email") as string;
+  const email = form.get("memberEmail") as string;
+  let userId = undefined;
+
   try {
-    getUser(email);
+    const isExist = await getUserIfExist(email);
+    if (!isExist){
+      await createMemberUser(email);
+    }
+    const user = await getUser(email);
+    if (user == undefined) {throw new Error}
+    userId = user.id
   } catch (err) {
-    createMemberUser(email);
+    return {
+      error:
+        "Impossible de creer ou de recuperer le membre",
+      status: 500,
+    };  
   }
-  const userId = form.get("userId") as string;
   const kitchenId = form.get("kitchenId") as string;
   try {
+    // TODO: Verif si le user est deja lier a cette cuisine
     await linkKitchenUserById(userId, kitchenId);
   } catch (error) {
     return {
       error:
-        "Une erreur interne est survenue, impossible de d'ajouter le contact.",
+        "Impossible de lier le membre a la cuisine.",
       status: 500,
     };
   }
@@ -87,6 +99,7 @@ async function createMemberUser(email: string) {
     const user = {
     email: email,
     password: "AAAaaa111",
+    userType: UserTypes.MEMBER,
   } as User;
 
   try {

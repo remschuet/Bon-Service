@@ -84,6 +84,26 @@ export async function getUser(email: string) {
   }
 }
 
+
+export async function getUserIfExist(email: string): Promise<boolean> {
+  try {
+    const isExisting = await db.user.findFirst({
+      where: {
+        email: email
+      },
+    });
+
+    return !!isExisting;
+  } catch (error) {
+    console.error(
+      "Error data-access/user: getUserIfExist(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
+
 /**
  * Retrieves a user by their ID.
  * @param id - The ID of the user.
