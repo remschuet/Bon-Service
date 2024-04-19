@@ -58,21 +58,3 @@ export async function getIngredients(userId: string) {
     throw error;
   }
 }
-
-export async function getRecipes(userId: string) {
-  try {
-    // Get recipe book id for admin
-    const recipeBooks = await getAllRecipeBookByUserId(userId);
-    if (recipeBooks && recipeBooks.length > 0) {
-      const recipeBookIds = recipeBooks.map((recipeId) => recipeId.id);
-      // get all recipes for admin
-      return (await getAllRecipeByRecipeBookIds(recipeBookIds)) as Recipe[];
-    }
-    return [];
-  } catch (error) {
-    console.error(
-      "Error data-access/kitchen: getAllRecipeByAdminId(), error: ",
-      error
-    );
-  }
-}
