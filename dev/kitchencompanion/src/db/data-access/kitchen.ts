@@ -140,11 +140,11 @@ export async function getAllKitchenUser(kitchen: Kitchen) {
 export async function getAllKitchenUserById(kitchenId: string) {
   // KitchenUser
   try {
-    return await db.kitchen.findMany({
-      where: { id: kitchenId },
-      include: {
-        user: true,
-      },
+    return await db.kitchenUser.findMany({
+    where: { kitchenId: kitchenId },
+    include: {
+      user: true,
+    },
     });
   } catch (error) {
     console.error(
