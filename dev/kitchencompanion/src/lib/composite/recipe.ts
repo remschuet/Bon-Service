@@ -3,7 +3,7 @@ import { Component } from "@/lib/composite/component";
 import { unitConversions } from "@/lib/composite/unit-convertion";
 
 export type RecipeData = {
-  id: string;
+  id?: string;
   name: string;
   cost: number | null;
   yield: number;
@@ -13,7 +13,7 @@ export type RecipeData = {
   recipeType?: RecipeState;
   prepTime?: number;
   cookTime?: number;
-  steps: string[];
+  steps: string;
   version: string;
 };
 
@@ -27,11 +27,10 @@ export type RecipeComponent = {
 
 export class Recipe extends Component {
   private _ingredients: RecipeComponent[] = [];
-  private _recipeData: RecipeData;
+  private _recipeData: RecipeData = {} as RecipeData;
 
-  constructor(recipeData: RecipeData) {
+  constructor() {
     super(true);
-    this._recipeData = recipeData;
   }
 
   public set recipeData(data: RecipeData) {

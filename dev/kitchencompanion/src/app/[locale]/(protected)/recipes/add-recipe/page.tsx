@@ -9,6 +9,7 @@ import {
   getIngredientComponents,
   getRecipeComponents,
 } from "@/app/[locale]/(protected)/recipes/add-recipe/_actions/composite-components";
+import { RecipeComponentsProvider } from "@/providers/recipe-components";
 
 export default async function RecipeBookPage() {
   const session = await auth();
@@ -24,9 +25,9 @@ export default async function RecipeBookPage() {
     console.log("recipes", recipes);
 
     return (
-      <div>
-        <RecipeBuilder ingredients={[]} />
-      </div>
+      <RecipeComponentsProvider ingredients={[]}>
+        <RecipeBuilder />
+      </RecipeComponentsProvider>
     );
   } else {
     return <div>Unauthorized access</div>;

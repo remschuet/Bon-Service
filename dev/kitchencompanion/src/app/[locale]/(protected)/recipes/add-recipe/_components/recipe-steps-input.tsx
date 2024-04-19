@@ -1,4 +1,4 @@
-import { CornerDownLeft, Mic, Paperclip } from "lucide-react";
+import { Mic } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
