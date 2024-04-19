@@ -141,10 +141,10 @@ export async function getAllKitchenUserById(kitchenId: string) {
   // KitchenUser
   try {
     return await db.kitchenUser.findMany({
-    where: { kitchenId: kitchenId },
-    include: {
-      user: true,
-    },
+      where: { kitchenId: kitchenId },
+      include: {
+        user: true,
+      },
     });
   } catch (error) {
     console.error(
@@ -172,6 +172,23 @@ export async function linkKitchenUserById(userId: string, kitchenId: string) {
   } catch (error) {
     console.error(
       "Error data-access/kitchen: linkKitchenUserById(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
+export async function deleteLinkKitchenUser(userId: string, kitchenId: string) {
+  try {
+    return await db.kitchenUser.deleteMany({
+      where: {
+        userId: userId,
+        kitchenId: kitchenId,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/kitchen: deleteLinkKitchenUser(), error: ",
       error
     );
     throw error;
