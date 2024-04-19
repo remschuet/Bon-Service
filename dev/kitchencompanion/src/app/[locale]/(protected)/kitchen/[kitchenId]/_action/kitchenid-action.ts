@@ -135,13 +135,17 @@ export async function removeMemberToKitchen(form: FormData) {
     };
   }
   try {
-    await deleteLinkKitchenUser(userId, kitchenId);
+    await deleteLinkKitchenUser(userToRemoveId, kitchenId);
   } catch (err) {
     return {
       error: "Impossible de supprimer l utilisateur de cette cuisine",
       status: 500,
     };
   }
+  return {
+    success: "L'utilisateur à été supprimer de la cuisine",
+    status: 500,
+  };
 }
 
 /**
