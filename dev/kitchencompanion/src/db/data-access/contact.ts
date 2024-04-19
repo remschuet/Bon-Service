@@ -190,6 +190,9 @@ export async function getAllContactLinksToKitchen(kitchenId: string) {
       where: {
         kitchenId: kitchenId,
       },
+      include: {
+        contact: true,
+      }
     });
   } catch (error) {
     console.error(
