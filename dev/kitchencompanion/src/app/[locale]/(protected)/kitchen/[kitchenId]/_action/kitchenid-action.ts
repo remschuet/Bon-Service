@@ -3,6 +3,7 @@
 import { getAllContactLinksToKitchen } from "@/db/data-access/contact";
 import {
   getAllKitchenUserById,
+  getKitchenByAdminAndName,
   linkKitchenUserById,
 } from "@/db/data-access/kitchen";
 import { getMenu, linkMenuToKitchen } from "@/db/data-access/menu";
@@ -55,8 +56,11 @@ export async function addMenuToKitchen(form: FormData) {
 export async function addMemberToKitchen(form: FormData) {
   //email et userId
   const email = form.get("memberEmail") as string;
+  const userId = form.get("userId") as string;
   const name = form.get("memberName") as string;
-  let userId = undefined;
+  const kitchenName = form.get("kitchenName") as string;
+  let userToLinkId = undefined;
+  let kitchenId = undefined;
 
   try {
     const isExist = await getUserIfExist(email);
@@ -64,8 +68,14 @@ export async function addMemberToKitchen(form: FormData) {
       await createMemberUser(email, name);
     }
     const user = await getUser(email);
-    if (user == undefined) {throw new Error}
-    userId = user.id
+    if (!user) {
+      return {
+        error:
+          "Impossible de recuperer l utilisateur",
+        status: 404,
+      };
+    }
+    userToLinkId = user.id
   } catch (err) {
     return {
       error:
@@ -73,10 +83,18 @@ export async function addMemberToKitchen(form: FormData) {
       status: 500,
     };  
   }
-  const kitchenId = form.get("kitchenId") as string;
   try {
+    const kitchen = await getKitchenByAdminAndName(userId, kitchenName);
+    kitchenId = kitchen?.id
+    if (!kitchenId) {
+      return {
+        error:
+          "Impossible de recuperer la cuisine",
+        status: 404,
+      };
+    }
     // TODO: Verif si le user est deja lier a cette cuisine
-    await linkKitchenUserById(userId, kitchenId);
+    await linkKitchenUserById(userToLinkId, kitchenId);
   } catch (error) {
     return {
       error:
@@ -131,10 +149,14 @@ async function createMemberUser(email: string, name: string) {
  * @throws If the kitchenId is not provided in the formData.
  */
 export async function getNameMemberKitchen(formData: FormData){
-  const kitchenId = formData.get("kitchenId") as string;
-  let userList = undefined;
+  const kitchenName = formData.get("kitchenName") as string;
+  const userId = formData.get("userId") as string;  let userList = undefined;
+  let kitchenId = undefined;
   let userListName: string[] = []
+
   try{
+    const kitchen = await getKitchenByAdminAndName(userId, kitchenName);
+    kitchenId = kitchen?.id
     if (!kitchenId){
       throw new Error()
     }
@@ -163,11 +185,14 @@ export async function getNameMemberKitchen(formData: FormData){
  * @throws If the kitchenId is not provided in the formData.
  */
 export async function getContactForKitchen(formData: FormData){
-  const kitchenId = formData.get("kitchenId") as string;
+  const kitchenName = formData.get("kitchenName") as string;
+  const userId = formData.get("userId") as string;
   let contact = undefined;
+  let kitchenId = undefined;
   let contactList: Contact[] = []
-
   try{
+    const kitchen = await getKitchenByAdminAndName(userId, kitchenName);
+    kitchenId = kitchen?.id
     if (!kitchenId){
       throw new Error()
     }
