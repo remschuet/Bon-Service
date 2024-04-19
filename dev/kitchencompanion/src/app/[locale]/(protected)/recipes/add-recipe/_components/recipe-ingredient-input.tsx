@@ -13,28 +13,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useUnits } from "@/hooks/useUnits";
-import { IngredientList } from "./ingredients/ingredient-list";
-import { useIngredientsComposite } from "@/hooks/useIngredientsComposite";
-import { useRecipesComposite } from "@/hooks/useRecipesComposite";
 import { RecipeComponent } from "@/lib/composite/recipe";
 import { useRef, useState } from "react";
 import { Unit } from "@prisma/client";
 
 export function RecipeIngredientInput({
-  ingredientComponents,
   onRemoveIngredient,
   setIngredientComponents,
 }: {
-  ingredientComponents: RecipeComponent[];
   onRemoveIngredient: (id: string) => void;
   setIngredientComponents: (ingredientComponents: RecipeComponent[]) => void;
-}): JSX.Element {
+}) {
   const { units } = useUnits();
-  const { ingredients } = useIngredientsComposite();
-  const { recipeComponents } = useRecipesComposite();
-
-  console.log(ingredients);
-  console.log(recipeComponents);
 
   const [selectedIngredient, setSelectedIngredient] =
     useState<RecipeComponent>();
@@ -48,7 +38,6 @@ export function RecipeIngredientInput({
     if (!selectedIngredient) {
       return;
     }
-    setIngredientComponents([...ingredientComponents, selectedIngredient]);
   };
 
   return (

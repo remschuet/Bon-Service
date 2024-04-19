@@ -4,8 +4,8 @@ import { getRecipes } from "@/hooks/_action/action";
 import { Recipe, RecipeData } from "@/lib/composite/recipe";
 
 export function useRecipesComposite(): { recipeComponents: Recipe[] } {
-  const [recipeComponents, setRecipeComponents] = useState<Recipe[]>([]);
   const { id } = useSession();
+  const [recipeComponents, setRecipeComponents] = useState<Recipe[]>([]);
 
   useEffect(() => {
     let isLoaded = false;
