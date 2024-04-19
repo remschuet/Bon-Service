@@ -1,6 +1,7 @@
 "use server";
 
 import {
+  getAllKitchenUserById,
   linkKitchenUserById,
 } from "@/db/data-access/kitchen";
 import { getMenu, linkMenuToKitchen } from "@/db/data-access/menu";
@@ -118,3 +119,34 @@ async function createMemberUser(email: string) {
   };
 }
 
+/**
+ * Retrieves the names of all members in a given kitchen.
+ *
+ * @param formData - A FormData object containing the id of the kitchen.
+ * @returns An array of strings containing the names of the members in the kitchen.
+ * @throws If the kitchenId is not provided in the formData.
+ */
+export async function getNameMemberKitchen(formData: FormData){
+  const kitchenId = formData.get("kitchenId") as string;
+  let userList = undefined;
+  let userListName: string[] = []
+  try{
+    if (!kitchenId){
+      throw new Error()
+    }
+    userList = await getAllKitchenUserById(kitchenId);
+    console.log("data", userList);
+    userList.forEach((kitchen) => {
+      if (kitchen.user.email){
+        userListName.push(kitchen.user.email)
+      }
+    });
+  }catch(error){
+    return{
+      error:
+        "Impossible de recuperer les membres de la cuisine.",
+      status: 500,
+    }
+  }
+  return userListName;
+}
