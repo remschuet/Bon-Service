@@ -3,7 +3,7 @@
 import { RecipeComponents } from "@/contexts/recipe-components";
 import { Component } from "@/lib/composite/component";
 
-export function SessionProvider({
+export function RecipeComponentsProvider({
   children,
   ingredients,
 }: {

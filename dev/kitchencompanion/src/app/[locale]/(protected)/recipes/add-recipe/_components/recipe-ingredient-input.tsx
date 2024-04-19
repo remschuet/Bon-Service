@@ -16,6 +16,7 @@ import { useUnits } from "@/hooks/useUnits";
 import { RecipeComponent } from "@/lib/composite/recipe";
 import { useRef, useState } from "react";
 import { Unit } from "@prisma/client";
+import { useRecipeComponents } from "@/hooks/useRecipeComponents";
 
 export function RecipeIngredientInput({
   onRemoveIngredient,
@@ -25,6 +26,7 @@ export function RecipeIngredientInput({
   setIngredientComponents: (ingredientComponents: RecipeComponent[]) => void;
 }) {
   const { units } = useUnits();
+  const ingredients = useRecipeComponents();
 
   const [selectedIngredient, setSelectedIngredient] =
     useState<RecipeComponent>();
@@ -41,58 +43,48 @@ export function RecipeIngredientInput({
   };
 
   return (
-    <div className='relative flex min-h-[30vh] flex-col rounded-xl bg-stone-200 p-4 lg:col-span-2 min-w-[45vw]'>
-      <Badge
-        variant={"secondary"}
-        className='absolute right-3 top-3'>
+    <div className="relative flex min-h-[30vh] flex-col rounded-xl bg-stone-200 p-4 lg:col-span-2 min-w-[45vw]">
+      <Badge variant={"secondary"} className="absolute right-3 top-3">
         Ingrédients
       </Badge>
-      <div className='flex-1 space-y-[0.05rem] m-2'>
+      <div className="flex-1 space-y-[0.05rem] m-2">
         {/* <IngredientList
           ingredients={ingredientComponents}
           onRemoveIngredient={onRemoveIngredient}
         /> */}
       </div>
-      <div className='flex gap-2 rounded-lg bg-background p-3 border'>
-        <Label
-          htmlFor='ingredients'
-          className='sr-only'>
+      <div className="flex gap-2 rounded-lg bg-background p-3 border">
+        <Label htmlFor="ingredients" className="sr-only">
           Ingrédients
         </Label>
         <Input
           ref={ingredientRef}
-          placeholder='Rechercher un ingrédient...'
-          className='border-0'
+          placeholder="Rechercher un ingrédient..."
+          className="border-0"
         />
-        <div className='grid gap-3'>
+        <div className="grid gap-3">
           <Input
-            type='number'
+            type="number"
             ref={quantityRef}
-            placeholder='Quantité'
-            className='min-w-[100px]'
+            placeholder="Quantité"
+            className="min-w-[100px]"
           />
         </div>
-        <div className='grid gap-3'>
-          <Select
-            name='unit'
-            onValueChange={(e) => setUnit(e as Unit)}>
+        <div className="grid gap-3">
+          <Select name="unit" onValueChange={(e) => setUnit(e as Unit)}>
             <SelectTrigger>
-              <SelectValue placeholder='Unité' />
+              <SelectValue placeholder="Unité" />
             </SelectTrigger>
-            <SelectContent className='w-[80px]'>
+            <SelectContent className="w-[80px]">
               {units.map((unit) => (
-                <SelectItem
-                  key={unit}
-                  value={unit}>
+                <SelectItem key={unit} value={unit}>
                   {unit}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
-        <Button
-          className='gap-2'
-          onClick={handleAddIngredient}>
+        <Button className="gap-2" onClick={handleAddIngredient}>
           Ajouter
         </Button>
       </div>

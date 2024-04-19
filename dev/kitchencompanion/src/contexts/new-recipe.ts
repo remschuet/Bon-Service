@@ -1,3 +1,30 @@
+import { Component } from "@/lib/composite/component";
+import { RecipeState, Unit } from "@prisma/client";
 import { createContext } from "react";
 
-export const NewRecipe = createContext("");
+export const NewRecipe = createContext({
+  name: "",
+  setName(value: string) {},
+  cost: 0,
+  setCost(value: number) {},
+  recipeYield: 0,
+  setRecipeYield(value: number) {},
+  unit: "",
+  setUnit(value: Unit) {},
+  description: "",
+  setDescription(value: string) {},
+  category: "",
+  setCategory(value: string) {},
+  recipeType: "",
+  setRecipeType(value: RecipeState) {},
+  prepTime: 0,
+  setPrepTime(value: number) {},
+  cookTime: 0,
+  setCookTime(value: number) {},
+  steps: "",
+  setSteps(value: string) {},
+  version: "1.0.0",
+  setVersion(value: string) {},
+  ingredients: [] as Component[],
+  setIngredients(value: Component[]) {},
+});

@@ -29,7 +29,10 @@ export async function getRecipeComponents(id: string) {
         version: recipe.versionNumber,
       };
 
-      return new Recipe(recipeData);
+      const recipeComponent = new Recipe();
+      recipeComponent.recipeData = recipeData;
+
+      return recipeComponent;
     });
     return recipeComponents;
   } catch (error) {

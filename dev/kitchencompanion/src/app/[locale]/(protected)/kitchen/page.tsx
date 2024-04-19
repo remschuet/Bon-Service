@@ -1,7 +1,5 @@
 "use client";
 
-import { useRedirectMembers } from "@/hooks/useRedirectMembers";
-
 import { AddKitchen } from "@/app/[locale]/(protected)/kitchen/_components/add-kitchen";
 import { KitchenList } from "@/app/[locale]/(protected)/kitchen/_components/kitchen-list";
 
