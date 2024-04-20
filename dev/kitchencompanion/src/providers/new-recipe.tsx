@@ -1,6 +1,6 @@
 "use client";
 
-import { NewRecipe } from "@/contexts/new-recipe";
+import { NewRecipe, Steps } from "@/contexts/new-recipe";
 import { Component } from "@/lib/composite/component";
 import { Recipe, RecipeData } from "@/lib/composite/recipe";
 import { RecipeState, Unit } from "@prisma/client";
@@ -19,11 +19,13 @@ export function NewRecipeProvider({ children }: { children: React.ReactNode }) {
   );
   const [prepTime, setPrepTime] = useState(0);
   const [cookTime, setCookTime] = useState(0);
-  const [steps, setSteps] = useState("");
+  const [steps, setSteps] = useState<Steps[]>([]);
   const [version, setVersion] = useState("1.0.0");
   const [ingredients, setIngredients] = useState<Component[]>([]);
 
   const newRecipe = new Recipe();
+
+  console.log(steps);
 
   useEffect(() => {
     if (
@@ -36,7 +38,7 @@ export function NewRecipeProvider({ children }: { children: React.ReactNode }) {
       recipeType &&
       prepTime !== 0 &&
       cookTime !== 0 &&
-      steps !== ""
+      steps.length == 0
     ) {
       setIsComplete(true);
     } else {
@@ -101,9 +103,8 @@ export function NewRecipeProvider({ children }: { children: React.ReactNode }) {
         setVersion,
         ingredients,
         setIngredients,
-      }}
-    >
-      <div className="space-y-2 flex gap-4 justify-center mt-10">
+      }}>
+      <div className='space-y-2 flex gap-4 justify-center mt-10'>
         {children}
       </div>
     </NewRecipe.Provider>

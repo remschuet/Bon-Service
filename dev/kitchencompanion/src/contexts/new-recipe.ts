@@ -3,6 +3,11 @@ import { Recipe } from "@/lib/composite/recipe";
 import { RecipeState, Unit } from "@prisma/client";
 import { createContext } from "react";
 
+export type Steps = {
+  step: string;
+  id: string;
+};
+
 export const NewRecipe = createContext({
   isComplete: false,
   newRecipe: new Recipe(),
@@ -24,8 +29,8 @@ export const NewRecipe = createContext({
   setPrepTime(value: number) {},
   cookTime: 0,
   setCookTime(value: number) {},
-  steps: "",
-  setSteps(value: string) {},
+  steps: [] as Steps[],
+  setSteps(value: Steps[]) {},
   version: "1.0.0",
   setVersion(value: string) {},
   ingredients: [] as Component[],
