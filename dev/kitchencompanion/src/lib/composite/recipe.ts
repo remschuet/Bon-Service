@@ -104,38 +104,36 @@ export class Recipe extends Component {
     }, 0);
 
     if (this.parent === null) {
-      // This recipe is a standalone recipe, calculate cost for the yield
-
       this._recipeData.cost = Number(
         (rawCost / this._recipeData.yield).toFixed(2)
-      ); // Average cost per unit yield
+      );
+
+      console.log(this._recipeData.cost);
       return this._recipeData.cost;
-    } else {
-      // When the recipe is used as an ingredient, ensure quantity and unit are specified
-      if (quantity === undefined || unit === undefined) {
+    }
+
+    if (quantity === undefined || unit === undefined) {
+      throw new Error(
+        "Quantity and unit must be provided when a recipe is used as an ingredient."
+      );
+    }
+
+    if (unit !== this._recipeData.unit) {
+      if (
+        unitConversions[this._recipeData.unit] &&
+        unitConversions[this._recipeData.unit][unit]
+      ) {
+        const conversionFactor = unitConversions[this._recipeData.unit][unit];
+        const unitCost = rawCost / this._recipeData.yield / conversionFactor;
+        console.log(unitCost, quantity);
+        return Number((unitCost * quantity).toFixed(2));
+      } else {
         throw new Error(
-          "Quantity and unit must be provided when a recipe is used as an ingredient."
+          `No conversion available from ${this._recipeData.unit} to ${unit}`
         );
       }
-
-      // Convert the calculated cost to the specified unit if different from the recipe's base unit
-
-      if (unit !== this._recipeData.unit) {
-        if (
-          unitConversions[this._recipeData.unit] &&
-          unitConversions[this._recipeData.unit][unit]
-        ) {
-          const conversionFactor = unitConversions[this._recipeData.unit][unit];
-          const unitCost = rawCost / this._recipeData.yield / conversionFactor;
-          return Number((unitCost * quantity).toFixed(2));
-        } else {
-          throw new Error(
-            `No conversion available from ${this._recipeData.unit} to ${unit}`
-          );
-        }
-      }
-
-      return Number(((rawCost / this._recipeData.yield) * quantity).toFixed(2));
     }
+
+    return Number(((rawCost / this._recipeData.yield) * quantity).toFixed(2));
   }
 }

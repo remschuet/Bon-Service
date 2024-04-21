@@ -16,7 +16,6 @@ export async function getRecipeComponents(id: string) {
     const recipeComponents = recipes.map((recipe) => {
       const recipeData: RecipeData = {
         id: recipe.id,
-        name: recipe.name,
         cost: recipe.cost,
         yield: recipe.yield,
         unit: recipe.unit,
@@ -31,6 +30,7 @@ export async function getRecipeComponents(id: string) {
 
       const recipeComponent = new Recipe();
       recipeComponent.recipeData = recipeData;
+      recipeComponent.name = recipe.name;
 
       return recipeComponent;
     });

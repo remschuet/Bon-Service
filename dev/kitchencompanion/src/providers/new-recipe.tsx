@@ -9,13 +9,11 @@ export function NewRecipeProvider({ children }: { children: React.ReactNode }) {
   const [isComplete, setIsComplete] = useState(false);
   const [name, setName] = useState("");
   const [cost, setCost] = useState(0);
-  const [recipeYield, setRecipeYield] = useState(0.0);
+  const [recipeYield, setRecipeYield] = useState(1.0);
   const [unit, setUnit] = useState<Unit>("KG");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
-  const [recipeType, setRecipeType] = useState<RecipeState | undefined>(
-    undefined
-  );
+  const [recipeType, setRecipeType] = useState<RecipeState>("RECIPE");
   const [prepTime, setPrepTime] = useState(0);
   const [cookTime, setCookTime] = useState(0);
   const [steps, setSteps] = useState<Steps[]>([]);
@@ -27,14 +25,13 @@ export function NewRecipeProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (
       name.length > 0 &&
-      recipeYield > 0 &&
-      unit &&
       description.length > 0 &&
       category.length > 0 &&
       recipeType &&
       prepTime > 0 &&
       cookTime > 0 &&
-      steps.length > 0
+      steps.length > 0 &&
+      ingredients.length > 0
     ) {
       setIsComplete(true);
     } else {
@@ -42,15 +39,13 @@ export function NewRecipeProvider({ children }: { children: React.ReactNode }) {
     }
   }, [
     name,
-    recipeYield,
-    unit,
     description,
     category,
     recipeType,
     prepTime,
     cookTime,
     steps,
-    version,
+    ingredients,
   ]);
 
   useEffect(() => {
@@ -66,6 +61,8 @@ export function NewRecipeProvider({ children }: { children: React.ReactNode }) {
 
       const currCost = newRecipe.calculateCost();
       setCost(currCost);
+    } else {
+      setCost(0);
     }
   }, [ingredients, recipeYield, unit]);
 

@@ -5,10 +5,11 @@ export function IngredientList() {
   const { ctx } = useNewRecipe();
   return (
     <>
-      {ctx.ingredients.map((ingredient) => {
+      {ctx.ingredients.map((ingredient, index) => {
         return (
           <IngredientItem
             key={crypto.randomUUID()}
+            index={index}
             ingredient={ingredient}
           />
         );

@@ -22,8 +22,6 @@ export function RecipeGeneral() {
   const { recipeBooks } = useRecipeBooks();
   const { ctx, submitNewRecipe } = useNewRecipe();
 
-  console.log(ctx.newRecipe);
-
   return (
     <div className='relative flex-col items-start gap-8 md:flex min-h-[80vh] min-w-[20vw]'>
       <div className='grid w-full items-start gap-6'>

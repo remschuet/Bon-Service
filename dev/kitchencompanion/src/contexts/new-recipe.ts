@@ -14,7 +14,7 @@ export const NewRecipe = createContext({
   setName(value: string) {},
   cost: 0,
   setCost(value: number) {},
-  recipeYield: 0,
+  recipeYield: 1,
   setRecipeYield(value: number) {},
   unit: "KG" as Unit,
   setUnit(value: Unit) {},

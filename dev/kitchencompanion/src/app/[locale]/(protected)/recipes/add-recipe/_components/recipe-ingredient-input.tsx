@@ -13,7 +13,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useUnits } from "@/hooks/useUnits";
-import { Recipe, RecipeComponent } from "@/lib/composite/recipe";
+import { Recipe, RecipeComponent, RecipeData } from "@/lib/composite/recipe";
 import { useRef, useState } from "react";
 import { Unit } from "@prisma/client";
 import { useRecipeComponents } from "@/hooks/useRecipeComponents";
@@ -27,6 +27,19 @@ export function RecipeIngredientInput() {
     _name: string;
     _unit: Unit;
     _price: number;
+  };
+
+  type RecipeComponentDTO = {
+    id: string;
+    name: string;
+    quantity: number;
+    unit: Unit;
+  };
+
+  type RecipeDTO = {
+    _name: string;
+    _ingredients: RecipeComponentDTO[];
+    _recipeData: RecipeData;
   };
 
   const { ctx } = useNewRecipe();
@@ -44,13 +57,50 @@ export function RecipeIngredientInput() {
     });
   });
 
-  const components = [...ingredients];
+  const rawRecipes = JSON.parse(recipesJSON) as RecipeDTO[];
+
+  const recipes = rawRecipes.map((recipe) => {
+    const importedRecipe = new Recipe();
+    let selectedIngredient;
+
+    importedRecipe.name = recipe._name;
+    importedRecipe.recipeData = recipe._recipeData;
+
+    recipe._ingredients.forEach((ingredient) => {
+      selectedIngredient = ingredients.find((ing) => ing.id === ingredient.id);
+
+      if (!selectedIngredient) {
+        selectedIngredient = recipes.find(
+          (recipe) => recipe.name === ingredient.name
+        );
+
+        if (!selectedIngredient) {
+          throw new Error("Ingredient not found");
+        }
+      }
+
+      const newIngredient: RecipeComponent = {
+        component: selectedIngredient,
+        id: ingredient.id,
+        name: selectedIngredient.name,
+        quantity: ingredient.quantity,
+        unit: ingredient.unit as Unit,
+      };
+
+      importedRecipe.add(newIngredient);
+    });
+
+    return importedRecipe;
+  });
+
+  const components = [...ingredients, ...recipes];
 
   const [selectedIngredient, setSelectedIngredient] = useState<
     Recipe | Ingredient
   >();
 
   const [unit, setUnit] = useState<Unit>();
+  const [searchParam, setSearchParam] = useState("");
 
   const ingredientRef = useRef<HTMLInputElement>(null);
   const quantityRef = useRef<HTMLInputElement>(null);
@@ -76,11 +126,15 @@ export function RecipeIngredientInput() {
     };
 
     ctx.setIngredients([...ctx.ingredients, newIngredient]);
+
+    setSelectedIngredient(undefined);
+    ingredientRef.current!.value = "";
+    quantityRef.current!.value = "";
   };
 
   const handleSearchParam = (searchParam: string): void => {
     ingredientRef.current!.value = searchParam;
-    ingredients.forEach((ingredient) => {
+    components.forEach((ingredient) => {
       if (ingredient.name === searchParam) {
         setSelectedIngredient(ingredient);
       }
@@ -98,7 +152,7 @@ export function RecipeIngredientInput() {
         <IngredientList />
       </div>
       <div className='flex gap-2 rounded-lg bg-background p-3 border'>
-        <div className='flex flex-col w-full'>
+        <div className='relative flex flex-col w-full'>
           <Label
             htmlFor='ingredients'
             className='sr-only'>
@@ -108,13 +162,14 @@ export function RecipeIngredientInput() {
             ref={ingredientRef}
             placeholder='Rechercher un ingrédient...'
             className='border-0'
+            onChange={(e) => setSearchParam(e.target.value.toLowerCase())}
           />
-          <div>
+          <div
+            className={`absolute w-full bg-background z-10 top-12 rounded-lg`}>
             {components
               .filter((ingredient) => {
-                const searchParam = ingredientRef.current?.value.toLowerCase();
                 const ingredientIsEqual =
-                  ingredientRef.current?.value === searchParam;
+                  ingredientRef.current?.value.toLowerCase() === searchParam;
                 const ingredientName = ingredient.name.toLowerCase();
 
                 return (
@@ -127,6 +182,7 @@ export function RecipeIngredientInput() {
               .map((ingredient, key) => (
                 <div
                   key={key}
+                  className='hover:bg-stone-300/50 cursor-pointer p-2 rounded-md text-sm m-2'
                   onClick={() => handleSearchParam(ingredient.name)}>
                   {ingredient.name}
                 </div>
