@@ -186,7 +186,6 @@ Table Menu {
   id int [pk]
   name varchar [unique]
   user int [ref: > User.id]
-  isPublic bool [default: false]
 }
 
 /* link between all the recipe in a menu*/

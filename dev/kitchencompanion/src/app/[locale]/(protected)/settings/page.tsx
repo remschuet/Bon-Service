@@ -8,7 +8,6 @@ export default function SettingsPage() {
 
   return (
     <>
-      <h1>Parametres de compte (Le UI de Remi)</h1>
       <Test />
     </>
   );

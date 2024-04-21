@@ -1,7 +1,13 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Ingredient, Unit } from "@prisma/client";
-import { addMenuToKitchen, addMemberToKitchen, getNameMemberKitchen, getContactForKitchen } from "../_action/kitchenid-action";
+import {
+  addMenuToKitchen,
+  addMemberToKitchen,
+  getNameMemberKitchen,
+  getContactForKitchen,
+  removeMemberToKitchen,
+} from "../_action/kitchenid-action";
 import { useSession } from "@/hooks/useSession";
 import { useCurrentPath } from "@/hooks/useCurrentPath";
 
@@ -15,6 +21,12 @@ export function VisuelTest() {
     console.log(await addMenuToKitchen(formData));
   }
 
+  async function removeMember(formData: FormData) {
+    formData.append("userId", id);
+    formData.append("kitchenName", current.at(-1) as string);
+    console.log(await removeMemberToKitchen(formData));
+  }
+
   async function addMember(formData: FormData) {
     formData.append("userId", id);
     formData.append("kitchenName", current.at(-1) as string);
@@ -26,7 +38,7 @@ export function VisuelTest() {
     formData.append("kitchenName", current.at(-1) as string);
     console.log(await getNameMemberKitchen(formData));
   }
-  
+
   async function getContact(formData: FormData) {
     formData.append("userId", id);
     formData.append("kitchenName", current.at(-1) as string);
@@ -41,7 +53,13 @@ export function VisuelTest() {
       </form>
 
       <p>Supprimer un user (non implemente)</p>
-      <form action={addMenu}>
+      <form action={removeMember}>
+        <input
+          type="text"
+          id="memberEmail"
+          name="memberEmail"
+          placeholder="email"
+        />
         <Button type="submit">Supprimer des membres</Button>
       </form>
 
@@ -57,8 +75,18 @@ export function VisuelTest() {
 
       <p>Add member to your team</p>
       <form action={addMember}>
-        <input type="text" id="memberEmail" name="memberEmail" placeholder="email"/>
-        <input type="text" id="memberName" name="memberName" placeholder="name"/>
+        <input
+          type="text"
+          id="memberEmail"
+          name="memberEmail"
+          placeholder="email"
+        />
+        <input
+          type="text"
+          id="memberName"
+          name="memberName"
+          placeholder="name"
+        />
         <Button type="submit">add Member</Button>
       </form>
     </>
