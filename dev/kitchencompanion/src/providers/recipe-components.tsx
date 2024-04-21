@@ -1,17 +1,21 @@
 "use client";
 
 import { RecipeComponents } from "@/contexts/recipe-components";
-import { Component } from "@/lib/composite/component";
+import { Ingredient } from "@/lib/composite/ingredient";
+import { Recipe } from "@/lib/composite/recipe";
 
 export function RecipeComponentsProvider({
   children,
   ingredients,
+  recipes,
 }: {
   children: React.ReactNode;
-  ingredients: Component[];
+  ingredients: string;
+  recipes: string;
 }) {
   return (
-    <RecipeComponents.Provider value={ingredients}>
+    <RecipeComponents.Provider
+      value={{ ingredientsJSON: ingredients, recipesJSON: recipes }}>
       {children}
     </RecipeComponents.Provider>
   );

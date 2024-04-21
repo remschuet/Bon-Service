@@ -1,8 +1,7 @@
 "use client";
 
 import { NewRecipe, Steps } from "@/contexts/new-recipe";
-import { Component } from "@/lib/composite/component";
-import { Recipe, RecipeData } from "@/lib/composite/recipe";
+import { Recipe, RecipeComponent } from "@/lib/composite/recipe";
 import { RecipeState, Unit } from "@prisma/client";
 import { useEffect, useState } from "react";
 
@@ -10,8 +9,8 @@ export function NewRecipeProvider({ children }: { children: React.ReactNode }) {
   const [isComplete, setIsComplete] = useState(false);
   const [name, setName] = useState("");
   const [cost, setCost] = useState(0);
-  const [recipeYield, setRecipeYield] = useState(0);
-  const [unit, setUnit] = useState<Unit | undefined>(undefined);
+  const [recipeYield, setRecipeYield] = useState(0.0);
+  const [unit, setUnit] = useState<Unit>("KG");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [recipeType, setRecipeType] = useState<RecipeState | undefined>(
@@ -21,24 +20,21 @@ export function NewRecipeProvider({ children }: { children: React.ReactNode }) {
   const [cookTime, setCookTime] = useState(0);
   const [steps, setSteps] = useState<Steps[]>([]);
   const [version, setVersion] = useState("1.0.0");
-  const [ingredients, setIngredients] = useState<Component[]>([]);
+  const [ingredients, setIngredients] = useState<RecipeComponent[]>([]);
 
   const newRecipe = new Recipe();
 
-  console.log(steps);
-
   useEffect(() => {
     if (
-      name !== "" &&
-      cost !== 0 &&
-      recipeYield !== 0 &&
+      name.length > 0 &&
+      recipeYield > 0 &&
       unit &&
-      description !== "" &&
-      category !== "" &&
+      description.length > 0 &&
+      category.length > 0 &&
       recipeType &&
-      prepTime !== 0 &&
-      cookTime !== 0 &&
-      steps.length == 0
+      prepTime > 0 &&
+      cookTime > 0 &&
+      steps.length > 0
     ) {
       setIsComplete(true);
     } else {
@@ -46,7 +42,6 @@ export function NewRecipeProvider({ children }: { children: React.ReactNode }) {
     }
   }, [
     name,
-    cost,
     recipeYield,
     unit,
     description,
@@ -55,24 +50,24 @@ export function NewRecipeProvider({ children }: { children: React.ReactNode }) {
     prepTime,
     cookTime,
     steps,
+    version,
   ]);
 
   useEffect(() => {
-    const newRecipeData: RecipeData = {
-      name,
-      cost,
-      yield: recipeYield,
-      unit: unit as Unit,
-      description,
-      category,
-      recipeType,
-      prepTime,
-      cookTime,
-      steps: JSON.stringify(steps),
-      version,
-    };
-    newRecipe.recipeData = newRecipeData;
-  }, [isComplete]);
+    newRecipe.removeAll();
+
+    ingredients.forEach((ingredient) => {
+      newRecipe.add(ingredient);
+    });
+
+    if (ingredients.length > 0) {
+      newRecipe.recipeData.yield = recipeYield;
+      newRecipe.recipeData.unit = unit;
+
+      const currCost = newRecipe.calculateCost();
+      setCost(currCost);
+    }
+  }, [ingredients, recipeYield, unit]);
 
   return (
     <NewRecipe.Provider

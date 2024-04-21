@@ -24,8 +24,8 @@ export function RecipeStepsInput() {
   const handleAddStep = () => {
     if (textareaRef.current?.value) {
       const newStep: Steps = {
-        step: textareaRef.current.value,
         id: crypto.randomUUID(),
+        step: textareaRef.current.value,
       };
       ctx.setSteps([...ctx.steps, newStep]);
       textareaRef.current.value = "";
@@ -39,7 +39,7 @@ export function RecipeStepsInput() {
         className='absolute right-3 top-3'>
         Étapes
       </Badge>
-      <div className='flex-1 mt-8'>
+      <div className='flex-1 my-8'>
         <RecipeStepsList />
       </div>
       <div

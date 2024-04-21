@@ -4,7 +4,6 @@ import { unitConversions } from "@/lib/composite/unit-convertion";
 
 export type RecipeData = {
   id?: string;
-  name: string;
   cost: number | null;
   yield: number;
   unit: Unit;
@@ -26,11 +25,34 @@ export type RecipeComponent = {
 };
 
 export class Recipe extends Component {
+  private _name: string;
   private _ingredients: RecipeComponent[] = [];
   private _recipeData: RecipeData = {} as RecipeData;
 
   constructor() {
     super(true);
+    this._recipeData = {
+      cost: 0,
+      yield: 0,
+      unit: "KG" as Unit,
+      description: "",
+      category: "",
+      recipeType: "RECIPE" as RecipeState,
+      prepTime: 0,
+      cookTime: 0,
+      steps: "",
+      version: "1.0.0",
+    } as RecipeData;
+
+    this._name = "";
+  }
+
+  public set name(name: string) {
+    this._name = name;
+  }
+
+  public get name(): string {
+    return this._name;
   }
 
   public set recipeData(data: RecipeData) {
@@ -58,6 +80,15 @@ export class Recipe extends Component {
     this._ingredients.splice(ingredientIndex, 1);
   }
 
+  public removeAll(): void {
+    //Removes the parent reference for garbage collection
+    this._ingredients.forEach((ingredient) => {
+      ingredient.component.parent = null;
+    });
+
+    this._ingredients = [];
+  }
+
   public suggestSalePrice(): number {
     throw new Error("Method not implemented.");
   }
@@ -75,7 +106,9 @@ export class Recipe extends Component {
     if (this.parent === null) {
       // This recipe is a standalone recipe, calculate cost for the yield
 
-      this._recipeData.cost = rawCost / this._recipeData.yield; // Average cost per unit yield
+      this._recipeData.cost = Number(
+        (rawCost / this._recipeData.yield).toFixed(2)
+      ); // Average cost per unit yield
       return this._recipeData.cost;
     } else {
       // When the recipe is used as an ingredient, ensure quantity and unit are specified
@@ -94,7 +127,7 @@ export class Recipe extends Component {
         ) {
           const conversionFactor = unitConversions[this._recipeData.unit][unit];
           const unitCost = rawCost / this._recipeData.yield / conversionFactor;
-          return unitCost * quantity;
+          return Number((unitCost * quantity).toFixed(2));
         } else {
           throw new Error(
             `No conversion available from ${this._recipeData.unit} to ${unit}`
@@ -102,7 +135,7 @@ export class Recipe extends Component {
         }
       }
 
-      return (rawCost / this._recipeData.yield) * quantity;
+      return Number(((rawCost / this._recipeData.yield) * quantity).toFixed(2));
     }
   }
 }

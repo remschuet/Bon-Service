@@ -65,13 +65,20 @@ export class Ingredient extends Component {
     if (unit !== this._unit) {
       if (unitConversions[this._unit] && unitConversions[this._unit][unit]) {
         const conversionFactor = unitConversions[this._unit][unit];
+
+        console.log(conversionFactor);
+
         price /= conversionFactor;
+
+        console.log(price);
       } else {
         throw new Error(
           `No conversion available from ${this._unit} to ${unit}`
         );
       }
     }
+
+    console.log(price * quantity);
 
     return price * quantity;
   }

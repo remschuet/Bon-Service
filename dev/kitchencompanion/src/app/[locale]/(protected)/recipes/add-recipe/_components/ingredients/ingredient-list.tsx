@@ -1,23 +1,16 @@
 import { IngredientItem } from "@/app/[locale]/(protected)/recipes/add-recipe/_components/ingredients/ingredient-item";
-import { RecipeComponent } from "@/lib/composite/recipe";
+import { useNewRecipe } from "@/hooks/useNewRecipe";
 
-export function IngredientList({
-  ingredients,
-  onRemoveIngredient,
-}: {
-  ingredients: RecipeComponent[];
-  onRemoveIngredient: (id: string) => void;
-}) {
+export function IngredientList() {
+  const { ctx } = useNewRecipe();
   return (
     <>
-      {ingredients.map((ingredient, key) => {
+      {ctx.ingredients.map((ingredient) => {
         return (
-          <div key={key}>
-            <IngredientItem
-              ingredient={ingredient}
-              onRemove={onRemoveIngredient}
-            />
-          </div>
+          <IngredientItem
+            key={crypto.randomUUID()}
+            ingredient={ingredient}
+          />
         );
       })}
     </>

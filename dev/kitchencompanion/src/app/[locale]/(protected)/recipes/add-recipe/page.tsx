@@ -21,11 +21,13 @@ export default async function RecipeBookPage() {
     const recipes: Recipe[] =
       (await getRecipeComponents(session.user.id as string)) || [];
 
-    console.log("ingredients", ingredients);
-    console.log("recipes", recipes);
+    const ingredientJSON = JSON.stringify(ingredients);
+    const recipeJSON = JSON.stringify(recipes);
 
     return (
-      <RecipeComponentsProvider ingredients={[]}>
+      <RecipeComponentsProvider
+        ingredients={ingredientJSON}
+        recipes={recipeJSON}>
         <RecipeBuilder />
       </RecipeComponentsProvider>
     );

@@ -1,5 +1,4 @@
-import { Component } from "@/lib/composite/component";
-import { Recipe } from "@/lib/composite/recipe";
+import { Recipe, RecipeComponent } from "@/lib/composite/recipe";
 import { RecipeState, Unit } from "@prisma/client";
 import { createContext } from "react";
 
@@ -9,7 +8,7 @@ export type Steps = {
 };
 
 export const NewRecipe = createContext({
-  isComplete: false,
+  isComplete: null as boolean | null,
   newRecipe: new Recipe(),
   name: "",
   setName(value: string) {},
@@ -17,7 +16,7 @@ export const NewRecipe = createContext({
   setCost(value: number) {},
   recipeYield: 0,
   setRecipeYield(value: number) {},
-  unit: undefined as Unit | undefined,
+  unit: "KG" as Unit,
   setUnit(value: Unit) {},
   description: "",
   setDescription(value: string) {},
@@ -33,6 +32,6 @@ export const NewRecipe = createContext({
   setSteps(value: Steps[]) {},
   version: "1.0.0",
   setVersion(value: string) {},
-  ingredients: [] as Component[],
-  setIngredients(value: Component[]) {},
+  ingredients: [] as RecipeComponent[],
+  setIngredients(value: RecipeComponent[]) {},
 });
