@@ -14,6 +14,9 @@ import { IngredientDTO, IngredientType } from "@/lib/type";
 
 /**
  * Create a Recipe with the ingredient (primitive and recipe).
+ * 
+ * TODO: ne pas passer le id
+ * 
  * @param recipe - The recipe object containing the recipes's details.
  * @param ingredients - The DTO object representing ingredient or recipe.
  * @returns A promise that resolves to the created recipe.
@@ -24,6 +27,7 @@ export async function createRecipe(
 ) {
   let _recipes: IngredientDTO[] = [];
   let _ingredients: IngredientDTO[] = [];
+
   // For ingredients
   for (let ingredient of ingredients) {
     if (ingredient.type === IngredientType.RECIPE) {
@@ -37,6 +41,7 @@ export async function createRecipe(
       await db.$transaction([
         db.recipe.create({
           data: {
+            id: recipe.id,
             versionNumber: recipe.versionNumber,
             name: recipe.name,
             recipeBookId: recipe.recipeBookId,
@@ -53,6 +58,9 @@ export async function createRecipe(
             updatedAt: recipe.updatedAt,
           },
         }),
+
+
+
         db.recipeIngredient.createMany({
           data: {
             recipeId: recipe.id,
