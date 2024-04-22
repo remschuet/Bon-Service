@@ -8,8 +8,8 @@ export default function RecipeStepsList(): JSX.Element {
       {ctx.steps.map((step, index) => {
         return (
           <RecipeStepsItems
-            key={step.id}
-            direction={step.step}
+            key={crypto.randomUUID()}
+            direction={step}
             index={index}
           />
         );

@@ -1,17 +1,18 @@
 import { RecipeState, Unit } from "@prisma/client";
 import { Component } from "@/lib/composite/component";
 import { unitConversions } from "@/lib/composite/unit-convertion";
+import { IngredientDTO, IngredientType } from "../type";
 
 export type RecipeData = {
   id?: string;
-  cost: number | null;
+  cost: number;
   yield: number;
   unit: Unit;
-  description?: string;
-  category: string;
-  recipeType?: RecipeState;
-  prepTime?: number;
-  cookTime?: number;
+  description: string;
+  recipeBook: string;
+  recipeType: RecipeState;
+  prepTime: number;
+  cookTime: number;
   steps: string;
   version: string;
 };
@@ -36,7 +37,7 @@ export class Recipe extends Component {
       yield: 0,
       unit: "KG" as Unit,
       description: "",
-      category: "",
+      recipeBook: "",
       recipeType: "RECIPE" as RecipeState,
       prepTime: 0,
       cookTime: 0,
@@ -135,5 +136,37 @@ export class Recipe extends Component {
     }
 
     return Number(((rawCost / this._recipeData.yield) * quantity).toFixed(2));
+  }
+
+  public export(): FormData {
+    const formData = new FormData();
+
+    formData.append("name", this._name);
+    formData.append("cost", this._recipeData.cost.toString());
+    formData.append("yield", this._recipeData.yield.toString());
+    formData.append("unit", this._recipeData.unit);
+    formData.append("description", this._recipeData.description as string);
+    formData.append("recipeBook", this._recipeData.recipeBook);
+    formData.append("recipeType", this._recipeData.recipeType as string);
+    formData.append("prepTime", this._recipeData.prepTime.toString());
+    formData.append("cookTime", this._recipeData.cookTime.toString());
+    formData.append("steps", this._recipeData.steps);
+    formData.append("version", this._recipeData.version);
+
+    const ingredients = this._ingredients.map((ingredient) => {
+      return {
+        id: ingredient.id,
+        quantity: ingredient.quantity,
+        unit: ingredient.unit as Unit,
+        type:
+          ingredient.component instanceof Recipe
+            ? IngredientType.RECIPE
+            : IngredientType.INGREDIENT,
+      } as IngredientDTO;
+    });
+
+    formData.append("ingredients", JSON.stringify(ingredients));
+
+    return formData;
   }
 }

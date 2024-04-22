@@ -3,7 +3,7 @@
 import { UserMenu } from "@/app/[locale]/(protected)/_components/header/user-menu";
 import { Notification } from "@/app/[locale]/(protected)/_components/header/notifications/notification-menu";
 import { HelpMenu } from "@/app/[locale]/(protected)/_components/header/help-menu";
-import { Location } from "./location";
+import { Location } from "@/app/[locale]/(protected)/_components/header/location";
 import { cn } from "@/lib/utils";
 
 export function Header({ className }: { className?: string }) {
