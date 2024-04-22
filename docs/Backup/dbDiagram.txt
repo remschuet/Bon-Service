@@ -137,19 +137,12 @@ Table RecipeArchive {
   id int [pk]
 }
 
-Table RecipeCategory {
-  /*user and category unique together*/
-  user int [ref: > User.id, pk]
-  category varchar [pk]
-}
-
 Table Recipe { 
   /*name maybe unique*/
   id int [pk]
   versionNumber int [default: 0]
   name varchar
   recipeBook int [ref: > RecipeBook.id]
-  category int [ref: > RecipeCategory.category]
   recipeState RecipeState
   preparationTimeMin int
   cookingTimeMin int
@@ -185,7 +178,10 @@ Table RecipePhoto {
 Table Menu {
   id int [pk]
   name varchar [unique]
+  description varchar
   user int [ref: > User.id]
+  cost  Float
+
 }
 
 /* link between all the recipe in a menu*/
@@ -193,6 +189,8 @@ Table MenuRecipe {
   id int [pk]
   menu int [ref:> Menu.id]
   recipe int [ref:> Recipe.id]
+  type string
+  order int
 }
 
 
@@ -203,11 +201,11 @@ Table MenuKitchen {
   menu int [ref: > Menu.id]
 }
 
-Table structMenu {
+Table DishsType {
   /*userAdmin and category unique together*/
   /*category example: starter, main, dessert*/
   user int [ref: > User.id, pk]
-  category varchar [pk]
+  type varchar [pk]
 }
 
 Table Contact {
