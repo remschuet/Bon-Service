@@ -13,7 +13,7 @@ import { FormSuccess } from "@/components/form-success";
 import { useState, useTransition, useRef } from "react";
 import { PulseLoader } from "react-spinners";
 
-import { login } from "@/app/[locale]/(public)/(auth)/_actions/login";
+import { login } from "@/app/[locale]/(public)/(auth)/_actions/login-action";
 import { RedirectButton } from "@/components/redirect-button";
 import { LoginSchema } from "@/lib/validation";
 import { Label } from "@/components/ui/label";
@@ -48,48 +48,42 @@ export function LoginForm() {
 
   return (
     <>
-      <RedirectButton href='/register'>
+      <RedirectButton href="/register">
         <Button
-          className='absolute right-4 top-4 md:right-8 md:top-8'
-          variant={"link"}>
+          className="absolute right-4 top-4 md:right-8 md:top-8"
+          variant={"link"}
+        >
           Enregistrement
         </Button>
       </RedirectButton>
-      <div className='flex flex-col justify-center min-w-[500px]'>
-        <CardHeader className='flex flex-col space-y-2 text-center'>
-          <h1 className='text-2xl font-semibold tracking-tight'>Connexion</h1>
-          <p className='text-sm text-muted'>
+      <div className="flex flex-col justify-center min-w-[500px]">
+        <CardHeader className="flex flex-col space-y-2 text-center">
+          <h1 className="text-2xl font-semibold tracking-tight">Connexion</h1>
+          <p className="text-sm text-muted">
             Entrez votre adresse courriel et votre mot de passe
           </p>
         </CardHeader>
         <CardContent>
-          <form
-            className='grid gap-2'
-            ref={ref}
-            action={onSubmit}>
-            <div className='relative'>
-              <Label
-                className='sr-only'
-                htmlFor='email'>
+          <form className="grid gap-2" ref={ref} action={onSubmit}>
+            <div className="relative">
+              <Label className="sr-only" htmlFor="email">
                 Courriel
               </Label>
               <Input
-                placeholder='nom@example.com'
-                type='email'
-                name='email'
+                placeholder="nom@example.com"
+                type="email"
+                name="email"
                 disabled={isPending}
               />
             </div>
-            <div className='relative'>
-              <Label
-                className='sr-only'
-                htmlFor='password'>
+            <div className="relative">
+              <Label className="sr-only" htmlFor="password">
                 Mot de passe
               </Label>
               <Input
-                placeholder='Mot de passe'
-                type='password'
-                name='password'
+                placeholder="Mot de passe"
+                type="password"
+                name="password"
                 disabled={isPending}
               />
             </div>
@@ -97,25 +91,24 @@ export function LoginForm() {
             {error !== undefined && <FormError error={error} />}
             {success !== undefined && <FormSuccess success={success} />}
 
-            <Button
-              variant={"default"}
-              type='submit'
-              disabled={isPending}>
+            <Button variant={"default"} type="submit" disabled={isPending}>
               {isPending ? <PulseLoader size={5} /> : "Connexion"}
             </Button>
             <div>
-              <p className='text-[0.75rem] text-center font-normal text-muted'>
+              <p className="text-[0.75rem] text-center font-normal text-muted">
                 Vous n'avez pas de compte?{" "}
                 <Link
-                  className='underline italic font-semibold'
-                  href='/register'>
+                  className="underline italic font-semibold"
+                  href="/register"
+                >
                   Inscrivez-vous!
                 </Link>
               </p>
-              <p className='px-5 text-[0.7rem] text-muted text-center'>
+              <p className="px-5 text-[0.7rem] text-muted text-center">
                 <Link
-                  className='underline italic font-semibold'
-                  href='/forgot-password'>
+                  className="underline italic font-semibold"
+                  href="/forgot-password"
+                >
                   Mot de passe oublié?
                 </Link>
               </p>

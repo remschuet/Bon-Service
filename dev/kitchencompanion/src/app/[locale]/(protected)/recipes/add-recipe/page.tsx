@@ -8,7 +8,7 @@ import { RecipeBuilder } from "@/app/[locale]/(protected)/recipes/add-recipe/_co
 import {
   getIngredientComponents,
   getRecipeComponents,
-} from "@/app/[locale]/(protected)/recipes/add-recipe/_actions/composite-components";
+} from "@/app/[locale]/(protected)/recipes/add-recipe/_actions/composite-components-action";
 import { RecipeComponentsProvider } from "@/providers/recipe-components";
 
 export default async function RecipeBookPage() {
@@ -27,7 +27,8 @@ export default async function RecipeBookPage() {
     return (
       <RecipeComponentsProvider
         ingredients={ingredientJSON}
-        recipes={recipeJSON}>
+        recipes={recipeJSON}
+      >
         <RecipeBuilder />
       </RecipeComponentsProvider>
     );

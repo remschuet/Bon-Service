@@ -40,9 +40,9 @@ export async function getRecipeComponents(id: string) {
   }
 }
 
-export async function getIngredientComponents(id: string) {
+export async function getIngredientComponents(userId: string) {
   try {
-    const result = await getIngredients(id);
+    const result = await getAllIngredient(userId);
 
     if (!result) {
       return [];
@@ -61,19 +61,6 @@ export async function getIngredientComponents(id: string) {
     return ingredientComponent;
   } catch (error) {
     console.error(error);
-  }
-}
-/**
- * Retrieves all ingredients for a given user.
- *
- * @param userId - The ID of the user.
- * @returns A promise that resolves to an array of ingredients, or an object with an error message and status code if an error occurs.
- */
-async function getIngredients(userId: string) {
-  try {
-    return await getAllIngredient(userId);
-  } catch (error) {
-    throw error;
   }
 }
 

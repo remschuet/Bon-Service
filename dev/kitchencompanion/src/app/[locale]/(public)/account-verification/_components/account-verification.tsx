@@ -1,6 +1,6 @@
 "use client";
 
-import { accountVerification } from "@/app/[locale]/(public)/account-verification/_actions/account-verification";
+import { accountVerification } from "@/app/[locale]/(public)/account-verification/_actions/account-verification-action";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState, useTransition } from "react";
 import { FormError } from "@/components/form-error";
@@ -44,21 +44,21 @@ export const AccountVerification = () => {
   }, [onPageLoad]);
 
   return (
-    <div className='flex flex-col justify-center min-w-[500px] space-y-6'>
-      <CardHeader className='flex flex-col space-y-2 text-center'>
-        <h1 className='text-2xl font-semibold tracking-tight'>Vérification</h1>
+    <div className="flex flex-col justify-center min-w-[500px] space-y-6">
+      <CardHeader className="flex flex-col space-y-2 text-center">
+        <h1 className="text-2xl font-semibold tracking-tight">Vérification</h1>
         {isPending && (
-          <p className='text-sm text-center text-muted-foreground'>
+          <p className="text-sm text-center text-muted-foreground">
             Nous vérifions votre addresse courriel.
           </p>
         )}
       </CardHeader>
-      <CardContent className='flex flex-col items-center justify-center space-y-12'>
+      <CardContent className="flex flex-col items-center justify-center space-y-12">
         {isPending && <PulseLoader />}
         {error && error !== undefined && <FormError error={error} />}
         {success && success !== undefined && <FormSuccess success={success} />}
         {!isPending && (
-          <RedirectButton href='/login'>
+          <RedirectButton href="/login">
             <Button variant={"link"}>Connexion</Button>
           </RedirectButton>
         )}

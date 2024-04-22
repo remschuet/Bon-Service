@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 import { useState, useTransition, useRef } from "react";
 
 import { PasswordResetSchema } from "@/lib/validation";
-import { sendPasswordResetToken } from "@/app/[locale]/(public)/forgot-password/_actions/forgot-password";
+import { sendPasswordResetToken } from "@/app/[locale]/(public)/forgot-password/_actions/forgot-password-action";
 
 export function ForgotPasswordForm() {
   const ref = useRef<HTMLFormElement>(null);
@@ -42,37 +42,33 @@ export function ForgotPasswordForm() {
 
   return (
     <>
-      <RedirectButton href='/login'>
+      <RedirectButton href="/login">
         <Button
-          className='absolute right-4 top-4 md:right-8 md:top-8'
-          variant={"link"}>
+          className="absolute right-4 top-4 md:right-8 md:top-8"
+          variant={"link"}
+        >
           Connexion
         </Button>
       </RedirectButton>
-      <div className='flex flex-col justify-center w-[500px]'>
-        <CardHeader className='flex flex-col space-y-2 text-center'>
-          <h1 className='text-2xl font-semibold tracking-tight'>
+      <div className="flex flex-col justify-center w-[500px]">
+        <CardHeader className="flex flex-col space-y-2 text-center">
+          <h1 className="text-2xl font-semibold tracking-tight">
             Mot de passe oublié?
           </h1>
-          <p className='text-sm text-muted-foreground'>
+          <p className="text-sm text-muted-foreground">
             Entrez votre adresse courriel
           </p>
         </CardHeader>
         <CardContent>
-          <form
-            className='grid gap-2'
-            ref={ref}
-            action={onSubmit}>
-            <div className='relative'>
-              <Label
-                className='sr-only'
-                htmlFor='email'>
+          <form className="grid gap-2" ref={ref} action={onSubmit}>
+            <div className="relative">
+              <Label className="sr-only" htmlFor="email">
                 Courriel
               </Label>
               <Input
-                placeholder='nom@example.com'
-                type='email'
-                name='email'
+                placeholder="nom@example.com"
+                type="email"
+                name="email"
                 disabled={isPending}
               />
             </div>
@@ -81,10 +77,11 @@ export function ForgotPasswordForm() {
             {success !== undefined && <FormSuccess success={success} />}
 
             <Button
-              className='mt-4'
+              className="mt-4"
               variant={"default"}
-              type='submit'
-              disabled={isPending}>
+              type="submit"
+              disabled={isPending}
+            >
               {isPending ? (
                 <PulseLoader size={5} />
               ) : (

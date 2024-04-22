@@ -1,4 +1,4 @@
-import processReceipt from "@/app/[locale]/(protected)/market/_action/process-receipt";
+import processReceipt from "@/app/[locale]/(protected)/market/_action/process-receipt-action";
 import { DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
