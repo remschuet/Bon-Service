@@ -13,11 +13,10 @@ export function IngredientItem({
   const { ctx } = useNewRecipe();
 
   const handleRemoveIngredient = () => {
-    const updatedIngredients = ctx.ingredients.filter((_, i) => i !== index);
-
-    console.log(updatedIngredients);
+    const updatedIngredients = ctx.ingredients.filter(
+      (_, idx) => idx !== index
+    );
     ctx.setIngredients([...updatedIngredients]);
-    console.log(ctx.ingredients);
   };
 
   return (

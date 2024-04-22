@@ -4,6 +4,7 @@ import { BadgeCheck, BadgeX, Settings } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { useNewRecipe } from "@/hooks/useNewRecipe";
 import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
 
 export default function RecipeStepsItem({
   direction,
@@ -38,9 +39,10 @@ export default function RecipeStepsItem({
 
   return (
     <div
-      className={`flex gap-2 w-full p-2 border rounded-lg  mb-2 ${
+      className={cn(
+        "flex gap-2 w-full p-2 border rounded-lg  mb-2",
         !isEditing ? "bg-stone-100 hover:bg-stone-300/50" : " bg-stone-300/50"
-      }`}>
+      )}>
       <div className='flex gap-1 mr-5 my-auto'>
         <div onClick={toggleEditing}>
           {isEditing && (
