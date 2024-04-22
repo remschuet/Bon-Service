@@ -6,6 +6,7 @@ import { Recipe, RecipeState, Unit } from "@prisma/client";
 
 export async function addRecipe(newRecipe: FormData) {
   const recipe = {
+    id: crypto.randomUUID(),
     name: newRecipe.get("name") as string,
     cost: parseFloat(newRecipe.get("cost") as string),
     yield: parseInt(newRecipe.get("yield") as string),
@@ -22,9 +23,6 @@ export async function addRecipe(newRecipe: FormData) {
   const ingredients: IngredientDTO[] = JSON.parse(
     newRecipe.get("ingredients") as string
   ) as IngredientDTO[];
-
-  console.log("recipe", recipe);
-  console.log("ingredients", ingredients);
 
   try {
     await createRecipe(recipe as Recipe, ingredients);
