@@ -22,6 +22,7 @@ import {
 
 import { useNavigation } from "@/hooks/useNavigation";
 import { useSession } from "@/hooks/useSession";
+import { cn } from "@/lib/utils";
 
 export function Nagivation() {
   const { userType, isPremium } = useSession();
@@ -75,15 +76,19 @@ export function Nagivation() {
 
   return (
     <nav
-      className={`flex fixed top-0 left-0 z-20 flex-col ${
-        isOpen ? "min-w-[16rem]" : "min-w-[4rem]"
-      } h-screen border-r-2 transition-all`}>
+      className={cn(
+        "flex fixed top-0 left-0 z-20 flex-col",
+        isOpen ? "min-w-[16rem]" : "min-w-[4rem]",
+        "h-screen border-r-2 transition-all"
+      )}
+    >
       <div
         className={`flex items-center px-5 h-16 border-b-2 w-full cursor-pointer`}
-        onClick={toggleOpen}>
+        onClick={toggleOpen}
+      >
         <Menu />
       </div>
-      <div className='flex flex-col px-3 py-4 space-y-2'>
+      <div className="flex flex-col px-3 py-4 space-y-2">
         {links.map(({ path, icon, text, visibility }) => {
           if (!visibility.includes(userType)) return null;
 
@@ -92,36 +97,38 @@ export function Nagivation() {
               key={path}
               className={linkStyle(path)}
               onClick={() => setIsActive(path)}
-              href={path}>
+              href={path}
+            >
               {icon}
               <span className={textTransition}>{text}</span>
             </Link>
           );
         })}
       </div>
-      <div className='flex flex-col border-t-2 px-3 py-4 space-y-2'>
+      <div className="flex flex-col border-t-2 px-3 py-4 space-y-2">
         <Link
           className={linkStyle("/dashboard")}
           onClick={() => setIsActive("/dashboard")}
-          href='/dashboard'>
+          href="/dashboard"
+        >
           <LayoutDashboard />
           <span className={textTransition}>Portail</span>
         </Link>
       </div>
       {isOpen && !isPremium && (
-        <Card className='absolute grid place-items-center mx-2 top-[calc(100vh-238px)] bg-stone-200 max-w-[16rem] h-[230px]'>
-          <CardHeader className='space-y-5'>
-            <CardTitle className='text-xl text-center'>
+        <Card className="absolute grid place-items-center mx-2 top-[calc(100vh-238px)] bg-stone-200 max-w-[16rem] h-[230px]">
+          <CardHeader className="space-y-5">
+            <CardTitle className="text-xl text-center">
               Bon Service Pro
             </CardTitle>
-            <CardDescription className='text-primary text-[0.8rem]'>
+            <CardDescription className="text-primary text-[0.8rem]">
               Accédez à des options exclusives, telles que l'importation de vos
               reçus, la création de multiples cuisines et bien plus encore.
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Link href='/premium'>
-              <Button className='font-semibold'>Devenir Pro</Button>
+            <Link href="/premium">
+              <Button className="font-semibold">Devenir Pro</Button>
             </Link>
           </CardContent>
         </Card>

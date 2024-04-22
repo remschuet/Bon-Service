@@ -74,8 +74,8 @@ export const pathnames = {
   },
 
   "/recipes/add-recipe": {
-    en: "/recipes/add",
-    fr: "/recettes/ajouter",
+    en: "/recipes/new%20Recipe",
+    fr: "/recettes/nouvelle%20Recette",
   },
 
   "/contacts": "/contacts",

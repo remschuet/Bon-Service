@@ -4,13 +4,18 @@ import { UserMenu } from "@/app/[locale]/(protected)/_components/header/user-men
 import { Notification } from "@/app/[locale]/(protected)/_components/header/notifications/notification-menu";
 import { HelpMenu } from "@/app/[locale]/(protected)/_components/header/help-menu";
 import { Location } from "./location";
+import { cn } from "@/lib/utils";
 
 export function Header({ className }: { className?: string }) {
   return (
     <div
-      className={`flex fixed top-0 justify-between py-2 px-6 border-b-2 z-10 bg-background h-[4rem] ${className}`}>
+      className={cn(
+        "flex fixed top-0 justify-between py-2 px-6 border-b-2 z-10 bg-background h-[4rem]",
+        className
+      )}
+    >
       <Location />
-      <div className='flex items-center space-x-3'>
+      <div className="flex items-center space-x-3">
         <Notification />
         <HelpMenu />
         <UserMenu />
