@@ -24,9 +24,6 @@ export async function addRecipe(newRecipe: FormData) {
     newRecipe.get("ingredients") as string
   ) as IngredientDTO[];
 
-  console.log("recipe", recipe);
-  console.log("ingredients", ingredients);
-
   try {
     await createRecipe(recipe as Recipe, ingredients);
   } catch (error) {

@@ -14,9 +14,9 @@ import { IngredientDTO, IngredientType } from "@/lib/type";
 
 /**
  * Create a Recipe with the ingredient (primitive and recipe).
- * 
+ *
  * TODO: ne pas passer le id
- * 
+ *
  * @param recipe - The recipe object containing the recipes's details.
  * @param ingredients - The DTO object representing ingredient or recipe.
  * @returns A promise that resolves to the created recipe.
@@ -37,52 +37,55 @@ export async function createRecipe(
     } else {
       throw new Error("Invalid ingredient type");
     }
-    try {
-      await db.$transaction([
-        db.recipe.create({
-          data: {
-            id: recipe.id,
-            versionNumber: recipe.versionNumber,
-            name: recipe.name,
-            recipeBookId: recipe.recipeBookId,
-            recipeState: recipe.recipeState,
-            preparationTime: recipe.preparationTime,
-            cookingTime: recipe.cookingTime,
-            cost: recipe.cost,
-            description: recipe.description,
-            steps: JSON.stringify(recipe.steps),
-            yield: recipe.yield,
-            unit: recipe.unit,
-            objInvestment: recipe.objInvestment,
-            createdAt: recipe.createdAt,
-            updatedAt: recipe.updatedAt,
-          },
-        }),
+  }
 
+  try {
+    await db.$transaction([
+      db.recipe.create({
+        data: {
+          id: recipe.id,
+          versionNumber: recipe.versionNumber,
+          name: recipe.name,
+          recipeBookId: recipe.recipeBookId,
+          recipeState: recipe.recipeState,
+          preparationTime: recipe.preparationTime,
+          cookingTime: recipe.cookingTime,
+          cost: recipe.cost,
+          description: recipe.description,
+          steps: recipe.steps,
+          yield: recipe.yield,
+          unit: recipe.unit,
+          objInvestment: recipe.objInvestment,
+          createdAt: recipe.createdAt,
+          updatedAt: recipe.updatedAt,
+        },
+      }),
 
-
-        db.recipeIngredient.createMany({
+      ..._recipes.map((recipe) => {
+        return db.recipeIngredient.create({
           data: {
             recipeId: recipe.id,
-            recipeIngredientId: ingredient.id,
-            quantity: ingredient.quantity,
-            unit: ingredient.unit,
+            recipeIngredientId: recipe.id,
+            quantity: recipe.quantity,
+            unit: recipe.unit,
           },
-        }),
+        });
+      }),
 
-        db.recipeIngredient.create({
+      ..._ingredients.map((ingredient) => {
+        return db.recipeIngredient.create({
           data: {
             recipeId: recipe.id,
             ingredientId: ingredient.id,
             quantity: ingredient.quantity,
             unit: ingredient.unit,
           },
-        }),
-      ]);
-    } catch (error) {
-      console.error("Error data-access/recipe: createRecipe(), error: ", error);
-      throw error;
-    }
+        });
+      }),
+    ]);
+  } catch (error) {
+    console.error("Error data-access/recipe: createRecipe(), error: ", error);
+    throw error;
   }
 }
 
