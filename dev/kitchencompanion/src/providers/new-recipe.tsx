@@ -1,6 +1,6 @@
 "use client";
 
-import { NewRecipe, Steps } from "@/contexts/new-recipe";
+import { NewRecipe } from "@/contexts/new-recipe";
 import { Recipe, RecipeComponent } from "@/lib/composite/recipe";
 import { RecipeState, Unit } from "@prisma/client";
 import { useEffect, useState } from "react";
@@ -12,11 +12,11 @@ export function NewRecipeProvider({ children }: { children: React.ReactNode }) {
   const [recipeYield, setRecipeYield] = useState(1.0);
   const [unit, setUnit] = useState<Unit>("KG");
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
+  const [recipeBook, setRecipeBook] = useState("");
   const [recipeType, setRecipeType] = useState<RecipeState>("RECIPE");
   const [prepTime, setPrepTime] = useState(0);
   const [cookTime, setCookTime] = useState(0);
-  const [steps, setSteps] = useState<Steps[]>([]);
+  const [steps, setSteps] = useState<string[]>([]);
   const [version, setVersion] = useState("1.0.0");
   const [ingredients, setIngredients] = useState<RecipeComponent[]>([]);
 
@@ -26,7 +26,7 @@ export function NewRecipeProvider({ children }: { children: React.ReactNode }) {
     if (
       name.length > 0 &&
       description.length > 0 &&
-      category.length > 0 &&
+      recipeBook.length > 0 &&
       recipeType &&
       prepTime > 0 &&
       cookTime > 0 &&
@@ -40,7 +40,7 @@ export function NewRecipeProvider({ children }: { children: React.ReactNode }) {
   }, [
     name,
     description,
-    category,
+    recipeBook,
     recipeType,
     prepTime,
     cookTime,
@@ -81,8 +81,8 @@ export function NewRecipeProvider({ children }: { children: React.ReactNode }) {
         setUnit,
         description,
         setDescription,
-        category,
-        setCategory,
+        recipeBook,
+        setRecipeBook,
         recipeType,
         setRecipeType,
         prepTime,
@@ -95,8 +95,9 @@ export function NewRecipeProvider({ children }: { children: React.ReactNode }) {
         setVersion,
         ingredients,
         setIngredients,
-      }}>
-      <div className='space-y-2 flex gap-4 justify-center mt-10'>
+      }}
+    >
+      <div className="space-y-2 flex gap-4 justify-center mt-10">
         {children}
       </div>
     </NewRecipe.Provider>

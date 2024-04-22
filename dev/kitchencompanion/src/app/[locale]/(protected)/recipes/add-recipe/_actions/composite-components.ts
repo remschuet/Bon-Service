@@ -20,7 +20,7 @@ export async function getRecipeComponents(id: string) {
         yield: recipe.yield,
         unit: recipe.unit,
         description: recipe.description,
-        category: recipe.recipeCategoryId,
+        recipeBook: recipe.recipeBookId,
         recipeType: recipe.recipeState,
         prepTime: recipe.preparationTime,
         cookTime: recipe.preparationTime,
