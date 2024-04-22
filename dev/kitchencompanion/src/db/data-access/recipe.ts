@@ -40,7 +40,6 @@ export async function createRecipe(
             versionNumber: recipe.versionNumber,
             name: recipe.name,
             recipeBookId: recipe.recipeBookId,
-            recipeCategoryId: recipe.recipeCategoryId,
             recipeState: recipe.recipeState,
             preparationTime: recipe.preparationTime,
             cookingTime: recipe.cookingTime,
@@ -120,48 +119,6 @@ export async function linkRecipeAllergen(recipe: Recipe, allergen: Allergen) {
   } catch (error) {
     console.error(
       "Error data-access/recipe: linkRecipeAllergen(), error: ",
-      error
-    );
-    throw error;
-  }
-}
-
-/**
- * Create RecipeCategory
- * @param userId - The id of the user.
- * @param category - An string describing the category
- * @returns A promise that resolves to the created recipeCategory.
- */
-export async function createRecipeCategory(userId: string, category: string) {
-  try {
-    return await db.recipeCategory.create({
-      data: {
-        userId: userId,
-        category: category,
-      },
-    });
-  } catch (error) {
-    console.error(
-      "Error data-access/recipe: createRecipeCategory(), error: ",
-      error
-    );
-    throw error;
-  }
-}
-
-/**
- * Get all the categories for an user.
- * @param userId - the user id.
- * @returns An array of recipe categories.
- */
-export async function getRecipeCategoriesByUserId(userId: string) {
-  try {
-    return await db.recipeCategory.findMany({
-      where: { userId: userId },
-    });
-  } catch (error) {
-    console.error(
-      "Error data-access/recipe: getRecipeCategoriesByUserId(), error: ",
       error
     );
     throw error;

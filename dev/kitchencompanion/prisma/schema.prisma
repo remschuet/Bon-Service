@@ -77,7 +77,6 @@ model User {
   kitchens         Kitchen[]
   kitchenUsers     KitchenUser[]
   recipeBooks      RecipeBook[]
-  recipeCategories RecipeCategory[]
   structMenus      StructMenu[]
   checkTemps       CheckTemp[]
   suppliers        Supplier[]
@@ -178,27 +177,12 @@ model RecipeBook {
   @@unique([name, userId])
 }
 
-model RecipeCategory {
-  id String @id @default(cuid())
-
-  user     User   @relation(fields: [userId], references: [id])
-  userId   String
-  category String
-
-  recipes Recipe[]
-
-  @@unique([userId, category])
-}
-
 model Recipe {
   id            String     @id @default(cuid())
   versionNumber String     @default("1.0.0")
   name          String
   recipeBook    RecipeBook @relation(fields: [recipeBookId], references: [id])
   recipeBookId  String
-
-  recipeCategory   RecipeCategory @relation(fields: [recipeCategoryId], references: [id])
-  recipeCategoryId String
 
   recipeState     RecipeState @default(RECIPE)
   preparationTime Int
