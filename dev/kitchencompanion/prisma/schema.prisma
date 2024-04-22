@@ -77,7 +77,7 @@ model User {
   kitchens         Kitchen[]
   kitchenUsers     KitchenUser[]
   recipeBooks      RecipeBook[]
-  structMenus      StructMenu[]
+  dishsTypes       DishsType[]
   checkTemps       CheckTemp[]
   suppliers        Supplier[]
   notifications    Notification[]
@@ -245,9 +245,11 @@ model RecipePhoto {
 model Menu {
   id String @id @default(cuid())
 
-  name   String @unique
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
+  name    String @unique
+  user    User   @relation(fields: [userId], references: [id])
+  userId  String
+  description String?
+  cost Float
 
   menuKitchens MenuKitchen[]
   menuRecipes  MenuRecipe[]
@@ -264,6 +266,9 @@ model MenuRecipe {
   recipe   Recipe @relation(fields: [recipeId], references: [id])
   recipeId String
 
+  type String
+  order Int
+
   @@unique([recipeId, menuId])
 }
 
@@ -276,14 +281,21 @@ model MenuKitchen {
   menuId String
 }
 
-model StructMenu {
-  id String @id @default(cuid())
+model DishsType {
+  id        String @id @default(cuid())
 
-  user     User   @relation(fields: [userId], references: [id])
-  userId   String
-  category String
+  user      User   @relation(fields: [userId], references: [id])
+  userId    String
+  type      String
 
-  @@unique([userId, category])
+  @@unique([userId, type])
+}
+
+model DishsTypeSupported {
+  id        String @id @default(cuid())
+  type      String
+
+  @@unique([type])
 }
 
 model Contact {
