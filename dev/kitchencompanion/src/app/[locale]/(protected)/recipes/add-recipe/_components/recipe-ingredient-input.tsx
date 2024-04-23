@@ -213,7 +213,7 @@ function extractRecipes(
     importedRecipe.recipeData = recipe._recipeData;
     recipesMap.set(recipe._recipeData.id!, importedRecipe);
   });
-
+  
   // Reconstruct the recipe components from the raw data and the maps
   recipesMap.forEach((importedRecipe, id) => {
     const index = Array.from(recipesMap.keys()).findIndex((key) => key === id);
