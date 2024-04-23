@@ -2,7 +2,7 @@ import { RecipeBook, Allergen, Recipe, Ingredient } from "@prisma/client";
 import { db } from "@/db/prisma-db";
 import { Prisma } from "@prisma/client";
 import { RecipeComponent } from "@/lib/composite/recipe";
-import { IngredientDTO, IngredientType } from "@/lib/type";
+import { IngredientDTO, IngredientType, RecipeIngredientDTO } from "@/lib/type";
 
 ////////////////////////////////
 // TABLES
@@ -169,26 +169,12 @@ export async function linkRecipePhoto(recipe: Recipe, photo: string) {
 export async function getRecipeIngredientAndRecipe(recipeId: string) {
   try {
     // Get the ingredients
-    const ingredientsResult = await db.recipeIngredient.findMany({
-      where: { recipeId: recipeId, ingredientId: { not: null } },
-      include: { ingredient: true },
-    });
+    const ingredients: RecipeIngredientDTO[] =
+      await db.recipeIngredient.findMany({
+        where: { recipeId: recipeId },
+      });
 
-    // Extract ingredients from the result
-    const ingredients = ingredientsResult.map((ri) => ri.ingredient);
-
-    // Get the recipe ingredients
-    const recipeIngredientsResult = await db.recipeIngredient.findMany({
-      where: { recipeId: recipeId, recipeIngredientId: { not: null } },
-      include: { recipeIngredient: true },
-    });
-
-    // Extract recipe ingredients from the result
-    const recipeIngredients = recipeIngredientsResult.map(
-      (ri) => ri.recipeIngredient
-    );
-
-    return { ingredients, recipeIngredients };
+    return ingredients;
   } catch (error) {
     console.error(
       "Error data-access/recipe: getRecipeIngredientRecipe(), error: ",

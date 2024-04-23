@@ -9,7 +9,7 @@ export const unitConversions: UnitConversion = {
     G: 1000,
     LB: 2.2046,
     OZ: 35.274,
-    ML: 1,
+    ML: 1000,
     L: 0.001,
   },
   G: {

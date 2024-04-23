@@ -1,7 +1,6 @@
 import { auth } from "@/auth";
 
 import { Ingredient } from "@/lib/composite/ingredient";
-import { Recipe } from "@/lib/composite/recipe";
 
 import { RecipeBuilder } from "@/app/[locale]/(protected)/recipes/add-recipe/_components/recipe-builder";
 
@@ -17,18 +16,18 @@ export default async function RecipeBookPage() {
   if (session) {
     const ingredients: Ingredient[] =
       (await getIngredientComponents(session.user.id as string)) || [];
-
-    const recipes: Recipe[] =
-      (await getRecipeComponents(session.user.id as string)) || [];
-
     const ingredientJSON = JSON.stringify(ingredients);
-    const recipeJSON = JSON.stringify(recipes);
+
+    const { recipeComponents = [], recipeIngredients = [] } =
+      await getRecipeComponents(session.user.id as string);
+    const recipeJSON = JSON.stringify(recipeComponents);
+    const recipeIngredientJSON = JSON.stringify(recipeIngredients);
 
     return (
       <RecipeComponentsProvider
         ingredients={ingredientJSON}
         recipes={recipeJSON}
-      >
+        recipeIngredients={recipeIngredientJSON}>
         <RecipeBuilder />
       </RecipeComponentsProvider>
     );

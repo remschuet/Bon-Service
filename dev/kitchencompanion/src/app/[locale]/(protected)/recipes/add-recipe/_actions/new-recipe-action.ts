@@ -1,8 +1,9 @@
 "use server";
 
-import { createRecipe } from "@/db/data-access/recipe";
-import { IngredientDTO } from "@/lib/type";
 import { Recipe, RecipeState, Unit } from "@prisma/client";
+import { IngredientDTO } from "@/lib/type";
+
+import { createRecipe } from "@/db/data-access/recipe";
 
 export async function addRecipe(newRecipe: FormData) {
   const recipe = {

@@ -1,18 +1,22 @@
 "use server";
 
 import { getAllIngredient } from "@/db/data-access/ingredient";
-import { getAllRecipeByRecipeBookIds } from "@/db/data-access/recipe";
+import {
+  getAllRecipeByRecipeBookIds,
+  getRecipeIngredientAndRecipe,
+} from "@/db/data-access/recipe";
 import { getAllRecipeBookByUserId } from "@/db/data-access/recipe-book";
 import { Ingredient } from "@/lib/composite/ingredient";
 import { Recipe, RecipeData } from "@/lib/composite/recipe";
 
 export async function getRecipeComponents(id: string) {
   try {
-    const recipes = await getRecipes(id);
+    const { recipes, recipeIngredients } = await getRecipes(id);
 
     if (!recipes) {
-      return [];
+      return { recipeComponents: [], recipeIngredients: [] };
     }
+
     const recipeComponents = recipes.map((recipe) => {
       const recipeData: RecipeData = {
         id: recipe.id,
@@ -34,9 +38,11 @@ export async function getRecipeComponents(id: string) {
 
       return recipeComponent;
     });
-    return recipeComponents;
+
+    return { recipeComponents, recipeIngredients };
   } catch (error) {
     console.error("Failed to fetch recipes:", error);
+    throw error; // Propagate the error
   }
 }
 
@@ -66,18 +72,27 @@ export async function getIngredientComponents(userId: string) {
 
 async function getRecipes(userId: string) {
   try {
-    // Get recipe book id for admin
     const recipeBooks = await getAllRecipeBookByUserId(userId);
+
     if (recipeBooks && recipeBooks.length > 0) {
       const recipeBookIds = recipeBooks.map((recipeId) => recipeId.id);
-      // get all recipes for admin
-      return await getAllRecipeByRecipeBookIds(recipeBookIds);
+      const recipes = await getAllRecipeByRecipeBookIds(recipeBookIds);
+
+      // Retrieve ingredients for each recipe concurrently
+      const recipeIngredients = await Promise.all(
+        recipes.map(async (recipe) => {
+          return await getRecipeIngredientAndRecipe(recipe.id);
+        })
+      );
+
+      return { recipes, recipeIngredients };
     }
-    return [];
+    return { recipes: [], recipeIngredients: [] };
   } catch (error) {
     console.error(
       "Error data-access/kitchen: getAllRecipeByAdminId(), error: ",
       error
     );
+    throw error; // Propagate the error
   }
 }

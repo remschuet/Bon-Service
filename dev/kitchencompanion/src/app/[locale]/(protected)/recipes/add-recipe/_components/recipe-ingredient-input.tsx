@@ -13,85 +13,33 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useUnits } from "@/hooks/useUnits";
-import { Recipe, RecipeComponent, RecipeData } from "@/lib/composite/recipe";
+import { Recipe, RecipeComponent } from "@/lib/composite/recipe";
 import { useRef, useState } from "react";
 import { Unit } from "@prisma/client";
 import { useRecipeComponents } from "@/hooks/useRecipeComponents";
 import { IngredientList } from "./ingredients/ingredient-list";
 import { Ingredient } from "@/lib/composite/ingredient";
 import { useNewRecipe } from "@/hooks/useNewRecipe";
+import {
+  IngredientComponentDTO,
+  RecipeDTO,
+  RecipeIngredientDTO,
+} from "@/lib/type";
 
 export function RecipeIngredientInput() {
-  type IngredientDTO = {
-    _id: string;
-    _name: string;
-    _unit: Unit;
-    _price: number;
-  };
-
-  type RecipeComponentDTO = {
-    id: string;
-    name: string;
-    quantity: number;
-    unit: Unit;
-  };
-
-  type RecipeDTO = {
-    _name: string;
-    _ingredients: RecipeComponentDTO[];
-    _recipeData: RecipeData;
-  };
-
   const { ctx } = useNewRecipe();
   const { units } = useUnits();
-  const { ingredientsJSON, recipesJSON } = useRecipeComponents();
+  const { ingredientsJSON, recipesJSON, recipeIngredientsJSON } =
+    useRecipeComponents();
 
-  const rawIngredients = JSON.parse(ingredientsJSON) as IngredientDTO[];
+  const ingredients = extractIngredients(ingredientsJSON);
+  const recipes = extractRecipes(
+    recipesJSON,
+    recipeIngredientsJSON,
+    ingredients
+  );
 
-  const ingredients = rawIngredients.map((ingredient) => {
-    return new Ingredient({
-      id: ingredient._id,
-      name: ingredient._name,
-      unit: ingredient._unit,
-      price: ingredient._price,
-    });
-  });
-
-  const rawRecipes = JSON.parse(recipesJSON) as RecipeDTO[];
-
-  const recipes = rawRecipes.map((recipe) => {
-    const importedRecipe = new Recipe();
-    let selectedIngredient;
-
-    importedRecipe.name = recipe._name;
-    importedRecipe.recipeData = recipe._recipeData;
-
-    recipe._ingredients.forEach((ingredient) => {
-      selectedIngredient = ingredients.find((ing) => ing.id === ingredient.id);
-
-      if (!selectedIngredient) {
-        selectedIngredient = recipes.find(
-          (recipe) => recipe.name === ingredient.name
-        );
-
-        if (!selectedIngredient) {
-          throw new Error("Ingredient not found");
-        }
-      }
-
-      const newIngredient: RecipeComponent = {
-        component: selectedIngredient,
-        id: ingredient.id,
-        name: selectedIngredient.name,
-        quantity: ingredient.quantity,
-        unit: ingredient.unit as Unit,
-      };
-
-      importedRecipe.add(newIngredient);
-    });
-
-    return importedRecipe;
-  });
+  console.log(recipes);
 
   const components = [...ingredients, ...recipes];
 
@@ -224,4 +172,89 @@ export function RecipeIngredientInput() {
       </div>
     </div>
   );
+}
+
+function extractIngredients(ingredientsJSON: string): Ingredient[] {
+  const rawIngredients = JSON.parse(
+    ingredientsJSON
+  ) as IngredientComponentDTO[];
+
+  const ingredients = rawIngredients.map((ingredient) => {
+    return new Ingredient({
+      id: ingredient._id,
+      name: ingredient._name,
+      unit: ingredient._unit,
+      price: ingredient._price,
+    });
+  });
+
+  return ingredients;
+}
+
+function extractRecipes(
+  recipesJSON: string,
+  recipeIngredientJSON: string,
+  ingredients: Ingredient[]
+): Recipe[] {
+  const rawRecipes = JSON.parse(recipesJSON) as RecipeDTO[];
+  const rawIngredients = JSON.parse(recipeIngredientJSON);
+
+  // Create a map of ingredients by their ID for quick lookup
+  const ingredientMap: Map<string, Ingredient> = new Map();
+  ingredients.forEach((ingredient) => {
+    ingredientMap.set(ingredient.id, ingredient);
+  });
+
+  // Create a map of recipes to be able to reference them by id when reconstructing the recipe components
+  const recipesMap: Map<string, Recipe> = new Map();
+  rawRecipes.forEach((recipe) => {
+    const importedRecipe = new Recipe();
+    importedRecipe.name = recipe._name;
+    importedRecipe.recipeData = recipe._recipeData;
+    recipesMap.set(recipe._recipeData.id!, importedRecipe);
+  });
+
+  // Reconstruct the recipe components from the raw data and the maps
+  recipesMap.forEach((importedRecipe, id) => {
+    const index = Array.from(recipesMap.keys()).findIndex((key) => key === id);
+
+    const recipeIngredients = rawIngredients[index].map(
+      (ingredient: RecipeIngredientDTO) => ingredient
+    );
+
+    let selectedIngredient: Ingredient | Recipe;
+
+    recipeIngredients.forEach((ingredient: RecipeIngredientDTO) => {
+      if (ingredient.ingredientId) {
+        selectedIngredient = ingredientMap.get(
+          ingredient.ingredientId as string
+        )!;
+      } else if (ingredient.recipeIngredientId) {
+        selectedIngredient = recipesMap.get(
+          ingredient.recipeIngredientId as string
+        )!;
+      }
+
+      if (!selectedIngredient) {
+        throw new Error(
+          `Ingredient not found for id: ${ingredient.ingredientId}`
+        );
+      }
+
+      const newIngredient: RecipeComponent = {
+        component: selectedIngredient,
+        id:
+          selectedIngredient instanceof Ingredient
+            ? (ingredient.ingredientId as string)
+            : (ingredient.recipeIngredientId as string),
+        name: selectedIngredient.name,
+        quantity: ingredient.quantity,
+        unit: ingredient.unit as Unit,
+      };
+
+      importedRecipe.add(newIngredient);
+    });
+  });
+
+  return Array.from(recipesMap.values());
 }
