@@ -61,13 +61,13 @@ export async function createRecipe(
         },
       }),
 
-      ..._recipes.map((recipe) => {
+      ..._recipes.map((currRecipe) => {
         return db.recipeIngredient.create({
           data: {
             recipeId: recipe.id,
-            recipeIngredientId: recipe.id,
-            quantity: recipe.quantity,
-            unit: recipe.unit,
+            recipeIngredientId: currRecipe.id,
+            quantity: currRecipe.quantity,
+            unit: currRecipe.unit,
           },
         });
       }),
