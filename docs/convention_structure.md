@@ -1,65 +1,51 @@
-# Convention Git
-
-## Convention de la convention
-`*`
-Represente n importe quoi d ecrit
+# Convention structure des dossiers du projet
 
 ## Directory Name NEXT
+
 **[ * ]**<br>
-A new feature
+Route dinamique
 
-**( * )**<br>
-A new feature
+**( \* )**<br>
+Regroupement de routes qui n'affecte par le lien de la route principale
 
-**_***<br>
-A new feature
+**\_\***<br>
+Les enfants sont exclus de la route principale. Impossible de forcer la route à aller là-bas.
 
 ## Directory Name
 
-**_action**<br>
-A new feature
+**\_action**<br>
+Possède les fichiers typescript des actions
 
-**_components**<br>
-A new feature
+**\_components**<br>
+Possède les fichiers typescript des components
 
 **components**<br>
-A new feature
+Possède les fichiers typescript des components global au projet
 
-**_test**<br>
-A new feature
+**\_test**<br>
+Possède les fichiers typescript des tests
 
 **db**<br>
-A new feature
+Possède la structure des DAO et des fichiers de connexions aux bases de données S3 et PostgreSQL
 
 **data-access**<br>
-A new feature
+Possède la structure des DAO
 
 **lib**<br>
-A new feature
-
-**test**<br>
-A new feature
+Possède la structure des librairies interne au projet développé par nous-mêmes
 
 ## File Name NEXT
+
 **page**<br>
-A new feature
+Le point d'entrée inital du visuel au sein de la route courante.
 
 **midleware**<br>
-A new feature
+Gérer les opérations pré-route comme authentification, validation, loggin.
 
 ## File Name
 
 **.config.**<br>
-A new feature
+Est un fichier de configuration qui définit les paramètres, les options et les comportements pour une application ou système.
 
-
-**page**<br>
-A new feature
-
-
-**layout**<br>
-A new feature
-
-
-**layout**<br>
-A new feature
+**test**<br>
+Est un fichier de test qui sera exécuté par Jest
