@@ -1,7 +1,7 @@
 import { text, image, barcodes } from "@pdfme/schemas";
 import { generate } from "@pdfme/generator";
 
-(async () => {
+export const generatePDF = async () => {
   const template = {
     schemas: [
       {
@@ -38,4 +38,4 @@ import { generate } from "@pdfme/generator";
   // Browser
   const blob = new Blob([pdf.buffer], { type: "application/pdf" });
   window.open(URL.createObjectURL(blob));
-})();
+};

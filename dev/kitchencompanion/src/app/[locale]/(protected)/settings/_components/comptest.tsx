@@ -7,9 +7,14 @@ import {
   updateProfilUser,
 } from "../_action/settings-action";
 import { useSession } from "@/hooks/useSession";
+import { createPdfPDF } from "../_export/pdf_test";
 
 export function Test() {
-  const { id, userType, isPremium } = useSession();
+  const { id, email, name, userType, isPremium } = useSession();
+
+  async function createPdf(formData: FormData) {
+    createPdfPDF();
+  }
 
   async function updateFacturation(formData: FormData) {
     formData.append("userId", id);
@@ -78,6 +83,9 @@ export function Test() {
   }
   return (
     <>
+      <form action={createPdf}>
+        <Button type="submit">Create PDF</Button>
+      </form>{" "}
       {facturactionContent}
       {adminModeContent}
     </>
