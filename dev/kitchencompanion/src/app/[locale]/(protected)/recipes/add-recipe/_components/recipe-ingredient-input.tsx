@@ -39,8 +39,6 @@ export function RecipeIngredientInput() {
     ingredients
   );
 
-  console.log(recipes);
-
   const components = [...ingredients, ...recipes];
 
   const [selectedIngredient, setSelectedIngredient] = useState<
