@@ -1,39 +1,35 @@
-import { Template, BLANK_PDF } from "@pdfme/common";
-import { generate } from "@pdfme/generator";
-import { Contact } from "@prisma/client";
 import { PdfGenerator } from "./PdfClass";
 import { template } from "./templateTest";
 import { contacts } from "./pdfContact";
+import { PoliceSize } from "./enumPdf";
 
-const inputs: { [key: string]: string }[] = [{ a: "a1", b: "b1", c: "c1" }];
-
-async function updateTemplate() {
-  let pos_x = 30;
-
-  contacts.forEach((contact) => {
-    pos_x += 10;
-    console.log(contact.name);
-
-    // Pour ajouter une nouvelle colonne 'd', par exemple
-    const newColumn = {
-      [contact.id]: {
-        type: "text",
-        position: { x: 30, y: pos_x },
-        width: 10,
-        height: 10,
-      },
-    };
-
-    // Insérer la nouvelle colonne dans le schéma existant
-    template.schemas[0] = { ...template.schemas[0], ...newColumn };
-    inputs[0][contact.id] = contact.name;
-  });
-
-  console.log("fin generate");
+interface Data {
+  textStyle: PoliceSize;
+  key: string;
+  content: string;
 }
+[];
 
 export async function createPdfPDF() {
   console.log("Creating PDF");
-  const pdf = new PdfGenerator(contacts);
-  pdf.createPdfPDF();
+  const pdf = new PdfGenerator();
+
+  let datacontact: Data[] = [];
+
+  /*Discussion avec Julien, cas si je json pas contact[key] impossible a cause de typescript et du potentiel null*/
+  const jsonContact = JSON.stringify(contacts, null, 2);
+  const contactsData = JSON.parse(jsonContact);
+
+  contactsData.forEach((contact: any) => {
+    for (const key in contact) {
+      datacontact.push({
+        textStyle: PoliceSize.normal,
+        key: key,
+        content: contact[key],
+      });
+    }
+  });
+  const jsonData = JSON.stringify(datacontact, null, 2);
+
+  pdf.createPdfPDF(jsonData);
 }

@@ -1,5 +1,9 @@
 import { BLANK_PDF, Template } from "@pdfme/common";
 
+export const inputs: { [key: string]: string }[] = [
+  { a: "a1", b: "b1", c: "c1" },
+];
+
 export const template: Template = {
   basePdf: BLANK_PDF,
   schemas: [
