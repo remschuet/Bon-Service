@@ -109,7 +109,6 @@ export class Recipe extends Component {
         (rawCost / this._recipeData.yield).toFixed(2)
       );
 
-      console.log(this._recipeData.cost);
       return this._recipeData.cost;
     }
 
@@ -126,7 +125,7 @@ export class Recipe extends Component {
       ) {
         const conversionFactor = unitConversions[this._recipeData.unit][unit];
         const unitCost = rawCost / this._recipeData.yield / conversionFactor;
-        console.log(unitCost, quantity);
+
         return Number((unitCost * quantity).toFixed(2));
       } else {
         throw new Error(
@@ -138,7 +137,7 @@ export class Recipe extends Component {
     return Number(((rawCost / this._recipeData.yield) * quantity).toFixed(2));
   }
 
-  public export(): FormData {
+  public convertToFormData(): FormData {
     const formData = new FormData();
 
     formData.append("name", this._name);

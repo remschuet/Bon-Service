@@ -6,20 +6,20 @@ interface UnitConversion {
 
 export const unitConversions: UnitConversion = {
   KG: {
-    G: 1000,
+    L: 1,
     LB: 2.2046,
     OZ: 35.274,
+    G: 1000,
     ML: 1000,
-    L: 1,
   },
   G: {
-    KG: 0.001,
+    ML: 1,
+    TSP: 0.20289,
+    TBSP: 0.0676,
     LB: 0.0022,
     OZ: 0.0353,
-    ML: 1,
+    KG: 0.001,
     L: 0.001,
-    TBSP: 0.0676,
-    TSP: 0.20289,
   },
   LB: {
     KG: 0.4536,
