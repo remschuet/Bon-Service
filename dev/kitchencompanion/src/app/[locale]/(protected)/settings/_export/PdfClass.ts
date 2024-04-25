@@ -12,7 +12,7 @@ export class PdfGenerator {
 
   constructor(
     template: Template = { basePdf: BLANK_PDF, schemas: [{}] },
-    inputs: InputData[] = [{ a: "a1", b: "b1", c: "c1" }]
+    inputs: InputData[] = [{}]
   ) {
     this.template = template;
     this.inputs = inputs;
@@ -21,14 +21,18 @@ export class PdfGenerator {
   private async updateTemplate(datas: string) {
     const contactsData = JSON.parse(datas);
     contactsData.forEach((data: any) => {
-      this.posY += 10;
-      let uid = this.getCuid();
+      this.posY += 20;
 
+      let uid = this.getCuid();
+      console.log(data.content.length);
+      const linesCount = Math.ceil((data.content.length * 50) / 25 / 50);
+
+      console.log(linesCount);
       const newColumn = {
         [uid]: {
           type: "text",
           position: { x: this.posX, y: this.posY },
-          width: data.content.length * 3,
+          width: 50,
           height: 10,
           fontSize: PoliceSize.normal,
         },
@@ -36,6 +40,25 @@ export class PdfGenerator {
       this.template.schemas[0] = { ...this.template.schemas[0], ...newColumn };
       this.inputs[0][uid] = data.content;
     });
+  }
+
+  public calculateLineBreaks(
+    text: string,
+    width: number,
+    fontSize: number
+  ): number {
+    const charSpacing = 0.7;
+
+    // Calcul de la longueur totale du texte en pixels
+    const textLength = text.length * charSpacing * (fontSize / 10);
+
+    // Calcul du nombre de caractères par ligne
+    const charsPerLine = Math.floor(width / (charSpacing * fontSize));
+
+    // Calcul du nombre approximatif de lignes nécessaires
+    const lines = Math.ceil(textLength / (charsPerLine * fontSize));
+
+    return lines;
   }
 
   public getCuid(): number {
