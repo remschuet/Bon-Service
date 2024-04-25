@@ -2,6 +2,11 @@ import { PdfGenerator } from "./PdfClass";
 import { template } from "./templateTest";
 import { contacts } from "./pdfContact";
 import { PoliceSize } from "./enumPdf";
+import { templateTable } from "./tableSchema";
+import { BLANK_PDF, Template } from "@pdfme/common";
+import { Designer } from "@pdfme/ui";
+import { generate } from "@pdfme/generator";
+import { tableBeta } from "@pdfme/schemas";
 
 interface Data {
   textStyle: PoliceSize;
@@ -12,7 +17,7 @@ interface Data {
 
 export async function createPdfPDF() {
   console.log("Creating PDF");
-  const pdf = new PdfGenerator();
+  const pdf = new PdfGenerator(templateTable);
 
   let datacontact: Data[] = [];
 
@@ -33,5 +38,7 @@ export async function createPdfPDF() {
   });
   const jsonData = JSON.stringify(datacontact, null, 2);
 
-  pdf.createPdfPDF(jsonData);
+  // pdf.createPdfPDF(jsonData);
+  pdf.createTable(3, 5);
+  pdf.generatedPdf();
 }

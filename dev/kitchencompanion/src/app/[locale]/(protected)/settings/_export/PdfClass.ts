@@ -18,6 +18,109 @@ export class PdfGenerator {
     this.inputs = inputs;
   }
 
+  /*
+  public async createTable(
+    nbColumns: number,
+    nbRow: number,
+    spaceX: number,
+    spaceY: number
+  ) {
+    nbRow = 5;
+    for (let row = 0; row < nbRow; row++) {
+      console.log(row);
+      let uid = this.getCuid();
+      this.posY += spaceY + uid;
+      // ligne
+      const newColumn = {
+        [uid]: {
+          type: "text",
+          position: { x: this.posX, y: this.posY },
+          width: 400,
+          height: 10,
+          fontSize: PoliceSize.normal,
+        },
+      };
+      this.template.schemas[0] = {
+        ...this.template.schemas[0],
+        ...newColumn,
+      };
+      this.inputs[0][uid] = "_".repeat(30);
+    }
+    return;
+    // colonne
+    this.posY += 3;
+    for (let col = 0; col < nbColumns; col++) {
+      this.posX += spaceX;
+      for (let y = 0; y < 50; y++) {
+        let uid = this.getCuid();
+        this.posY += 3;
+        const newColumn = {
+          [uid]: {
+            type: "text",
+            position: { x: this.posX, y: this.posY },
+            width: 400,
+            height: 10,
+            fontSize: PoliceSize.normal,
+          },
+        };
+        this.template.schemas[0] = {
+          ...this.template.schemas[0],
+          ...newColumn,
+        };
+        this.inputs[0][uid] = "|";
+      }
+    }
+  }
+*/
+  public createTable(nbRow: number, nbCol: number) {
+    let uid = this.getCuid();
+    this.posY += 20;
+
+    for (let y = 0; y < nbRow; y++) {
+      let uid = this.getCuid();
+      this.posY += 20;
+
+      const newColumn = {
+        [uid]: {
+          type: "text",
+          position: { x: this.posX, y: this.posY },
+          width: 400,
+          height: 10,
+          fontSize: PoliceSize.normal,
+        },
+      };
+      this.template.schemas[0] = {
+        ...this.template.schemas[0],
+        ...newColumn,
+      };
+      this.inputs[0][uid] = "_".repeat(30);
+    }
+
+    for (let col = 0; col < nbCol; col++) {
+      this.posX += 20;
+      this.posY = 20;
+      for (let y = 0; y < 20; y++) {
+        let uid = this.getCuid();
+        this.posY += 3.5;
+
+        const newColumn = {
+          [uid]: {
+            type: "text",
+            position: { x: this.posX, y: this.posY },
+            width: 400,
+            height: 10,
+            fontSize: PoliceSize.normal,
+          },
+        };
+        this.template.schemas[0] = {
+          ...this.template.schemas[0],
+          ...newColumn,
+        };
+        this.inputs[0][uid] = "|";
+      }
+    }
+  }
+
   private async updateTemplate(datas: string) {
     const contactsData = JSON.parse(datas);
     contactsData.forEach((data: any) => {
@@ -73,6 +176,15 @@ export class PdfGenerator {
     generate({ template: this.template, inputs: this.inputs }).then((pdf) => {
       console.log(pdf);
 
+      const blob = new Blob([pdf.buffer], { type: "application/pdf" });
+      window.open(URL.createObjectURL(blob));
+    });
+  }
+
+  public async generatedPdf() {
+    console.log("generated");
+    generate({ template: this.template, inputs: this.inputs }).then((pdf) => {
+      console.log(pdf);
       const blob = new Blob([pdf.buffer], { type: "application/pdf" });
       window.open(URL.createObjectURL(blob));
     });
