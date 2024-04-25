@@ -35,8 +35,6 @@ export const {
       // Si l'utilisateur n'a pas vérifier son adresse courriel, on ne le connecte pas
       if (!existingUser?.emailVerified) return false;
 
-      // TODO: 2FA
-
       return true;
     },
     async jwt({ token }) {

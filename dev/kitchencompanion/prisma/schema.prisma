@@ -77,13 +77,13 @@ model User {
   kitchens         Kitchen[]
   kitchenUsers     KitchenUser[]
   recipeBooks      RecipeBook[]
-  recipeCategories RecipeCategory[]
-  structMenus      StructMenu[]
+  dishsTypes       DishsType[]
   checkTemps       CheckTemp[]
   suppliers        Supplier[]
   notifications    Notification[]
   ingredients      Ingredient[]
   contacts         Contact[]
+  menus            Menu[]
 
   /// For NextAuth
   accounts Account[]
@@ -101,9 +101,9 @@ model Kitchen {
 
   kitchenRoles    KitchenRole[]
   kitchenUsers    KitchenUser[]
-  menus           Menu[]
   checkTemps      CheckTemp[]
   contactKitchens ContactKitchen[]
+  menuKitchens    MenuKitchen[]
 
   @@unique([userId, name])
 }
@@ -148,72 +148,80 @@ model SupplierSupported {
 }
 
 model Ingredient {
-  id           String      @id @default(cuid())
+  id           String @id @default(cuid())
   name         String
   price        Float
-  unit         UnitMeasure
+  unit         Unit
   category     String
   origin       String
   supplierName String
 
   // supplier    Supplier    @relation(fields: [supplierId], references: [id])
   // supplierId  String
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
+  user              User               @relation(fields: [userId], references: [id])
+  userId            String
+  recipeIngredients RecipeIngredient[]
 
   @@unique([name, supplierName, userId])
 }
 
 model RecipeBook {
-  id     String @id @default(cuid())
-  name   String
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
+  id          String @id @default(cuid())
+  name        String
+  description String
+  user        User   @relation(fields: [userId], references: [id])
+  userId      String
 
   recipes Recipe[]
 
   @@unique([name, userId])
 }
 
-model RecipeCategory {
-  id String @id @default(cuid())
-
-  user     User   @relation(fields: [userId], references: [id])
-  userId   String
-  category String
-
-  recipes Recipe[]
-
-  @@unique([userId, category])
-}
-
 model Recipe {
   id            String     @id @default(cuid())
-  versionNumber Int?       @default(0)
+  versionNumber String     @default("1.0.0")
   name          String
   recipeBook    RecipeBook @relation(fields: [recipeBookId], references: [id])
   recipeBookId  String
 
-  recipeCategory   RecipeCategory @relation(fields: [recipeCategoryId], references: [id])
-  recipeCategoryId String
+  recipeState     RecipeState @default(RECIPE)
+  preparationTime Int
+  cookingTime     Int
+  description     String
 
-  recipeState     RecipeState? @default(RECIPE)
-  preparationTime Int?
-  cookingTime     Int?
+  steps String
 
-  steps       Json
-  ingredients Json
+  cost  Float
+  yield Float
+  unit  Unit
 
-  yield       Int
-  unitMeasure UnitMeasure
-
-  objInvestment Float? @default(20)
+  objInvestment Float @default(20)
 
   createdAt DateTime? @default(now())
   updatedAt DateTime? @updatedAt
 
-  recipeAllergens RecipeAllergen[]
-  recipePhotos    RecipePhoto[]
+  recipeAllergens  RecipeAllergen[]
+  recipePhotos     RecipePhoto[]
+  recipe           RecipeIngredient[] @relation("recipe")
+  recipeIngredient RecipeIngredient[] @relation("ingredient")
+  menuRecipes      MenuRecipe[]
+}
+
+model RecipeIngredient {
+  id       Int    @id @default(autoincrement())
+  recipe   Recipe @relation("recipe", fields: [recipeId], references: [id])
+  recipeId String
+
+  ingredient   Ingredient? @relation(fields: [ingredientId], references: [id])
+  ingredientId String?
+
+  recipeIngredient   Recipe? @relation("ingredient", fields: [recipeIngredientId], references: [id])
+  recipeIngredientId String?
+
+  quantity Float
+  unit     Unit
+
+  @@unique([recipeId, ingredientId, recipeIngredientId])
 }
 
 model RecipeAllergen {
@@ -237,22 +245,57 @@ model RecipePhoto {
 model Menu {
   id String @id @default(cuid())
 
-  name      String  @unique
+  name    String @unique
+  user    User   @relation(fields: [userId], references: [id])
+  userId  String
+  description String?
+  cost Float
+
+  menuKitchens MenuKitchen[]
+  menuRecipes  MenuRecipe[]
+
+  @@unique([name, userId])
+}
+
+model MenuRecipe {
+  id Int @id @default(autoincrement())
+
+  menu   Menu   @relation(fields: [menuId], references: [id])
+  menuId String
+
+  recipe   Recipe @relation(fields: [recipeId], references: [id])
+  recipeId String
+
+  type String
+  order Int
+
+  @@unique([recipeId, menuId])
+}
+
+model MenuKitchen {
+  id        String  @id @default(cuid())
   kitchen   Kitchen @relation(fields: [kitchenId], references: [id])
   kitchenId String
 
-  isPublic Boolean @default(false)
-  dishs    Json?
+  menu   Menu   @relation(fields: [menuId], references: [id])
+  menuId String
 }
 
-model StructMenu {
-  id String @id @default(cuid())
+model DishsType {
+  id        String @id @default(cuid())
 
-  user     User   @relation(fields: [userId], references: [id])
-  userId   String
-  category String
+  user      User   @relation(fields: [userId], references: [id])
+  userId    String
+  type      String
 
-  @@unique([userId, category])
+  @@unique([userId, type])
+}
+
+model DishsTypeSupported {
+  id        String @id @default(cuid())
+  type      String
+
+  @@unique([type])
 }
 
 model Contact {
@@ -310,7 +353,7 @@ enum NotifTypes {
   GENERAL_UPDATE
 }
 
-enum UnitMeasure {
+enum Unit {
   G
   ML
   KG

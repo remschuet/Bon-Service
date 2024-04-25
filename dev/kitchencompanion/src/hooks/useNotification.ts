@@ -1,7 +1,7 @@
 import { Notification } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { useSession } from "@/hooks/useSession";
-import { getAllNotifications } from "@/app/[locale]/(protected)/market/_action/process-receipt";
+import { getAllNotifications } from "@/app/[locale]/(protected)/market/_action/process-receipt-action";
 
 export function useNotification() {
   const { id } = useSession();

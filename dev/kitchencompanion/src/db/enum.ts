@@ -1,5 +1,5 @@
 import {
-  UnitMeasure,
+  Unit,
   NotifTypes,
   Allergen,
   UserTypes,
@@ -20,9 +20,9 @@ function getAllEnumValues<T extends EnumType>(enumObject: T): string[] {
 /**
  * Return an array containing the values of enum UnitMeasure.
  */
-export async function getUnitMeasure() {
+export async function getUnitEnum() {
   try {
-    return getAllEnumValues(UnitMeasure);
+    return getAllEnumValues(Unit);
   } catch (error) {
     console.error("Error data-access/enum: getUnitMeasure(), error: ", error);
     throw error;

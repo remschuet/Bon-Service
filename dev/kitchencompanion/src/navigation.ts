@@ -68,6 +68,16 @@ export const pathnames = {
     fr: "/recettes",
   },
 
+  "/recipes/books/[recipeBook]": {
+    en: "/recipes/books/[recipeBook]",
+    fr: "/recettes/livres/[recipeBook]",
+  },
+
+  "/recipes/add-recipe": {
+    en: "/recipes/new%20Recipe",
+    fr: "/recettes/nouvelle%20Recette",
+  },
+
   "/contacts": "/contacts",
   // If locales use different paths, you can
   // specify each external path per locale.

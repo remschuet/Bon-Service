@@ -1,6 +1,8 @@
-import { RecipeBook, Allergen, Recipe } from "@prisma/client";
+import { RecipeBook, Allergen, Recipe, Ingredient } from "@prisma/client";
 import { db } from "@/db/prisma-db";
 import { Prisma } from "@prisma/client";
+import { RecipeComponent } from "@/lib/composite/recipe";
+import { IngredientDTO, IngredientType, RecipeIngredientDTO } from "@/lib/type";
 
 ////////////////////////////////
 // TABLES
@@ -11,33 +13,76 @@ import { Prisma } from "@prisma/client";
 ////////////////////////////////
 
 /**
- * Create a Recipe.
+ * Create a Recipe with the ingredient (primitive and recipe).
+ *
+ * TODO: ne pas passer le id
+ *
  * @param recipe - The recipe object containing the recipes's details.
+ * @param ingredients - The DTO object representing ingredient or recipe.
  * @returns A promise that resolves to the created recipe.
  */
-export async function createRecipe(recipe: Recipe) {
-  try {
-    let steps = recipe.steps as Prisma.JsonArray;
-    let ingredients = recipe.ingredients as Prisma.JsonArray;
+export async function createRecipe(
+  recipe: Recipe,
+  ingredients: IngredientDTO[]
+) {
+  let _recipes: IngredientDTO[] = [];
+  let _ingredients: IngredientDTO[] = [];
 
-    return await db.recipe.create({
-      data: {
-        versionNumber: recipe.versionNumber,
-        name: recipe.name,
-        recipeBookId: recipe.recipeBookId,
-        recipeCategoryId: recipe.recipeCategoryId,
-        recipeState: recipe.recipeState,
-        preparationTime: recipe.preparationTime,
-        cookingTime: recipe.cookingTime,
-        steps: steps,
-        ingredients: ingredients,
-        yield: recipe.yield,
-        unitMeasure: recipe.unitMeasure,
-        objInvestment: recipe.objInvestment,
-        createdAt: recipe.createdAt,
-        updatedAt: recipe.updatedAt,
-      },
-    });
+  // For ingredients
+  for (let ingredient of ingredients) {
+    if (ingredient.type === IngredientType.RECIPE) {
+      _recipes.push(ingredient);
+    } else if (ingredient.type === IngredientType.INGREDIENT) {
+      _ingredients.push(ingredient);
+    } else {
+      throw new Error("Invalid ingredient type");
+    }
+  }
+
+  try {
+    await db.$transaction([
+      db.recipe.create({
+        data: {
+          id: recipe.id,
+          versionNumber: recipe.versionNumber,
+          name: recipe.name,
+          recipeBookId: recipe.recipeBookId,
+          recipeState: recipe.recipeState,
+          preparationTime: recipe.preparationTime,
+          cookingTime: recipe.cookingTime,
+          cost: recipe.cost,
+          description: recipe.description,
+          steps: recipe.steps,
+          yield: recipe.yield,
+          unit: recipe.unit,
+          objInvestment: recipe.objInvestment,
+          createdAt: recipe.createdAt,
+          updatedAt: recipe.updatedAt,
+        },
+      }),
+
+      ..._recipes.map((currRecipe) => {
+        return db.recipeIngredient.create({
+          data: {
+            recipeId: recipe.id,
+            recipeIngredientId: currRecipe.id,
+            quantity: currRecipe.quantity,
+            unit: currRecipe.unit,
+          },
+        });
+      }),
+
+      ..._ingredients.map((ingredient) => {
+        return db.recipeIngredient.create({
+          data: {
+            recipeId: recipe.id,
+            ingredientId: ingredient.id,
+            quantity: ingredient.quantity,
+            unit: ingredient.unit,
+          },
+        });
+      }),
+    ]);
   } catch (error) {
     console.error("Error data-access/recipe: createRecipe(), error: ", error);
     throw error;
@@ -92,48 +137,6 @@ export async function linkRecipeAllergen(recipe: Recipe, allergen: Allergen) {
 }
 
 /**
- * Create RecipeCategory
- * @param userId - The id of the user.
- * @param category - An string describing the category
- * @returns A promise that resolves to the created recipeCategory.
- */
-export async function createRecipeCategory(userId: string, category: string) {
-  try {
-    return await db.recipeCategory.create({
-      data: {
-        userId: userId,
-        category: category,
-      },
-    });
-  } catch (error) {
-    console.error(
-      "Error data-access/recipe: createRecipeCategory(), error: ",
-      error
-    );
-    throw error;
-  }
-}
-
-/**
- * Get all the categories for an user.
- * @param userId - the user id.
- * @returns An array of recipe categories.
- */
-export async function getRecipeCategoriesByUserId(userId: string) {
-  try {
-    return await db.recipeCategory.findMany({
-      where: { userId: userId },
-    });
-  } catch (error) {
-    console.error(
-      "Error data-access/recipe: getRecipeCategoriesByUserId(), error: ",
-      error
-    );
-    throw error;
-  }
-}
-
-/**
  * link recipe to photo.
  * @param recipe - The recipe object containing the recipes's details.
  * @param photo - The Amazon S3 key for the photo
@@ -150,6 +153,87 @@ export async function linkRecipePhoto(recipe: Recipe, photo: string) {
   } catch (error) {
     console.error(
       "Error data-access/recipe: linkRecipePhoto(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
+/**
+ * Get all the ingredientsId and recipesId in a specific recipeId.
+ *
+ * @param recipeId - The ID of the recipe to search for ingredients and recipes.
+ * @returns two arrays: 'ingredients' and 'recipeIngredients'.
+ * @return example: ["1", "2", "3"] ["1", "2"]
+ */
+export async function getRecipeIngredientAndRecipe(recipeId: string) {
+  try {
+    // Get the ingredients
+    const ingredients: RecipeIngredientDTO[] =
+      await db.recipeIngredient.findMany({
+        where: { recipeId: recipeId },
+      });
+
+    return ingredients;
+  } catch (error) {
+    console.error(
+      "Error data-access/recipe: getRecipeIngredientRecipe(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
+/**
+ * Get all recipes that contain the specified ingredient.
+ *
+ * @param ingredientId - The ID of the ingredient to search for in recipes.
+ * @returns An array of recipe IDs where the specified ingredient is used.
+ * @returns example: ["3", "4", "5", "6"]
+ */
+export async function getAllRecipeFromIngredient(ingredientId: String) {
+  try {
+    // Prisma.StringFilter to remove possibility of null values
+    const recipeIngredients = await db.recipeIngredient.findMany({
+      where: { ingredientId: { equals: ingredientId } as Prisma.StringFilter },
+      select: { recipeId: true },
+    });
+    const recipeIds = recipeIngredients.map((ri) => ri.recipeId);
+    return recipeIds;
+  } catch (error) {
+    console.error(
+      "Error data-access/recipe: getAllRecipeFromIngredient(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
+/**
+ * Get all recipes that contain the specified recipeIngredient.
+ *
+ * @param RecipeIngredientId - The ID of the recipeIngredient to search for in recipes.
+ * @returns An array of recipe IDs where the specified ingredient is used.
+ * @returns example: ["3", "4", "5", "6"]
+ */
+export async function getAllRecipeFromRecipeIngredient(
+  RecipeIngredientId: String
+) {
+  try {
+    // Prisma.StringFilter to remove possibility of null values
+    const recipeIngredients = await db.recipeIngredient.findMany({
+      where: {
+        recipeIngredientId: {
+          equals: RecipeIngredientId,
+        } as Prisma.StringFilter,
+      },
+      select: { recipeId: true },
+    });
+    const recipeIds = recipeIngredients.map((ri) => ri.recipeId);
+    return recipeIds;
+  } catch (error) {
+    console.error(
+      "Error data-access/recipe: getAllRecipeFromIngredient(), error: ",
       error
     );
     throw error;

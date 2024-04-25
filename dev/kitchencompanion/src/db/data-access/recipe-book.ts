@@ -1,6 +1,5 @@
 import { RecipeBook } from "@prisma/client";
 import { db } from "@/db/prisma-db";
-import { Prisma } from "@prisma/client";
 
 ////////////////////////////////
 // TABLES
@@ -17,6 +16,7 @@ export async function createRecipeBook(recipeBook: RecipeBook) {
     return await db.recipeBook.create({
       data: {
         name: recipeBook.name,
+        description: recipeBook.description,
         userId: recipeBook.userId,
       },
     });
@@ -65,6 +65,26 @@ export async function deleteRecipeBookByUserIdAndName(
   } catch (error) {
     console.error(
       "Error data-access/recipe: deleteRecipeBookByUserIdAndName(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
+/**
+ * Deletes all RecipeBooks associated with the given userId.
+ * 
+ * @param userId - The userId of the RecipeBooks to be deleted.
+ * @returns A promise that resolves to the deleted RecipeBooks.
+ */
+export async function deleteAllRecipeBook(userId: string){
+  try {
+    return await db.recipeBook.deleteMany({
+      where: { userId },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/recipe: deleteAllRecipeBook(), error: ",
       error
     );
     throw error;

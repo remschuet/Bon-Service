@@ -3,6 +3,10 @@
 import { getAllContact } from "@/db/data-access/contact";
 import { getAllIngredient } from "@/db/data-access/ingredient";
 import { getAllKitchenByAdminId } from "@/db/data-access/kitchen";
+import { getAllRecipeBookByUserId } from "@/db/data-access/recipe-book";
+import { getAllRecipeByAdminId } from "@/db/data-access/actions/action";
+import { getAllRecipeByRecipeBookIds } from "@/db/data-access/recipe";
+import { Recipe } from "@prisma/client";
 
 /**
  * Retrieves all kitchens associated with a specific user ID.
@@ -15,6 +19,15 @@ export async function getAllKitchensById(userId: string) {
   try {
     const kitchens = await getAllKitchenByAdminId(userId);
     return kitchens;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getAllRecipeBooksById(userId: string) {
+  try {
+    const recipeBooks = await getAllRecipeBookByUserId(userId);
+    return recipeBooks;
   } catch (error) {
     throw error;
   }

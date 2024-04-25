@@ -2,9 +2,12 @@
 
 import {
   createKitchen,
+  getAllKitchenUserById,
   getKitchenByAdminAndName,
+  linkKitchenUserById,
 } from "@/db/data-access/kitchen";
-import { Kitchen } from "@prisma/client";
+import { createUser, getUser } from "@/db/data-access/user";
+import { Kitchen, User } from "@prisma/client";
 
 export async function addKitchen(kitchen: Kitchen) {
   try {
@@ -29,6 +32,30 @@ export async function addKitchen(kitchen: Kitchen) {
   } catch (error) {
     return {
       error: "Une erreur interne est survenue, impossible de créer la cuisine.",
+      status: 500,
+    };
+  }
+}
+
+
+// voir membre
+export async function getContactForKitchen() {}
+
+/**
+ * Get all contacts for a specific kitchen.
+ *
+ * @param kitchenId - The unique identifier of the kitchen.
+ * @returns - An array of User objects representing the kitchen's contacts or an error
+ */
+export async function getMembersForKitchen(kitchenId: string) {
+  try {
+    const userList = getAllKitchenUserById(kitchenId);
+    // PAS ENCORE TESTÉ
+    return userList;
+  } catch (error) {
+    return {
+      error:
+        "Une erreur interne est survenue, impossible de de récupérer les membres.",
       status: 500,
     };
   }

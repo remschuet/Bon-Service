@@ -1,4 +1,4 @@
-import processReceipt from "@/app/[locale]/(protected)/market/_action/process-receipt";
+import processReceipt from "@/app/[locale]/(protected)/market/_action/process-receipt-action";
 import { DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,29 +14,35 @@ import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { useSelectedSupplier } from "@/hooks/useSelectedSupplier";
 import { useSession } from "@/hooks/useSession";
+import { useTransition } from "react";
+import { PulseLoader } from "react-spinners";
 
 export function AddReceiptForm() {
   const { isOther, setSupplier } = useSelectedSupplier();
   const { id } = useSession();
   const { toast } = useToast();
+  const [isPending, startTransition] = useTransition();
 
   function handleReceipt(formData: FormData) {
     formData.append("userId", id);
-    try {
-      processReceipt(formData);
 
-      toast({
-        title: "Reçu téléversé",
-        description: "Votre reçu a été téléversé avec succès.",
-        action: (
-          <ToastAction altText='Process the receipt'>
-            Vérifier les données
-          </ToastAction>
-        ),
+    startTransition(() => {
+      processReceipt(formData).then((result) => {
+        if (result.error) {
+          toast({
+            variant: "destructive",
+            title: "Erreur",
+            description: result.error,
+          });
+          return;
+        }
+        toast({
+          variant: "success",
+          title: "Ingrédients ajoutés",
+          description: result.success,
+        });
       });
-    } catch (error) {
-      console.error(error);
-    }
+    });
   }
 
   return (
@@ -93,7 +99,11 @@ export function AddReceiptForm() {
             Quitter
           </Button>
         </DialogClose>
-        <Button type='submit'>Téléverser</Button>
+        <Button
+          type='submit'
+          disabled={isPending}>
+          {isPending ? <PulseLoader size={5} /> : "Ajouter"}
+        </Button>
       </div>
     </form>
   );

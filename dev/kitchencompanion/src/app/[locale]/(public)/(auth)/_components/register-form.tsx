@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import {
   register,
   userExist,
-} from "@/app/[locale]/(public)/(auth)/_actions/register";
+} from "@/app/[locale]/(public)/(auth)/_actions/register-action";
 import Link from "next/link";
 
 import { partialRegistrationSchema } from "@/lib/validation";
@@ -113,18 +113,19 @@ export function RegisterForm() {
   if (registrationSuccessful) {
     return (
       <>
-        <RedirectButton href='/login'>
+        <RedirectButton href="/login">
           <Button
-            className='absolute right-4 top-4 md:right-8 md:top-8'
-            variant={"link"}>
+            className="absolute right-4 top-4 md:right-8 md:top-8"
+            variant={"link"}
+          >
             Connexion
           </Button>
         </RedirectButton>
-        <div className='grid place-items-center gap-5'>
-          <h1 className='text-2xl font-semibold tracking-tight'>
+        <div className="grid place-items-center gap-5">
+          <h1 className="text-2xl font-semibold tracking-tight">
             Votre compte à été créé!
           </h1>
-          <p className='text-sm text-muted'>
+          <p className="text-sm text-muted">
             Veuillez vérifier votre courriel pour activer votre compte
           </p>
         </div>
@@ -134,95 +135,87 @@ export function RegisterForm() {
 
   return (
     <>
-      <RedirectButton href='/login'>
+      <RedirectButton href="/login">
         <Button
-          className='absolute right-4 top-4 md:right-8 md:top-8'
-          variant={"link"}>
+          className="absolute right-4 top-4 md:right-8 md:top-8"
+          variant={"link"}
+        >
           Connexion
         </Button>
       </RedirectButton>
-      <div className='flex flex-col justify-center max-w-[500px]'>
-        <CardHeader className='flex flex-col space-y-2 text-center'>
-          <h1 className='text-2xl font-semibold tracking-tight'>
+      <div className="flex flex-col justify-center max-w-[500px]">
+        <CardHeader className="flex flex-col space-y-2 text-center">
+          <h1 className="text-2xl font-semibold tracking-tight">
             Créer un compte
           </h1>
-          <p className='text-sm text-muted'>
+          <p className="text-sm text-muted">
             Entrez votre adresse courriel pour créer un compte
           </p>
         </CardHeader>
         <CardContent>
-          <form
-            className='grid gap-6'
-            ref={ref}
-            action={handleRegistetration}>
-            <div className='grid gap-1.5'>
-              <div className='relative'>
-                <Label className='sr-only'>Nom</Label>
+          <form className="grid gap-6" ref={ref} action={handleRegistetration}>
+            <div className="grid gap-1.5">
+              <div className="relative">
+                <Label className="sr-only">Nom</Label>
                 <Input
-                  id='name'
-                  placeholder='Jean Tremblay'
-                  type='text'
-                  name='name'
+                  id="name"
+                  placeholder="Jean Tremblay"
+                  type="text"
+                  name="name"
                   disabled={isPending}
                 />
               </div>
-              <div className='relative'>
-                <Label
-                  className='sr-only'
-                  htmlFor='email'>
+              <div className="relative">
+                <Label className="sr-only" htmlFor="email">
                   Courriel
                 </Label>
                 <Input
-                  id='email'
-                  placeholder='nom@example.com'
-                  type='email'
-                  name='email'
+                  id="email"
+                  placeholder="nom@example.com"
+                  type="email"
+                  name="email"
                   onChange={handleEmailValidation}
                   disabled={isPending}
                 />
                 {emailValid && (
-                  <BadgeCheck className='absolute w-6 h-6 top-2 right-2 text-success-foreground' />
+                  <BadgeCheck className="absolute w-6 h-6 top-2 right-2 text-success-foreground" />
                 )}
                 {!emailValid && emailValid !== null && (
-                  <BadgeAlert className='absolute w-6 h-6 top-2 right-2 text-destructive' />
+                  <BadgeAlert className="absolute w-6 h-6 top-2 right-2 text-destructive" />
                 )}
               </div>
-              <div className='flex gap-1.5'>
-                <div className='w-[50%]'>
-                  <Label
-                    className='sr-only'
-                    htmlFor='password'>
+              <div className="flex gap-1.5">
+                <div className="w-[50%]">
+                  <Label className="sr-only" htmlFor="password">
                     Mot de passe
                   </Label>
                   <Input
-                    id='password'
+                    id="password"
                     onChange={handlePasswordValidation}
-                    placeholder='Mot de passe'
-                    type='password'
-                    name='password'
+                    placeholder="Mot de passe"
+                    type="password"
+                    name="password"
                     disabled={isPending}
                   />
                 </div>
-                <div className='relative w-[50%]'>
-                  <Label
-                    className='sr-only'
-                    htmlFor='password-confirmation'>
+                <div className="relative w-[50%]">
+                  <Label className="sr-only" htmlFor="password-confirmation">
                     Confirmation Mot de Passe
                   </Label>
                   <Input
-                    id='password-confirmation'
+                    id="password-confirmation"
                     onChange={handlePasswordValidation}
-                    placeholder='Confirmer le mot de passe'
-                    type='password'
-                    name='password-confirmation'
+                    placeholder="Confirmer le mot de passe"
+                    type="password"
+                    name="password-confirmation"
                     disabled={isPending}
                   />
 
                   {passwordValid && (
-                    <BadgeCheck className='absolute w-6 h-6 top-2 right-2 text-success-foreground' />
+                    <BadgeCheck className="absolute w-6 h-6 top-2 right-2 text-success-foreground" />
                   )}
                   {!passwordValid && passwordValid !== null && (
-                    <BadgeAlert className='absolute w-6 h-6 top-2 right-2 text-destructive' />
+                    <BadgeAlert className="absolute w-6 h-6 top-2 right-2 text-destructive" />
                   )}
                 </div>
               </div>
@@ -233,32 +226,30 @@ export function RegisterForm() {
                   !passwordValid && passwordValid !== null
                     ? "text-destructive font-semibold"
                     : " text-muted"
-                } px-5 text-[0.8rem] text-center`}>
+                } px-5 text-[0.8rem] text-center`}
+              >
                 Votre mot de passe doit contenir au moins 8 caractères, une
                 majuscule, une minuscule et un chiffre.
               </p>
             </div>
             <Button
               variant={"default"}
-              type='submit'
-              disabled={!formValidated || isPending}>
+              type="submit"
+              disabled={!formValidated || isPending}
+            >
               {isPending ? <PulseLoader size={5} /> : "Inscription"}
             </Button>
-            <div className='flex gap-3 w-[80%] mx-auto text-center'>
-              <p className='text-[0.75rem]'>
+            <div className="flex gap-3 w-[80%] mx-auto text-center">
+              <p className="text-[0.75rem]">
                 En cliquant sur{" "}
-                <span className='font-semibold italic'>Inscription</span> vous
+                <span className="font-semibold italic">Inscription</span> vous
                 acceptez nos{" "}
-                <Link
-                  href='/terms'
-                  className='underline'>
+                <Link href="/terms" className="underline">
                   {" "}
                   conditions d'utilisation{" "}
                 </Link>
                 et notre{" "}
-                <Link
-                  className='underline'
-                  href='/privacy'>
+                <Link className="underline" href="/privacy">
                   politique de confidentialité
                 </Link>
               </p>

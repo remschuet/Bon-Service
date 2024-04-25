@@ -1,4 +1,4 @@
-import { Ingredient, UnitMeasure } from "@prisma/client";
+import { Ingredient, Unit } from "@prisma/client";
 import { db } from "@/db/prisma-db";
 
 ////////////////////////////////
@@ -53,6 +53,28 @@ export async function getAllIngredientBySupplierNameAndUserId(
   } catch (error) {
     console.error(
       "Error data-access/ingredient: getAllIngredientBySupplierNameAndUserId(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
+export async function getIngredient(
+  name: string,
+  supplierName: string,
+  userId: string
+) {
+  try {
+    return await db.ingredient.findFirst({
+      where: {
+        name: name,
+        supplierName: supplierName,
+        userId: userId,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/ingredient: getIngredient(), error: ",
       error
     );
     throw error;
@@ -153,6 +175,22 @@ export async function updateIngredientPrice(
   } catch (error) {
     console.error(
       "Error data-access/ingredient: updateIngredientPrice(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
+export async function deleteIngredient(ingredientId: string) {
+  try {
+    return await db.ingredient.deleteMany({
+      where: {
+        id: ingredientId,
+      },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/ingredient: deleteIngredient(), error: ",
       error
     );
     throw error;

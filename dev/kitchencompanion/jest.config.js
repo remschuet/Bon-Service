@@ -7,4 +7,9 @@ module.exports = {
   },
   testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
+  moduleNameMapper: {
+    "^@/(.*)$": "<rootDir>/src/$1",
+  },
+  globalSetup: "<rootDir>/src/testSetup/callSetup.js",
+  setupFilesAfterEnv: ["<rootDir>/src/jest.setup.ts"],
 };

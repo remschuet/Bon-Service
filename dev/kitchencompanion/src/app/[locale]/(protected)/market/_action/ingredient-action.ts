@@ -1,6 +1,5 @@
 "use server";
 
-import {} from "@/db/data-access/action";
 import {
   createIngredient,
   getIngredientIfExist,
@@ -22,14 +21,6 @@ export async function addIngredient(formData: FormData) {
    * @param unit - The unit to check.
    * @returns The converted unit if necessary, otherwise the original unit.
    */
-  const checkUnit = (unit: string) => {
-    if (unit === "G") {
-      return "KG";
-    } else if (unit === "ML") {
-      return "L";
-    }
-    return unit;
-  };
 
   let price =
     parseFloat(formData.get("price") as string) /
@@ -45,7 +36,7 @@ export async function addIngredient(formData: FormData) {
   const ingredient = {
     name: formData.get("name") as string,
     price: parseFloat(price.toFixed(5)),
-    unit: checkUnit(unit),
+    unit: await checkUnit(unit),
     category: formData.get("category") as string,
     origin: formData.get("origin") as string,
     supplierName: formData.get("supplierName") as string,
@@ -70,7 +61,7 @@ export async function addIngredient(formData: FormData) {
  *
  * @param ingredient - The ingredient to create or update.
  */
-async function createOrUpdateIgredient(ingredient: Ingredient) {
+export async function createOrUpdateIgredient(ingredient: Ingredient) {
   if (
     await getIngredientIfExist(
       ingredient.name,
@@ -78,8 +69,6 @@ async function createOrUpdateIgredient(ingredient: Ingredient) {
       ingredient.supplierName
     )
   ) {
-    // Avertissement usagé ?
-    console.log("L'ingredient existe deja");
     updateIngredientPrice(
       ingredient.name,
       ingredient.userId,
@@ -88,5 +77,15 @@ async function createOrUpdateIgredient(ingredient: Ingredient) {
     );
   } else {
     createIngredient(ingredient);
+    return { success: "Ingrédient ajouté avec succès", status: 200 };
   }
 }
+
+export const checkUnit = (unit: string) => {
+  if (unit === "G") {
+    return "KG";
+  } else if (unit === "ML") {
+    return "L";
+  }
+  return unit;
+};
