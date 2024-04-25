@@ -6,21 +6,21 @@ const contacts: Contact[] = [
   {
     id: "123",
     userId: "123",
-    name: "Bob 1",
+    name: "Remi 1",
     description: "blabla",
     phoneNumber: "123",
     compteNumber: "123",
   },
   {
-    id: "123",
+    id: "12344",
     userId: "123",
-    name: "Bob 2",
+    name: "Julien 2",
     description: "blabla",
     phoneNumber: "123",
     compteNumber: "123",
   },
   {
-    id: "123",
+    id: "12355",
     userId: "123",
     name: "Bob 3",
     description: "blabla",
@@ -59,24 +59,26 @@ const template: Template = {
 const inputs: { [key: string]: string }[] = [{ a: "a1", b: "b1", c: "c1" }];
 
 async function updateTemplate() {
+  let pos_x = 30;
+
   contacts.forEach((contact) => {
+    pos_x += 10;
     console.log(contact.name);
+
+    // Pour ajouter une nouvelle colonne 'd', par exemple
+    const newColumn = {
+      [contact.id]: {
+        type: "text",
+        position: { x: 30, y: pos_x },
+        width: 10,
+        height: 10,
+      },
+    };
+
+    // Insérer la nouvelle colonne dans le schéma existant
+    template.schemas[0] = { ...template.schemas[0], ...newColumn };
+    inputs[0][contact.id] = contact.name;
   });
-
-  // Pour ajouter une nouvelle colonne 'd', par exemple
-  const newColumn = {
-    d: {
-      type: "text",
-      content: "1234",
-      position: { x: 30, y: 30 },
-      width: 10,
-      height: 10,
-    },
-  };
-
-  // Insérer la nouvelle colonne dans le schéma existant
-  template.schemas[0] = { ...template.schemas[0], ...newColumn };
-  inputs[0]["d"] = "d1";
 
   console.log("fin generate");
 }
