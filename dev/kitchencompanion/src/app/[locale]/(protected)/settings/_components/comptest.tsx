@@ -7,7 +7,7 @@ import {
   updateProfilUser,
 } from "../_action/settings-action";
 import { useSession } from "@/hooks/useSession";
-import { createPdfPDF } from "../_export/pdf_test";
+import { createPdfPDF } from "../_export/pdfMain";
 
 export function Test() {
   const { id, email, name, userType, isPremium } = useSession();
