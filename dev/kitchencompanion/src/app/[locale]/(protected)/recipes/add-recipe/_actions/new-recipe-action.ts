@@ -1,7 +1,7 @@
 "use server";
 
 import { Recipe, RecipeState, Unit } from "@prisma/client";
-import { IngredientDTO } from "@/lib/type";
+import { IngredientDTO, ResponseMessage } from "@/lib/type";
 
 import { createRecipe } from "@/db/data-access/recipe";
 
@@ -27,7 +27,14 @@ export async function addRecipe(newRecipe: FormData) {
 
   try {
     await createRecipe(recipe as Recipe, ingredients);
+    return {
+      success: "La recette a été ajoutée avec succès.",
+      status: 200,
+    } as ResponseMessage;
   } catch (error) {
-    console.error("Failed to add recipe:", error);
+    return {
+      error: "Une erreur est survenue lors de l'ajout de la recette.",
+      status: 500,
+    } as ResponseMessage;
   }
 }
