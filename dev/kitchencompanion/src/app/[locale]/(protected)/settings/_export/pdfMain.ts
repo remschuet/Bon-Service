@@ -22,11 +22,13 @@ export async function createPdfPDF() {
 
   contactsData.forEach((contact: any) => {
     for (const key in contact) {
-      datacontact.push({
-        textStyle: PoliceSize.normal,
-        key: key,
-        content: contact[key],
-      });
+      if (["name", "description", "phoneNumber"].includes(key)) {
+        datacontact.push({
+          textStyle: PoliceSize.normal,
+          key: key,
+          content: contact[key],
+        });
+      }
     }
   });
   const jsonData = JSON.stringify(datacontact, null, 2);

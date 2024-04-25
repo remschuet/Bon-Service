@@ -18,40 +18,33 @@ export class PdfGenerator {
     this.inputs = inputs;
   }
 
-  private async updateTemplate(contacts: Contact[]) {
-    contacts.forEach((contact) => {
+  private async updateTemplate(datas: string) {
+    const contactsData = JSON.parse(datas);
+    contactsData.forEach((data: any) => {
       this.posY += 10;
-      console.log(contact.name);
-      console.log(contact.name.length);
+      let uid = this.getCuid();
+
       const newColumn = {
-        [contact.id]: {
+        [uid]: {
           type: "text",
           position: { x: this.posX, y: this.posY },
-          width: contact.name.length * 3,
+          width: data.content.length * 3,
           height: 10,
           fontSize: PoliceSize.normal,
         },
       };
-
       this.template.schemas[0] = { ...this.template.schemas[0], ...newColumn };
-      this.inputs[0][contact.id] = contact.name;
+      this.inputs[0][uid] = data.content;
     });
+  }
 
-    console.log("fin generate");
+  public getCuid(): number {
+    return Math.floor(Math.random() * (9999 - 1000 + 1)) + 1000;
   }
 
   public async createPdfPDF(datas: string) {
-    const contactsData = JSON.parse(datas);
-    console.log("ici", contactsData);
-    for (const data of contactsData) {
-      console.log("textStyle :", data.textStyle);
-      console.log("key :", data.key);
-      console.log("content :", data.content);
-    }
-
-    /*
     console.log("Creating PDF");
-    await this.updateTemplate(data);
+    await this.updateTemplate(datas);
     console.log("call generate");
     console.log(this.template.schemas);
     generate({ template: this.template, inputs: this.inputs }).then((pdf) => {
@@ -59,6 +52,6 @@ export class PdfGenerator {
 
       const blob = new Blob([pdf.buffer], { type: "application/pdf" });
       window.open(URL.createObjectURL(blob));
-    });*/
+    });
   }
 }
