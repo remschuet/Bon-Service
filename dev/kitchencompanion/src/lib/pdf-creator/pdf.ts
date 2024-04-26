@@ -53,7 +53,6 @@ class PdfGenerator {
   }
 
   public setHeader() {
-    // Définir le texte à afficher
     const text = "Texte centré dans le document PDF";
 
     // Définir la taille de la page et obtenir sa largeur
