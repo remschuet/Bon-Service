@@ -33,6 +33,15 @@ export async function getAllRecipeBooksById(userId: string) {
   }
 }
 
+export async function getAllRecipeByBooksId(recipeBookId: string) {
+  try {
+    const recipes = await getAllRecipeByRecipeBookIds([recipeBookId]);
+    return recipes;
+  } catch (error) {
+    throw error;
+  }
+}
+
 /**
  * Returns all the contact of the user. (ADMIN)
  * @param userId - the ID of the user

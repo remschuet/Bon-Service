@@ -11,7 +11,7 @@ import { DEFAULT_REDIRECT_URL } from "@/route";
 import { AuthError } from "next-auth";
 
 import bcrypt from "bcryptjs";
-import { sendVerificationEmail } from "@/lib/auth/mail";
+import { sendVerificationEmail } from "@/lib/emails/mail";
 
 import { headers } from "next/headers";
 import {

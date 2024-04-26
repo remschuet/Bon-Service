@@ -10,7 +10,7 @@ import {
 } from "@/app/[locale]/(protected)/recipes/add-recipe/_actions/composite-components-action";
 import { RecipeComponentsProvider } from "@/providers/recipe-components";
 
-export default async function RecipeBookPage() {
+export default async function AddRecipePage() {
   const session = await auth();
 
   if (session) {

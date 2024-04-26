@@ -11,12 +11,12 @@ export default function RecipePage() {
   useRedirectMembers();
 
   return (
-    <div className="container mx-auto space-y-10">
-      <div className="flex justify-end mt-6 gap-5">
+    <div className='container mx-auto space-y-10'>
+      <div className='flex justify-end mt-6 gap-5'>
         <AddRecipeBook />
-        <RedirectButton href="/recipes/new%20Recipe">
-          <Button className="flex gap-2">
-            <BadgePlus className="w-4" />
+        <RedirectButton href='/recipes/new%20Recipe'>
+          <Button className='flex gap-2'>
+            <BadgePlus className='w-4' />
             <span>Ajouter une recette</span>
           </Button>
         </RedirectButton>

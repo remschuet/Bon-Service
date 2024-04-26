@@ -1,3 +1,5 @@
+"use client";
+
 import { useRecipeBooks } from "@/hooks/useRecipeBooks";
 import { RecipeBookCard } from "@/app/[locale]/(protected)/recipes/_components/recipebook-card";
 

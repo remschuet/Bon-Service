@@ -1,12 +1,13 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { Ingredient } from "@prisma/client";
+import { Recipe, Unit } from "@prisma/client";
 
 import { ArrowUpDown } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
-export const columns: ColumnDef<Ingredient>[] = [
+export const columns: ColumnDef<Recipe>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -41,52 +42,56 @@ export const columns: ColumnDef<Ingredient>[] = [
         </Button>
       );
     },
-  },
-  {
-    accessorKey: "supplierName",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          Fournisseur
-          <ArrowUpDown className='ml-2 h-4 w-4 opacity-50' />
-        </Button>
-      );
-    },
-  },
-  {
-    accessorKey: "category",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}>
-          Catégorie
-          <ArrowUpDown className='ml-2 h-4 w-4 opacity-50' />
-        </Button>
-      );
-    },
-  },
-  {
-    accessorKey: "origin",
-    header: "Origine",
-  },
-  {
-    accessorKey: "price",
-    header: () => <div className='w-[25px]'>Prix</div>,
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("price"));
+      return (
+        <Link
+          href={`/${(row.getValue("name") as string).replace(
+            "",
+            "%20"
+          )}?recipeId=${row.getValue("id")}`}
+          className='font-bold hover:text-brand-dark'>
+          {row.getValue("name")}
+        </Link>
+      );
+    },
+  },
+  {
+    accessorKey: "description",
+    header: "Description",
+    cell: ({ row }) => {
+      return <div className='w-[280px]'>{row.getValue("description")}</div>;
+    },
+  },
+  {
+    accessorKey: "cost",
+    header: () => <div className='w-[75px]'>Côut</div>,
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("cost"));
       const formatted = new Intl.NumberFormat("en-CA", {
         style: "currency",
         currency: "CAD",
       }).format(amount);
 
-      return <div className='w-[25px] font-medium'>{formatted}</div>;
+      return <div className='font-medium w-[75px]'>{formatted}</div>;
     },
   },
   {
     accessorKey: "unit",
-    header: () => <div className='w-[25px]'>Unité</div>,
+    header: () => <div>Unité</div>,
+    cell: ({ row }) => {
+      return <div>{row.getValue("unit")}</div>;
+    },
+  },
+  {
+    accessorKey: "updatedAt",
+    header: () => <div className='max-w-[120px] text-right'>Modifications</div>,
+    cell: ({ row }) => {
+      const date = new Date(row.getValue("updatedAt"));
+      const formatted = new Intl.DateTimeFormat("fr-CA", {
+        dateStyle: "long",
+      }).format(date);
+
+      return <div className='max-w-[120px] text-right'>{formatted}</div>;
+    },
   },
 ];
