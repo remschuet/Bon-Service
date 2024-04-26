@@ -9,7 +9,10 @@ export class PdfGenerator {
   private inputs: InputData[];
   private posX: number = 20;
   private posY: number = 0;
-
+  private PAGE_X: number = 208;
+  private PAGE_Y: number = 292;
+  private PAGE_HEADER: number = 20;
+  private PAGE_FOOTHER: number = 20;
   constructor(
     template: Template = { basePdf: BLANK_PDF, schemas: [{}] },
     inputs: InputData[] = [{}]
@@ -18,19 +21,12 @@ export class PdfGenerator {
     this.inputs = inputs;
   }
 
-  /*
-  public async createTable(
-    nbColumns: number,
-    nbRow: number,
-    spaceX: number,
-    spaceY: number
-  ) {
-    nbRow = 5;
-    for (let row = 0; row < nbRow; row++) {
-      console.log(row);
+  private createRows(nbRow: number) {
+    let decal = this.PAGE_Y - (this.PAGE_HEADER + this.PAGE_FOOTHER) / nbRow;
+    this.posY = this.PAGE_HEADER;
+    for (let y = 0; y < nbRow; y++) {
       let uid = this.getCuid();
-      this.posY += spaceY + uid;
-      // ligne
+
       const newColumn = {
         [uid]: {
           type: "text",
@@ -45,56 +41,14 @@ export class PdfGenerator {
         ...newColumn,
       };
       this.inputs[0][uid] = "_".repeat(30);
-    }
-    return;
-    // colonne
-    this.posY += 3;
-    for (let col = 0; col < nbColumns; col++) {
-      this.posX += spaceX;
-      for (let y = 0; y < 50; y++) {
-        let uid = this.getCuid();
-        this.posY += 3;
-        const newColumn = {
-          [uid]: {
-            type: "text",
-            position: { x: this.posX, y: this.posY },
-            width: 400,
-            height: 10,
-            fontSize: PoliceSize.normal,
-          },
-        };
-        this.template.schemas[0] = {
-          ...this.template.schemas[0],
-          ...newColumn,
-        };
-        this.inputs[0][uid] = "|";
-      }
+      this.posY += decal;
     }
   }
-*/
   public createTable(nbRow: number, nbCol: number) {
     let uid = this.getCuid();
     this.posY += 20;
 
-    for (let y = 0; y < nbRow; y++) {
-      let uid = this.getCuid();
-      this.posY += 20;
-
-      const newColumn = {
-        [uid]: {
-          type: "text",
-          position: { x: this.posX, y: this.posY },
-          width: 400,
-          height: 10,
-          fontSize: PoliceSize.normal,
-        },
-      };
-      this.template.schemas[0] = {
-        ...this.template.schemas[0],
-        ...newColumn,
-      };
-      this.inputs[0][uid] = "_".repeat(30);
-    }
+    this.createRows(nbRow);
 
     for (let col = 0; col < nbCol; col++) {
       this.posX += 20;
