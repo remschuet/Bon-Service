@@ -22,8 +22,10 @@ import { useTransition } from "react";
 import { debounce } from "@/lib/utils";
 import { PulseLoader } from "react-spinners";
 import { toast } from "@/components/ui/use-toast";
+import { useSearchParams } from "next/navigation";
 
 export function RecipeGeneral() {
+  const recipeBookId = useSearchParams();
   const [isPending, startTransition] = useTransition();
   const { units } = useUnits();
   const { recipeBooks } = useRecipeBooks();
@@ -124,6 +126,7 @@ export function RecipeGeneral() {
           <div className='grid gap-3'>
             <Label htmlFor='model'>Livre de recette</Label>
             <Select
+              defaultValue={(recipeBookId.get("recipeBookId") as string) || ""}
               onValueChange={(value) => ctx.setRecipeBook(value as string)}>
               <SelectTrigger
                 id='category'

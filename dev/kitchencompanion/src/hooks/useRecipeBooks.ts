@@ -10,7 +10,7 @@ export function useRecipeBooks(): {
   const { id } = useSession();
 
   useEffect(() => {
-    const fetchKitchens = async () => {
+    const fetchRecipeBooks = async () => {
       try {
         const recipeBooks = await getAllRecipeBooksById(id);
         setRecipeBooks(recipeBooks);
@@ -19,7 +19,7 @@ export function useRecipeBooks(): {
       }
     };
 
-    fetchKitchens();
+    fetchRecipeBooks();
   }, []);
 
   return { recipeBooks };

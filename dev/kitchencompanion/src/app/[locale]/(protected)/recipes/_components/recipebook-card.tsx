@@ -12,7 +12,8 @@ import Link from "next/link";
 
 export function RecipeBookCard(recipeBook: RecipeBook) {
   return (
-    <Link href={`/recipes/books/${recipeBook.name}`}>
+    <Link
+      href={`/recipes/books/${recipeBook.name}/?recipeBookId=${recipeBook.id}`}>
       <Card className='min-h-[200px]'>
         <CardHeader className='bg-brand-light rounded-t-lg mb-6 min-h-[125px] space-y-4'>
           <CardTitle>{recipeBook.name}</CardTitle>

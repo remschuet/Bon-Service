@@ -1,7 +1,7 @@
 "use server";
 
 import { createUser, getUser } from "@/db/data-access/user";
-import { sendVerificationEmail } from "@/lib/auth/mail";
+import { sendVerificationEmail } from "@/lib/emails/mail";
 import { createVerificationToken } from "@/lib/auth/tokens";
 import { User } from "@prisma/client";
 import bcrypt from "bcryptjs";
@@ -23,6 +23,7 @@ export async function register(user: User) {
     await createUser(user);
 
     const verificationToken = await createVerificationToken(user.email);
+
     const res = await sendVerificationEmail(
       verificationToken.email,
       verificationToken.token
