@@ -15,4 +15,4 @@ export type Position = {
   y: number;
 };
 
-export type ContactData = { [key: string]: string };
+export type TableDataType = { [key: string]: string };
