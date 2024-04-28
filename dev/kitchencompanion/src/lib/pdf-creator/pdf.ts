@@ -8,6 +8,7 @@ import { contacts } from "./fakeContact";
 
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { PdfTable } from "@/lib/pdf-creator/pdfTable";
 /*
  * DOCS
  * https://www.npmjs.com/package/jspdf
@@ -15,17 +16,17 @@ import autoTable from "jspdf-autotable";
  *https://artskydj.github.io/jsPDF/docs/module-cell.html#~table
  */
 
-class PdfGenerator {
-  private posX: number = 20;
-  private posY: number = 0;
-  private PAGE_X: number = 207;
-  private PAGE_Y: number = 300;
-  private PAGE_HEADER: number = 20;
-  private PAGE_FOOTHER: number = 20;
-  private HEADER_POURCENT = 20;
-  private FOOTER_POURCENT = 20;
+export class PdfGenerator {
+  protected posX: number = 20;
+  protected posY: number = 0;
+  protected PAGE_X: number = 207;
+  protected PAGE_Y: number = 300;
+  protected PAGE_HEADER: number = 20;
+  protected PAGE_FOOTHER: number = 20;
+  protected HEADER_POURCENT = 20;
+  protected FOOTER_POURCENT = 20;
 
-  private doc;
+  protected doc;
   constructor(
     orientation: OrientationPDF = OrientationPDF.Portrait,
     unit: UnitPDF = UnitPDF.cm
@@ -85,63 +86,4 @@ class PdfGenerator {
   public addText(content: string, pos: Position) {
     this.doc.text(content, pos.x, pos.y);
   }
-
-  private createHeaders(keys: string[]): string[] {
-    return keys;
-  }
-
-  /**
-   * Formats the content data into a 2D array of strings, where each row represents a record and each column represents a field.
-   *
-   * @param title - An array of strings representing the column titles for the grid.
-   * @param contacts - An array of objects representing the content data for the grid.
-   *
-   * @returns A 2D array of strings where each row represents a record and each column represents a field.
-   */
-  private async formatColData(title: string[], contacts: TableDataType[]) {
-    const data: string[][] = contacts.map((contact) => {
-      const rowData: string[] = [];
-      title.forEach((key) => {
-        if (contact.hasOwnProperty(key)) {
-          rowData.push(contact[key]);
-        } else {
-          // Si la propriété n'existe pas, ajoutez une chaîne vide
-          console.log("proprety doesn't exist: ", key);
-          rowData.push("Aucune Valeur");
-        }
-      });
-      return rowData;
-    });
-    return data;
-  }
-
-  /**
-   * Creates a grid in the PDF document using the provided column titles and content data.
-   *
-   * @param colTitle - An array of strings representing the column titles for the grid.
-   * @param content - An array of objects representing the content data for the grid.
-   */
-  public async createGrid(colTitle: string[], content: TableDataType[]) {
-    const headers = this.createHeaders(colTitle);
-    const data: string[][] = await this.formatColData(colTitle, content);
-
-    autoTable(this.doc, {
-      startY: (this.HEADER_POURCENT * this.PAGE_Y) / 100,
-      head: [headers],
-      body: data,
-    });
-  }
-}
-export async function entryPoint() {
-  // Exemple d'utilisation
-  const pdfGenerator = new PdfGenerator();
-  let data = ["name", "description", "phoneNumber", "compteNumber"];
-
-  const jsonContact = JSON.stringify(contacts, null, 2);
-  const contactsData: TableDataType[] = JSON.parse(jsonContact);
-
-  await pdfGenerator.createGrid(data, contactsData);
-  pdfGenerator.setHeader();
-  // pdfGenerator.addText("contact", { x: 20, y: 30 });
-  pdfGenerator.openPdf();
 }

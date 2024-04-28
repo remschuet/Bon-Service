@@ -1,4 +1,4 @@
-import { entryPoint } from "@/lib/pdf-creator/pdf";
+import { entryPoint } from "@/lib/pdf-creator/entry";
 
 export async function createPdfPDF() {
   console.log("Creating PDF");
