@@ -8,11 +8,13 @@ import {
 import { contacts } from "./fakeContact";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
+import { PdfOption, PdfOptionBuilder } from "./pdfOption";
 
 export class PdfTable extends PdfGenerator {
   constructor(
     orientation: OrientationPDF = OrientationPDF.Portrait,
-    unit: UnitPDF = UnitPDF.cm
+    unit: UnitPDF = UnitPDF.cm,
+    pdfOption: PdfOption | undefined = undefined
   ) {
     super(orientation, unit);
   }
@@ -53,7 +55,7 @@ export class PdfTable extends PdfGenerator {
     const data: string[][] = await this.formatColData(colTitle, content);
 
     autoTable(this.doc, {
-      startY: (this.HEADER_POURCENT * this.PAGE_Y) / 100,
+      startY: (this.pdfOption.pageHeader * this.pdfOption.pageHeight) / 100,
       head: [headers],
       body: data,
     });

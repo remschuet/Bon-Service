@@ -1,14 +1,7 @@
-import {
-  OrientationPDF,
-  UnitPDF,
-  Position,
-  TableDataType,
-} from "./TypeEnumPdf";
-import { contacts } from "./fakeContact";
-
+import { OrientationPDF, UnitPDF, Position } from "./TypeEnumPdf";
 import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
-import { PdfTable } from "@/lib/pdf-creator/pdfTable";
+import { PdfOption, PdfOptionBuilder } from "./pdfOption";
+
 /*
  * DOCS
  * https://www.npmjs.com/package/jspdf
@@ -26,12 +19,21 @@ export class PdfGenerator {
   protected HEADER_POURCENT = 20;
   protected FOOTER_POURCENT = 20;
 
+  protected pdfOption: PdfOption;
+
   protected doc;
   constructor(
     orientation: OrientationPDF = OrientationPDF.Portrait,
-    unit: UnitPDF = UnitPDF.cm
+    unit: UnitPDF = UnitPDF.cm,
+    pdfOption: PdfOption | undefined = undefined
   ) {
     this.doc = new jsPDF({ putOnlyUsedFonts: true, orientation: orientation });
+
+    if (pdfOption === undefined) {
+      this.pdfOption = new PdfOptionBuilder(this.doc).build();
+    } else {
+      this.pdfOption = pdfOption;
+    }
   }
 
   /**
@@ -55,26 +57,15 @@ export class PdfGenerator {
 
   public setHeader() {
     const text = "Texte centré dans le document PDF";
-
-    // Définir la taille de la page et obtenir sa largeur
     const pageWidth = this.doc.internal.pageSize.getWidth();
 
-    // Obtenir la largeur du texte en utilisant la méthode getStringUnitWidth
-    const fontSize = 12; // Taille de police utilisée
-    this.doc.setFontSize(fontSize);
-
+    this.doc.setFontSize(this.pdfOption.sizes.title);
     const textWidth =
-      (this.doc.getStringUnitWidth(text) * fontSize) /
+      (this.doc.getStringUnitWidth(text) * this.doc.getFontSize()) /
       this.doc.internal.scaleFactor;
-
-    // Calculer la position x pour centrer le texte horizontalement
     const centerX = (pageWidth - textWidth) / 2;
 
-    // Définir la position y pour le texte
-    const y = 10; // Par exemple, position verticale de 50
-
-    // Ajouter le texte centré dans le document PDF
-    console.log(centerX, y);
+    const y = 10;
     this.doc.text(text, centerX, y);
   }
 
