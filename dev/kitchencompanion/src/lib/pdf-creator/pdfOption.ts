@@ -17,7 +17,7 @@ export class PdfOptionBuilder {
   private pageFooter: number = 20;
   private headerPercent: number = 20;
   private footerPercent: number = 20;
-  private font: string = "PTSans";
+  private font: string = "Helvetica";
 
   private doc: jsPDF;
   private sizes: FontSizes = fontSizes;
@@ -27,6 +27,7 @@ export class PdfOptionBuilder {
     this.pageWidth = this.doc.internal.pageSize.getWidth();
     this.pageHeight = this.doc.internal.pageSize.getHeight();
     this.doc.setFont(this.font);
+    this.doc.setFontSize(this.sizes.normal);
   }
 
   public setFontSize(sizeKey: string, sizeValue: number) {
