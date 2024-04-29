@@ -12,12 +12,6 @@ import { PdfOption, PdfOptionBuilder } from "./pdfOption";
 export class PdfGenerator {
   protected posX: number = 20;
   protected posY: number = 0;
-  protected PAGE_X: number = 207;
-  protected PAGE_Y: number = 300;
-  protected PAGE_HEADER: number = 20;
-  protected PAGE_FOOTHER: number = 20;
-  protected HEADER_POURCENT = 20;
-  protected FOOTER_POURCENT = 20;
 
   protected pdfOption: PdfOption;
 
@@ -34,6 +28,14 @@ export class PdfGenerator {
     } else {
       this.pdfOption = pdfOption;
     }
+  }
+
+  public setOption(option: PdfOption) {
+    this.pdfOption = option;
+  }
+
+  public getDoc() {
+    return this.doc;
   }
 
   /**
