@@ -24,73 +24,15 @@ export class PdfSection extends PdfGenerator {
     }
   }
 
-  /**
-   * Adds a text to a specific section in the PDF.
-   *
-   * @param sectionName The name of the section to add text to.
-   * @param content The text content to be added to the section.
-   */
-  public addTextSection(sectionName: string, content: string) {
-    const section = this.sections[sectionName];
-    const maxWidth = (section.end.x * this.pdfOption.pageWidth) / 10;
-    const startX = (section.start.x * this.pdfOption.pageWidth) / 10;
-    const startY =
-      (section.start.y * this.pdfOption.pageHeight) / 10 +
-      this.getZeroForBody();
-
-    this.addText(
-      content,
-      {
-        x: startX + this.gridGap,
-        y: startY + this.gridGap,
-      },
-      maxWidth - 30
-    );
-  }
-
-  /**
-   * Adds a text list to a specific section in the PDF.
-   *
-   * @param sectionName The name of the section to add the text list to.
-   * @param content The array of text content to be added to the section.
-   * @param spacer A string to be added before each item in the list. Defaults to an empty string.
-   * If it's 'i' it will add index of the item
-   *
-   * @returns Nothing. This method modifies the PDF document directly.
-   */
-  public addTextListSection(
-    sectionName: string,
-    content: string[],
-    spacer: string = ""
-  ) {
-    const section = this.sections[sectionName];
-    const maxWidth = (section.end.x * this.pdfOption.pageWidth) / 10;
-    const startX = (section.start.x * this.pdfOption.pageWidth) / 10;
-    const startY =
-      (section.start.y * this.pdfOption.pageHeight) / 10 +
-      this.getZeroForBody();
-    let posY = startY;
-
-    for (let i = 0; i < content.length; i++) {
-      const text =
-        spacer === "i" ? `${i + 1}. ${content[i]}` : spacer + content[i];
-
-      this.addText(
-        text,
-        {
-          x: startX + this.gridGap,
-          y: posY + this.gridGap,
-        },
-        maxWidth
-      );
-      posY += 8;
-    }
-  }
+  private addTextList() {}
 
   public addTextToSection(
     sectionName: string,
     content: string | string[],
-    spacer: string = ""
+    title: string[] = [""],
+    spacer: string = "",
+    leftGap: number = -1,
+    rightGap: number = -1
   ) {
     const section = this.sections[sectionName];
     const maxWidth = (section.end.x * this.pdfOption.pageWidth) / 10;
@@ -101,28 +43,35 @@ export class PdfSection extends PdfGenerator {
     let posY = startY;
 
     if (Array.isArray(content)) {
+      let idx = 0;
+      const lineHeight = this.doc.getLineHeight();
       for (let i = 0; i < content.length; i++) {
-        const text =
-          spacer === "i" ? `${i + 1}. ${content[i]}` : spacer + content[i];
-        const lines = this.doc.splitTextToSize(content[i], maxWidth - 20);
-        const lineHeight = this.doc.getLineHeight();
-
         let fistLine = true;
+        const lines = this.doc.splitTextToSize(content[i], maxWidth - rightGap);
+
+        if (!title.includes(content[i])) {
+          idx += 1;
+        }
+
         for (const line of lines) {
           let text = line;
-          if (fistLine) {
-            text = spacer === "i" ? `${i + 1}. ${line}` : spacer + line;
+          if (fistLine && !title.includes(content[i])) {
+            text = spacer === "i" ? `${idx}. ${line}` : spacer + line;
             fistLine = false;
           }
+
           this.addText(
             text,
             {
-              x: startX + this.gridGap,
+              x: startX + (leftGap === -1 ? this.gridGap : leftGap),
               y: posY + this.gridGap,
             },
-            maxWidth - 10
+            maxWidth - (rightGap === -1 ? this.gridGap : rightGap),
+            title.includes(content[i])
+              ? this.pdfOption.sizes.subTitle
+              : this.pdfOption.sizes.normal
           );
-
+          this.doc.setFontSize(this.pdfOption.sizes.normal);
           posY += lineHeight / 2;
         }
         posY += 8;
@@ -134,7 +83,10 @@ export class PdfSection extends PdfGenerator {
           x: startX + this.gridGap,
           y: startY + this.gridGap,
         },
-        maxWidth
+        maxWidth,
+        title.includes(content)
+          ? this.pdfOption.sizes.title
+          : this.pdfOption.sizes.normal
       );
     }
   }

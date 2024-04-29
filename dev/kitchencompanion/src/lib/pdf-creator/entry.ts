@@ -29,7 +29,7 @@ async function testSection() {
   const sections: Section = {
     Ingredients: {
       start: { x: 0, y: 0 },
-      end: { x: 2, y: 8 },
+      end: { x: 3, y: 8 },
     },
     Etapes: {
       start: { x: 2, y: 0 },
@@ -39,18 +39,24 @@ async function testSection() {
   pdf.createSection(sections);
   pdf.addTextToSection(
     "Ingredients",
-    ["INGREDIENTS:", "Tomates2", "salade2", "haricots2"],
-    "-"
+    ["INGREDIENTS", "Tomates2", "salade2", "haricots2"],
+    ["INGREDIENTS"],
+    "-",
+    5,
+    1
   );
   pdf.addTextToSection(
     "Etapes",
     [
       "ETAPES",
-      "Dans une poêle ou une casserole, faire revenir les légumes doucement dans l’huile environ 5 minutes ou jusqu’à ce qu’ils soient tendres. Ajouter la viande et faire revenir à feu vif en remuant jusqu’à ce qu’elle soit bien émiettée et dorée. Saler et poivrer.",
+      "Dans une poêle ou une casserole, faire revenir les légumes dans l’huile environ 5 minutes ou jusqu’à ce qu’ils soient tendres. Ajouter la viande et faire revenir à feu vif en remuant jusqu’à ce qu’elle soit bien émiettée et dorée. Saler et poivrer.",
       "Ajouter la pâte de tomates, le piment et la muscade. Bien mélanger. Poursuivre la cuisson, en remuant fréquemment, environ 3 minutes. Ajouter la crème et le fromage. Réchauffer en remuant. Ajouter de l’eau au besoin pour allonger la sauce. Rectifier l’assaisonnement.",
       "Ajouter des pâtes et mélanger.",
     ],
-    "i"
+    ["ETAPES"],
+    "i",
+    5,
+    30
   );
   pdf.openPdf();
 }

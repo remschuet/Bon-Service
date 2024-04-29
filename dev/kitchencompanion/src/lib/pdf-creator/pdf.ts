@@ -84,9 +84,10 @@ export class PdfGenerator {
   public addText(
     content: string,
     pos: Position,
-    maxWidth: number = this.pdfOption.pageWidth
+    maxWidth: number = this.pdfOption.pageWidth,
+    fontSize: number = this.pdfOption.sizes.normal
   ) {
-    this.doc.setFontSize(this.pdfOption.sizes.normal);
+    this.doc.setFontSize(fontSize);
     this.doc.text(content, pos.x, pos.y, { maxWidth });
   }
   protected getTextWidth(text: string, textSize: number) {
