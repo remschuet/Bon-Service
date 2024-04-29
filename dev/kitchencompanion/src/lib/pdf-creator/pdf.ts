@@ -24,10 +24,11 @@ export class PdfGenerator {
     this.doc = new jsPDF({ putOnlyUsedFonts: true, orientation: orientation });
 
     if (pdfOption === undefined) {
-      this.pdfOption = new PdfOptionBuilder(this.doc).build();
+      this.pdfOption = new PdfOptionBuilder().build();
     } else {
       this.pdfOption = pdfOption;
     }
+    this.pdfOption.initDoc(this.doc);
   }
 
   public setOption(option: PdfOption) {
@@ -57,18 +58,22 @@ export class PdfGenerator {
     window.open(pdfUrl, "_blank");
   }
 
-  public setHeader() {
-    const text = "Texte centré dans le document PDF";
-    const pageWidth = this.doc.internal.pageSize.getWidth();
+  public setHeader(
+    title: string,
+    subTitle: string = "",
+    description: string = ""
+  ) {
+    this.displayHeader(title, this.pdfOption.sizes.title, 10);
+    this.displayHeader(subTitle, this.pdfOption.sizes.subTitle, 20);
+    this.displayHeader(description, this.pdfOption.sizes.normal, 25);
+  }
 
-    this.doc.setFontSize(this.pdfOption.sizes.title);
-    const textWidth =
-      (this.doc.getStringUnitWidth(text) * this.doc.getFontSize()) /
-      this.doc.internal.scaleFactor;
-    const centerX = (pageWidth - textWidth) / 2;
+  private displayHeader(text: string, size: number, posY: number) {
+    this.doc.setFontSize(size);
+    const textWidth = this.getTextWidth(text, size);
+    const centerX = (this.pdfOption.pageWidth - textWidth) / 2;
 
-    const y = 10;
-    this.doc.text(text, centerX, y);
+    this.doc.text(text, centerX, posY);
   }
 
   /**
@@ -81,9 +86,15 @@ export class PdfGenerator {
     pos: Position,
     maxWidth: number = this.pdfOption.pageWidth
   ) {
+    this.doc.setFontSize(this.pdfOption.sizes.normal);
     this.doc.text(content, pos.x, pos.y, { maxWidth });
   }
-
+  protected getTextWidth(text: string, textSize: number) {
+    return (
+      (this.doc.getStringUnitWidth(text) * textSize) /
+      this.doc.internal.scaleFactor
+    );
+  }
   protected getZeroForBody() {
     return (this.pdfOption.pageHeader * this.pdfOption.pageHeight) / 100;
   }

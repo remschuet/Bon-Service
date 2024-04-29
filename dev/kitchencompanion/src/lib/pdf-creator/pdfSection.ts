@@ -9,9 +9,9 @@ export class PdfSection extends PdfGenerator {
   protected sections: Section = {};
 
   constructor(
+    pdfOption: PdfOption | undefined = undefined,
     orientation: OrientationPDF = OrientationPDF.Portrait,
-    unit: UnitPDF = UnitPDF.cm,
-    pdfOption: PdfOption | undefined = undefined
+    unit: UnitPDF = UnitPDF.cm
   ) {
     super(orientation, unit, pdfOption);
   }
@@ -44,7 +44,7 @@ export class PdfSection extends PdfGenerator {
         x: startX + this.gridGap,
         y: startY + this.gridGap,
       },
-      maxWidth
+      maxWidth - 30
     );
   }
 
@@ -104,15 +104,27 @@ export class PdfSection extends PdfGenerator {
       for (let i = 0; i < content.length; i++) {
         const text =
           spacer === "i" ? `${i + 1}. ${content[i]}` : spacer + content[i];
+        const lines = this.doc.splitTextToSize(content[i], maxWidth - 20);
+        const lineHeight = this.doc.getLineHeight();
 
-        this.addText(
-          text,
-          {
-            x: startX + this.gridGap,
-            y: posY + this.gridGap,
-          },
-          maxWidth
-        );
+        let fistLine = true;
+        for (const line of lines) {
+          let text = line;
+          if (fistLine) {
+            text = spacer === "i" ? `${i + 1}. ${line}` : spacer + line;
+            fistLine = false;
+          }
+          this.addText(
+            text,
+            {
+              x: startX + this.gridGap,
+              y: posY + this.gridGap,
+            },
+            maxWidth - 10
+          );
+
+          posY += lineHeight / 2;
+        }
         posY += 8;
       }
     } else {

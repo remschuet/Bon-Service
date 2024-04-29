@@ -13,23 +13,25 @@ async function contactCreation() {
   const contactsData: TableDataType[] = JSON.parse(jsonContact);
 
   await pdf.createGrid(data, contactsData);
-  pdf.setHeader();
+  pdf.setHeader("Contacts");
   // pdfGenerator.addText("contact", { x: 20, y: 30 });
   pdf.openPdf();
 }
 
 async function testSection() {
-  const pdf = new PdfSection();
-  let PdfOption = new PdfOptionBuilder(pdf.getDoc())
-    .setHeaderPercent(10)
-    .build();
-  pdf.setOption(PdfOption);
+  let PdfOption = new PdfOptionBuilder().setPageHeader(10).build();
+  const pdf = new PdfSection(PdfOption);
+  pdf.setHeader(
+    "Recipe",
+    "Cuisine Faro",
+    "Recette de soupe boloniaise italienne"
+  );
   const sections: Section = {
     Ingredients: {
       start: { x: 0, y: 0 },
       end: { x: 2, y: 8 },
     },
-    "cle 2": {
+    Etapes: {
       start: { x: 2, y: 0 },
       end: { x: 8, y: 9 },
     },
@@ -37,10 +39,19 @@ async function testSection() {
   pdf.createSection(sections);
   pdf.addTextToSection(
     "Ingredients",
-    ["Ingredient:", "Tomates2", "salade2", "haricots2"],
+    ["INGREDIENTS:", "Tomates2", "salade2", "haricots2"],
     "-"
   );
-  pdf.addTextToSection("cle 2", "Voici du texte qui est drolement inutile");
+  pdf.addTextToSection(
+    "Etapes",
+    [
+      "ETAPES",
+      "Dans une poêle ou une casserole, faire revenir les légumes doucement dans l’huile environ 5 minutes ou jusqu’à ce qu’ils soient tendres. Ajouter la viande et faire revenir à feu vif en remuant jusqu’à ce qu’elle soit bien émiettée et dorée. Saler et poivrer.",
+      "Ajouter la pâte de tomates, le piment et la muscade. Bien mélanger. Poursuivre la cuisson, en remuant fréquemment, environ 3 minutes. Ajouter la crème et le fromage. Réchauffer en remuant. Ajouter de l’eau au besoin pour allonger la sauce. Rectifier l’assaisonnement.",
+      "Ajouter des pâtes et mélanger.",
+    ],
+    "i"
+  );
   pdf.openPdf();
 }
 
