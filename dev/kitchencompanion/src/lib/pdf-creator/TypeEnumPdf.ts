@@ -16,3 +16,11 @@ export type Position = {
 };
 
 export type TableDataType = { [key: string]: string };
+
+export type Coordinates = {
+  start: { x: number; y: number };
+  end: { x: number; y: number };
+};
+export interface Section {
+  [key: string]: Coordinates;
+}

@@ -16,7 +16,7 @@ export class PdfTable extends PdfGenerator {
     unit: UnitPDF = UnitPDF.cm,
     pdfOption: PdfOption | undefined = undefined
   ) {
-    super(orientation, unit);
+    super(orientation, unit, pdfOption);
   }
 
   /**

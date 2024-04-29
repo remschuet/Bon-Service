@@ -1,7 +1,7 @@
 import { PdfTable } from "./pdfTable";
-import { TableDataType } from "./TypeEnumPdf";
+import { TableDataType, Section } from "./TypeEnumPdf";
 import { contacts } from "./fakeContact";
-import { PdfSection, Section } from "./pdfSection";
+import { PdfSection } from "./pdfSection";
 
 async function contactCreation() {
   // Exemple d'utilisation
@@ -30,8 +30,8 @@ async function testSection() {
     },
   };
   pdf.createSection(sections);
-  pdf.addTextSection("cle 1", "Voici du texte qui est drolement inutile");
-  pdf.addTextListSection("cle 2", ["Tomates2", "salade2", "haricots2"], "-");
+  pdf.addTextToSection("cle 1", "Voici du texte qui est drolement inutile");
+  pdf.addTextToSection("cle 2", ["Tomates2", "salade2", "haricots2"], "-");
   pdf.openPdf();
 }
 

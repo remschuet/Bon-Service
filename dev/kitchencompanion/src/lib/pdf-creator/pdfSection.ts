@@ -1,14 +1,6 @@
 import { PdfGenerator } from "./pdf";
-import { OrientationPDF, UnitPDF } from "./TypeEnumPdf";
+import { OrientationPDF, UnitPDF, Coordinates, Section } from "./TypeEnumPdf";
 import { PdfOption } from "./pdfOption";
-
-type Coordinates = {
-  start: { x: number; y: number };
-  end: { x: number; y: number };
-};
-export interface Section {
-  [key: string]: Coordinates;
-}
 
 export class PdfSection extends PdfGenerator {
   protected gridX: number = 10;
@@ -21,7 +13,7 @@ export class PdfSection extends PdfGenerator {
     unit: UnitPDF = UnitPDF.cm,
     pdfOption: PdfOption | undefined = undefined
   ) {
-    super(orientation, unit);
+    super(orientation, unit, pdfOption);
   }
 
   public createSection(sections: Section) {
@@ -42,8 +34,10 @@ export class PdfSection extends PdfGenerator {
     const section = this.sections[sectionName];
     const maxWidth = (section.end.x * this.pdfOption.pageWidth) / 10;
     const startX = (section.start.x * this.pdfOption.pageWidth) / 10;
-    const startY = (section.start.y * this.pdfOption.pageHeight) / 10;
-    console.log(maxWidth);
+    const startY =
+      (section.start.y * this.pdfOption.pageHeight) / 10 +
+      this.getZeroForBody();
+
     this.addText(
       content,
       {
@@ -72,9 +66,11 @@ export class PdfSection extends PdfGenerator {
     const section = this.sections[sectionName];
     const maxWidth = (section.end.x * this.pdfOption.pageWidth) / 10;
     const startX = (section.start.x * this.pdfOption.pageWidth) / 10;
-    const startY = (section.start.y * this.pdfOption.pageHeight) / 10;
+    const startY =
+      (section.start.y * this.pdfOption.pageHeight) / 10 +
+      this.getZeroForBody();
     let posY = startY;
-    console.log(startX, " - ", maxWidth);
+
     for (let i = 0; i < content.length; i++) {
       const text =
         spacer === "i" ? `${i + 1}. ${content[i]}` : spacer + content[i];
@@ -88,6 +84,46 @@ export class PdfSection extends PdfGenerator {
         maxWidth
       );
       posY += 8;
+    }
+  }
+
+  public addTextToSection(
+    sectionName: string,
+    content: string | string[],
+    spacer: string = ""
+  ) {
+    const section = this.sections[sectionName];
+    const maxWidth = (section.end.x * this.pdfOption.pageWidth) / 10;
+    const startX = (section.start.x * this.pdfOption.pageWidth) / 10;
+    const startY =
+      (section.start.y * this.pdfOption.pageHeight) / 10 +
+      this.getZeroForBody();
+    let posY = startY;
+
+    if (Array.isArray(content)) {
+      for (let i = 0; i < content.length; i++) {
+        const text =
+          spacer === "i" ? `${i + 1}. ${content[i]}` : spacer + content[i];
+
+        this.addText(
+          text,
+          {
+            x: startX + this.gridGap,
+            y: posY + this.gridGap,
+          },
+          maxWidth
+        );
+        posY += 8;
+      }
+    } else {
+      this.addText(
+        content,
+        {
+          x: startX + this.gridGap,
+          y: startY + this.gridGap,
+        },
+        maxWidth
+      );
     }
   }
 

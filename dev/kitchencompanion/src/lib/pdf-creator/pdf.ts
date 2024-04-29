@@ -81,4 +81,8 @@ export class PdfGenerator {
   ) {
     this.doc.text(content, pos.x, pos.y, { maxWidth });
   }
+
+  protected getZeroForBody() {
+    return (this.pdfOption.pageHeader * this.pdfOption.pageHeight) / 100;
+  }
 }
