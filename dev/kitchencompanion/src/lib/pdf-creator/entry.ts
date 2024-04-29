@@ -39,8 +39,17 @@ async function testSection() {
   pdf.createSection(sections);
   pdf.addTextToSection(
     "Ingredients",
-    ["INGREDIENTS", "Tomates2", "salade2", "haricots2"],
-    ["INGREDIENTS"],
+    [
+      "INGREDIENTS",
+      "Tomates2",
+      "salade2",
+      "haricots2",
+      "ALERGENES",
+      "humeur",
+      "humus",
+      "Saute",
+    ],
+    ["INGREDIENTS", "ALERGENES"],
     "-",
     5,
     1
@@ -55,7 +64,7 @@ async function testSection() {
     ],
     ["ETAPES"],
     "i",
-    5,
+    15,
     30
   );
   pdf.openPdf();
