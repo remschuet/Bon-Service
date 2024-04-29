@@ -74,7 +74,11 @@ export class PdfGenerator {
    * @param content The text to be added.
    * @param pos The position where the text will be added.
    */
-  public addText(content: string, pos: Position) {
-    this.doc.text(content, pos.x, pos.y);
+  public addText(
+    content: string,
+    pos: Position,
+    maxWidth: number = this.pdfOption.pageWidth
+  ) {
+    this.doc.text(content, pos.x, pos.y, { maxWidth });
   }
 }
