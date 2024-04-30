@@ -74,7 +74,9 @@ export class PdfSection extends PdfGenerator {
           this.doc.setFontSize(this.pdfOption.sizes.normal);
           posY += lineHeight / 2;
         }
-        posY += 8;
+        if (lines.length > 1 || title.includes(content[i + 1])) {
+          posY += 8;
+        }
       }
     } else {
       this.addText(
