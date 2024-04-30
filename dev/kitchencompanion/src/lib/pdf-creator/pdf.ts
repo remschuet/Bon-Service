@@ -58,6 +58,15 @@ export class PdfGenerator {
     window.open(pdfUrl, "_blank");
   }
 
+  public setProperties() {
+    this.doc.setProperties({
+      title: "Titre du document",
+      subject: "Sujet du document",
+      author: "Auteur du document",
+      keywords: "mots clés, pour, document, PDF",
+      creator: "Votre nom ou l'outil utilisé pour générer le PDF",
+    });
+  }
   public setHeader(
     title: string,
     subTitle: string = "",
