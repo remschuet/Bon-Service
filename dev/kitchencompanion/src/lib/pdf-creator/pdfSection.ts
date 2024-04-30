@@ -5,10 +5,16 @@ import {
   Coordinates,
   Section,
   TableDataType,
-} from "./TypeEnumPdf";
+} from "./TypePdf";
 import { PdfOption } from "./pdfOption";
 import { PdfTable } from "./pdfTable";
 import autoTable from "jspdf-autotable";
+
+/**
+ * PdfSection extends PdfGenerator
+ * The class provides methods for managing sections in a PDF document,
+ * including creating sections, adding grids, inserting text with flexible and inserting grid.
+ */
 
 export class PdfSection extends PdfGenerator {
   protected gridX: number = 10;
@@ -24,6 +30,11 @@ export class PdfSection extends PdfGenerator {
     super(orientation, unit, pdfOption);
   }
 
+  /**
+   * Creates sections within the PDF based on the provided Section object.
+   *
+   * @param sections The Section object defining the sections to be created.
+   */
   public createSection(sections: Section) {
     for (const key in sections) {
       if (sections.hasOwnProperty(key)) {
@@ -32,6 +43,13 @@ export class PdfSection extends PdfGenerator {
     }
   }
 
+  /** IN PROGRESS
+   * Adds a grid with customizable styles to the specified section in the PDF.
+   *
+   * @param sectionName The name of the section to add the grid to.
+   * @param leftGap The left margin for the grid. Defaults to 0.
+   * @param topGap The top margin for the grid. Defaults to 0.
+   */
   public addGridToSection(
     sectionName: string,
     leftGap: number = 0,
@@ -69,6 +87,17 @@ export class PdfSection extends PdfGenerator {
     });
   }
 
+  /**
+   * Adds text with flexible formatting options to the specified section in the PDF.
+   *
+   * @param sectionName The name of the section to add the text to.
+   * @param content The text content to be added. Can be a single string or an array of strings.
+   * @param title An array of strings representing titles. Defaults to an empty array.
+   * @param spacer A string to be added before each line of text. Defaults to an empty string.
+   * IF spacer == i, it will use iterators
+   * @param leftGap The left margin for the text. Defaults to gridGap.
+   * @param rightGap The right margin for the text. Defaults to gridGap.
+   */
   public addTextToSection(
     sectionName: string,
     content: string | string[],
@@ -136,6 +165,12 @@ export class PdfSection extends PdfGenerator {
     }
   }
 
+  /**
+   * Retrieves the coordinates of the specified section.
+   *
+   * @param sectionName The name of the section to get coordinates for.
+   * @returns The coordinates of the section as a Coordinates object.
+   */
   private getSectionCoords(sectionName: string) {
     const section = this.sections[sectionName];
     if (!section) {

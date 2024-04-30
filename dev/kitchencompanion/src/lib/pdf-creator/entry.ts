@@ -1,31 +1,47 @@
 import { PdfTable } from "./pdfTable";
-import { TableDataType, Section } from "./TypeEnumPdf";
+import { TableDataType, Section } from "./TypePdf";
 import { contacts } from "./fakeContact";
 import { PdfSection } from "./pdfSection";
 import { PdfOptionBuilder } from "./pdfOption";
+/**
+ * This file is the entry point for the pdf creator
+ * This is not part of the library, is objectif it's to test the library
+ */
 
-async function contactCreation() {
-  // Exemple d'utilisation
+/**
+ * create contact pdf with table
+ */
+async function testContact() {
   const pdf = new PdfTable();
+  // The data we need to take care in the Contacts listes
   let data = ["name", "description", "phoneNumber", "compteNumber"];
-
   const jsonContact = JSON.stringify(contacts, null, 2);
   const contactsData: TableDataType[] = JSON.parse(jsonContact);
-  console.log(contactsData);
+
+  // Create pdf grid and set the table
   await pdf.createGrid(data, contactsData);
+
+  // Set Header
   pdf.setHeader("Contacts");
-  // pdfGenerator.addText("contact", { x: 20, y: 30 });
+
   pdf.openPdf();
 }
 
+/**
+ * Create recipe pdf with table and information
+ */
 async function testSection() {
+  // Step up specific options for the Pdf
   let PdfOption = new PdfOptionBuilder().setPageHeader(10).build();
   const pdf = new PdfSection(PdfOption);
+  // Set up header
   pdf.setHeader(
     "Recipe",
     "Cuisine Faro",
     "Recette de soupe boloniaise italienne"
   );
+  // Cut the section, in the option it's on base 10
+  // Attribute a name (tag) for the sections
   const sections: Section = {
     Ingredients: {
       start: { x: 0, y: 0 },
@@ -44,7 +60,9 @@ async function testSection() {
       end: { x: 10, y: 10 },
     },
   };
+  // Create sections in the pdf
   pdf.createSection(sections);
+  // Add text to specific sections
   pdf.addTextToSection(
     "Ingredients",
     [
@@ -59,8 +77,8 @@ async function testSection() {
     ],
     ["INGREDIENTS", "ALERGENES"],
     "-",
-    10,
-    1
+    10, // space x
+    1 // space y
   );
   pdf.addTextToSection(
     "Etapes",
@@ -76,10 +94,14 @@ async function testSection() {
     30
   );
   pdf.addTextToSection("infos", "Created with BonService");
+  // Add grid to the pdf at the section
   pdf.addGridToSection("timer", 15, 5);
   pdf.openPdf();
 }
 
+/**
+ * Entry point from the external interface
+ */
 export async function entryPoint() {
   testSection();
 }

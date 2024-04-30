@@ -4,15 +4,37 @@ interface FontSizes {
   [key: string]: number;
 }
 
-const fontSizes: FontSizes = {
+/**
+ * This class is a PdfOptionBuilder
+ * It returns an instance of PdfOption
+ * The variables of PdfOption are mostly readonly
+ *
+ * All options have default values
+ * Each of them can be modified
+ *
+ * The initDoc method of PdfOption must be called once the jsPDF document is created
+ * (The method is by default called in the library regardless of whether we change values in the builder)
+ *
+ * The method applies certain values to the PDF to set up the predefined values properly
+ *
+ * INITIALIZED WITHOUT BUILDER, initialization with initDoc
+ * pageWidth: number, represents the X size in points (jsPDF)
+ * pageHeight: number, represents the Y size in points (jsPDF)
+ *
+ * INITIALIZED WITH BUILDER
+ * pageHeader: number, represents the percentage of space allocated to the header
+ * pageFooter: number, represents the percentage of space allocated to the footer
+ * font: string, is the font used for the PDF document
+ * sizes: fontSize, is a list that defines possible values for text size
+ */
+
+export const fontSizes: FontSizes = {
   title: 17,
   subTitle: 15,
   normal: 12,
 };
 
 export class PdfOptionBuilder {
-  private pageWidth: number = -1;
-  private pageHeight: number = -1;
   private pageHeader: number = 20;
   private pageFooter: number = 20;
   private font: string = "Helvetica";
@@ -47,8 +69,6 @@ export class PdfOptionBuilder {
 
   public build(): PdfOption {
     return new PdfOption(
-      this.pageWidth,
-      this.pageHeight,
       this.pageHeader,
       this.pageFooter,
       this.sizes,
@@ -66,21 +86,24 @@ export class PdfOption {
   public readonly font: string;
 
   constructor(
-    pageWidth: number,
-    pageHeight: number,
     pageHeader: number,
     pageFooter: number,
     sizes: FontSizes,
     font: string
   ) {
-    this.pageWidth = pageWidth;
-    this.pageHeight = pageHeight;
+    this.pageWidth = -1;
+    this.pageHeight = -1;
     this.pageHeader = pageHeader;
     this.pageFooter = pageFooter;
     this.sizes = sizes;
     this.font = font;
   }
 
+  /**
+   * Apply the options set up to a specific doc
+   *
+   * @param doc: a jsPDF document
+   */
   public initDoc(doc: jsPDF) {
     this.pageWidth = doc.internal.pageSize.getWidth();
     this.pageHeight = doc.internal.pageSize.getHeight();
@@ -89,18 +112,3 @@ export class PdfOption {
     doc.setFont(this.font);
   }
 }
-
-/**
- * UTILISATION
- * const doc = new jsPDF();
-
-const pdfOption = new PdfOptionBuilder(doc)
-  .setPageHeader(30)
-  .setPageFooter(40)
-  .setHeaderPercent(30)
-  .setFooterPercent(30)
-  .build();
-
-// Now you can use pdfOption in your code
-console.log(pdfOption.pageWidth); // Output: width of the page
- */

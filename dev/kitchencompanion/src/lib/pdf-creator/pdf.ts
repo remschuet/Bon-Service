@@ -1,6 +1,6 @@
-import { OrientationPDF, UnitPDF, Position } from "./TypeEnumPdf";
+import { OrientationPDF, UnitPDF, Position } from "./TypePdf";
 import jsPDF from "jspdf";
-import { PdfOption, PdfOptionBuilder } from "./pdfOption";
+import { PdfOption, fontSizes, PdfOptionBuilder } from "./pdfOption";
 
 /*
  * DOCS
@@ -9,13 +9,23 @@ import { PdfOption, PdfOptionBuilder } from "./pdfOption";
  *https://artskydj.github.io/jsPDF/docs/module-cell.html#~table
  */
 
+/**
+ * Class PdfGenerator
+ * For generating PDF documents.
+ * This class provides methods to create, customize, and download PDF files.
+ */
 export class PdfGenerator {
-  protected posX: number = 20;
-  protected posY: number = 0;
-
+  // Options for the pdf
   protected pdfOption: PdfOption;
-
+  // the js-doc pdf
   protected doc;
+
+  /**
+   * Constructs a new PdfGenerator instance.
+   * @param orientation The orientation of the document (default: Portrait).
+   * @param unit The unit of measurement for the document (default: cm).
+   * @param pdfOption Optional PdfOption object for custom configuration (default: PdfOption).
+   */
   constructor(
     orientation: OrientationPDF = OrientationPDF.Portrait,
     unit: UnitPDF = UnitPDF.cm,
@@ -23,24 +33,23 @@ export class PdfGenerator {
   ) {
     this.doc = new jsPDF({ putOnlyUsedFonts: true, orientation: orientation });
 
-    if (pdfOption === undefined) {
-      this.pdfOption = new PdfOptionBuilder().build();
-    } else {
-      this.pdfOption = pdfOption;
-    }
+    this.pdfOption =
+      pdfOption !== undefined ? pdfOption : new PdfOptionBuilder().build();
+
+    // Init the options to the pdf doc
     this.pdfOption.initDoc(this.doc);
   }
 
-  public setOption(option: PdfOption) {
-    this.pdfOption = option;
-  }
-
+  /**
+   * Gets the generated PDF document instance.
+   * @returns The PDF document instance.
+   */
   public getDoc() {
     return this.doc;
   }
 
   /**
-   * Downloads the generated PDF file.
+   * Downloads the generated PDF file with the specified name.
    * @param name The desired name for the PDF file.
    */
   public dowloadPdf(name: string) {
@@ -48,16 +57,17 @@ export class PdfGenerator {
   }
 
   /**
-   * Opens the generated PDF file in a new window.
+   * Opens the generated PDF file in a new browser window.
    */
   public openPdf() {
     const pdfBlob = this.doc.output("blob");
     const pdfUrl = URL.createObjectURL(pdfBlob);
-
-    // Open url in browser
     window.open(pdfUrl, "_blank");
   }
 
+  /** IN PROGRESS
+   * Sets various properties for the PDF document, such as title, author, and keywords.
+   */
   public setProperties() {
     this.doc.setProperties({
       title: "Titre du document",
@@ -67,16 +77,36 @@ export class PdfGenerator {
       creator: "Votre nom ou l'outil utilisé pour générer le PDF",
     });
   }
+
+  /**
+   * Sets the header section of the PDF document.
+   * @param title The title for the header.
+   * @param subTitle The subtitle for the header. Defaults to an empty string.
+   * @param description The description for the header. Defaults to an empty string.
+   * @param titleSize The font size for the title. Defaults to the 'title'
+   * @param subTitleSize The font size for the subtitle. Defaults to the 'subTitle'
+   * @param descriptionSize The font size for the description. Defaults to the 'normal'
+   */
   public setHeader(
     title: string,
     subTitle: string = "",
-    description: string = ""
+    description: string = "",
+    titleSize: number = fontSizes.title,
+    subTitleSize: number = fontSizes.subTitle,
+    descriptionSize: number = fontSizes.normal
   ) {
-    this.displayHeader(title, this.pdfOption.sizes.title, 10);
-    this.displayHeader(subTitle, this.pdfOption.sizes.subTitle, 20);
-    this.displayHeader(description, this.pdfOption.sizes.normal, 25);
+    this.displayHeader(title, titleSize, 10);
+    this.displayHeader(subTitle, subTitleSize, 20);
+    this.displayHeader(description, descriptionSize, 25);
   }
 
+  /**
+   * Displays a header text in the PDF document.
+   *
+   * @param text The text content to be displayed in the header.
+   * @param size The font size of the header text.
+   * @param posY The vertical position (Y-coordinate) of the header text.
+   */
   private displayHeader(text: string, size: number, posY: number) {
     this.doc.setFontSize(size);
     const textWidth = this.getTextWidth(text, size);
@@ -86,25 +116,41 @@ export class PdfGenerator {
   }
 
   /**
-   * Adds a text to the PDF document at the specified position.
-   * @param content The text to be added.
+   * Adds text to the PDF document at the specified position.
+   *
+   * @param content The text content to be added.
    * @param pos The position where the text will be added.
+   * @param maxWidth The maximum width for the text.
+   * @param fontSize The font size for the text.
    */
   public addText(
     content: string,
     pos: Position,
     maxWidth: number = this.pdfOption.pageWidth,
-    fontSize: number = this.pdfOption.sizes.normal
+    fontSize: number = fontSizes.normal
   ) {
     this.doc.setFontSize(fontSize);
     this.doc.text(content, pos.x, pos.y, { maxWidth });
   }
+
+  /**
+   * Computes the width of a text based on its font size.
+   *
+   * @param text The text whose width is to be calculated.
+   * @param textSize The font size of the text.
+   * @returns The calculated width of the text.
+   */
   protected getTextWidth(text: string, textSize: number) {
     return (
       (this.doc.getStringUnitWidth(text) * textSize) /
       this.doc.internal.scaleFactor
     );
   }
+
+  /**
+   * Computes the 0 for body, exclude the header size of the document.
+   * @returns The computed Y position value.
+   */
   protected getZeroForBody() {
     return (this.pdfOption.pageHeader * this.pdfOption.pageHeight) / 100;
   }

@@ -1,16 +1,20 @@
 import { PdfGenerator } from "./pdf";
-import {
-  OrientationPDF,
-  UnitPDF,
-  Position,
-  TableDataType,
-} from "./TypeEnumPdf";
-import { contacts } from "./fakeContact";
-import jsPDF from "jspdf";
+import { OrientationPDF, UnitPDF, TableDataType } from "./TypePdf";
 import autoTable from "jspdf-autotable";
 import { PdfOption, PdfOptionBuilder } from "./pdfOption";
 
+/**
+ * PdfTable extends PdfGenerator
+ * The class provides methods for generating and formatting tables in a PDF document.
+ */
 export class PdfTable extends PdfGenerator {
+  /**
+   * Creates an instance of PdfTable.
+   *
+   * @param orientation The orientation of the PDF document. Defaults to Portrait.
+   * @param unit The unit of measurement for the PDF document. Defaults to cm.
+   * @param pdfOption An optional PdfOption object to customize PDF settings.
+   */
   constructor(
     orientation: OrientationPDF = OrientationPDF.Portrait,
     unit: UnitPDF = UnitPDF.cm,
@@ -22,10 +26,9 @@ export class PdfTable extends PdfGenerator {
   /**
    * Formats the content data into a 2D array of strings, where each row represents a record and each column represents a field.
    *
-   * @param title - An array of strings representing the column titles for the grid.
-   * @param contacts - An array of objects representing the content data for the grid.
-   *
-   * @returns A 2D array of strings where each row represents a record and each column represents a field.
+   * @param title An array of strings representing the column titles for the grid.
+   * @param contacts An array of objects representing the content data for the grid.
+   * @returns A 2D array of strings representing the formatted data for the grid.
    */
   private async formatColData(title: string[], contacts: TableDataType[]) {
     const data: string[][] = contacts.map((contact) => {
@@ -34,7 +37,7 @@ export class PdfTable extends PdfGenerator {
         if (contact.hasOwnProperty(key)) {
           rowData.push(contact[key]);
         } else {
-          // Si la propriété n'existe pas, ajoutez une chaîne vide
+          // If the preperty doens't exist append Aucune Valeur
           console.log("proprety doesn't exist: ", key);
           rowData.push("Aucune Valeur");
         }
@@ -47,8 +50,8 @@ export class PdfTable extends PdfGenerator {
   /**
    * Creates a grid in the PDF document using the provided column titles and content data.
    *
-   * @param colTitle - An array of strings representing the column titles for the grid.
-   * @param content - An array of objects representing the content data for the grid.
+   * @param colTitle An array of strings representing the column titles for the grid.
+   * @param content An array of objects representing the content data for the grid.
    */
   public async createGrid(colTitle: string[], content: TableDataType[]) {
     const headers = this.createHeaders(colTitle);
@@ -60,6 +63,13 @@ export class PdfTable extends PdfGenerator {
       body: data,
     });
   }
+
+  /**
+   * Creates headers for the grid based on the provided keys (column titles).
+   *
+   * @param keys An array of strings representing the column titles for the grid.
+   * @returns An array of strings representing the headers for the grid.
+   */
   protected createHeaders(keys: string[]): string[] {
     return keys;
   }
