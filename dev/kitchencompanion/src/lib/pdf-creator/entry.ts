@@ -11,7 +11,7 @@ async function contactCreation() {
 
   const jsonContact = JSON.stringify(contacts, null, 2);
   const contactsData: TableDataType[] = JSON.parse(jsonContact);
-
+  console.log(contactsData);
   await pdf.createGrid(data, contactsData);
   pdf.setHeader("Contacts");
   // pdfGenerator.addText("contact", { x: 20, y: 30 });
@@ -72,6 +72,7 @@ async function testSection() {
     30
   );
   pdf.addTextToSection("infos", "Created with BonService");
+  pdf.addGridToSection();
   pdf.openPdf();
 }
 

@@ -1,8 +1,16 @@
 import { PdfGenerator } from "./pdf";
-import { OrientationPDF, UnitPDF, Coordinates, Section } from "./TypeEnumPdf";
+import {
+  OrientationPDF,
+  UnitPDF,
+  Coordinates,
+  Section,
+  TableDataType,
+} from "./TypeEnumPdf";
 import { PdfOption } from "./pdfOption";
+import { PdfTable } from "./pdfTable";
+import autoTable from "jspdf-autotable";
 
-export class PdfSection extends PdfGenerator {
+export class PdfSection extends PdfTable {
   protected gridX: number = 10;
   protected gridY: number = 10;
   protected gridGap: number = 10;
@@ -24,7 +32,19 @@ export class PdfSection extends PdfGenerator {
     }
   }
 
-  private addTextList() {}
+  public addGridToSection() {
+    const headers = ["temps", "cuisson", "temperature"];
+    const data = [
+      ["120 mins", "30 mins", "350 degrés"],
+      ["120 mins", "30 mins", "350 degrés"],
+    ];
+
+    autoTable(this.doc, {
+      startY: (this.pdfOption.pageHeader * this.pdfOption.pageHeight) / 100,
+      head: [headers],
+      body: data,
+    });
+  }
 
   public addTextToSection(
     sectionName: string,
