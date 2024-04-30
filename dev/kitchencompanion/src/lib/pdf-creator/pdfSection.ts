@@ -32,7 +32,17 @@ export class PdfSection extends PdfTable {
     }
   }
 
-  public addGridToSection() {
+  public addGridToSection(
+    sectionName: string,
+    leftGap: number = 0,
+    topGap: number = 0
+  ) {
+    const section = this.sections[sectionName];
+    if (!section) {
+      console.error(`Section "${sectionName}" not found.`);
+      return null;
+    }
+
     const headers = ["temps", "cuisson", "temperature"];
     const data = [
       ["120 mins", "30 mins", "350 degrés"],
@@ -46,8 +56,11 @@ export class PdfSection extends PdfTable {
     };
 
     autoTable(this.doc, {
-      startY: 50,
-      margin: 70,
+      startY:
+        (section.start.y * this.pdfOption.pageHeight) / 10 +
+        this.getZeroForBody() +
+        topGap,
+      margin: (section.start.x * this.pdfOption.pageWidth) / 10 + leftGap,
       head: [headers],
       body: data,
       columnStyles: columnStyles,

@@ -31,8 +31,12 @@ async function testSection() {
       start: { x: 0, y: 0 },
       end: { x: 3, y: 8 },
     },
-    Etapes: {
+    timer: {
       start: { x: 2, y: 0 },
+      end: { x: 8, y: 1 },
+    },
+    Etapes: {
+      start: { x: 2, y: 1 },
       end: { x: 8, y: 9 },
     },
     infos: {
@@ -72,7 +76,7 @@ async function testSection() {
     30
   );
   pdf.addTextToSection("infos", "Created with BonService");
-  pdf.addGridToSection();
+  pdf.addGridToSection("timer", 15, 5);
   pdf.openPdf();
 }
 
