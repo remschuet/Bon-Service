@@ -39,10 +39,18 @@ export class PdfSection extends PdfTable {
       ["120 mins", "30 mins", "350 degrés"],
     ];
 
+    const columnStyles = {
+      0: { cellWidth: 40 },
+      1: { cellWidth: 40 },
+      2: { cellWidth: 50 },
+    };
+
     autoTable(this.doc, {
-      startY: (this.pdfOption.pageHeader * this.pdfOption.pageHeight) / 100,
+      startY: 50,
+      margin: 70,
       head: [headers],
       body: data,
+      columnStyles: columnStyles,
     });
   }
 
