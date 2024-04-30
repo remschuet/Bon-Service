@@ -35,6 +35,10 @@ async function testSection() {
       start: { x: 2, y: 0 },
       end: { x: 8, y: 9 },
     },
+    infos: {
+      start: { x: 6.5, y: 8.3 },
+      end: { x: 10, y: 10 },
+    },
   };
   pdf.createSection(sections);
   pdf.addTextToSection(
@@ -67,6 +71,7 @@ async function testSection() {
     15,
     30
   );
+  pdf.addTextToSection("infos", "Created with BonService");
   pdf.openPdf();
 }
 
