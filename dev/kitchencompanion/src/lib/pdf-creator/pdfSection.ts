@@ -10,7 +10,7 @@ import { PdfOption } from "./pdfOption";
 import { PdfTable } from "./pdfTable";
 import autoTable from "jspdf-autotable";
 
-export class PdfSection extends PdfTable {
+export class PdfSection extends PdfGenerator {
   protected gridX: number = 10;
   protected gridY: number = 10;
   protected gridGap: number = 10;
@@ -44,10 +44,7 @@ export class PdfSection extends PdfTable {
     }
 
     const headers = ["temps", "cuisson", "temperature"];
-    const data = [
-      ["120 mins", "30 mins", "350 degrés"],
-      ["120 mins", "30 mins", "350 degrés"],
-    ];
+    const data = [["120 mins", "30 mins", "350 degrés"]];
 
     const columnStyles = {
       0: { cellWidth: 40 },
@@ -56,6 +53,10 @@ export class PdfSection extends PdfTable {
     };
 
     autoTable(this.doc, {
+      headStyles: { fillColor: [124, 95, 240] },
+      styles: { halign: "center" },
+      alternateRowStyles: { fillColor: [231, 215, 252] },
+      tableLineColor: [124, 95, 240],
       startY:
         (section.start.y * this.pdfOption.pageHeight) / 10 +
         this.getZeroForBody() +
@@ -63,6 +64,7 @@ export class PdfSection extends PdfTable {
       margin: (section.start.x * this.pdfOption.pageWidth) / 10 + leftGap,
       head: [headers],
       body: data,
+
       columnStyles: columnStyles,
     });
   }

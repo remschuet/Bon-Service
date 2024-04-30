@@ -59,7 +59,7 @@ async function testSection() {
     ],
     ["INGREDIENTS", "ALERGENES"],
     "-",
-    5,
+    10,
     1
   );
   pdf.addTextToSection(
