@@ -1,6 +1,7 @@
 import os
 import openai
 import json
+import re
 
 class Inferencer:
     def __init__(self):
@@ -80,11 +81,10 @@ class Inferencer:
             max_tokens=4096,
         )
 
-        usage = response.usage
-        print(usage)
-
         json_string = response.choices[0].message.content.replace("```json\n", "").replace("\n```", "");
-        json_data = json.loads(json_string)
+        array =  re.search(r'\[(.*?)\]', json_string).group(0)
+        json_data = json.loads(array)
 
+        print(json_data)
 
         return json_data
