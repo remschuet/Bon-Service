@@ -8,7 +8,6 @@ import { useSearchParams } from "next/navigation";
 import { BadgePlus } from "lucide-react";
 import { useRecipes } from "@/hooks/useRecipes";
 import { RecipeList } from "./_components/recipe-list";
-import { Recipe } from "@prisma/client";
 
 export default function RecipeBooksPage() {
   useRedirectMembers();
@@ -18,14 +17,15 @@ export default function RecipeBooksPage() {
   console.log(recipes);
 
   return (
-    <div className='container mx-auto'>
-      <div className='flex gap-5 justify-end mt-6'>
+    <div className="container mx-auto">
+      <div className="flex gap-5 justify-end mt-6">
         <RedirectButton
           href={`/recipes/add-recipe/?recipeBookId=${recipeBookId.get(
             "recipeBookId"
-          )}`}>
-          <Button className='flex gap-2'>
-            <BadgePlus className='w-4' />
+          )}`}
+        >
+          <Button className="flex gap-2">
+            <BadgePlus className="w-4" />
             <span>Ajouter une recette</span>
           </Button>
         </RedirectButton>

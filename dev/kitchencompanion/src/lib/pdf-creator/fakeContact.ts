@@ -1,5 +1,9 @@
 import { Contact } from "@prisma/client";
 
+/**
+ * This file contain some fake contact for test
+ */
+
 export const contacts: Contact[] = [
   {
     id: "123",

@@ -8,7 +8,6 @@ import {
 
 import { User, UserTypes } from "@prisma/client";
 import { IngredientSchema } from "@/lib/validation";
-import { GeneratePDF } from "../_export/pdf";
 
 /**
  * FIX ME, Updates the user's profile information.

@@ -4,8 +4,10 @@ import { getAllRecipeByBooksId } from "@/hooks/_action/action";
 
 export function useRecipes(recipeBookId: string): {
   recipes: Recipe[];
+  recipesCount: number;
 } {
   const [recipes, setRecipes] = useState<Recipe[]>([]);
+  const recipesCount = recipes.length;
 
   useEffect(() => {
     const fetchRecipes = async () => {
@@ -20,5 +22,5 @@ export function useRecipes(recipeBookId: string): {
     fetchRecipes();
   }, []);
 
-  return { recipes };
+  return { recipes, recipesCount };
 }

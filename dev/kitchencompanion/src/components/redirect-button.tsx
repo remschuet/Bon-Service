@@ -6,9 +6,7 @@ export function RedirectButton({
   ...props
 }: LinkProps & { children: React.ReactNode }) {
   return (
-    <Link
-      {...props}
-      href={href}>
+    <Link {...props} href={href}>
       {children}
     </Link>
   );

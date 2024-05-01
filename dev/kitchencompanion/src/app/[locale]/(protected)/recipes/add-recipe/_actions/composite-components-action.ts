@@ -11,13 +11,13 @@ import { Recipe, RecipeData } from "@/lib/composite/recipe";
 
 export async function getRecipeComponents(id: string) {
   try {
-    const { recipes, recipeIngredients } = await getRecipes(id);
+    const { filteredRecipes, recipeIngredients } = await getRecipes(id);
 
-    if (!recipes) {
+    if (!filteredRecipes) {
       return { recipeComponents: [], recipeIngredients: [] };
     }
 
-    const recipeComponents = recipes.map((recipe) => {
+    const recipeComponents = filteredRecipes.map((recipe) => {
       const recipeData: RecipeData = {
         id: recipe.id,
         cost: recipe.cost,
@@ -78,14 +78,18 @@ async function getRecipes(userId: string) {
       const recipeBookIds = recipeBooks.map((recipeId) => recipeId.id);
       const recipes = await getAllRecipeByRecipeBookIds(recipeBookIds);
 
+      const filteredRecipes = recipes.filter(
+        (recipe) => recipe.recipeState === "RECIPE"
+      );
+
       // Retrieve ingredients for each recipe concurrently
       const recipeIngredients = await Promise.all(
-        recipes.map(async (recipe) => {
+        filteredRecipes.map(async (recipe) => {
           return await getRecipeIngredientAndRecipe(recipe.id);
         })
       );
 
-      return { recipes, recipeIngredients };
+      return { filteredRecipes, recipeIngredients };
     }
     return { recipes: [], recipeIngredients: [] };
   } catch (error) {
