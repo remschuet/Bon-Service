@@ -16,14 +16,18 @@ export default function RecipeBooksPage() {
   const { isOwner } = useOwner(recipeBookId);
   const { recipes } = useRecipes(recipeBookId);
 
+  console.log("isOwner", isOwner);
+
   if (!isOwner) {
-    <div className="container mx-auto">
-      <div className="text-center mt-10">
-        <h1 className="text-2xl font-bold">
-          Vous n'êtes pas autorisé à accéder à cette page
-        </h1>
+    return (
+      <div className="container mx-auto">
+        <div className="text-center mt-10">
+          <h1 className="text-2xl font-bold">
+            Vous n'êtes pas autorisé à accéder à cette page
+          </h1>
+        </div>
       </div>
-    </div>;
+    );
   }
 
   return (

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSession } from "@/hooks/useSession";
-import { getRecipeBookById } from "@/db/data-access/recipe-book";
+import { getRecipeBookOwner } from "./_action/action";
 
 export function useOwner(recipeBookId: string) {
   const { id } = useSession();
@@ -9,7 +9,7 @@ export function useOwner(recipeBookId: string) {
   useEffect(() => {
     async function fetchOwner() {
       try {
-        const recipeBook = await getRecipeBookById(recipeBookId);
+        const recipeBook = await getRecipeBookOwner(recipeBookId);
 
         if (!recipeBook) {
           return;
