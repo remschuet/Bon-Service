@@ -8,8 +8,6 @@ import { MemberKitchen } from "@/lib/type";
 ////////////////////////////////
 
 /**
- *
- *
  * Creates a new kitchen.
  * @param kitchen - The kitchen object.
  * @returns A promise that resolves to the created kitchen.
@@ -26,6 +24,20 @@ export async function createKitchen(kitchen: Kitchen) {
     });
   } catch (error) {
     console.error("Error data-access/kitchen: createKitchen(), error: ", error);
+    throw error;
+  }
+}
+
+
+export async function getKitchen(kitchenId: string) {
+  try {
+    return await db.kitchen.findFirst({
+      where: {
+        id: kitchenId,
+      },
+    });
+  } catch (error) {
+    console.error("Error data-access/kitchen: getKitchen(), error: ", error);
     throw error;
   }
 }
@@ -173,6 +185,14 @@ export async function getAllKitchenUserById(kitchenId: string) {
   }
 }
 
+/**
+ * Get a specific kitchen user by kitchen ID and user ID.
+ *
+ * @param kitchenId - The ID of the kitchen to retrieve the user for.
+ * @param userId - The ID of the user to retrieve.
+ * @returns A promise that resolves to the kitchen user, if found; otherwise, null.
+ */
+
 export async function getKitchenUser(kitchenId: string, userId: string) {
   try {
     return await db.kitchenUser.findFirst({
@@ -218,7 +238,7 @@ export async function getAllKitchensByUser(userId: string) {
     kitchens.forEach((kitchen) => {
       const newMemberKitchen: MemberKitchen = {
         id: kitchen.kitchen.id,
-        name: kitchen.kitchen.name,
+        name: kitchen.kitchen.name,  
         costObjective: kitchen.kitchen.costObjective,
         description: kitchen.kitchen.description,
         chefName: kitchen.kitchen.user.name,
