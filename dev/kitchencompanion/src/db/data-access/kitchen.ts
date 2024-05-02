@@ -74,6 +74,26 @@ export async function getAllKitchenByAdminId(userId: string) {
 }
 
 /**
+ * Get the owner id of a kitchen.
+ * @param kitchenId - The id of the kitchen.
+ * @returns The owner id of the kitchen.
+ */
+export async function getOwnerId(kitchenId: string){
+  try {
+    return await db.kitchen.findUnique({
+      where: { id: kitchenId },
+      select: { userId: true },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/kitchen: getOwnerId(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
+/**
  * Deletes a kitchen.
  * @param kitchen - The kitchen object to be deleted.
  * @returns A promise that resolves when the kitchen is deleted.
@@ -149,6 +169,48 @@ export async function getAllKitchenUserById(kitchenId: string) {
   } catch (error) {
     console.error(
       "Error data-access/kitchen: getAllKitchenUserById(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
+
+export async function getKitchenUser(kitchenId: string, userId: string) {
+  try {
+    return await db.kitchenUser.findFirst({
+      where: { 
+        kitchenId: kitchenId,
+        userId: userId
+      },
+    });
+
+  } catch (error) {
+    console.error(
+      "Error data-access/kitchen: getIfAllowed(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
+/**
+ * Get all kitchen associated with a specific user.
+ * 
+ * @param userId - The ID of the user to retrieve the kitchen users for.
+ * @returns A promise that resolves to an array of kitchen users associated with the specified user.
+ */
+export async function getAllKitchenUserByUser(userId: string) {
+  try {
+    return await db.kitchenUser.findMany({
+      where: { 
+        userId: userId
+      },
+    });
+
+  } catch (error) {
+    console.error(
+      "Error data-access/kitchen: getAllKitchenUserByUser(), error: ",
       error
     );
     throw error;
