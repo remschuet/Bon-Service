@@ -69,7 +69,7 @@ export async function addMemberToKitchen(form: FormData) {
     const user = await getUser(email);
     if (!user) {
       return {
-        error: "Impossible de recuperer l utilisateur",
+        error: "Impossible de recuperer l'utilisateur",
         status: 404,
       };
     }
@@ -155,18 +155,17 @@ export async function removeMemberToKitchen(form: FormData) {
  * @returns An object containing a success message or an error message
  */
 async function createMemberUser(email: string, name: string) {
-  // TODO mettre un mdp ? (si pas verifier il peut pas ce connecter?)
-
   const user = {
     name: name,
     email: email,
-    password: "undefined",
+    password: crypto.randomUUID().split("-")[0],
     userType: UserTypes.MEMBER,
   } as User;
 
   try {
     createUser(user);
     // TODO: envoyer un email
+    // TODO: email qui envoie un lien vers un password reset token. (ou un token de verification)
   } catch {
     return {
       error:
@@ -190,17 +189,16 @@ async function createMemberUser(email: string, name: string) {
 export async function getNameMemberKitchen(formData: FormData) {
   const kitchenName = formData.get("kitchenName") as string;
   const userId = formData.get("userId") as string;
-  let userList = undefined;
-  let kitchenId = undefined;
-  let userListName: string[] = [];
+  const userListName: string[] = [];
 
   try {
     const kitchen = await getKitchenByAdminAndName(userId, kitchenName);
-    kitchenId = kitchen?.id;
+    const kitchenId = kitchen?.id;
     if (!kitchenId) {
       throw new Error();
     }
-    userList = await getAllKitchenUserById(kitchenId);
+
+    const userList = await getAllKitchenUserById(kitchenId);
     userList.forEach((kitchen) => {
       if (kitchen.user.name) {
         userListName.push(kitchen.user.name);
@@ -226,16 +224,14 @@ export async function getNameMemberKitchen(formData: FormData) {
 export async function getContactForKitchen(formData: FormData) {
   const kitchenName = formData.get("kitchenName") as string;
   const userId = formData.get("userId") as string;
-  let contact = undefined;
-  let kitchenId = undefined;
-  let contactList: Contact[] = [];
+  const contactList: Contact[] = [];
   try {
     const kitchen = await getKitchenByAdminAndName(userId, kitchenName);
-    kitchenId = kitchen?.id;
+    const kitchenId = kitchen?.id;
     if (!kitchenId) {
       throw new Error();
     }
-    contact = await getAllContactLinksToKitchen(kitchenId);
+    const contact = await getAllContactLinksToKitchen(kitchenId);
     contact.forEach((contact) => {
       if (contact.contact) {
         contact.contact.id = "not given";
