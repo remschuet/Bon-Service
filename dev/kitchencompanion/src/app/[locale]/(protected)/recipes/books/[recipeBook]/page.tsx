@@ -16,8 +16,6 @@ export default function RecipeBooksPage() {
   const { isOwner } = useOwner(recipeBookId);
   const { recipes } = useRecipes(recipeBookId);
 
-  console.log("isOwner", isOwner);
-
   if (!isOwner) {
     return (
       <div className="container mx-auto">

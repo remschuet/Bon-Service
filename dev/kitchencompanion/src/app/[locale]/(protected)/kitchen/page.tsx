@@ -1,7 +1,8 @@
 "use client";
 
 import { AddKitchen } from "@/app/[locale]/(protected)/kitchen/_components/add-kitchen";
-import { KitchenList } from "@/app/[locale]/(protected)/kitchen/_components/kitchen-list";
+import { OwnedKitchenList } from "@/app/[locale]/(protected)/kitchen/_components/owned-kitchen-list";
+import { MemberKitchenList } from "./_components/member-kitchen.list";
 
 export default function KitchenCreationPage() {
   return (
@@ -9,7 +10,8 @@ export default function KitchenCreationPage() {
       <div className="flex justify-end mt-6">
         <AddKitchen />
       </div>
-      <KitchenList />
+      <OwnedKitchenList />
+      <MemberKitchenList />
     </div>
   );
 }
