@@ -176,6 +176,13 @@ export async function getAllKitchenUserById(kitchenId: string) {
 }
 
 
+/**
+ * Get a specific kitchen user by kitchen ID and user ID.
+ *
+ * @param kitchenId - The ID of the kitchen to retrieve the user for.
+ * @param userId - The ID of the user to retrieve.
+ * @returns A promise that resolves to the kitchen user, if found; otherwise, null.
+ */
 export async function getKitchenUser(kitchenId: string, userId: string) {
   try {
     return await db.kitchenUser.findFirst({
