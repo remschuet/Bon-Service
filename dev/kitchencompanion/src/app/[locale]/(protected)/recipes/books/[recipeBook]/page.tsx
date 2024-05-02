@@ -8,26 +8,33 @@ import { useSearchParams } from "next/navigation";
 import { BadgePlus } from "lucide-react";
 import { useRecipes } from "@/hooks/useRecipes";
 import { RecipeList } from "./_components/recipe-list";
-import { useSession } from "@/hooks/useSession";
+import { useOwner } from "@/hooks/useOwner";
 
 export default function RecipeBooksPage() {
   useRedirectMembers();
-  const recipeBookId = useSearchParams();
-  const { id } = useSession();
-  const { recipes } = useRecipes(
-    recipeBookId.get("recipeBookId") as string,
-    id
-  );
+  const recipeBookId = useSearchParams().get("recipeBookId") as string;
+  const { isOwner } = useOwner(recipeBookId);
+  const { recipes } = useRecipes(recipeBookId);
 
-  console.log(recipes);
+  console.log("isOwner", isOwner);
+
+  if (!isOwner) {
+    return (
+      <div className="container mx-auto">
+        <div className="text-center mt-10">
+          <h1 className="text-2xl font-bold">
+            Vous n'êtes pas autorisé à accéder à cette page
+          </h1>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto">
       <div className="flex gap-5 justify-end mt-6">
         <RedirectButton
-          href={`/recipes/add-recipe/?recipeBookId=${recipeBookId.get(
-            "recipeBookId"
-          )}`}
+          href={`/recipes/add-recipe/?recipeBookId=${recipeBookId}`}
         >
           <Button className="flex gap-2">
             <BadgePlus className="w-4" />

@@ -3,7 +3,10 @@
 import { getAllContact } from "@/db/data-access/contact";
 import { getAllIngredient } from "@/db/data-access/ingredient";
 import { getAllKitchenByAdminId } from "@/db/data-access/kitchen";
-import { getAllRecipeBookByUserId } from "@/db/data-access/recipe-book";
+import {
+  getAllRecipeBookByUserId,
+  getRecipeBookById,
+} from "@/db/data-access/recipe-book";
 import { getAllRecipeByAdminId } from "@/db/data-access/actions/action";
 import { getAllRecipeByRecipeBookIds } from "@/db/data-access/recipe";
 import { Recipe } from "@prisma/client";
@@ -37,6 +40,15 @@ export async function getAllRecipeByBooksId(recipeBookId: string) {
   try {
     const recipes = await getAllRecipeByRecipeBookIds([recipeBookId]);
     return recipes;
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getRecipeBookOwner(recipeBookId: string) {
+  try {
+    const recipeBooks = await getRecipeBookById(recipeBookId);
+    return recipeBooks;
   } catch (error) {
     throw error;
   }
