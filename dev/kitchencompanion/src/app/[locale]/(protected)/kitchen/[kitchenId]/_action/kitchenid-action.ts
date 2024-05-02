@@ -6,10 +6,56 @@ import {
   getAllKitchenUserById,
   getKitchenByAdminAndName,
   linkKitchenUserById,
+  getKitchenUser,
 } from "@/db/data-access/kitchen";
 import { getMenu, linkMenuToKitchen } from "@/db/data-access/menu";
 import { createUser, getUser, getUserIfExist } from "@/db/data-access/user";
 import { Contact, Kitchen, User, UserTypes } from "@prisma/client";
+import { tree } from "next/dist/build/templates/app-page";
+
+/**********************************************
+                    SECURITY 
+ **********************************************/
+//TODO: Convertir en hook ! Client component
+export async function isAllowed(kitchenId: string, userId: string){
+  let isAdmin = false;
+  let isMember = false;
+  try{
+    const kitchen = await getKitchenByAdminAndName(userId, kitchenId);
+    const kitchenUser = await getKitchenUser(kitchenId, userId);
+
+    if (kitchen !== undefined || kitchen !== null){
+      isAdmin = true;
+    }
+
+    if (kitchenUser !== undefined || kitchenUser !== null){
+      isMember = true;
+    }
+
+    return {isAdmin, isMember};
+  }
+  catch(err){
+    isAdmin = false;
+    isMember = false;
+    return {isAdmin, isMember};
+  }
+}
+
+/**
+ * Get all email of the database containing a patern
+ */
+export async function getAllEmail(kitchenName: string, contain: string) {}
+
+/**
+ * Get if the kitchen name is valid
+ */
+export async function getIfKitchenExist(kitchenName: string) {}
+
+
+/**********************************************
+                    OTHERS 
+ **********************************************/
+
 
 /**
  * Link a menu to a kitchen
