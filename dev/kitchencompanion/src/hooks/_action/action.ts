@@ -7,9 +7,7 @@ import {
   getAllRecipeBookByUserId,
   getRecipeBookById,
 } from "@/db/data-access/recipe-book";
-import { getAllRecipeByAdminId } from "@/db/data-access/actions/action";
 import { getAllRecipeByRecipeBookIds } from "@/db/data-access/recipe";
-import { Recipe } from "@prisma/client";
 
 /**
  * Retrieves all kitchens associated with a specific user ID.
@@ -19,6 +17,21 @@ import { Recipe } from "@prisma/client";
  * @throws If an error occurs while retrieving the kitchens.
  */
 export async function getAllKitchensById(userId: string) {
+  try {
+    const kitchens = await getAllKitchenByAdminId(userId);
+    return kitchens;
+  } catch (error) {
+    throw error;
+  }
+}
+/**
+ * Retrieves all kitchens associated with a specific user ID.
+ *
+ * @param userId - The ID of the user.
+ * @returns A promise that resolves to an array of kitchens.
+ * @throws If an error occurs while retrieving the kitchens.
+ */
+export async function getAllMemberKitchensById(userId: string) {
   try {
     const kitchens = await getAllKitchenByAdminId(userId);
     return kitchens;
