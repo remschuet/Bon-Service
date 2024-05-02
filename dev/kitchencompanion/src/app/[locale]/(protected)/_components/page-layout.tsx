@@ -15,7 +15,8 @@ export function PageLayout({ children }: { children: React.ReactNode }) {
     <CurrentPathProvider>
       <Header className={layoutStyle} />
       <div
-        className={`absolute min-h-[calc(100vh-85px)] top-[85px] p-6 ${layoutStyle}`}>
+        className={`absolute min-h-[calc(100vh-85px)] top-[85px] p-6 ${layoutStyle}`}
+      >
         {children}
       </div>
     </CurrentPathProvider>

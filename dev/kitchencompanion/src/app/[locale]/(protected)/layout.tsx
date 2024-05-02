@@ -35,18 +35,16 @@ export default async function RootLayout({
   const session = await auth();
 
   return (
-    <html
-      lang={locale}
-      className='scrollbar-none'
-      suppressHydrationWarning>
+    <html lang={locale} className="scrollbar-none" suppressHydrationWarning>
       <body className={lato.className}>
         <SessionProvider session={session as UserSession}>
           <main>
             <ThemeProvider
-              attribute='class'
-              defaultTheme='light'
-              disableTransitionOnChange>
-              <div className='flex h-screen'>
+              attribute="class"
+              defaultTheme="light"
+              disableTransitionOnChange
+            >
+              <div className="flex h-screen">
                 <NavigationStateProvider>
                   <Nagivation />
                   <PageLayout>{children}</PageLayout>
