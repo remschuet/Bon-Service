@@ -8,11 +8,16 @@ import { useSearchParams } from "next/navigation";
 import { BadgePlus } from "lucide-react";
 import { useRecipes } from "@/hooks/useRecipes";
 import { RecipeList } from "./_components/recipe-list";
+import { useSession } from "@/hooks/useSession";
 
 export default function RecipeBooksPage() {
   useRedirectMembers();
   const recipeBookId = useSearchParams();
-  const { recipes } = useRecipes(recipeBookId.get("recipeBookId") as string);
+  const { id } = useSession();
+  const { recipes } = useRecipes(
+    recipeBookId.get("recipeBookId") as string,
+    id
+  );
 
   console.log(recipes);
 
