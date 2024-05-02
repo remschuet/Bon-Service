@@ -7,8 +7,6 @@ import { db } from "@/db/prisma-db";
 ////////////////////////////////
 
 /**
- *
- *
  * Creates a new kitchen.
  * @param kitchen - The kitchen object.
  * @returns A promise that resolves to the created kitchen.
@@ -25,6 +23,20 @@ export async function createKitchen(kitchen: Kitchen) {
     });
   } catch (error) {
     console.error("Error data-access/kitchen: createKitchen(), error: ", error);
+    throw error;
+  }
+}
+
+
+export async function getKitchen(kitchenId: string) {
+  try {
+    return await db.kitchen.findFirst({
+      where: {
+        id: kitchenId,
+      },
+    });
+  } catch (error) {
+    console.error("Error data-access/kitchen: getKitchen(), error: ", error);
     throw error;
   }
 }

@@ -7,6 +7,7 @@ import {
   getKitchenByAdminAndName,
   linkKitchenUserById,
   getKitchenUser,
+  getKitchen,
 } from "@/db/data-access/kitchen";
 import { getMenu, linkMenuToKitchen } from "@/db/data-access/menu";
 import { createUser, getEmailsPattern, getUser, getUserIfExist } from "@/db/data-access/user";
@@ -21,14 +22,18 @@ export async function isAllowed(kitchenId: string, userId: string){
   let isAdmin = false;
   let isMember = false;
   try{
-    const kitchen = await getKitchenByAdminAndName(userId, kitchenId);
+    const kitchen = await getKitchen(kitchenId);
     const kitchenUser = await getKitchenUser(kitchenId, userId);
 
-    if (kitchen !== undefined || kitchen !== null){
-      isAdmin = true;
+    console.log(kitchen)
+
+    if (kitchen !== undefined && kitchen !== null){
+      if (kitchen.userId === userId){
+        isAdmin = true;
+      }
     }
 
-    if (kitchenUser !== undefined || kitchenUser !== null){
+    if (kitchenUser !== undefined && kitchenUser !== null){
       isMember = true;
     }
 

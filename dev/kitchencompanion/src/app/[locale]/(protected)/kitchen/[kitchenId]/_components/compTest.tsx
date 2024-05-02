@@ -7,7 +7,8 @@ import {
   getNameMemberKitchen,
   getContactForKitchen,
   removeMemberToKitchen,
-  getAllEmail
+  getAllEmail,
+  isAllowed
 } from "../_action/kitchenid-action";
 import { useSession } from "@/hooks/useSession";
 import { useCurrentPath } from "@/hooks/useCurrentPath";
@@ -15,6 +16,14 @@ import { useCurrentPath } from "@/hooks/useCurrentPath";
 export function VisuelTest() {
   const { id } = useSession();
   const current = useCurrentPath();
+  
+  // TODO : recuperer avec un hook le id
+  const kitchenId = 'clv5j0cm3000144zhbk5x2765'
+  verif(kitchenId)
+
+  async function verif(kitchenId: string) {
+    console.log(await isAllowed(kitchenId, id))
+  }
 
   async function addMenu(formData: FormData) {
     formData.append("userId", id);
