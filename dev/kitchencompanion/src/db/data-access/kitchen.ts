@@ -238,7 +238,7 @@ export async function getAllKitchensByUser(userId: string) {
     kitchens.forEach((kitchen) => {
       const newMemberKitchen: MemberKitchen = {
         id: kitchen.kitchen.id,
-        name: kitchen.kitchen.name,
+        name: kitchen.kitchen.name,  
         costObjective: kitchen.kitchen.costObjective,
         description: kitchen.kitchen.description,
         chefName: kitchen.kitchen.user.name,
