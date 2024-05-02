@@ -2,10 +2,7 @@ import { Recipe } from "@prisma/client";
 import { useEffect, useState } from "react";
 import { getAllRecipeByBooksId } from "@/hooks/_action/action";
 
-export function useRecipes(
-  recipeBookId: string,
-  id: string
-): {
+export function useRecipes(recipeBookId: string): {
   recipes: Recipe[];
   recipesCount: number;
 } {
