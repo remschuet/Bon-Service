@@ -26,6 +26,7 @@ export async function createUser(user: User) {
         password: user.password,
       },
     });
+  
   } catch (error) {
     console.error("Error data-access/user: createUser(), error: ", error);
     throw error;
@@ -84,6 +85,25 @@ export async function getUser(email: string) {
   }
 }
 
+export async function getEmailsPattern(pattern: string) {
+  try {
+    const users = await db.user.findMany({
+      where: {
+        email: {
+          startsWith: pattern,
+        },
+      },
+      
+    });
+
+    const emails = users.map(user => user.email);
+    return emails;
+
+  } catch (error) {
+    console.error("Error data-access/user: getEmailsPattern(), error: ", error);
+    throw error;
+  }
+}
 
 export async function getUserIfExist(email: string): Promise<boolean> {
   try {

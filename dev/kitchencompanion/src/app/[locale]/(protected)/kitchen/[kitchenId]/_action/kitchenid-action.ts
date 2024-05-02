@@ -9,7 +9,7 @@ import {
   getKitchenUser,
 } from "@/db/data-access/kitchen";
 import { getMenu, linkMenuToKitchen } from "@/db/data-access/menu";
-import { createUser, getUser, getUserIfExist } from "@/db/data-access/user";
+import { createUser, getEmailsPattern, getUser, getUserIfExist } from "@/db/data-access/user";
 import { Contact, Kitchen, User, UserTypes } from "@prisma/client";
 import { tree } from "next/dist/build/templates/app-page";
 
@@ -44,7 +44,18 @@ export async function isAllowed(kitchenId: string, userId: string){
 /**
  * Get all email of the database containing a patern
  */
-export async function getAllEmail(kitchenName: string, contain: string) {}
+export async function getAllEmail(contain: string) {
+  try{
+    const emails = await getEmailsPattern(contain);
+    return emails.slice(0, 4);
+  }
+  catch(err){
+    return {
+      error: "Aucun courriel trouvé.",
+      status: 500,
+    };
+  }
+}
 
 /**
  * Get if the kitchen name is valid

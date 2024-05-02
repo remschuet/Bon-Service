@@ -7,6 +7,7 @@ import {
   getNameMemberKitchen,
   getContactForKitchen,
   removeMemberToKitchen,
+  getAllEmail
 } from "../_action/kitchenid-action";
 import { useSession } from "@/hooks/useSession";
 import { useCurrentPath } from "@/hooks/useCurrentPath";
@@ -37,6 +38,8 @@ export function VisuelTest() {
     formData.append("userId", id);
     formData.append("kitchenName", current.at(-1) as string);
     console.log(await getNameMemberKitchen(formData));
+    const pattern = "r";
+    console.log(await getAllEmail(pattern))
   }
 
   async function getContact(formData: FormData) {
