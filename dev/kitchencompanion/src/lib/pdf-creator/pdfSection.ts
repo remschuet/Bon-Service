@@ -52,6 +52,8 @@ export class PdfSection extends PdfGenerator {
    */
   public addGridToSection(
     sectionName: string,
+    title: string[],
+    data: Array<string[]>,
     leftGap: number = 0,
     topGap: number = 0
   ) {
@@ -60,9 +62,6 @@ export class PdfSection extends PdfGenerator {
       console.error(`Section "${sectionName}" not found.`);
       return null;
     }
-
-    const headers = ["temps", "cuisson", "temperature"];
-    const data = [["120 mins", "30 mins", "350 degrés"]];
 
     const columnStyles = {
       0: { cellWidth: 40 },
@@ -80,7 +79,7 @@ export class PdfSection extends PdfGenerator {
         this.getZeroForBody() +
         topGap,
       margin: (section.start.x * this.pdfOption.pageWidth) / 10 + leftGap,
-      head: [headers],
+      head: [title],
       body: data,
 
       columnStyles: columnStyles,

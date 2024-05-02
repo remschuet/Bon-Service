@@ -95,7 +95,7 @@ async function testSection() {
   );
   pdf.addTextToSection("infos", "Created with BonService");
   // Add grid to the pdf at the section
-  pdf.addGridToSection("timer", 15, 5);
+  pdf.addGridToSection("timer", ["temps", "cuisson", "temperature"], [["120 mins", "30 mins", "350 degrés"]], 15, 5);
   pdf.openPdf();
 }
 
