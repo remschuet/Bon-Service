@@ -2,7 +2,10 @@
 
 import { getAllContact } from "@/db/data-access/contact";
 import { getAllIngredient } from "@/db/data-access/ingredient";
-import { getAllKitchenByAdminId } from "@/db/data-access/kitchen";
+import {
+  getAllKitchenByAdminId,
+  getAllKitchensByUser,
+} from "@/db/data-access/kitchen";
 import {
   getAllRecipeBookByUserId,
   getRecipeBookById,
@@ -33,7 +36,7 @@ export async function getAllKitchensById(userId: string) {
  */
 export async function getAllMemberKitchensById(userId: string) {
   try {
-    const kitchens = await getAllKitchenByAdminId(userId);
+    const kitchens = await getAllKitchensByUser(userId);
     return kitchens;
   } catch (error) {
     throw error;

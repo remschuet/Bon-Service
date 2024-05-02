@@ -13,7 +13,6 @@ export function useMemberKitchens(): {
     const fetchKitchens = async () => {
       try {
         const memberKitchens = await getAllMemberKitchensById(id);
-
         setMemberKitchens(memberKitchens);
       } catch (error) {
         console.error(error);
