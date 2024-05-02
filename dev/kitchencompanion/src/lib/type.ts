@@ -59,4 +59,5 @@ export type RecipeIngredientDTO = {
 
 export type MemberKitchen = Kitchen & {
   chefName: string;
+  members: number;
 };

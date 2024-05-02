@@ -11,6 +11,7 @@ export function MemberKitchenList() {
           <KitchenCard
             kitchen={kitchen}
             chefName={kitchen.chefName}
+            member={kitchen.members}
             key={kitchen.id}
           />
         ))}
