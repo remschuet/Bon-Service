@@ -27,7 +27,7 @@ export function VisuelTest() {
 
   async function addMenu(formData: FormData) {
     formData.append("userId", id);
-    formData.append("kitchenName", current.at(-1) as string);
+    formData.append("kitchenId", "clv5j0cm3000144zhbk5x2765");
     console.log(await addMenuToKitchen(formData));
   }
 
@@ -38,8 +38,8 @@ export function VisuelTest() {
   }
 
   async function addMember(formData: FormData) {
-    formData.append("userId", id);
-    formData.append("kitchenName", current.at(-1) as string);
+    // TODO: fix the kitchenId
+    formData.append("kitchenId", "clv5j0cm3000144zhbk5x2765");
     console.log(await addMemberToKitchen(formData));
   }
 
@@ -61,6 +61,12 @@ export function VisuelTest() {
     <>
       <p>Ajouter un menu (non implemente)</p>
       <form action={addMenu}>
+        <input
+          type="text"
+          id="menuName"
+          name="menuName"
+          placeholder="menu Name"
+        />
         <Button type="submit">Add Menu</Button>
       </form>
 
@@ -92,12 +98,6 @@ export function VisuelTest() {
           id="memberEmail"
           name="memberEmail"
           placeholder="email"
-        />
-        <input
-          type="text"
-          id="memberName"
-          name="memberName"
-          placeholder="name"
         />
         <Button type="submit">add Member</Button>
       </form>

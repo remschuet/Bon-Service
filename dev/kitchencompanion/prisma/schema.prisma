@@ -279,6 +279,8 @@ model MenuKitchen {
 
   menu   Menu   @relation(fields: [menuId], references: [id])
   menuId String
+
+  @@unique([kitchenId, menuId])
 }
 
 model DishsType {
