@@ -256,6 +256,9 @@ export async function getNameMemberKitchen(formData: FormData) {
       if (kitchen.user.name) {
         userListName.push(kitchen.user.name);
       }
+      else{
+        userListName.push("En attente");
+      }
     });
   } catch (error) {
     return {

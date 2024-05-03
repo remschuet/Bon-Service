@@ -99,12 +99,6 @@ export function VisuelTest() {
           name="memberEmail"
           placeholder="email"
         />
-        <input
-          type="text"
-          id="memberName"
-          name="memberName"
-          placeholder="name"
-        />
         <Button type="submit">add Member</Button>
       </form>
     </>
