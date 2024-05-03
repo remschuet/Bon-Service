@@ -9,7 +9,7 @@ import {
   getKitchenUser,
   getKitchen,
 } from "@/db/data-access/kitchen";
-import { getMenu, linkMenuToKitchen } from "@/db/data-access/menu";
+import { deleteLinkMenuKitchen, getMenu, linkMenuToKitchen } from "@/db/data-access/menu";
 import { createUser, getEmailsPattern, getUser, getUserIfExist } from "@/db/data-access/user";
 import { Contact, Kitchen, User, UserTypes } from "@prisma/client";
 import { tree } from "next/dist/build/templates/app-page";
@@ -63,11 +63,9 @@ export async function getAllEmail(contain: string) {
   }
 }
 
-
 /**********************************************
                     OTHERS 
  **********************************************/
-
 
 /**
  * Link a menu to a kitchen
@@ -95,56 +93,64 @@ export async function addMenuToKitchen(form: FormData) {
 }
 
 /**
- * Adds a member to a kitchen. If the member does not already exist he will be created in the database.
+ * Removes a menu from a kitchen.
  *
- * @param form - A FormData object containing the email and userId of the member to be added.
+ * @param form - A FormData object containing the userId, kitchenId, and menuName of the menu to be removed.
  * @returns An object containing an error message or a success message.
  */
-export async function addMemberToKitchen(form: FormData) {
-  //email et userId
-  const email = form.get("memberEmail") as string;
+export async function removeMenuToKitchen(form: FormData) {
   const userId = form.get("userId") as string;
-  const name = form.get("memberName") as string;
-  const kitchenName = form.get("kitchenName") as string;
-  let userToLinkId = undefined;
-  let kitchenId = undefined;
+  const kitchenId = form.get("kitchenId") as string;
+  const menuToAdd = form.get("menuName") as string;
 
   try {
-    const isExist = await getUserIfExist(email);
-    if (!isExist) {
-      await createMemberUser(email, name);
-    }
-    const user = await getUser(email);
-    if (!user) {
-      return {
-        error: "Impossible de recuperer l'utilisateur",
-        status: 404,
-      };
-    }
-    userToLinkId = user.id;
-  } catch (err) {
+    const menu = await getMenu(userId, menuToAdd);
+
+    if (menu === null || menu === undefined) throw new Error();
+    
+    await deleteLinkMenuKitchen(menu.id, kitchenId);
+  } catch (error) {
     return {
-      error: "Impossible de creer ou de recuperer le membre",
+      error: "Une erreur est survenu lors de la suppression de la liaison de votre menu.",
       status: 500,
     };
   }
+}
+
+/**
+ * Adds a member to a kitchen. 
+ * If the member does not already exist he will be created in the database.
+ *
+ * @param form - A FormData object containing the memberEmail and kitchenId.
+ * @returns An object containing an error message or a success message.
+ */
+export async function addMemberToKitchen(form: FormData) {
+  const email = form.get("memberEmail") as string;
+  const kitchenId = form.get("kitchenId") as string;
+
   try {
-    const kitchen = await getKitchenByAdminAndName(userId, kitchenName);
-    kitchenId = kitchen?.id;
-    if (!kitchenId) {
-      return {
-        error: "Impossible de recuperer la cuisine",
-        status: 404,
-      };
+    let userToLink = await getUser(email);
+    if (!userToLink) {
+      // Create new user
+      await createMemberUser(email);
+      userToLink = await getUser(email);
     }
-    // TODO: Verif si le user est deja lier a cette cuisine
-    await linkKitchenUserById(userToLinkId, kitchenId);
+    
+    if (!userToLink) throw new Error("L'utilisateur est introuvable")
+    
+    const kitchen = await getKitchen(kitchenId);
+
+    if (!kitchen) throw new Error("La cuisine est inexistante")
+
+    // TODO: Check if the user is already link ? Will see with the visual
+    await linkKitchenUserById(userToLink.id, kitchen.id);
   } catch (error) {
     return {
       error: "Impossible de lier le membre a la cuisine.",
       status: 500,
     };
   }
+
   return {
     success: "La personne à été ajouté avec succes.",
     status: 200,
@@ -202,9 +208,8 @@ export async function removeMemberToKitchen(form: FormData) {
  * @param email - The email address of the new user.
  * @returns An object containing a success message or an error message
  */
-async function createMemberUser(email: string, name: string) {
+async function createMemberUser(email: string) {
   const user = {
-    name: name,
     email: email,
     password: crypto.randomUUID().split("-")[0],
     userType: UserTypes.MEMBER,
