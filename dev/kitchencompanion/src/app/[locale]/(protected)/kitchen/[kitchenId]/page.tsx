@@ -1,6 +1,5 @@
-"use client";
-import { VisuelTest } from "./_components/compTest";
+import { KitchenDashboard } from "./_components/kitchen-dashboard";
 
 export default async function KitchenPage() {
-  return <><VisuelTest/></>;
+  return <KitchenDashboard />;
 }

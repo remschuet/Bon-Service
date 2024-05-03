@@ -27,7 +27,7 @@ export function KitchenCard({
           <CardTitle>{kitchen.name}</CardTitle>
           <CardDescription>{kitchen.description}</CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-col gap-2">
+        <CardContent className="flex flex-col gap-2 max-w-[50%]">
           {chefName !== undefined ? (
             <CardDescription>{`Chef: ${chefName}`}</CardDescription>
           ) : null}
