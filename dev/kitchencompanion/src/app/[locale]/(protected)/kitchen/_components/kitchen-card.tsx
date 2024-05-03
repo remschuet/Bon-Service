@@ -21,7 +21,7 @@ export function KitchenCard({
   member?: number;
 }) {
   return (
-    <Link href={`/kitchen/${kitchen.name}`}>
+    <Link href={`/kitchen/${kitchen.name}?id=${kitchen.id}`}>
       <Card className="min-h-[200px]">
         <CardHeader className="bg-brand-light rounded-t-lg mb-6 min-h-[125px] space-y-4">
           <CardTitle>{kitchen.name}</CardTitle>

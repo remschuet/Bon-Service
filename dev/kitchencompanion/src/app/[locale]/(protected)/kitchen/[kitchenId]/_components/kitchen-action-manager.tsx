@@ -1,6 +1,3 @@
-import { RecipeState, Unit } from "@prisma/client";
-import { addRecipe } from "@/app/[locale]/(protected)/recipes/add-recipe/_actions/new-recipe-action";
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,7 +8,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
 
 import { PulseLoader } from "react-spinners";
 import { toast } from "@/components/ui/use-toast";
@@ -20,8 +16,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function KitchenActionManager() {
   return (
-    <ScrollArea className="relative flex-col items-start gap-2 md:flex max-h-[85vh] max-w-[30vw] rounded-lg border ">
-      <div className="grid w-full items-start gap-6 p-4">
+    <ScrollArea className="relative flex-col items-start gap-2 md:flex max-h-[85vh] max-w-[30vw] rounded-lg">
+      <div className="grid w-full items-start gap-6">
         <fieldset className="grid gap-6 rounded-lg border p-4">
           <legend className="-ml-1 px-1 text-sm font-medium">
             Gestion des membres
@@ -54,7 +50,7 @@ export function KitchenActionManager() {
             <legend className="-ml-1 px-1 text-sm font-medium">
               Supprimer un membre
             </legend>
-            <Label htmlFor="model">Membre</Label>
+            <Label>Membre</Label>
             <Select>
               <SelectTrigger className="items-start [&_[data-description]]:hidden">
                 <SelectValue placeholder="Selectionner un membre à retirer de votre cuisine" />
@@ -73,7 +69,7 @@ export function KitchenActionManager() {
             <legend className="-ml-1 px-1 text-sm font-medium">
               Ajouter un menu
             </legend>
-            <Label htmlFor="model">Vos menus</Label>
+            <Label>Vos menus</Label>
             <Select>
               <SelectTrigger className="items-start [&_[data-description]]:hidden">
                 <SelectValue placeholder="Selectionner un menu à partager" />
@@ -86,7 +82,7 @@ export function KitchenActionManager() {
             <legend className="-ml-1 px-1 text-sm font-medium">
               Supprimer un menu
             </legend>
-            <Label htmlFor="model">Menus partagés</Label>
+            <Label>Menus partagés</Label>
             <Select>
               <SelectTrigger className="items-start [&_[data-description]]:hidden">
                 <SelectValue placeholder="Selectionner un menu à retirer du partage" />
@@ -105,7 +101,7 @@ export function KitchenActionManager() {
             <legend className="-ml-1 px-1 text-sm font-medium">
               Ajouter un contact
             </legend>
-            <Label htmlFor="model">Vos contacts</Label>
+            <Label>Vos contacts</Label>
             <Select>
               <SelectTrigger className="items-start [&_[data-description]]:hidden">
                 <SelectValue placeholder="Selectionner un menu à partager" />
@@ -118,7 +114,7 @@ export function KitchenActionManager() {
             <legend className="-ml-1 px-1 text-sm font-medium">
               Supprimer un contact
             </legend>
-            <Label htmlFor="model">Contacts partagés</Label>
+            <Label>Contacts partagés</Label>
             <Select>
               <SelectTrigger className="items-start [&_[data-description]]:hidden">
                 <SelectValue placeholder="Selectionner un menu à retirer du partage" />

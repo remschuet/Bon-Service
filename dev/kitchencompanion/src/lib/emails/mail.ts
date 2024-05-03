@@ -23,7 +23,7 @@ export async function sendVerificationEmail(email: string, token: string) {
               <p>${previewText}</p>
             </div>
             <div>
-              <button style="${buttonStyle}"><a href="${verificationLink} style='text-align: center; text-decoration: none; font-size: 16px;'" >ACTIVEZ VOTRE COMPTE</a></button>
+              <button style="${buttonStyle}"><a href="${verificationLink}" style="text-align: center; text-decoration: none; font-size: 16px;" >ACTIVEZ VOTRE COMPTE</a></button>
             </div>
             <div>
               <p>Si vous n'avez pas demandé cette vérification, veuillez ignorer ce courriel.</p>
