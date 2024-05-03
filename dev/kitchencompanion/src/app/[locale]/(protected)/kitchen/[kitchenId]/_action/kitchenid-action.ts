@@ -11,7 +11,7 @@ import {
 } from "@/db/data-access/kitchen";
 import { deleteLinkMenuKitchen, getLinkMenuToKitchen, getMenu, linkMenuToKitchen } from "@/db/data-access/menu";
 import { createUser, getEmailsPattern, getUser, getUserIfExist } from "@/db/data-access/user";
-import { Contact, Kitchen, User, UserTypes } from "@prisma/client";
+import { Contact, Kitchen, RoleName, User, UserTypes } from "@prisma/client";
 import { tree } from "next/dist/build/templates/app-page";
 
 // Ajouter contact , ajouter membre, ajouter menu 
@@ -164,6 +164,7 @@ export async function removeMenuToKitchen(form: FormData) {
 export async function addMemberToKitchen(form: FormData) {
   const email = form.get("memberEmail") as string;
   const kitchenId = form.get("kitchenId") as string;
+  const role = (form.get("role") as string) as RoleName;
 
   try {
     let userToLink = await getUser(email);
@@ -180,7 +181,7 @@ export async function addMemberToKitchen(form: FormData) {
     if (!kitchen) throw new Error("La cuisine est inexistante")
 
     // TODO: Check if the user is already link ? Will see with the visual
-    await linkKitchenUserById(userToLink.id, kitchen.id);
+    await linkKitchenUserById(userToLink.id, kitchen.id, role);
   } catch (error) {
     return {
       error: "Impossible de lier le membre a la cuisine.",
