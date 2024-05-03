@@ -52,11 +52,7 @@
     "rate-limiter-flexible": "^5.0.0",
     "react": "^18",
     "react-dom": "^18",
-<<<<<<< HEAD
-    "react-email": "2.1.1",
-=======
     "react-email": "^2.1.2",
->>>>>>> 6548818a3bb76f9dd289426f78c13f7811936bac
     "react-spinners": "^0.13.8",
     "resend": "^3.2.0",
     "sanitize-html": "^2.13.0",
