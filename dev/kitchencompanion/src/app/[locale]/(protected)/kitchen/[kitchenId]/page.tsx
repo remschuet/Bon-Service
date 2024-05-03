@@ -1,12 +1,10 @@
 import { auth } from "@/auth";
 import { isAllowed } from "./_action/kitchenid-action";
-import { KitchenDashboard } from "./_components/kitchen-dashboard";
+import { KitchenAdminDashboard } from "./_components/kitchen-admin-dashboard";
 
 export default async function KitchenPage({
-  params,
   searchParams,
 }: {
-  params: { slug: string };
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const kitchenId = searchParams.id as string;
@@ -18,11 +16,13 @@ export default async function KitchenPage({
 
   const userId = session.user.id as string;
 
-  verif(kitchenId);
+  const { isAdmin, isMember } = await isAllowed(kitchenId, userId);
 
-  async function verif(kitchenId: string) {
-    console.log(await isAllowed(kitchenId, userId));
+  if (isAdmin) {
+    return <KitchenAdminDashboard />;
   }
 
-  return <KitchenDashboard />;
+  if (isMember) {
+    return <div>Member</div>;
+  }
 }
