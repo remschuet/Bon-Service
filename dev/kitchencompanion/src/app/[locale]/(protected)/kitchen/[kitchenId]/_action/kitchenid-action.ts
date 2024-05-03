@@ -14,6 +14,7 @@ import { createUser, getEmailsPattern, getUser, getUserIfExist } from "@/db/data
 import { Contact, Kitchen, User, UserTypes } from "@prisma/client";
 import { tree } from "next/dist/build/templates/app-page";
 
+// Ajouter contact , ajouter membre, ajouter menu 
 /**********************************************
                     SECURITY 
  **********************************************/
@@ -61,11 +62,6 @@ export async function getAllEmail(contain: string) {
     };
   }
 }
-
-/**
- * Get if the kitchen name is valid
- */
-export async function getIfKitchenExist(kitchenName: string) {}
 
 
 /**********************************************

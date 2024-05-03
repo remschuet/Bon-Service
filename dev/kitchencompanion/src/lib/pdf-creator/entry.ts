@@ -103,5 +103,5 @@ async function testSection() {
  * Entry point from the external interface
  */
 export async function entryPoint() {
-  testSection();
+  testContact();
 }
