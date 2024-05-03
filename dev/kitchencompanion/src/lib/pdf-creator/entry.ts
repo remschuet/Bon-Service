@@ -3,6 +3,7 @@ import { TableDataType, Section } from "./TypePdf";
 import { contacts } from "./fakeContact";
 import { PdfSection } from "./pdfSection";
 import { PdfOptionBuilder } from "./pdfOption";
+import { getAllContact } from "@/db/data-access/contact";
 /**
  * This file is the entry point for the pdf creator
  * This is not part of the library, is objectif it's to test the library
@@ -11,7 +12,10 @@ import { PdfOptionBuilder } from "./pdfOption";
 /**
  * create contact pdf with table
  */
-async function testContact() {
+async function testContact(id: string) {
+
+  await getAllContact(id);
+
   const pdf = new PdfTable();
   // The data we need to take care in the Contacts listes
   let data = ["name", "description", "phoneNumber", "compteNumber"];
@@ -102,6 +106,6 @@ async function testSection() {
 /**
  * Entry point from the external interface
  */
-export async function entryPoint() {
-  testContact();
+export async function entryPoint(id: string) {
+  testContact(id);
 }

@@ -263,13 +263,17 @@ export async function getAllKitchensByUser(userId: string) {
  * @param kitchenId - The ID of the kitchen to link.
  * @returns A promise that resolves when the user is linked to the kitchen.
  */
-export async function linkKitchenUserById(userId: string, kitchenId: string) {
+export async function linkKitchenUserById(
+  userId: string,
+  kitchenId: string,
+  role: RoleName
+) {
   try {
     return await db.kitchenUser.create({
       data: {
         userId: userId,
         kitchenId: kitchenId,
-        role: RoleName.Chef,
+        role: role,
       },
     });
   } catch (error) {
