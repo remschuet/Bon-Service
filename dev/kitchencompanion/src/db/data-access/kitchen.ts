@@ -28,7 +28,6 @@ export async function createKitchen(kitchen: Kitchen) {
   }
 }
 
-
 export async function getKitchen(kitchenId: string) {
   try {
     return await db.kitchen.findFirst({
@@ -238,7 +237,7 @@ export async function getAllKitchensByUser(userId: string) {
     kitchens.forEach((kitchen) => {
       const newMemberKitchen: MemberKitchen = {
         id: kitchen.kitchen.id,
-        name: kitchen.kitchen.name,  
+        name: kitchen.kitchen.name,
         costObjective: kitchen.kitchen.costObjective,
         description: kitchen.kitchen.description,
         chefName: kitchen.kitchen.user.name,
@@ -270,7 +269,7 @@ export async function linkKitchenUserById(userId: string, kitchenId: string) {
       data: {
         userId: userId,
         kitchenId: kitchenId,
-        role: RoleName.Chef
+        role: RoleName.Chef,
       },
     });
   } catch (error) {

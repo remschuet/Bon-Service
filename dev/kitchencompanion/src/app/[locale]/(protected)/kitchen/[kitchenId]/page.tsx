@@ -19,10 +19,10 @@ export default async function KitchenPage({
   const { isAdmin, isMember } = await isAllowed(kitchenId, userId);
 
   if (isAdmin) {
-    return <KitchenAdminDashboard />;
-  }
-
-  if (isMember) {
+    return <KitchenAdminDashboard kitchenId={kitchenId} />;
+  } else if (isMember) {
     return <div>Member</div>;
+  } else {
+    return <div>Unauthorized access</div>;
   }
 }

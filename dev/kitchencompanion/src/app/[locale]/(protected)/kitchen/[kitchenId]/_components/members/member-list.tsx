@@ -1,15 +1,11 @@
-export function MemberList() {
+import { MemberItem } from "./member-item";
+
+export function MemberList({ members }: { members: string[][] }) {
   return (
     <>
-      {/* {ctx.ingredients.map((ingredient, index) => {
-        return (
-          <MemberItem
-            key={crypto.randomUUID()}
-            index={index}
-            ingredient={ingredient}
-          />
-        );
-      })} */}
+      {members.map((member) => {
+        return <MemberItem key={crypto.randomUUID()} member={member} />;
+      })}
     </>
   );
 }
