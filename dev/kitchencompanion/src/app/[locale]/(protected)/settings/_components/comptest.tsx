@@ -6,12 +6,13 @@ import {
 } from "../_action/settings-action";
 import { useSession } from "@/hooks/useSession";
 import { createPdfPDF } from "../_export/pdfMain";
+import jsPDF from "jspdf";
 
 export function Test() {
   const { id, email, name, userType, isPremium } = useSession();
 
   async function createPdf(formData: FormData) {
-    createPdfPDF();
+    await createPdfPDF();
   }
 
   async function updateFacturation(formData: FormData) {
