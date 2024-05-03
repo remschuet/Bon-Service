@@ -81,7 +81,7 @@ export async function addMenuToKitchen(form: FormData) {
   try {
     const menu = await getMenu(userId, menuToAdd);
 
-    if (menu === null || menu === undefined) throw new Error();
+    if (menu === null || menu === undefined) throw new Error("Le menu est inexistant");
     
     await linkMenuToKitchen(menu.id, kitchenId);
   } catch (error) {
@@ -90,7 +90,13 @@ export async function addMenuToKitchen(form: FormData) {
       status: 500,
     };
   }
+  return {
+    error: "Le menu a ete ajoute avec success.",
+    status: 200,
+  };
 }
+
+
 
 /**
  * Removes a menu from a kitchen.

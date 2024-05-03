@@ -27,7 +27,7 @@ export function VisuelTest() {
 
   async function addMenu(formData: FormData) {
     formData.append("userId", id);
-    formData.append("kitchenName", current.at(-1) as string);
+    formData.append("kitchenId", "clv5j0cm3000144zhbk5x2765");
     console.log(await addMenuToKitchen(formData));
   }
 
