@@ -1,4 +1,4 @@
-import { Kitchen } from "@prisma/client";
+import { Kitchen, RoleName } from "@prisma/client";
 import { db } from "@/db/prisma-db";
 import { MemberKitchen } from "@/lib/type";
 
@@ -270,6 +270,7 @@ export async function linkKitchenUserById(userId: string, kitchenId: string) {
       data: {
         userId: userId,
         kitchenId: kitchenId,
+        role: RoleName.Chef
       },
     });
   } catch (error) {

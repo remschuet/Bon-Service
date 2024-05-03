@@ -122,6 +122,8 @@ model KitchenUser {
   user      User    @relation(fields: [userId], references: [id])
   userId    String
 
+  role      RoleName
+
   @@id([kitchenId, userId])
 }
 
@@ -353,6 +355,15 @@ enum NotifTypes {
   OPENAI_RETURN
   UPDATE_RECIPE
   GENERAL_UPDATE
+}
+
+enum RoleName {
+  Chef
+  Sous_chef
+  Chef_partie
+  Tournant
+  Commis
+  Plongeur
 }
 
 enum Unit {
