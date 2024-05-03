@@ -80,28 +80,18 @@ export async function addMenuToKitchen(form: FormData) {
   const kitchenId = form.get("kitchenId") as string;
   const menuToAdd = form.get("menuName") as string;
 
-  let menu = null;
   try {
-    menu = await getMenu(userId, menuToAdd);
-    if (!menu) throw new Error();
+    const menu = await getMenu(userId, menuToAdd);
+
+    if (menu === null || menu === undefined) throw new Error();
+    
+    await linkMenuToKitchen(menu.id, kitchenId);
   } catch (error) {
     return {
-      error: "Le menu n'existe pas.",
+      error: "Une erreur est survenu lors de la liaison de votre menu.",
       status: 500,
     };
   }
-  try {
-    await linkMenuToKitchen(kitchenId, menu.id);
-  } catch (error) {
-    return {
-      error: "La liaison n'a pas ete realise.",
-      status: 500,
-    };
-  }
-  return {
-    success: "Le menu est maintenant lie.",
-    status: 200,
-  };
 }
 
 /**
