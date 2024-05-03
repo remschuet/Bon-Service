@@ -1,0 +1,19 @@
+import { Badge } from "@/components/ui/badge";
+import { MemberList } from "./members/member-list";
+
+export async function KitchenMemberDisplay({
+  members,
+}: {
+  members: string[][];
+}) {
+  return (
+    <div className="relative flex min-h-[50vh] w-full flex-col rounded-xl bg-stone-200 p-4">
+      <Badge variant={"secondary"} className="absolute right-3 top-3">
+        Membres
+      </Badge>
+      <div className="flex-1 my-8">
+        <MemberList members={members} />
+      </div>
+    </div>
+  );
+}
