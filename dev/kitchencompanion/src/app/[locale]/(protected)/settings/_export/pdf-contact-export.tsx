@@ -4,10 +4,8 @@ import { contacts } from "@/lib/pdf-creator/fakeContact";
 import { PdfTable } from "@/lib/pdf-creator/pdfTable";
 import { TableDataType } from "@/lib/pdf-creator/TypePdf";
 import { ExportContactDTO } from "@/lib/type";
-import { exportGetContacts } from "./settings-action-contact";
+import { exportGetContacts } from "./pdf-action-contact-export";
 import { Contact } from "@prisma/client";
-
-export async function exportCreatePdfRecipe(form: FormData) {}
 
 /**
  * Creates a PDF file containing the specified contact's information.

@@ -5,7 +5,8 @@ import {
   updateProfilUser,
 } from "../_action/settings-action";
 import { useSession } from "@/hooks/useSession";
-import { createPdfPDF, exportCreatePdfRecipe } from "../_export/pdfMain";
+import { createPdfPDF } from "../_export/pdf-contact-export";
+import { exportCreatePdfRecipe } from "../_export/pdf-recipe-export";
 
 export function Test() {
   const { id, email, name, userType, isPremium } = useSession();
@@ -92,8 +93,8 @@ export function Test() {
       <form action={createPdfRecipe}>
         <input
           type="text"
-          name="RecipeName"
-          id="RecipeName"
+          name="recipeName"
+          id="recipeName"
           required
           placeholder="RecipeName"
         />
