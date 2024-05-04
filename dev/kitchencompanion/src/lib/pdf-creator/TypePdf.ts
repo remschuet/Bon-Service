@@ -17,6 +17,8 @@ export type Position = {
 
 export type TableDataType = { [key: string]: string };
 
+export type RGBColor = [number, number, number];
+
 export type Coordinates = {
   start: { x: number; y: number };
   end: { x: number; y: number };

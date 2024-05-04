@@ -69,8 +69,9 @@ export class PdfSection extends PdfGenerator {
       2: { cellWidth: 50 },
     };
 
+    // Implementation dans options en cours
     autoTable(this.doc, {
-      headStyles: { fillColor: [124, 95, 240] },
+      headStyles: { fillColor: this.pdfOption.gridTitleColor },
       styles: { halign: "center" },
       alternateRowStyles: { fillColor: [231, 215, 252] },
       tableLineColor: [124, 95, 240],

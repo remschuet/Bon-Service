@@ -1,4 +1,5 @@
 import jsPDF from "jspdf";
+import { RGBColor } from "./TypePdf";
 
 interface FontSizes {
   [key: string]: number;
@@ -38,6 +39,7 @@ export class PdfOptionBuilder {
   private pageHeader: number = 20;
   private pageFooter: number = 20;
   private font: string = "Helvetica";
+  private gridTitleColor: RGBColor = [124, 95, 240];
 
   private sizes: FontSizes = fontSizes;
 
@@ -66,13 +68,18 @@ export class PdfOptionBuilder {
     this.pageFooter = pageFooter;
     return this;
   }
+  public setGridTitleColor(color: RGBColor): PdfOptionBuilder {
+    this.gridTitleColor = [color[0], color[1], color[2]];
+    return this;
+  }
 
   public build(): PdfOption {
     return new PdfOption(
       this.pageHeader,
       this.pageFooter,
       this.sizes,
-      this.font
+      this.font,
+      this.gridTitleColor
     );
   }
 }
@@ -84,12 +91,14 @@ export class PdfOption {
   public readonly pageFooter: number;
   public readonly sizes: FontSizes;
   public readonly font: string;
+  public readonly gridTitleColor: RGBColor;
 
   constructor(
     pageHeader: number,
     pageFooter: number,
     sizes: FontSizes,
-    font: string
+    font: string,
+    gridTitleColor: RGBColor
   ) {
     this.pageWidth = -1;
     this.pageHeight = -1;
@@ -97,6 +106,7 @@ export class PdfOption {
     this.pageFooter = pageFooter;
     this.sizes = sizes;
     this.font = font;
+    this.gridTitleColor = gridTitleColor;
   }
 
   /**
