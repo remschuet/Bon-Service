@@ -7,6 +7,8 @@ import { ExportContactDTO } from "@/lib/type";
 import { exportGetContacts } from "./settings-action-contact";
 import { Contact } from "@prisma/client";
 
+export async function exportCreatePdfRecipe(form: FormData) {}
+
 /**
  * Creates a PDF file containing the specified contact's information.
  *

@@ -5,14 +5,18 @@ import {
   updateProfilUser,
 } from "../_action/settings-action";
 import { useSession } from "@/hooks/useSession";
-import { createPdfPDF } from "../_export/pdfMain-contact";
-import jsPDF from "jspdf";
+import { createPdfPDF, exportCreatePdfRecipe } from "../_export/pdfMain";
 
 export function Test() {
   const { id, email, name, userType, isPremium } = useSession();
 
   async function createPdf(formData: FormData) {
     await createPdfPDF(id);
+  }
+
+  async function createPdfRecipe(formData: FormData) {
+    formData.append("userId", id);
+    await exportCreatePdfRecipe(formData);
   }
 
   async function updateFacturation(formData: FormData) {
@@ -83,7 +87,17 @@ export function Test() {
   return (
     <>
       <form action={createPdf}>
-        <Button type="submit">Create PDF</Button>
+        <Button type="submit">Create PDF contacts</Button>
+      </form>
+      <form action={createPdfRecipe}>
+        <input
+          type="text"
+          name="RecipeName"
+          id="RecipeName"
+          required
+          placeholder="RecipeName"
+        />
+        <Button type="submit">Create PDF recipes</Button>
       </form>{" "}
       {facturactionContent}
       {adminModeContent}
