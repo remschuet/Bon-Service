@@ -5,14 +5,14 @@ import {
   updateProfilUser,
 } from "../_action/settings-action";
 import { useSession } from "@/hooks/useSession";
-import { createPdfPDF } from "../_export/pdfMain";
+import { createPdfPDF } from "../_export/pdfMain-contact";
 import jsPDF from "jspdf";
 
 export function Test() {
   const { id, email, name, userType, isPremium } = useSession();
 
   async function createPdf(formData: FormData) {
-    await createPdfPDF();
+    await createPdfPDF(id);
   }
 
   async function updateFacturation(formData: FormData) {

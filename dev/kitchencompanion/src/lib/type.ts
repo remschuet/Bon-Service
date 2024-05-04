@@ -61,3 +61,10 @@ export type MemberKitchen = Kitchen & {
   chefName: string;
   members: number;
 };
+
+export type ExportContactDTO = {
+  name: string;
+  description: string;
+  phoneNumber: string;
+  compteNumber: string;
+};
