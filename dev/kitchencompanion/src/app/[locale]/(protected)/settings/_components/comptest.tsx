@@ -7,9 +7,42 @@ import {
 import { useSession } from "@/hooks/useSession";
 import { createPdfPDF } from "../_export/pdf-contact-export";
 import { exportCreatePdfRecipe } from "../_export/pdf-recipe-export";
+import { uploadImage } from "../_action/settings-image-action";
 
 export function Test() {
   const { id, email, name, userType, isPremium } = useSession();
+
+  async function processImage(formData: FormData) {
+    try {
+      formData.append("userId", id);
+      uploadImage(formData);
+    } catch (error) {
+      console.error("Error processing image:", error);
+      throw error;
+    }
+  }
+
+  // Fonction utilitaire pour convertir un objet File en buffer
+  function readFileAsBuffer(file: File): Promise<Buffer> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        if (event.target && event.target.result) {
+          const buffer = Buffer.from(event.target.result as ArrayBuffer);
+          resolve(buffer);
+        } else {
+          reject(new Error("Error reading file"));
+        }
+      };
+
+      reader.onerror = (error) => {
+        reject(error);
+      };
+
+      reader.readAsArrayBuffer(file); // Convertit le contenu du fichier en ArrayBuffer
+    });
+  }
 
   async function createPdf(formData: FormData) {
     await createPdfPDF(id);
@@ -102,6 +135,15 @@ export function Test() {
       </form>{" "}
       {facturactionContent}
       {adminModeContent}
+      <form action={processImage}>
+        <input
+          type="file"
+          name="image"
+          id="image"
+          accept="image/jpeg, image/png"
+        />
+        <Button type="submit">Upload</Button>
+      </form>
     </>
   );
 }

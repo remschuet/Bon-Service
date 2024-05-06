@@ -26,7 +26,6 @@ export async function createUser(user: User) {
         password: user.password,
       },
     });
-  
   } catch (error) {
     console.error("Error data-access/user: createUser(), error: ", error);
     throw error;
@@ -93,12 +92,10 @@ export async function getEmailsPattern(pattern: string) {
           startsWith: pattern,
         },
       },
-      
     });
 
-    const emails = users.map(user => user.email);
+    const emails = users.map((user) => user.email);
     return emails;
-
   } catch (error) {
     console.error("Error data-access/user: getEmailsPattern(), error: ", error);
     throw error;
@@ -109,20 +106,16 @@ export async function getUserIfExist(email: string): Promise<boolean> {
   try {
     const isExisting = await db.user.findFirst({
       where: {
-        email: email
+        email: email,
       },
     });
 
     return !!isExisting;
   } catch (error) {
-    console.error(
-      "Error data-access/user: getUserIfExist(), error: ",
-      error
-    );
+    console.error("Error data-access/user: getUserIfExist(), error: ", error);
     throw error;
   }
 }
-
 
 /**
  * Retrieves a user by their ID.
@@ -136,6 +129,20 @@ export async function getUserById(id: string) {
     });
   } catch (error) {
     console.error("Error data-access/user: getUserById(), error: ", error);
+    throw error;
+  }
+}
+
+export async function updateAvatarKey(userId: string, avatarKey: string) {
+  try {
+    return await db.user.update({
+      where: { id: userId },
+      data: {
+        avatar_key: avatarKey,
+      },
+    });
+  } catch (error) {
+    console.error("Error data-access/user: updateAvatarKey(), error: ", error);
     throw error;
   }
 }
