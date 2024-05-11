@@ -96,7 +96,7 @@ export class PdfGenerator {
     descriptionSize: number = fontSizes.normal
   ) {
     this.displayHeader(title, titleSize, 10);
-    this.displayHeader(subTitle, subTitleSize, 20);
+    this.displayHeader(subTitle, subTitleSize, 18);
     this.displayHeader(description, descriptionSize, 25);
   }
 
