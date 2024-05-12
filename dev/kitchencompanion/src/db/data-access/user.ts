@@ -85,6 +85,10 @@ export async function getUser(email: string) {
 }
 
 export async function getEmailsPattern(pattern: string) {
+  if (pattern.length === 0) {
+    return [];
+  }
+
   try {
     const users = await db.user.findMany({
       where: {

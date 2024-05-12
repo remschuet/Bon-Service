@@ -167,11 +167,11 @@ export async function removeMenuToKitchen(form: FormData) {
  * @param form - A FormData object containing the memberEmail and kitchenId.
  * @returns An object containing an error message or a success message.
  */
-export async function addMemberToKitchen(form: FormData) {
-  const email = form.get("memberEmail") as string;
-  const kitchenId = form.get("kitchenId") as string;
-  const role = form.get("role") as string as RoleName;
-
+export async function addMemberToKitchen(
+  email: string,
+  kitchenId: string,
+  role: RoleName
+) {
   try {
     let userToLink = await getUser(email);
     if (!userToLink) {
@@ -207,11 +207,7 @@ export async function addMemberToKitchen(form: FormData) {
  * @param form - A FormData object containing the memberEmail and kitchenId.
  * @returns An object containing an error message or a success message.
  */
-export async function removeMemberToKitchen(form: FormData) {
-  //email et userId
-  const email = form.get("memberEmail") as string;
-
-  const kitchenId = form.get("kitchenId") as string;
+export async function removeMemberToKitchen(email: string, kitchenId: string) {
   try {
     const kitchen = await getKitchen(kitchenId);
 
