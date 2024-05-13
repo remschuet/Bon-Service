@@ -1,27 +1,34 @@
 ## Titre 
-KitchenCompanion
+Bon Service
 
 ## Présentation
-Notre projet vise à developper une application de gestion et de partage de recettes au sein d'une équipe de cuisine.
+Notre projet vise à développer une application de gestion et de partage de recettes au sein d'une équipe de cuisine.
 
 ## Installation
-Installation du dependances <br>
+Installation du dépendances <br>
 ``` npm install ``` <br>
 Configuration du fichier .env<br>
 Configuration du client Prisma<br>
 ``` npx prisma generate ```<br>
 Demarrer le projet<br>
 ``` npm run dev ```<br>
+Aller sur un navigateur web<br>
+```localhost:3000```<br>
 
 ## Utilisation
-A voir
+!!! Des directives sur la manière de démarrer le projet, accompagnées de captures d'écran
+illustratives. Cette partie doit éclairer l'utilisateur sur les fonctionnalités clés et l'approche
+recommandée pour tirer parti du projet. !!! 
 
-## References
-A concevoir durant le devloppement
+## Références
+Ressouces
+
 
 ## Contact
-- Remi Chuet
-- Julien Coulombe-Morency
+- Remi Chuet (remschuet@gmail.com)
+- Julien Coulombe-Morency (jcoulombemorency@gmail.com)
 
 ## Remerciements
+Jean Christophe
+Frederic 
 Relecture de fichiers ?
