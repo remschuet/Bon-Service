@@ -1,4 +1,4 @@
-import RecipeStepsItems from "@/app/[locale]/(protected)/recipes/add-recipe/_components/steps/recipe-steps-item";
+import RecipeStepsItems from "@/app/[locale]/(protected)/recipes/create/_components/steps/recipe-steps-item";
 import { useNewRecipe } from "@/hooks/useNewRecipe";
 
 export default function RecipeStepsList(): JSX.Element {

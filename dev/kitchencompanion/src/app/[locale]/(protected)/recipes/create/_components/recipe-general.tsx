@@ -1,7 +1,7 @@
 "use client";
 
 import { RecipeState, Unit } from "@prisma/client";
-import { addRecipe } from "@/app/[locale]/(protected)/recipes/add-recipe/_actions/new-recipe-action";
+import { addRecipe } from "@/app/[locale]/(protected)/recipes/create/_actions/new-recipe-action";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

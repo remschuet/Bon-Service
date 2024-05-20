@@ -22,16 +22,11 @@ import {
   removeMemberToKitchen,
 } from "../_action/kitchenid-action";
 import { RoleName } from "@prisma/client";
+import { useKitchenData } from "@/hooks/useKitchenData";
 
-export function KitchenActionManager({
-  roles,
-  members,
-  kitchenId,
-}: {
-  roles: string[];
-  members: string[][];
-  kitchenId: string;
-}) {
+export function KitchenActionManager({ kitchenId }: { kitchenId: string }) {
+  const { members, roles, refetch } = useKitchenData();
+
   const [addMemberIsPending, startAddMemberTransition] = useTransition();
   const [removeMemberIsPending, startRemoveMemberTransition] = useTransition();
 
@@ -60,6 +55,8 @@ export function KitchenActionManager({
       const email = emailRef.current?.value as string;
       await addMemberToKitchen(email, kitchenId, selectedRole as RoleName);
 
+      refetch();
+
       toast({
         variant: "success",
         title: "Membre ajouté",
@@ -71,6 +68,9 @@ export function KitchenActionManager({
   function handleRemoveMember(email: string) {
     startRemoveMemberTransition(async () => {
       await removeMemberToKitchen(email, kitchenId);
+
+      refetch();
+
       toast({
         variant: "success",
         title: "Membre retiré",
