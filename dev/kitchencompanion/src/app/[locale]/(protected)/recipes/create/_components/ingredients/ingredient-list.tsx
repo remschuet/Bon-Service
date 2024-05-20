@@ -1,4 +1,4 @@
-import { IngredientItem } from "@/app/[locale]/(protected)/recipes/add-recipe/_components/ingredients/ingredient-item";
+import { IngredientItem } from "@/app/[locale]/(protected)/recipes/create/_components/ingredients/ingredient-item";
 import { useNewRecipe } from "@/hooks/useNewRecipe";
 
 export function IngredientList() {

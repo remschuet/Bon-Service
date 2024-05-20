@@ -10,7 +10,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
-import RecipeStepsList from "@/app/[locale]/(protected)/recipes/add-recipe/_components/steps/recipe-steps-list";
+import RecipeStepsList from "@/app/[locale]/(protected)/recipes/create/_components/steps/recipe-steps-list";
 
 import { useNewRecipe } from "@/hooks/useNewRecipe";
 import { useRef } from "react";

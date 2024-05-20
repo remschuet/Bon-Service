@@ -119,8 +119,16 @@ export async function getRecipeIngredientAndRecipeName(recipeId: string) {
     const ingredients = await db.recipeIngredient.findMany({
       where: { recipeId: recipeId },
       include: {
-        ingredient: true,
-        recipe: true,
+        ingredient: {
+          select: {
+            name: true,
+          },
+        },
+        recipeIngredient: {
+          select: {
+            name: true,
+          },
+        },
       },
     });
 

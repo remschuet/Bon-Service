@@ -8,7 +8,7 @@ export function CurrentPathProvider({
 }: {
   children: React.ReactNode;
 }) {
-  const path = usePathname();
+  let path = usePathname();
 
   return <CurrentPath.Provider value={path}>{children}</CurrentPath.Provider>;
 }

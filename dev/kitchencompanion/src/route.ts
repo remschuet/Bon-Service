@@ -14,14 +14,6 @@ export const publicRoutes = [
   "/forgot-password",
   "/mot-de-passe-oublie",
   "/terms",
-  "/test",
-  "/test/kitchen",
-  "/test/supplier",
-  "/test/linkKitchenUser",
-  "/test/upload",
-  "/test/pdf",
-  "/test/recipe",
-  "/test/bottin",
 ];
 
 /**

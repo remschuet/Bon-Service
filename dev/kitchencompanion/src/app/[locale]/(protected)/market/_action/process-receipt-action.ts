@@ -36,6 +36,8 @@ export default async function processReceipt(formData: FormData) {
         };
       }
 
+      console.log(data);
+
       data.forEach(async (ingredient: any) => {
         let price = ingredient.price / ingredient.quantity;
 

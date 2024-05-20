@@ -2,12 +2,12 @@ import { auth } from "@/auth";
 
 import { Ingredient } from "@/lib/composite/ingredient";
 
-import { RecipeBuilder } from "@/app/[locale]/(protected)/recipes/add-recipe/_components/recipe-builder";
+import { RecipeBuilder } from "@/app/[locale]/(protected)/recipes/create/_components/recipe-builder";
 
 import {
   getIngredientComponents,
   getRecipeComponents,
-} from "@/app/[locale]/(protected)/recipes/add-recipe/_actions/composite-components-action";
+} from "@/app/[locale]/(protected)/recipes/create/_actions/composite-components-action";
 import { RecipeComponentsProvider } from "@/providers/recipe-components";
 
 export default async function AddRecipePage() {
