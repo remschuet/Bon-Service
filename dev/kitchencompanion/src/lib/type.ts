@@ -1,4 +1,4 @@
-import { Kitchen, Unit } from "@prisma/client";
+import { Kitchen, Recipe, RecipeBook, Unit } from "@prisma/client";
 import { RecipeData } from "@/lib/composite/recipe";
 
 export enum IngredientType {
@@ -55,6 +55,16 @@ export type RecipeIngredientDTO = {
   recipeIngredientId: string | null;
   quantity: number;
   unit: Unit;
+};
+
+export type CompleteRecipeIngredients = RecipeIngredientDTO & {
+  ingredient?: { name: string };
+  recipeIngredient?: { name: string };
+};
+
+export type CompleteRecipe = Recipe & {
+  recipeAllergens: { allergen: { name: string } }[];
+  recipeBook: RecipeBook;
 };
 
 export type MemberKitchen = Kitchen & {

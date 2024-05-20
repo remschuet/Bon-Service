@@ -10,7 +10,11 @@ import {
   getAllRecipeBookByUserId,
   getRecipeBookById,
 } from "@/db/data-access/recipe-book";
-import { getAllRecipeByRecipeBookIds } from "@/db/data-access/recipe";
+import {
+  getAllRecipeByRecipeBookIds,
+  getRecipe,
+  getRecipeIngredientAndRecipeName,
+} from "@/db/data-access/recipe";
 
 /**
  * Retrieves all kitchens associated with a specific user ID.
@@ -91,6 +95,16 @@ export async function getAllContactForAdmin(userId: string) {
 export async function getIngredients(userId: string) {
   try {
     return await getAllIngredient(userId);
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getCurrentRecipe(recipeId: string) {
+  try {
+    const recipe = await getRecipe(recipeId);
+    const ingredients = await getRecipeIngredientAndRecipeName(recipeId);
+    return { recipe, ingredients };
   } catch (error) {
     throw error;
   }

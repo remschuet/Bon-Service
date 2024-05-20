@@ -1,6 +1,6 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { BadgePlus } from "lucide-react";
 
 import { useRedirectMembers } from "@/hooks/useRedirectMembers";
@@ -14,6 +14,7 @@ import { RecipeList } from "@/app/[locale]/(protected)/recipes/[recipeBook]/_com
 export default function RecipeBooksPage() {
   useRedirectMembers();
   const recipeBookId = useSearchParams().get("recipeBookId") as string;
+  const path = usePathname();
   const { isOwner, loading } = useOwner(recipeBookId);
   const { recipes } = useRecipes(recipeBookId);
 
@@ -43,7 +44,10 @@ export default function RecipeBooksPage() {
           </Button>
         </RedirectButton>
       </div>
-      <RecipeList recipes={recipes} />
+      <RecipeList
+        recipes={recipes}
+        recipeBookPath={path}
+      />
     </div>
   );
 }
