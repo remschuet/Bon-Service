@@ -33,8 +33,8 @@ export default function ViewRecipe() {
         <legend className='ml-1 px-1 text-sm font-medium'>
           <h1 className='text-3xl font-bold'>{recipe.name}</h1>
         </legend>
-        <div>
-          <div className='m-5 space-y-4 flex flex-col w-[40%]'>
+        <div className='grid gap-2 grid-cols-1 md:grid-cols-2 p-2'>
+          <div className='m-5 space-y-4 flex flex-col'>
             <div className='flex gap-4'>
               <div className='border rounded-lg p-3 flex flex-col gap-2 w-[150px]'>
                 <p className='font-bold'>Préparation:</p>{" "}
@@ -79,7 +79,10 @@ export default function ViewRecipe() {
               </Button>
             </div>
           </div>
-          <img />
+          <div className='w-full bg-stone-300 rounded-lg p-5'>
+            {" "}
+            Recipe Image
+          </div>
         </div>
         <fieldset className='grid gap-6 rounded-lg border p-4'>
           <legend className='ml-1 px-1 text-sm font-medium'>
@@ -119,11 +122,6 @@ export default function ViewRecipe() {
         </fieldset>
       </fieldset>
       <div className='flex gap-2 justify-end'>
-        <Button
-          className='w-[25%]'
-          onClick={() => console.log("Recipe deleted")}>
-          Supprimer
-        </Button>
         <Button
           className='w-[25%]'
           onClick={() => console.log("Recipe deleted")}>
