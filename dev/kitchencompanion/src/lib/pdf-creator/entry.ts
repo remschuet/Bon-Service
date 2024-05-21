@@ -1,11 +1,10 @@
-import { PdfTable } from "./pdfTable";
-import { TableDataType, Section } from "./TypePdf";
+import { Section } from "./TypePdf";
 import { PdfSection } from "./pdfSection";
 import { PdfOptionBuilder } from "./pdfOption";
-import { getAllContact } from "@/db/data-access/contact";
 /**
  * This file is the entry point for the pdf creator
  * This is not part of the library, is objectif it's to test the library
+ * The second purpose is for comprehesion how to use the library
  */
 
 /**
