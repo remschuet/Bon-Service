@@ -1,13 +1,6 @@
 import { PdfGenerator } from "./pdf";
-import {
-  OrientationPDF,
-  UnitPDF,
-  Coordinates,
-  Section,
-  TableDataType,
-} from "./TypePdf";
+import { OrientationPDF, UnitPDF, Section } from "./TypePdf";
 import { PdfOption } from "./pdfOption";
-import { PdfTable } from "./pdfTable";
 import autoTable from "jspdf-autotable";
 
 /**
@@ -71,10 +64,10 @@ export class PdfSection extends PdfGenerator {
 
     // Implementation dans options en cours
     autoTable(this.doc, {
-      headStyles: { fillColor: this.pdfOption.gridTitleColor },
+      //headStyles: { fillColor: [0, 153, 153], textColor: [255, 255, 255] },
       styles: { halign: "center" },
-      alternateRowStyles: { fillColor: [231, 215, 252] },
-      tableLineColor: [124, 95, 240],
+      //alternateRowStyles: { fillColor: [102, 255, 255] },
+      //tableLineColor: [0, 255, 255],
       startY:
         (section.start.y * this.pdfOption.pageHeight) / 10 +
         this.getZeroForBody() +

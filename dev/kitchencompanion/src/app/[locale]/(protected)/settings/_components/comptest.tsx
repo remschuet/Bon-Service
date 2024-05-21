@@ -8,7 +8,7 @@ import { useSession } from "@/hooks/useSession";
 import { createPdfPDF } from "../_export/pdf-contact-export";
 import { exportCreatePdfRecipe } from "../_export/pdf-recipe-export";
 import { uploadImage } from "../_action/settings-image-action";
-
+import { exportCreatePdfIngredient } from "../_export/pdf-ingredient-export";
 export function Test() {
   const { id, email, name, userType, isPremium } = useSession();
 
@@ -44,8 +44,12 @@ export function Test() {
     });
   }
 
-  async function createPdf(formData: FormData) {
+  async function createPdfContact(formData: FormData) {
     await createPdfPDF(id);
+  }
+
+  async function createPdfIngredient(formData: FormData) {
+    await exportCreatePdfIngredient(id);
   }
 
   async function createPdfRecipe(formData: FormData) {
@@ -120,17 +124,13 @@ export function Test() {
   }
   return (
     <>
-      <form action={createPdf}>
+      <form action={createPdfContact}>
         <Button type="submit">Create PDF contacts</Button>
       </form>
+      <form action={createPdfIngredient}>
+        <Button type="submit">Create PDF ingredient</Button>
+      </form>
       <form action={createPdfRecipe}>
-        <input
-          type="text"
-          name="recipeName"
-          id="recipeName"
-          required
-          placeholder="RecipeName"
-        />
         <Button type="submit">Create PDF recipes</Button>
       </form>{" "}
       {facturactionContent}

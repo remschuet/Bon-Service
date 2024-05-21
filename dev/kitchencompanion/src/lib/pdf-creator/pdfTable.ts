@@ -16,9 +16,9 @@ export class PdfTable extends PdfGenerator {
    * @param pdfOption An optional PdfOption object to customize PDF settings.
    */
   constructor(
+    pdfOption: PdfOption | undefined = undefined,
     orientation: OrientationPDF = OrientationPDF.Portrait,
-    unit: UnitPDF = UnitPDF.cm,
-    pdfOption: PdfOption | undefined = undefined
+    unit: UnitPDF = UnitPDF.cm
   ) {
     super(orientation, unit, pdfOption);
   }

@@ -1,15 +1,6 @@
 "use server";
 
-import {
-  updateUserUserType,
-  updateUser,
-  updateUserPremium,
-} from "@/db/data-access/user";
-
-import { User, UserTypes } from "@prisma/client";
-import { IngredientSchema } from "@/lib/validation";
-import { getContactForKitchen } from "../../kitchen/_action/kitchen-action";
-import { getAllContact, getContact } from "@/db/data-access/contact";
+import { getAllContact } from "@/db/data-access/contact";
 import { ExportContactDTO } from "@/lib/type";
 
 export async function exportGetContacts(id: string) {

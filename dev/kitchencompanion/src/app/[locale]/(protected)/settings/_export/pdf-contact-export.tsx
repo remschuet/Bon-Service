@@ -1,11 +1,7 @@
-import { getAllContact } from "@/db/data-access/contact";
-import { entryPoint } from "@/lib/pdf-creator/entry";
-import { contacts } from "@/lib/pdf-creator/fakeContact";
 import { PdfTable } from "@/lib/pdf-creator/pdfTable";
-import { TableDataType } from "@/lib/pdf-creator/TypePdf";
 import { ExportContactDTO } from "@/lib/type";
 import { exportGetContacts } from "./pdf-action-contact-export";
-import { Contact } from "@prisma/client";
+import { PdfOptionBuilder } from "@/lib/pdf-creator/pdfOption";
 
 /**
  * Creates a PDF file containing the specified contact's information.
@@ -20,17 +16,20 @@ export async function createPdfPDF(id: string) {
    * @param id - The unique identifier of the contact to be included in the PDF.
    */
   async function testContact(id: string) {
-    const pdf = new PdfTable();
+    let PdfOption = new PdfOptionBuilder().setPageHeader(10).build();
+    const pdf = new PdfTable(PdfOption);
     let data = ["name", "description", "phoneNumber", "compteNumber"];
 
-    const contactExport = (await exportGetContacts(id)) as ExportContactDTO[];
-    const contactExports = JSON.stringify(contactExport, null, 2);
-    const contactExportss = JSON.parse(contactExports) as ExportContactDTO[];
+    const ingredientDTO = (await exportGetContacts(id)) as ExportContactDTO[];
+    const ingredientStringify = JSON.stringify(ingredientDTO, null, 2);
+    const ingredientExport = JSON.parse(
+      ingredientStringify
+    ) as ExportContactDTO[];
 
-    await pdf.createGrid(data, contactExportss);
+    await pdf.createGrid(data, ingredientExport);
 
     // Set Header
-    pdf.setHeader("Contacts");
+    pdf.setHeader("Ingredients", "Tous les ingredients de la cuisine");
 
     pdf.openPdf();
   }

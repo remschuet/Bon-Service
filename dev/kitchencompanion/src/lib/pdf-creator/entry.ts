@@ -1,6 +1,5 @@
 import { PdfTable } from "./pdfTable";
 import { TableDataType, Section } from "./TypePdf";
-import { contacts } from "./fakeContact";
 import { PdfSection } from "./pdfSection";
 import { PdfOptionBuilder } from "./pdfOption";
 import { getAllContact } from "@/db/data-access/contact";
@@ -8,27 +7,6 @@ import { getAllContact } from "@/db/data-access/contact";
  * This file is the entry point for the pdf creator
  * This is not part of the library, is objectif it's to test the library
  */
-
-/**
- * create contact pdf with table
- */
-async function testContact(id: string) {
-  await getAllContact(id);
-
-  const pdf = new PdfTable();
-  // The data we need to take care in the Contacts listes
-  let data = ["name", "description", "phoneNumber", "compteNumber"];
-  const jsonContact = JSON.stringify(contacts, null, 2);
-  const contactsData: TableDataType[] = JSON.parse(jsonContact);
-
-  // Create pdf grid and set the table
-  await pdf.createGrid(data, contactsData);
-
-  // Set Header
-  pdf.setHeader("Contacts");
-
-  pdf.openPdf();
-}
 
 /**
  * Create recipe pdf with table and information
@@ -110,7 +88,8 @@ async function testSection() {
 
 /**
  * Entry point from the external interface
+ * Use to debug the librairy and unit test
  */
 export async function entryPoint(id: string) {
-  testContact(id);
+  // testContact(id);
 }
