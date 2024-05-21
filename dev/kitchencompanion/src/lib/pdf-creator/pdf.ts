@@ -3,21 +3,20 @@ import jsPDF from "jspdf";
 import { PdfOption, fontSizes, PdfOptionBuilder } from "./pdfOption";
 
 /*
- * DOCS
+ * DOCS used for the comprehesion of the jsPDF library
  * https://www.npmjs.com/package/jspdf
  * https://raw.githack.com/MrRio/jsPDF/master/index.html
- *https://artskydj.github.io/jsPDF/docs/module-cell.html#~table
+ * https://artskydj.github.io/jsPDF/docs/module-cell.html#~table
  */
 
 /**
  * Class PdfGenerator
  * For generating PDF documents.
  * This class provides methods to create, customize, and download PDF files.
+ * This class is the first level of the library
  */
 export class PdfGenerator {
-  // Options for the pdf
   protected pdfOption: PdfOption;
-  // the js-doc pdf
   protected doc;
 
   /**
@@ -65,16 +64,39 @@ export class PdfGenerator {
     window.open(pdfUrl, "_blank");
   }
 
-  /** IN PROGRESS
+  /**
    * Sets various properties for the PDF document, such as title, author, and keywords.
+   *
+   * @param {Object} options - Optional parameters for setting the document properties.
+   * @param options.title - The title of the document.
+   * @param options.subject - The subject of the document.
+   * @param options.author - The author of the document.
+   * @param options.keywords - The keywords for the document.
+   * @param options.creator - The creator of the document.
    */
-  public setProperties() {
-    this.doc.setProperties({
+  public setProperties(options?: {
+    title?: string;
+    subject?: string;
+    author?: string;
+    keywords?: string;
+    creator?: string;
+  }) {
+    const defaultOptions = {
       title: "Titre du document",
       subject: "Sujet du document",
       author: "Auteur du document",
-      keywords: "mots clés, pour, document, PDF",
-      creator: "Votre nom ou l'outil utilisé pour générer le PDF",
+      keywords: "document, PDF",
+      creator: "Creator of the document",
+    };
+
+    const finalOptions = { ...defaultOptions, ...options };
+
+    this.doc.setProperties({
+      title: finalOptions.title,
+      subject: finalOptions.subject,
+      author: finalOptions.author,
+      keywords: finalOptions.keywords,
+      creator: finalOptions.creator,
     });
   }
 
