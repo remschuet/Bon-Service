@@ -7,6 +7,7 @@ import autoTable from "jspdf-autotable";
  * PdfSection extends PdfGenerator
  * The class provides methods for managing sections in a PDF document,
  * including creating sections, adding grids, inserting text with flexible and inserting grid.
+ * The class is a second level of the library
  */
 
 export class PdfSection extends PdfGenerator {
@@ -36,7 +37,7 @@ export class PdfSection extends PdfGenerator {
     }
   }
 
-  /** IN PROGRESS
+  /** IN PROGRESS, WORKING
    * Adds a grid with customizable styles to the specified section in the PDF.
    *
    * @param sectionName The name of the section to add the grid to.
@@ -62,6 +63,7 @@ export class PdfSection extends PdfGenerator {
       2: { cellWidth: 50 },
     };
 
+    // TODO: change the color in the pdf option builder
     // Implementation dans options en cours
     autoTable(this.doc, {
       //headStyles: { fillColor: [0, 153, 153], textColor: [255, 255, 255] },

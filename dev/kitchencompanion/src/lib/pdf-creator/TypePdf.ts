@@ -1,4 +1,6 @@
-// Utilisation d'enum pour OrientationPDF
+/**
+ * Type used in the pdf library
+ */
 export enum OrientationPDF {
   Portrait = "portrait",
   Landscape = "landscape",
@@ -25,4 +27,8 @@ export type Coordinates = {
 };
 export interface Section {
   [key: string]: Coordinates;
+}
+
+export interface FontSizes {
+  [key: string]: number;
 }

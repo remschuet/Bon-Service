@@ -6,6 +6,7 @@ import { PdfOption, PdfOptionBuilder } from "./pdfOption";
 /**
  * PdfTable extends PdfGenerator
  * The class provides methods for generating and formatting tables in a PDF document.
+ * The class is a second level of the pdf library
  */
 export class PdfTable extends PdfGenerator {
   /**
