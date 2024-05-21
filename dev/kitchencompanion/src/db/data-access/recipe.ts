@@ -167,6 +167,27 @@ export async function getAllRecipeByRecipeBookIds(recipeBookIds: string[]) {
 }
 
 /**
+ * Get all recipes associated with the given userId.
+ *
+ * @param userId - The IDs of the user.
+ * @returns a lists containing the matching recipes.
+ */
+export async function getAllRecipe(userId: string) {
+  try {
+    return await db.recipe.findMany({
+      where: {
+        recipeBook: {
+          userId: userId,
+        },
+      },
+    });
+  } catch (error) {
+    console.error("Error data-access/recipe: getAllRecipe(), error: ", error);
+    throw error;
+  }
+}
+
+/**
  * link recipe to alergen.
  * @param recipe - The recipe object containing the recipes's details.
  * @param allergen - An element of the allergen enum
