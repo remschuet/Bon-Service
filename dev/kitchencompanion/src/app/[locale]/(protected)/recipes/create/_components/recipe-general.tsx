@@ -17,7 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useNewRecipe } from "@/hooks/useNewRecipe";
 import { useRecipeBooks } from "@/hooks/useRecipeBooks";
 import { useUnits } from "@/hooks/useUnits";
-import { useTransition } from "react";
+import { useEffect, useTransition } from "react";
 
 import { debounce } from "@/lib/utils";
 import { PulseLoader } from "react-spinners";
@@ -30,6 +30,12 @@ export function RecipeGeneral() {
   const { units } = useUnits();
   const { recipeBooks } = useRecipeBooks();
   const { ctx, submitNewRecipe } = useNewRecipe();
+
+  useEffect(() => {
+    if (recipeBookId.get("recipeBookId")) {
+      ctx.setRecipeBook(recipeBookId.get("recipeBookId") as string);
+    }
+  }, [recipeBookId]);
 
   const handleSubmitNewRecipe = () => {
     const newRecipe = submitNewRecipe();

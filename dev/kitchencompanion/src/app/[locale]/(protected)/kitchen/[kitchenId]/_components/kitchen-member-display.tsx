@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { MemberList } from "./members/member-list";
 import { useKitchenData } from "@/hooks/useKitchenData";
 
-export function KitchenMemberDisplay({ kitchenId }: { kitchenId: string }) {
+export function KitchenMemberDisplay() {
   const { members } = useKitchenData();
 
   return (

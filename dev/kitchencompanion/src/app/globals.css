@@ -36,12 +36,10 @@
     --input: 33.3,5.5%,32.4%, 0.5;
     --ring: 222.2 84% 4.9%;
 
-    --brand: 94, 72%, 64%;
-    --brand-light: 94, 93%, 75%;
+    --brand: 172.5,66%,50.4%;
+    --brand-light: 168.4,83.8%,78.2%;
     --brand-foreground: 24,9.8%,10%;
-    --brand-dark: 94, 50%, 31%;
-    --brand-dark-hover: 94, 47%, 47%;
-    --brand-hover: 94, 80%, 85%;
+    --brand-hover: 167.2,85.5%,89.2%;
 
     --autofill: 25,5.3%,44.7%, 0.2;
 
