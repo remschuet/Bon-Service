@@ -1,14 +1,7 @@
 "use server";
 
-import {
-  updateUserUserType,
-  updateUser,
-  updateUserPremium,
-  updateAvatarKey,
-} from "@/db/data-access/user";
+import { updateAvatarKey } from "@/db/data-access/user";
 
-import { User, UserTypes } from "@prisma/client";
-import { IngredientSchema } from "@/lib/validation";
 import { getImageFromS3, uploadImageToS3 } from "@/db/data-access/media";
 
 export async function uploadImage(form: FormData) {

@@ -5,12 +5,9 @@ import {
   updateProfilUser,
 } from "../_action/settings-action";
 import { useSession } from "@/hooks/useSession";
-import { createPdfPDF } from "../_export/pdf-contact-export";
-import { exportCreatePdfRecipe } from "../_export/pdf-recipe-export";
 import { uploadImage } from "../_action/settings-image-action";
-import { exportCreatePdfIngredient } from "../_export/pdf-ingredient-export";
 export function Test() {
-  const { id, email, name, userType, isPremium } = useSession();
+  const { id, userType, isPremium } = useSession();
 
   async function processImage(formData: FormData) {
     try {
@@ -42,19 +39,6 @@ export function Test() {
 
       reader.readAsArrayBuffer(file); // Convertit le contenu du fichier en ArrayBuffer
     });
-  }
-
-  async function createPdfContact(formData: FormData) {
-    await createPdfPDF(id);
-  }
-
-  async function createPdfIngredient(formData: FormData) {
-    await exportCreatePdfIngredient(id);
-  }
-
-  async function createPdfRecipe(formData: FormData) {
-    formData.append("userId", id);
-    await exportCreatePdfRecipe(formData);
   }
 
   async function updateFacturation(formData: FormData) {
@@ -124,15 +108,6 @@ export function Test() {
   }
   return (
     <>
-      <form action={createPdfContact}>
-        <Button type="submit">Create PDF contacts</Button>
-      </form>
-      <form action={createPdfIngredient}>
-        <Button type="submit">Create PDF ingredient</Button>
-      </form>
-      <form action={createPdfRecipe}>
-        <Button type="submit">Create PDF recipes</Button>
-      </form>{" "}
       {facturactionContent}
       {adminModeContent}
       <form action={processImage}>
