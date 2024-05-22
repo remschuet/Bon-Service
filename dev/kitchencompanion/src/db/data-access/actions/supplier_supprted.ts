@@ -1,10 +1,12 @@
 import { SupplierSupported } from "@prisma/client";
-import { dev_createManySupplierSupported, dev_removeAllSupplierSupported } from "../supplier";
-
+import {
+  dev_createManySupplierSupported,
+  dev_removeAllSupplierSupported,
+} from "../supplier";
 
 /*
-* Permet de creer les supplier supported avec leur prompt
-* Appel venant du dev, une seul fois !!
+ * Permet de creer les supplier supported avec leur prompt
+ * Appel venant du dev, une seul fois !!
  */
 export async function actionCreateSupplierSupported() {
   let supplierSupportedList: SupplierSupported[] = [];

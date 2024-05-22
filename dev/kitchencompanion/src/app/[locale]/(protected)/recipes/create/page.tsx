@@ -9,6 +9,7 @@ import {
   getRecipeComponents,
 } from "@/app/[locale]/(protected)/recipes/create/_actions/composite-components-action";
 import { RecipeComponentsProvider } from "@/providers/recipe-components";
+import { RecipeBooksProvider } from "@/providers/recipe-books";
 
 export default async function AddRecipePage() {
   const session = await auth();
@@ -24,12 +25,14 @@ export default async function AddRecipePage() {
     const recipeIngredientJSON = JSON.stringify(recipeIngredients);
 
     return (
-      <RecipeComponentsProvider
-        ingredients={ingredientJSON}
-        recipes={recipeJSON}
-        recipeIngredients={recipeIngredientJSON}>
-        <RecipeBuilder />
-      </RecipeComponentsProvider>
+      <RecipeBooksProvider>
+        <RecipeComponentsProvider
+          ingredients={ingredientJSON}
+          recipes={recipeJSON}
+          recipeIngredients={recipeIngredientJSON}>
+          <RecipeBuilder />
+        </RecipeComponentsProvider>
+      </RecipeBooksProvider>
     );
   } else {
     return <div>Unauthorized access</div>;
