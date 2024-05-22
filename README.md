@@ -122,5 +122,16 @@ Pour toute question ou demande d'information, vous pouvez contacter les membres 
 
 ## Remerciements
 
+Prof IA
+
 Frederic Theriault
-Relecture de fichiers ?
+
+- Discussion
+
+Martin Coulombe
+
+- Relecture documents techniques
+
+Rémi Chuet
+
+- Relecture documents techniques
