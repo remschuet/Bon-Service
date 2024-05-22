@@ -59,7 +59,7 @@ Bon Service est une application dédiée à la gestion et au partage de recettes
 
 - [Next.js](https://nextjs.org/docs)
 
-  Framwork React nous permettant de faire une application web full-stack.
+  Framework React nous permettant de faire une application web full-stack.
 
 - [React](https://reactjs.org/docs/getting-started.html)
 
@@ -91,7 +91,7 @@ Bon Service est une application dédiée à la gestion et au partage de recettes
 
 - [Resend](https://resend.com/docs)
 
-  API d'envoi d'e-mails qui simplifie l'intégration de fonctionnalités de messagerie dans les applications, offrant des options de personnalisation et une gestion fiable des envois d'e-mails.
+  API web d'envoi d'e-mails qui simplifie l'intégration de fonctionnalités de messagerie dans les applications, offrant des options de personnalisation et une gestion fiable des envois d'e-mails.
 
 - [JsPDF](https://www.npmjs.com/package/jspdf)
 
@@ -99,17 +99,9 @@ Bon Service est une application dédiée à la gestion et au partage de recettes
 
 ## Ressources
 
-- Typescript
-- Next
-- React
-- Prisma
-- ShadCn
-- Zod
-- tailwind
-- Jest
-- Bcrypt
-- Resend
-- Jspdf
+- [NextJs, bonnes pratiques](https://www.youtube.com/watch?v=1MTyCvS05V4&t=16706s)
+
+  Vidéo YouTube visualisé pour la compréhension globale du fonctionnement de NextJs.
 
 ## Contact
 
@@ -122,16 +114,18 @@ Pour toute question ou demande d'information, vous pouvez contacter les membres 
 
 ## Remerciements
 
-Prof IA
+Pierre-Paul Monty
+
+- Discussion sur les algorythmes: In-Order Traversal
 
 Frederic Theriault
 
-- Discussion
+- Discussion sécurité web
 
-Martin Coulombe
+Martine Coulombe
 
 - Relecture documents techniques
 
-Rémi Chuet
+David Chuet
 
 - Relecture documents techniques
