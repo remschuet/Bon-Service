@@ -9,12 +9,22 @@ import {
 } from "@/components/ui/breadcrumb";
 import { ChevronRight } from "lucide-react";
 
-import { useCurrentPath } from "@/hooks/useCurrentPath";
 import { cn } from "@/lib/utils";
+import { usePathname } from "next/navigation";
 
-export function Location() {
-  const current = useCurrentPath();
-
+export function Location({
+  params,
+}: {
+  params: {
+    locale: string;
+    recipeBookId: string;
+    recipeId?: string;
+    kitchenId?: string;
+  };
+}) {
+  const current = decodeURIComponent(usePathname())
+    .split("/")
+    .filter((p) => p);
   return (
     <div className='flex items-center space-x-2'>
       <Breadcrumb>

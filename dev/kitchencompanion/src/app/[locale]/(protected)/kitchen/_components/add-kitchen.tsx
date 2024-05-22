@@ -8,8 +8,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { AddKitchenForm } from "@/app/[locale]/(protected)/kitchen/_components/add-kitchen-form";
 import { BadgePlus } from "lucide-react";
+import { useKitchens } from "@/hooks/useKitchens";
 
 export function AddKitchen() {
+  const { refetch } = useKitchens();
   return (
     <Dialog>
       <DialogTrigger asChild>

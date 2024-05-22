@@ -22,25 +22,29 @@ export function KitchenCard({
 }) {
   return (
     <Link href={`/kitchen/${kitchen.name}?id=${kitchen.id}`}>
-      <Card className="min-h-[200px]">
-        <CardHeader className="bg-brand-light rounded-t-lg mb-6 min-h-[125px] space-y-4">
+      <Card className='min-h-[200px]'>
+        <CardHeader className='bg-brand-light rounded-t-lg mb-6 min-h-[125px] space-y-4'>
           <CardTitle>{kitchen.name}</CardTitle>
           <CardDescription>{kitchen.description}</CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-col gap-2 max-w-[50%]">
+        <CardContent className='flex flex-col gap-2'>
           {chefName !== undefined ? (
             <CardDescription>{`Chef: ${chefName}`}</CardDescription>
           ) : null}
           {chefName !== undefined ? (
-            <Badge
-              className="block"
-              variant={"default"}
-            >{`${member} membres`}</Badge>
+            <div className='w-auto inline-flex flex-none'>
+              <Badge
+                className='flex-none'
+                variant={"default"}>{`${member} membres`}</Badge>
+            </div>
           ) : null}
           {chefName === undefined ? (
-            <Badge
-              variant={"default"}
-            >{`Objectif de coût: ${kitchen.costObjective}%`}</Badge>
+            <div className='w-auto inline-flex flex-none'>
+              <Badge
+                variant={
+                  "default"
+                }>{`Objectif de coût: ${kitchen.costObjective}%`}</Badge>
+            </div>
           ) : null}
         </CardContent>
       </Card>

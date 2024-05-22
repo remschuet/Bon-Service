@@ -14,6 +14,7 @@ import { MultipleKitchenSelect } from "@/app/[locale]/(protected)/contacts/_comp
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { DialogClose } from "@/components/ui/dialog";
+import { useContacts } from "@/hooks/useContacts";
 
 export function AddContactForm() {
   const { id } = useSession();
@@ -24,6 +25,7 @@ export function AddContactForm() {
 
   const [error, setError] = useState<string | undefined>(undefined);
   const [success, setSuccess] = useState<string | undefined>(undefined);
+  const { refetch } = useContacts();
 
   function handleAddContact(formData: FormData) {
     const contact = {
@@ -49,6 +51,8 @@ export function AddContactForm() {
           ref.current?.reset();
         }
       );
+
+      refetch();
     });
   }
 

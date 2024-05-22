@@ -6,22 +6,25 @@ import { RecipeBookList } from "@/app/[locale]/(protected)/recipes/_components/r
 import { RedirectButton } from "@/components/redirect-button";
 import { Button } from "@/components/ui/button";
 import { BadgePlus } from "lucide-react";
+import { RecipeBooksProvider } from "@/providers/recipe-books";
 
 export default function RecipePage() {
   useRedirectMembers();
 
   return (
     <div className='container mx-auto space-y-10'>
-      <div className='flex justify-end mt-6 gap-5'>
-        <AddRecipeBook />
-        <RedirectButton href='/recipes/create'>
-          <Button className='flex gap-2'>
-            <BadgePlus className='w-4' />
-            <span>Ajouter une recette</span>
-          </Button>
-        </RedirectButton>
-      </div>
-      <RecipeBookList />
+      <RecipeBooksProvider>
+        <div className='flex justify-end mt-6 gap-5'>
+          <AddRecipeBook />
+          <RedirectButton href='/recipes/create'>
+            <Button className='flex gap-2'>
+              <BadgePlus className='w-4' />
+              <span>Ajouter une recette</span>
+            </Button>
+          </RedirectButton>
+        </div>
+        <RecipeBookList />
+      </RecipeBooksProvider>
     </div>
   );
 }

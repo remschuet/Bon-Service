@@ -6,7 +6,6 @@ import { UserSession } from "@/lib/type";
 import type { Metadata } from "next";
 import { Lato } from "next/font/google";
 
-import { ThemeProvider } from "@/providers/theme";
 import { NavigationStateProvider } from "@/providers/navigation-state";
 
 import { Toaster } from "@/components/ui/toaster";
@@ -27,30 +26,34 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
-  params: { locale },
+  params,
 }: {
   children: React.ReactNode;
-  params: { locale: string };
+  params: {
+    locale: string;
+    recipeBookId: string;
+    recipeId?: string;
+    kitchenId?: string;
+  };
 }) {
   const session = await auth();
 
+  const locale = params.locale;
+
   return (
-    <html lang={locale} className="scrollbar-none" suppressHydrationWarning>
+    <html
+      lang={locale}
+      className='scrollbar-none'
+      suppressHydrationWarning>
       <body className={lato.className}>
         <SessionProvider session={session as UserSession}>
           <main>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="light"
-              disableTransitionOnChange
-            >
-              <div className="flex h-screen">
-                <NavigationStateProvider>
-                  <Nagivation />
-                  <PageLayout>{children}</PageLayout>
-                </NavigationStateProvider>
-              </div>
-            </ThemeProvider>
+            <div className='flex h-screen'>
+              <NavigationStateProvider>
+                <Nagivation />
+                <PageLayout params={params}>{children}</PageLayout>
+              </NavigationStateProvider>
+            </div>
           </main>
         </SessionProvider>
         <Toaster />

@@ -1,24 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { Contact } from "@prisma/client";
-import { useSession } from "@/hooks/useSession";
-import { getAllContactForAdmin } from "@/hooks/_action/action";
+import { ContactContext } from "@/contexts/contact";
 
-export function useContacts(): { contacts: Contact[] } {
-  const [contacts, setContacts] = useState<Contact[]>([]);
-  const { id } = useSession();
+export function useContacts(): { contacts: Contact[]; refetch: () => void } {
+  const { contacts, refetch } = useContext(ContactContext);
 
   useEffect(() => {
-    const fetchContacts = async () => {
-      try {
-        const contacts = await getAllContactForAdmin(id);
-        setContacts(contacts);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    if (contacts.length === 0) {
+      refetch();
+    }
+  }, [contacts, refetch]);
 
-    fetchContacts();
-  }, []);
-
-  return { contacts };
+  return { contacts, refetch };
 }

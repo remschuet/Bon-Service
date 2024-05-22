@@ -3,7 +3,7 @@
 import { getNameMemberKitchen } from "@/app/[locale]/(protected)/kitchen/[kitchenId]/_action/kitchenid-action";
 import { KitchenDataContext } from "@/contexts/kitchen-data";
 import { getRoleStates } from "@/db/enum";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 export const KitchenDataProvider = ({
   children,
@@ -32,11 +32,14 @@ export const KitchenDataProvider = ({
     fetchData();
   }, [refetchIndex, kitchenId]);
 
-  const value = {
-    members,
-    roles,
-    refetch: () => setRefetchIndex((i) => i + 1),
-  };
+  const value = useMemo(
+    () => ({
+      members,
+      roles,
+      refetch: () => setRefetchIndex((i) => i + 1),
+    }),
+    [members, roles]
+  );
 
   return (
     <KitchenDataContext.Provider value={value}>
