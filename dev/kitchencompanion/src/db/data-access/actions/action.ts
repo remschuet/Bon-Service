@@ -13,7 +13,6 @@ export async function getAllRecipeByAdminId(adminId: string) {
       const recipeBookIds = recipeBooks.map((recipeId) => recipeId.id);
       // get all recipes for admin
       const recipes = getAllRecipeByRecipeBookIds(recipeBookIds);
-      console.log("recipes: " + recipes);
       return recipes;
     }
     return [];

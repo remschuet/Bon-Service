@@ -1,3 +1,5 @@
+"use client";
+
 import { RecipeBookContext } from "@/contexts/recipe-books";
 import { getAllRecipeBooksById } from "@/hooks/_action/action";
 import { useSession } from "@/hooks/useSession";

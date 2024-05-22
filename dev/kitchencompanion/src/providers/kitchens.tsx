@@ -1,3 +1,5 @@
+"use client";
+
 import { KitchensContext } from "@/contexts/kitchens";
 import { getAllKitchensById } from "@/hooks/_action/action";
 import { useSession } from "@/hooks/useSession";

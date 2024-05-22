@@ -11,6 +11,7 @@ import { ChevronRight } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 export function Location({
   params,
@@ -48,9 +49,7 @@ export function Location({
                 {isLast ? (
                   `${pathName}`
                 ) : (
-                  <BreadcrumbLink href={isFirst ? `/${p}` : `${p}`}>
-                    {pathName}
-                  </BreadcrumbLink>
+                  <Link href={isFirst ? `/${p}` : `${p}`}>{pathName}</Link>
                 )}
                 <BreadcrumbSeparator>
                   <ChevronRight />
