@@ -78,3 +78,12 @@ export type ExportContactDTO = {
   phoneNumber: string;
   compteNumber: string;
 };
+
+export type ExportIngredientDTO = {
+  nom: string;
+  prix: string;
+  unité: Unit;
+  categorie: string;
+  origine: string;
+  fournisseur: string;
+};

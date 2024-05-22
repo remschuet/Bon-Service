@@ -1,19 +1,13 @@
 import { PdfGenerator } from "./pdf";
-import {
-  OrientationPDF,
-  UnitPDF,
-  Coordinates,
-  Section,
-  TableDataType,
-} from "./TypePdf";
+import { OrientationPDF, UnitPDF, Section } from "./TypePdf";
 import { PdfOption } from "./pdfOption";
-import { PdfTable } from "./pdfTable";
 import autoTable from "jspdf-autotable";
 
 /**
  * PdfSection extends PdfGenerator
  * The class provides methods for managing sections in a PDF document,
  * including creating sections, adding grids, inserting text with flexible and inserting grid.
+ * The class is a second level of the library
  */
 
 export class PdfSection extends PdfGenerator {
@@ -43,7 +37,7 @@ export class PdfSection extends PdfGenerator {
     }
   }
 
-  /** IN PROGRESS
+  /** IN PROGRESS, WORKING
    * Adds a grid with customizable styles to the specified section in the PDF.
    *
    * @param sectionName The name of the section to add the grid to.
@@ -69,12 +63,13 @@ export class PdfSection extends PdfGenerator {
       2: { cellWidth: 50 },
     };
 
+    // TODO: change the color in the pdf option builder
     // Implementation dans options en cours
     autoTable(this.doc, {
-      headStyles: { fillColor: this.pdfOption.gridTitleColor },
+      //headStyles: { fillColor: [0, 153, 153], textColor: [255, 255, 255] },
       styles: { halign: "center" },
-      alternateRowStyles: { fillColor: [231, 215, 252] },
-      tableLineColor: [124, 95, 240],
+      //alternateRowStyles: { fillColor: [102, 255, 255] },
+      //tableLineColor: [0, 255, 255],
       startY:
         (section.start.y * this.pdfOption.pageHeight) / 10 +
         this.getZeroForBody() +

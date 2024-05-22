@@ -1,4 +1,3 @@
-import { getRecipeIngredientAndRecipe } from "@/db/data-access/recipe";
 import { Section } from "@/lib/pdf-creator/TypePdf";
 import { PdfOptionBuilder } from "@/lib/pdf-creator/pdfOption";
 import { PdfSection } from "@/lib/pdf-creator/pdfSection";

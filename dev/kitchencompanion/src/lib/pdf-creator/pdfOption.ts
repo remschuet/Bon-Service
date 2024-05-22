@@ -1,9 +1,6 @@
 import jsPDF from "jspdf";
 import { RGBColor } from "./TypePdf";
-
-interface FontSizes {
-  [key: string]: number;
-}
+import { FontSizes } from "./TypePdf";
 
 /**
  * This class is a PdfOptionBuilder
