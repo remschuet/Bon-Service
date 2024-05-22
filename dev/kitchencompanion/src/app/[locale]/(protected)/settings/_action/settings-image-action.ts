@@ -6,15 +6,20 @@ import { getImageFromS3, uploadImageToS3 } from "@/db/data-access/media";
 
 export async function uploadImage(form: FormData) {
   try {
-    const userId = form.get("userId");
-    const imageEntry = form.get("image") as string;
-    const imageKey = crypto.randomUUID();
+    const userId = form.get("userId") as string | null;
+    const file = form.get("image") as File | null;
 
-    const buffer = Buffer.from(imageEntry.toString(), "utf-8");
+    if (!file) {
+      return;
+    }
+
+    const image = await file.arrayBuffer();
+    const buffer = Buffer.from(image);
+
+    const imageKey = crypto.randomUUID();
 
     await uploadImageToS3(buffer, imageKey);
     await updateAvatarKey(userId as string, imageKey);
-    console.log("upload terminé");
 
     const getImage = await getImageFromS3(imageKey);
     console.log("value:", getImage);
