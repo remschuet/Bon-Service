@@ -8,15 +8,15 @@ import { PdfOptionBuilder } from "@/lib/pdf-creator/pdfOption";
  *
  * @param id - The unique identifier of the contact to be included in the PDF.
  */
-export async function exportContactPdf(id: string) {
-  exportContact(id);
+export async function exportContactPdf(id: string, name: string) {
+  exportContact(id, name);
   /**
    * Tests the creation of a PDF file for a specific contact.
    *
    * @param id - The unique identifier of the contact to be included in the PDF.
    */
-  async function exportContact(id: string) {
-    let PdfOption = new PdfOptionBuilder().setPageHeader(10).build();
+  async function exportContact(id: string, name: string) {
+    let PdfOption = new PdfOptionBuilder().setPageHeader(13).build();
     const pdf = new PdfTable(PdfOption);
     let data = ["name", "description", "phoneNumber", "compteNumber"];
 
@@ -29,7 +29,7 @@ export async function exportContactPdf(id: string) {
     await pdf.createGrid(data, ingredientExport);
 
     // Set Header
-    pdf.setHeader("Ingredients", "Tous les ingredients de la cuisine");
+    pdf.setHeader("Liste numéro d'urgence", "", "responsable: " + name);
 
     pdf.openPdf();
   }
