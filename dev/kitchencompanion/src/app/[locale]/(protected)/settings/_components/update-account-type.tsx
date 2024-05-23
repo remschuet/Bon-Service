@@ -27,7 +27,11 @@ export async function UpdateAccountType() {
         </CardDescription>
       </CardHeader>
       <CardFooter className='border-t px-6 py-4'>
-        <Button onClick={updateAccountType}>Changer de type de compte</Button>
+        <Button
+          disabled
+          onClick={updateAccountType}>
+          Changer de type de compte
+        </Button>
       </CardFooter>
     </Card>
   );

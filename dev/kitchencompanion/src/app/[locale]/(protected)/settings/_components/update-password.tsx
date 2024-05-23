@@ -54,7 +54,7 @@ export function UpdatePassword() {
         </form>
       </CardContent>
       <CardFooter className='border-t px-6 py-4'>
-        <Button>Confirmer</Button>
+        <Button disabled>Confirmer</Button>
       </CardFooter>
     </Card>
   );

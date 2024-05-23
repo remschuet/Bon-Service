@@ -26,6 +26,8 @@ import {
   RecipeIngredientDTO,
 } from "@/lib/type";
 
+import { unitConversions } from "@/lib/composite/unit-convertion";
+
 export function RecipeIngredientInput() {
   const { ctx } = useNewRecipe();
   const { units } = useUnits();
@@ -151,13 +153,34 @@ export function RecipeIngredientInput() {
               <SelectValue placeholder='Unité' />
             </SelectTrigger>
             <SelectContent className='w-[80px]'>
-              {units.map((unit) => (
-                <SelectItem
-                  key={unit}
-                  value={unit}>
-                  {unit}
-                </SelectItem>
-              ))}
+              {units.map((unit) => {
+                if (!selectedIngredient) {
+                  return (
+                    <SelectItem
+                      key={unit}
+                      value={unit}>
+                      {unit}
+                    </SelectItem>
+                  );
+                }
+
+                const selectedIngredientUnit =
+                  selectedIngredient instanceof Ingredient
+                    ? selectedIngredient.unit
+                    : selectedIngredient.recipeData.unit;
+
+                return (
+                  unitConversions[selectedIngredientUnit].hasOwnProperty(
+                    unit
+                  ) && (
+                    <SelectItem
+                      key={unit}
+                      value={unit}>
+                      {unit}
+                    </SelectItem>
+                  )
+                );
+              })}
             </SelectContent>
           </Select>
         </div>
@@ -211,7 +234,7 @@ function extractRecipes(
     importedRecipe.recipeData = recipe._recipeData;
     recipesMap.set(recipe._recipeData.id!, importedRecipe);
   });
-  
+
   // Reconstruct the recipe components from the raw data and the maps
   recipesMap.forEach((importedRecipe, id) => {
     const index = Array.from(recipesMap.keys()).findIndex((key) => key === id);
