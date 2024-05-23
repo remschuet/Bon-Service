@@ -15,6 +15,8 @@ import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { DialogClose } from "@/components/ui/dialog";
 import { useContacts } from "@/hooks/useContacts";
+import { Label } from "@radix-ui/react-dropdown-menu";
+import { Textarea } from "@/components/ui/textarea";
 
 export function AddContactForm() {
   const { id } = useSession();
@@ -57,42 +59,69 @@ export function AddContactForm() {
   }
 
   return (
-    <div className='grid place-content-center w-[600px]'>
+    <div className='grid place-content-center p-4'>
       <form
         ref={ref}
         action={handleAddContact}
         className='flex flex-col space-y-7'>
-        <div className='flex gap-2 flex-wrap w-full'>
-          <div className='flex gap-2 w-full'>
+        <div className='flex gap-2 flex-wrap w-full space-y-3'>
+          <div className='flex flex-col gap-2 w-full'>
+            <Label className='text-md font-semibold'>Nom du contact *</Label>
             <Input
               type='text'
               name='name'
               placeholder='Jean Tremblay'
+              disabled={isPending}
             />
+          </div>
+          <div className='flex flex-col gap-2 w-full'>
+            <Label className='text-md font-semibold'>
+              Numéro de téléphone *
+            </Label>
             <Input
               type='text'
               name='phoneNumber'
               placeholder='(514) 123-4567'
+              disabled={isPending}
             />
           </div>
-          <div className='flex gap-2 w-full'>
+          <div className='flex flex-col gap-2 w-full'>
+            <Label className='text-md font-semibold'>
+              Numéro de compte (si applicable)
+            </Label>
+            <p className='text-muted text-sm'>
+              Certaines entreprise ont des numéros de compte pour leurs clients.
+              Si c'est le cas, vous pouvez le spécifier ici.
+            </p>
             <Input
               type='text'
               name='compteNumber'
-              placeholder='Numéro de compte (si applicable)'
-            />
-
-            <MultipleKitchenSelect
-              kitchens={kitchens}
-              value={selectedKitchenId}
-              onValueChange={setSelectedKitchenId}
+              placeholder='NMT1203'
+              disabled={isPending}
             />
           </div>
-          <Input
-            type='text'
-            name='description'
-            placeholder='Description'
-          />
+          <div className='flex flex-col gap-2 w-full'>
+            <Label className='text-md font-semibold'>
+              Cuisine(s) associée(s) (si applicable)
+            </Label>
+            <div>
+              <MultipleKitchenSelect
+                kitchens={kitchens}
+                value={selectedKitchenId}
+                onValueChange={setSelectedKitchenId}
+              />
+            </div>
+          </div>
+          <div className='flex flex-col gap-2 w-full'>
+            <Label className='text-md font-semibold'>Description</Label>
+            <Textarea
+              name='description'
+              placeholder='Courte description de la cuisine et de son objectif.'
+              maxLength={128}
+              disabled={isPending}
+              className='h-24'
+            />
+          </div>
         </div>
         <div>
           {error !== undefined && <FormError error={error} />}

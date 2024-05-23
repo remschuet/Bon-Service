@@ -38,10 +38,10 @@ export async function createUser(user: User) {
  * @returns A promise that resolves to the updated user.
  */
 
-export async function updateUserPassword(email: string, password: string) {
+export async function updateUserPassword(userId: string, password: string) {
   try {
     return await db.user.update({
-      where: { email: email },
+      where: { id: userId },
       data: {
         password: password,
       },

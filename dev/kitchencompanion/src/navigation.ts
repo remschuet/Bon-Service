@@ -78,6 +78,11 @@ export const pathnames = {
     fr: "/recettes/creer",
   },
 
+  "/settings": {
+    en: "/settings",
+    fr: "/parametres",
+  },
+
   "/contacts": "/contacts",
   // If locales use different paths, you can
   // specify each external path per locale.

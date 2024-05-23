@@ -1,14 +1,7 @@
 "use client";
 
-import { useRedirectMembers } from "@/hooks/useRedirectMembers";
-import { Test } from "./_components/comptest";
+import { GeneralSettings } from "@/app/[locale]/(protected)/settings/_components/general-settings";
 
 export default function SettingsPage() {
-  useRedirectMembers();
-
-  return (
-    <>
-      <Test />
-    </>
-  );
+  return <GeneralSettings />;
 }

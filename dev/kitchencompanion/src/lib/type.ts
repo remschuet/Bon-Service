@@ -87,3 +87,10 @@ export type ExportIngredientDTO = {
   origine: string;
   fournisseur: string;
 };
+
+export type UserInformation = {
+  name: string;
+  phone: string | null;
+  address: string | null;
+  avatar_key: string | null;
+};

@@ -19,28 +19,6 @@ export function Test() {
     }
   }
 
-  // Fonction utilitaire pour convertir un objet File en buffer
-  function readFileAsBuffer(file: File): Promise<Buffer> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-
-      reader.onload = (event) => {
-        if (event.target && event.target.result) {
-          const buffer = Buffer.from(event.target.result as ArrayBuffer);
-          resolve(buffer);
-        } else {
-          reject(new Error("Error reading file"));
-        }
-      };
-
-      reader.onerror = (error) => {
-        reject(error);
-      };
-
-      reader.readAsArrayBuffer(file); // Convertit le contenu du fichier en ArrayBuffer
-    });
-  }
-
   async function updateFacturation(formData: FormData) {
     formData.append("userId", id);
     if (!isPremium) {
@@ -68,7 +46,7 @@ export function Test() {
           <div>
             <p>Bon Service Pro</p>
           </div>
-          <Button type="submit">Quitter le mode Pro</Button>
+          <Button type='submit'>Quitter le mode Pro</Button>
         </form>
       </>
     );
@@ -79,7 +57,7 @@ export function Test() {
           <div>
             <p>Bon Service Pro</p>
           </div>
-          <Button type="submit">Devenir Pro</Button>
+          <Button type='submit'>Devenir Pro</Button>
         </form>
       </>
     );
@@ -90,7 +68,7 @@ export function Test() {
       <>
         <p>Update To admin Mode</p>
         <form action={updateAdminMode}>
-          <Button type="submit">Admin Mode</Button>
+          <Button type='submit'>Admin Mode</Button>
         </form>
       </>
     );
@@ -99,7 +77,9 @@ export function Test() {
       <>
         <p>Vous êtes deja administrateur.</p>
         <form action={updateAdminMode}>
-          <Button type="submit" disabled>
+          <Button
+            type='submit'
+            disabled>
             Admin Mode
           </Button>
         </form>
@@ -112,12 +92,12 @@ export function Test() {
       {adminModeContent}
       <form action={processImage}>
         <input
-          type="file"
-          name="image"
-          id="image"
-          accept="image/jpeg, image/png"
+          type='file'
+          name='image'
+          id='image'
+          accept='image/jpeg, image/png'
         />
-        <Button type="submit">Upload</Button>
+        <Button type='submit'>Upload</Button>
       </form>
     </>
   );

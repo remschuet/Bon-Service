@@ -15,6 +15,7 @@ import {
   getRecipe,
   getRecipeIngredientAndRecipeName,
 } from "@/db/data-access/recipe";
+import { getUser } from "@/db/data-access/user";
 
 /**
  * Retrieves all kitchens associated with a specific user ID.
@@ -105,6 +106,14 @@ export async function getCurrentRecipe(recipeId: string) {
     const recipe = await getRecipe(recipeId);
     const ingredients = await getRecipeIngredientAndRecipeName(recipeId);
     return { recipe, ingredients };
+  } catch (error) {
+    throw error;
+  }
+}
+
+export async function getCurrentUser(userId: string) {
+  try {
+    return await getUser(userId);
   } catch (error) {
     throw error;
   }

@@ -1,3 +1,5 @@
+import { BadgePlus } from "lucide-react";
+import { Button } from "./ui/button";
 import {
   Dialog,
   DialogContent,
@@ -5,27 +7,37 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { AddKitchenForm } from "@/app/[locale]/(protected)/kitchen/_components/add-kitchen-form";
-import { BadgePlus } from "lucide-react";
-import { useKitchens } from "@/hooks/useKitchens";
 
-export function AddKitchen() {
-  const { refetch } = useKitchens();
+export function AddDialogue({
+  children,
+  buttonText,
+  title,
+  description,
+}: {
+  children: React.ReactNode;
+  buttonText: string;
+  title: string;
+  description?: string;
+}) {
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button className='flex gap-2'>
           <BadgePlus className='w-4' />
-          Ajouter une cuisine
+          {buttonText}
         </Button>
       </DialogTrigger>
       <DialogContent className='min-w-[300px]'>
         <DialogHeader className=' flex flex-col gap-2 m-auto'>
           <DialogTitle className='text-2xl text-center p-3'>
-            Ajouter une nouvelle cuisine
+            {title}
           </DialogTitle>
-          <AddKitchenForm />
+          {description && (
+            <p className='self-center w-[80%] text-sm text-muted'>
+              {description}
+            </p>
+          )}
+          {children}
         </DialogHeader>
       </DialogContent>
     </Dialog>
