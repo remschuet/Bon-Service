@@ -15,9 +15,11 @@ import { FormSuccess } from "@/components/form-success";
 import { Textarea } from "@/components/ui/textarea";
 import { DialogClose } from "@radix-ui/react-dialog";
 import { addRecipeBook } from "@/app/[locale]/(protected)/recipes/_actions/recipes-action";
+import { useRecipeBooks } from "@/hooks/useRecipeBooks";
 
 export function AddRecipeBookForm() {
   const { id } = useSession();
+  const { refetch } = useRecipeBooks();
   const ref = useRef<HTMLFormElement>(null);
   const [error, setError] = useState<string | undefined>(undefined);
   const [success, setSuccess] = useState<string | undefined>(undefined);
@@ -46,6 +48,8 @@ export function AddRecipeBookForm() {
         setSuccess(res?.success);
         ref.current?.reset();
       });
+
+      refetch();
     });
   }
 

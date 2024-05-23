@@ -1,26 +1,18 @@
 import { RecipeBook } from "@prisma/client";
-import { useEffect, useState } from "react";
-import { useSession } from "@/hooks/useSession";
-import { getAllRecipeBooksById } from "@/hooks/_action/action";
+import { useContext, useEffect } from "react";
+import { RecipeBookContext } from "@/contexts/recipe-books";
 
 export function useRecipeBooks(): {
   recipeBooks: RecipeBook[];
+  refetch: () => void;
 } {
-  const [recipeBooks, setRecipeBooks] = useState<RecipeBook[]>([]);
-  const { id } = useSession();
+  const { recipeBooks, refetch } = useContext(RecipeBookContext);
 
   useEffect(() => {
-    const fetchKitchens = async () => {
-      try {
-        const recipeBooks = await getAllRecipeBooksById(id);
-        setRecipeBooks(recipeBooks);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    if (recipeBooks.length === 0) {
+      refetch();
+    }
+  }, [recipeBooks, refetch]);
 
-    fetchKitchens();
-  }, []);
-
-  return { recipeBooks };
+  return { recipeBooks, refetch };
 }

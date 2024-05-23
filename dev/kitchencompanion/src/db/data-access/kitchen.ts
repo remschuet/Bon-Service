@@ -1,5 +1,6 @@
-import { Kitchen } from "@prisma/client";
+import { Kitchen, RoleName } from "@prisma/client";
 import { db } from "@/db/prisma-db";
+import { MemberKitchen } from "@/lib/type";
 
 ////////////////////////////////
 // TABLES
@@ -7,8 +8,6 @@ import { db } from "@/db/prisma-db";
 ////////////////////////////////
 
 /**
- *
- *
  * Creates a new kitchen.
  * @param kitchen - The kitchen object.
  * @returns A promise that resolves to the created kitchen.
@@ -25,6 +24,19 @@ export async function createKitchen(kitchen: Kitchen) {
     });
   } catch (error) {
     console.error("Error data-access/kitchen: createKitchen(), error: ", error);
+    throw error;
+  }
+}
+
+export async function getKitchen(kitchenId: string) {
+  try {
+    return await db.kitchen.findFirst({
+      where: {
+        id: kitchenId,
+      },
+    });
+  } catch (error) {
+    console.error("Error data-access/kitchen: getKitchen(), error: ", error);
     throw error;
   }
 }
@@ -69,6 +81,23 @@ export async function getAllKitchenByAdminId(userId: string) {
       "Error data-access/kitchen: getAllKitchenByAdminId(), error: ",
       error
     );
+    throw error;
+  }
+}
+
+/**
+ * Get the owner id of a kitchen.
+ * @param kitchenId - The id of the kitchen.
+ * @returns The owner id of the kitchen.
+ */
+export async function getOwnerId(kitchenId: string) {
+  try {
+    return await db.kitchen.findUnique({
+      where: { id: kitchenId },
+      select: { userId: true },
+    });
+  } catch (error) {
+    console.error("Error data-access/kitchen: getOwnerId(), error: ", error);
     throw error;
   }
 }
@@ -156,17 +185,95 @@ export async function getAllKitchenUserById(kitchenId: string) {
 }
 
 /**
+ * Get a specific kitchen user by kitchen ID and user ID.
+ *
+ * @param kitchenId - The ID of the kitchen to retrieve the user for.
+ * @param userId - The ID of the user to retrieve.
+ * @returns A promise that resolves to the kitchen user, if found; otherwise, null.
+ */
+
+export async function getKitchenUser(kitchenId: string, userId: string) {
+  try {
+    return await db.kitchenUser.findFirst({
+      where: {
+        kitchenId: kitchenId,
+        userId: userId,
+      },
+    });
+  } catch (error) {
+    console.error("Error data-access/kitchen: getIfAllowed(), error: ", error);
+    throw error;
+  }
+}
+
+/**
+ * Get all kitchen associated with a specific user.
+ *
+ * @param userId - The ID of the user to retrieve the kitchen users for.
+ * @returns A promise that resolves to an array of kitchen users associated with the specified user.
+ */
+export async function getAllKitchensByUser(userId: string) {
+  const memberKitchen: MemberKitchen[] = [];
+
+  try {
+    const kitchens = await db.kitchenUser.findMany({
+      where: {
+        userId: userId,
+      },
+      include: {
+        kitchen: {
+          include: {
+            user: {
+              select: {
+                name: true,
+              },
+            },
+            kitchenUsers: true,
+          },
+        },
+      },
+    });
+
+    kitchens.forEach((kitchen) => {
+      const newMemberKitchen: MemberKitchen = {
+        id: kitchen.kitchen.id,
+        name: kitchen.kitchen.name,
+        costObjective: kitchen.kitchen.costObjective,
+        description: kitchen.kitchen.description,
+        chefName: kitchen.kitchen.user.name,
+        members: kitchen.kitchen.kitchenUsers.length,
+      } as MemberKitchen;
+
+      memberKitchen.push(newMemberKitchen);
+    });
+
+    return memberKitchen;
+  } catch (error) {
+    console.error(
+      "Error data-access/kitchen: getAllKitchenUserByUser(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
+/**
  * Links a user to a kitchen by user ID and kitchen ID.
  * @param userId - The ID of the user to link.
  * @param kitchenId - The ID of the kitchen to link.
  * @returns A promise that resolves when the user is linked to the kitchen.
  */
-export async function linkKitchenUserById(userId: string, kitchenId: string) {
+export async function linkKitchenUserById(
+  userId: string,
+  kitchenId: string,
+  role: RoleName
+) {
   try {
     return await db.kitchenUser.create({
       data: {
         userId: userId,
         kitchenId: kitchenId,
+        role: role,
       },
     });
   } catch (error) {

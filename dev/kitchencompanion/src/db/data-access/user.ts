@@ -38,10 +38,10 @@ export async function createUser(user: User) {
  * @returns A promise that resolves to the updated user.
  */
 
-export async function updateUserPassword(email: string, password: string) {
+export async function updateUserPassword(userId: string, password: string) {
   try {
     return await db.user.update({
-      where: { email: email },
+      where: { id: userId },
       data: {
         password: password,
       },
@@ -84,25 +84,42 @@ export async function getUser(email: string) {
   }
 }
 
+export async function getEmailsPattern(pattern: string) {
+  if (pattern.length === 0) {
+    return [];
+  }
+
+  try {
+    const users = await db.user.findMany({
+      where: {
+        email: {
+          startsWith: pattern,
+        },
+      },
+    });
+
+    const emails = users.map((user) => user.email);
+    return emails;
+  } catch (error) {
+    console.error("Error data-access/user: getEmailsPattern(), error: ", error);
+    throw error;
+  }
+}
 
 export async function getUserIfExist(email: string): Promise<boolean> {
   try {
     const isExisting = await db.user.findFirst({
       where: {
-        email: email
+        email: email,
       },
     });
 
     return !!isExisting;
   } catch (error) {
-    console.error(
-      "Error data-access/user: getUserIfExist(), error: ",
-      error
-    );
+    console.error("Error data-access/user: getUserIfExist(), error: ", error);
     throw error;
   }
 }
-
 
 /**
  * Retrieves a user by their ID.
@@ -116,6 +133,20 @@ export async function getUserById(id: string) {
     });
   } catch (error) {
     console.error("Error data-access/user: getUserById(), error: ", error);
+    throw error;
+  }
+}
+
+export async function updateAvatarKey(userId: string, avatarKey: string) {
+  try {
+    return await db.user.update({
+      where: { id: userId },
+      data: {
+        avatar_key: avatarKey,
+      },
+    });
+  } catch (error) {
+    console.error("Error data-access/user: updateAvatarKey(), error: ", error);
     throw error;
   }
 }

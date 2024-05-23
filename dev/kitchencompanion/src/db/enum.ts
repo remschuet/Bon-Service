@@ -4,6 +4,7 @@ import {
   Allergen,
   UserTypes,
   RecipeState,
+  RoleName,
 } from "@prisma/client";
 
 type EnumType = { [s: string]: string } | ArrayLike<string>;
@@ -71,6 +72,17 @@ export async function getUserTypes() {
 export async function getRecipeStates() {
   try {
     return getAllEnumValues(RecipeState);
+  } catch (error) {
+    console.error("Error data-access/enum: getRecipeStates(), error: ", error);
+    throw error;
+  }
+}
+/**
+ * Return an array containing the values of enum RoleName.
+ */
+export async function getRoleStates() {
+  try {
+    return getAllEnumValues(RoleName);
   } catch (error) {
     console.error("Error data-access/enum: getRecipeStates(), error: ", error);
     throw error;

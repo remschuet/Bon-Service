@@ -15,6 +15,7 @@ import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { Textarea } from "@/components/ui/textarea";
 import { DialogClose } from "@radix-ui/react-dialog";
+import { useKitchens } from "@/hooks/useKitchens";
 
 export function AddKitchenForm() {
   const { id } = useSession();
@@ -22,6 +23,7 @@ export function AddKitchenForm() {
   const [error, setError] = useState<string | undefined>(undefined);
   const [success, setSuccess] = useState<string | undefined>(undefined);
   const [isPending, startTransition] = useTransition();
+  const { refetch } = useKitchens();
 
   function handleAddKitchen(formData: FormData) {
     const costObjective = formData.get("costObjective") as string;
@@ -56,55 +58,55 @@ export function AddKitchenForm() {
         setSuccess(res?.success);
         ref.current?.reset();
       });
+      refetch();
     });
   }
 
   return (
-    <div className="grid place-content-center p-4">
+    <div className='grid place-content-center p-4'>
       <form
         ref={ref}
         action={handleAddKitchen}
-        className="flex flex-col space-y-7"
-      >
-        <div className="flex gap-4 flex-wrap">
-          <div className="flex flex-col gap-2 w-full">
-            <Label className="text-md font-semibold">Nom de la cuisine *</Label>
+        className='flex flex-col space-y-7'>
+        <div className='flex gap-4 flex-wrap'>
+          <div className='flex flex-col gap-2 w-full'>
+            <Label className='text-md font-semibold'>Nom de la cuisine *</Label>
             <Input
-              type="text"
-              name="name"
+              type='text'
+              name='name'
               disabled={isPending}
-              placeholder="Mon entreprise de traiteur"
+              placeholder='Mon entreprise de traiteur'
             />
           </div>
-          <div className="flex flex-col gap-2 w-full">
-            <Label className="text-md font-semibold">Description * </Label>
+          <div className='flex flex-col gap-2 w-full'>
+            <Label className='text-md font-semibold'>Description * </Label>
             <Textarea
-              name="description"
-              placeholder="Courte description de la cuisine et de son objectif."
+              name='description'
+              placeholder='Courte description de la cuisine et de son objectif.'
               maxLength={128}
               disabled={isPending}
-              className="h-24"
+              className='h-24'
             />
           </div>
-          <div className="flex flex-col gap-2 w-full">
-            <Label className="text-md font-semibold">Objectif de coût</Label>
-            <p className="text-xs text-muted">
+          <div className='flex flex-col gap-2 w-full'>
+            <Label className='text-md font-semibold'>Objectif de coût</Label>
+            <p className='text-xs text-muted'>
               Afin de vous aider à gérer vos coûts, veuillez indiquer un
               objectif de coût pour cette cuisine. Cet objectif sera utilisé
               pour faire des comparaisons avec les coûts réels de vos recettes.{" "}
-              <span className="italic font-semibold">
+              <span className='italic font-semibold'>
                 Le chiffre représente le pourcentage du coût de vos ingrédients
                 par rapport au prix de vente de vos recettes.
               </span>{" "}
-              <span className="underline font-semibold">
+              <span className='underline font-semibold'>
                 Par défaut, l'objectif est de 20%.
               </span>
             </p>
             <Input
-              type="text"
-              name="costObjective"
+              type='text'
+              name='costObjective'
               disabled={isPending}
-              placeholder="20%"
+              placeholder='20%'
             />
           </div>
         </div>
@@ -112,13 +114,18 @@ export function AddKitchenForm() {
           {error !== undefined && <FormError error={error} />}
           {success !== undefined && <FormSuccess success={success} />}
         </div>
-        <div className="flex gap-2 justify-end">
+        <div className='flex gap-2 justify-end'>
           <DialogClose asChild>
-            <Button type="button" variant="outline" disabled={isPending}>
+            <Button
+              type='button'
+              variant='outline'
+              disabled={isPending}>
               Quitter
             </Button>
           </DialogClose>
-          <Button type="submit" disabled={isPending}>
+          <Button
+            type='submit'
+            disabled={isPending}>
             {isPending ? <PulseLoader size={5} /> : "Ajouter"}
           </Button>
         </div>

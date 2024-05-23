@@ -1,26 +1,14 @@
-import { Kitchen } from "@prisma/client";
-import { useEffect, useState } from "react";
-import { useSession } from "@/hooks/useSession";
-import { getAllKitchensById } from "@/hooks/_action/action";
+import { useContext, useEffect } from "react";
+import { KitchensContext } from "@/contexts/kitchens";
 
-export function useKitchens(): {
-  kitchens: Kitchen[];
-} {
-  const [kitchens, setKitchens] = useState<Kitchen[]>([]);
-  const { id } = useSession();
+export function useKitchens() {
+  const { kitchens, refetch } = useContext(KitchensContext);
 
   useEffect(() => {
-    const fetchKitchens = async () => {
-      try {
-        const kitchens = await getAllKitchensById(id);
-        setKitchens(kitchens);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+    if (kitchens.length === 0) {
+      refetch();
+    }
+  }, [kitchens, refetch]);
 
-    fetchKitchens();
-  }, []);
-
-  return { kitchens };
+  return { kitchens, refetch };
 }

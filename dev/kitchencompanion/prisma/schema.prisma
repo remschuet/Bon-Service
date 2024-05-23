@@ -74,16 +74,16 @@ model User {
   updatedAt     DateTime?  @updatedAt
   isPremium     Boolean?   @default(false)
 
-  kitchens         Kitchen[]
-  kitchenUsers     KitchenUser[]
-  recipeBooks      RecipeBook[]
-  dishsTypes       DishsType[]
-  checkTemps       CheckTemp[]
-  suppliers        Supplier[]
-  notifications    Notification[]
-  ingredients      Ingredient[]
-  contacts         Contact[]
-  menus            Menu[]
+  kitchens      Kitchen[]
+  kitchenUsers  KitchenUser[]
+  recipeBooks   RecipeBook[]
+  dishsTypes    DishsType[]
+  checkTemps    CheckTemp[]
+  suppliers     Supplier[]
+  notifications Notification[]
+  ingredients   Ingredient[]
+  contacts      Contact[]
+  menus         Menu[]
 
   /// For NextAuth
   accounts Account[]
@@ -121,6 +121,8 @@ model KitchenUser {
   kitchenId String
   user      User    @relation(fields: [userId], references: [id])
   userId    String
+
+  role RoleName
 
   @@id([kitchenId, userId])
 }
@@ -245,11 +247,11 @@ model RecipePhoto {
 model Menu {
   id String @id @default(cuid())
 
-  name    String @unique
-  user    User   @relation(fields: [userId], references: [id])
-  userId  String
+  name        String  @unique
+  user        User    @relation(fields: [userId], references: [id])
+  userId      String
   description String?
-  cost Float
+  cost        Float
 
   menuKitchens MenuKitchen[]
   menuRecipes  MenuRecipe[]
@@ -266,7 +268,7 @@ model MenuRecipe {
   recipe   Recipe @relation(fields: [recipeId], references: [id])
   recipeId String
 
-  type String
+  type  String
   order Int
 
   @@unique([recipeId, menuId])
@@ -279,21 +281,23 @@ model MenuKitchen {
 
   menu   Menu   @relation(fields: [menuId], references: [id])
   menuId String
+
+  @@unique([kitchenId, menuId])
 }
 
 model DishsType {
-  id        String @id @default(cuid())
+  id String @id @default(cuid())
 
-  user      User   @relation(fields: [userId], references: [id])
-  userId    String
-  type      String
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  type   String
 
   @@unique([userId, type])
 }
 
 model DishsTypeSupported {
-  id        String @id @default(cuid())
-  type      String
+  id   String @id @default(cuid())
+  type String
 
   @@unique([type])
 }
@@ -351,6 +355,15 @@ enum NotifTypes {
   OPENAI_RETURN
   UPDATE_RECIPE
   GENERAL_UPDATE
+}
+
+enum RoleName {
+  Chef
+  Sous_chef
+  Chef_partie
+  Tournant
+  Commis
+  Plongeur
 }
 
 enum Unit {

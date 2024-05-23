@@ -50,6 +50,7 @@ def process_receipts():
     os.remove(file_path)
 
     try:
+        print("sending to GPT-4...")
         interpreted_receipt_data = _gpt.inference(supplier, formated_text)
         return jsonify(interpreted_receipt_data), 200
     except:

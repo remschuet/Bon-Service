@@ -10,18 +10,19 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { ToastAction } from "@/components/ui/toast";
 import { useToast } from "@/components/ui/use-toast";
 import { useSelectedSupplier } from "@/hooks/useSelectedSupplier";
 import { useSession } from "@/hooks/useSession";
 import { useTransition } from "react";
 import { PulseLoader } from "react-spinners";
+import { useIngredients } from "@/hooks/useIngredients";
 
 export function AddReceiptForm() {
   const { isOther, setSupplier } = useSelectedSupplier();
+  const { refetch } = useIngredients();
+  const [isPending, startTransition] = useTransition();
   const { id } = useSession();
   const { toast } = useToast();
-  const [isPending, startTransition] = useTransition();
 
   function handleReceipt(formData: FormData) {
     formData.append("userId", id);
@@ -42,6 +43,8 @@ export function AddReceiptForm() {
           description: result.success,
         });
       });
+
+      refetch();
     });
   }
 

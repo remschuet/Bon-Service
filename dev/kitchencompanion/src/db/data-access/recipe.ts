@@ -89,6 +89,59 @@ export async function createRecipe(
   }
 }
 
+export async function getRecipe(recipeId: string) {
+  try {
+    return await db.recipe.findFirst({
+      where: {
+        id: recipeId,
+      },
+      include: {
+        recipeAllergens: true,
+        recipeBook: {
+          include: {
+            user: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  } catch (error) {
+    console.error("Error data-access/recipe: getRecipe(), error: ", error);
+    throw error;
+  }
+}
+
+export async function getRecipeIngredientAndRecipeName(recipeId: string) {
+  try {
+    const ingredients = await db.recipeIngredient.findMany({
+      where: { recipeId: recipeId },
+      include: {
+        ingredient: {
+          select: {
+            name: true,
+          },
+        },
+        recipeIngredient: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
+
+    return ingredients;
+  } catch (error) {
+    console.error(
+      "Error data-access/recipe: getRecipeIngredientRecipe(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
 /**
  * Get all recipes associated with the given recipe book IDs.
  *
@@ -109,6 +162,27 @@ export async function getAllRecipeByRecipeBookIds(recipeBookIds: string[]) {
       "Error data-access/recipe: getAllRecipeByRecipeBookId(), error: ",
       error
     );
+    throw error;
+  }
+}
+
+/**
+ * Get all recipes associated with the given userId.
+ *
+ * @param userId - The IDs of the user.
+ * @returns a lists containing the matching recipes.
+ */
+export async function getAllRecipe(userId: string) {
+  try {
+    return await db.recipe.findMany({
+      where: {
+        recipeBook: {
+          userId: userId,
+        },
+      },
+    });
+  } catch (error) {
+    console.error("Error data-access/recipe: getAllRecipe(), error: ", error);
     throw error;
   }
 }

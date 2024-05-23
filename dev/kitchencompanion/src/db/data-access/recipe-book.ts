@@ -30,68 +30,6 @@ export async function createRecipeBook(recipeBook: RecipeBook) {
 }
 
 /**
- * Delete a specific RecipeBook.
- * @param recipeBook - The RecipeBook to be deleted.
- * @returns A promise that resolves to the deleted RecipeBook.
- */
-export async function deleteRecipeBook(recipeBook: RecipeBook) {
-  try {
-    return await db.recipeBook.delete({
-      where: { id: recipeBook.id },
-    });
-  } catch (error) {
-    console.error(
-      "Error data-access/recipe: deleteRecipeBook(), error: ",
-      error
-    );
-    throw error;
-  }
-}
-
-/**
- * Delete a RecipeBook that match the given userId and name (unique together).
- * @param userId - The userId of the RecipeBook to be deleted.
- * @param name - The name of the RecipeBook to be deleted.
- * @returns A promise that resolves to the deleted RecipeBook.
- */
-export async function deleteRecipeBookByUserIdAndName(
-  userId: string,
-  name: string
-) {
-  try {
-    return await db.recipeBook.deleteMany({
-      where: { userId, name },
-    });
-  } catch (error) {
-    console.error(
-      "Error data-access/recipe: deleteRecipeBookByUserIdAndName(), error: ",
-      error
-    );
-    throw error;
-  }
-}
-
-/**
- * Deletes all RecipeBooks associated with the given userId.
- * 
- * @param userId - The userId of the RecipeBooks to be deleted.
- * @returns A promise that resolves to the deleted RecipeBooks.
- */
-export async function deleteAllRecipeBook(userId: string){
-  try {
-    return await db.recipeBook.deleteMany({
-      where: { userId },
-    });
-  } catch (error) {
-    console.error(
-      "Error data-access/recipe: deleteAllRecipeBook(), error: ",
-      error
-    );
-    throw error;
-  }
-}
-
-/**
  * Get a RecipeBook by id.
  * @param recipeBookId - The recipeBook id.
  * @returns a recipeBook object.
@@ -149,6 +87,68 @@ export async function getAllRecipeBookByUserId(userId: string) {
   } catch (error) {
     console.error(
       "Error data-access/recipe: getAllRecipeBookByUserId(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
+/**
+ * Delete a specific RecipeBook.
+ * @param recipeBook - The RecipeBook to be deleted.
+ * @returns A promise that resolves to the deleted RecipeBook.
+ */
+export async function deleteRecipeBook(recipeBook: RecipeBook) {
+  try {
+    return await db.recipeBook.delete({
+      where: { id: recipeBook.id },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/recipe: deleteRecipeBook(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
+/**
+ * Delete a RecipeBook that match the given userId and name (unique together).
+ * @param userId - The userId of the RecipeBook to be deleted.
+ * @param name - The name of the RecipeBook to be deleted.
+ * @returns A promise that resolves to the deleted RecipeBook.
+ */
+export async function deleteRecipeBookByUserIdAndName(
+  userId: string,
+  name: string
+) {
+  try {
+    return await db.recipeBook.deleteMany({
+      where: { userId, name },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/recipe: deleteRecipeBookByUserIdAndName(), error: ",
+      error
+    );
+    throw error;
+  }
+}
+
+/**
+ * Deletes all RecipeBooks associated with the given userId.
+ *
+ * @param userId - The userId of the RecipeBooks to be deleted.
+ * @returns A promise that resolves to the deleted RecipeBooks.
+ */
+export async function deleteAllRecipeBook(userId: string) {
+  try {
+    return await db.recipeBook.deleteMany({
+      where: { userId },
+    });
+  } catch (error) {
+    console.error(
+      "Error data-access/recipe: deleteAllRecipeBook(), error: ",
       error
     );
     throw error;

@@ -1,13 +1,8 @@
 "use server";
 
-import {
-  updateUserUserType,
-  updateUser,
-  updateUserPremium,
-} from "@/db/data-access/user";
+import { updateUserUserType, updateUserPremium } from "@/db/data-access/user";
 
-import { User, UserTypes } from "@prisma/client";
-import { IngredientSchema } from "@/lib/validation";
+import { User } from "@prisma/client";
 
 /**
  * FIX ME, Updates the user's profile information.

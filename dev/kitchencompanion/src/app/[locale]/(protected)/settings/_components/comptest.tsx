@@ -1,15 +1,23 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Ingredient, Unit } from "@prisma/client";
 import {
   updateUserFacturation,
   updateToAdmin,
   updateProfilUser,
 } from "../_action/settings-action";
 import { useSession } from "@/hooks/useSession";
-
+import { uploadImage } from "../_action/settings-image-action";
 export function Test() {
   const { id, userType, isPremium } = useSession();
+
+  async function processImage(formData: FormData) {
+    try {
+      formData.append("userId", id);
+      uploadImage(formData);
+    } catch (error) {
+      console.error("Error processing image:", error);
+      throw error;
+    }
+  }
 
   async function updateFacturation(formData: FormData) {
     formData.append("userId", id);
@@ -38,7 +46,7 @@ export function Test() {
           <div>
             <p>Bon Service Pro</p>
           </div>
-          <Button type="submit">Quitter le mode Pro</Button>
+          <Button type='submit'>Quitter le mode Pro</Button>
         </form>
       </>
     );
@@ -49,7 +57,7 @@ export function Test() {
           <div>
             <p>Bon Service Pro</p>
           </div>
-          <Button type="submit">Devenir Pro</Button>
+          <Button type='submit'>Devenir Pro</Button>
         </form>
       </>
     );
@@ -60,7 +68,7 @@ export function Test() {
       <>
         <p>Update To admin Mode</p>
         <form action={updateAdminMode}>
-          <Button type="submit">Admin Mode</Button>
+          <Button type='submit'>Admin Mode</Button>
         </form>
       </>
     );
@@ -69,7 +77,9 @@ export function Test() {
       <>
         <p>Vous êtes deja administrateur.</p>
         <form action={updateAdminMode}>
-          <Button type="submit" disabled>
+          <Button
+            type='submit'
+            disabled>
             Admin Mode
           </Button>
         </form>
@@ -80,6 +90,15 @@ export function Test() {
     <>
       {facturactionContent}
       {adminModeContent}
+      <form action={processImage}>
+        <input
+          type='file'
+          name='image'
+          id='image'
+          accept='image/jpeg, image/png'
+        />
+        <Button type='submit'>Upload</Button>
+      </form>
     </>
   );
 }

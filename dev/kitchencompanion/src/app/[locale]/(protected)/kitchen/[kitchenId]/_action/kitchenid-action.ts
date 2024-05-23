@@ -6,10 +6,76 @@ import {
   getAllKitchenUserById,
   getKitchenByAdminAndName,
   linkKitchenUserById,
+  getKitchenUser,
+  getKitchen,
 } from "@/db/data-access/kitchen";
-import { getMenu, linkMenuToKitchen } from "@/db/data-access/menu";
-import { createUser, getUser, getUserIfExist } from "@/db/data-access/user";
-import { Contact, Kitchen, User, UserTypes } from "@prisma/client";
+import {
+  deleteLinkMenuKitchen,
+  getLinkMenuToKitchen,
+  getMenu,
+  linkMenuToKitchen,
+} from "@/db/data-access/menu";
+import {
+  createUser,
+  getEmailsPattern,
+  getUser,
+  getUserIfExist,
+} from "@/db/data-access/user";
+import { Contact, Kitchen, RoleName, User, UserTypes } from "@prisma/client";
+import { tree } from "next/dist/build/templates/app-page";
+
+// Ajouter contact , ajouter membre, ajouter menu
+/**********************************************
+                    SECURITY 
+ **********************************************/
+//TODO: Convertir en hook ! Client component
+export async function isAllowed(kitchenId: string, userId: string) {
+  let isAdmin = false;
+  let isMember = false;
+  try {
+    const kitchen = await getKitchen(kitchenId);
+    const kitchenUser = await getKitchenUser(kitchenId, userId);
+
+    if (kitchen !== undefined && kitchen !== null) {
+      if (kitchen.userId === userId) {
+        isAdmin = true;
+      }
+    }
+
+    if (kitchenUser !== undefined && kitchenUser !== null) {
+      isMember = true;
+    }
+
+    return { isAdmin, isMember };
+  } catch (err) {
+    isAdmin = false;
+    isMember = false;
+    return { isAdmin, isMember };
+  }
+}
+
+/**********************************************
+                    OTHERS 
+ **********************************************/
+
+/**
+ * Retrieves all email addresses that contain a specific pattern.
+ *
+ * @param contain - The pattern to search for in the email addresses.
+ * @returns An array of up to 4 email addresses that contain the specified pattern.
+ * @throws If no email addresses containing the specified pattern are found, an error message is returned.
+ */
+export async function getAllEmail(contain: string) {
+  try {
+    const emails = await getEmailsPattern(contain);
+    return emails.slice(0, 4);
+  } catch (err) {
+    return {
+      error: "Aucun courriel trouvé.",
+      status: 500,
+    };
+  }
+}
 
 /**
  * Link a menu to a kitchen
@@ -22,120 +88,134 @@ export async function addMenuToKitchen(form: FormData) {
   const kitchenId = form.get("kitchenId") as string;
   const menuToAdd = form.get("menuName") as string;
 
-  let menu = null;
   try {
-    menu = await getMenu(userId, menuToAdd);
-    if (!menu) throw new Error();
+    const menu = await getMenu(userId, menuToAdd);
+
+    if (menu === null || menu === undefined)
+      throw new Error("Le menu est inexistant.");
+
+    await linkMenuToKitchen(menu.id, kitchenId);
   } catch (error) {
     return {
-      error: "Le menu n'existe pas.",
+      error: "Une erreur est survenu lors de la liaison de votre menu.",
       status: 500,
     };
   }
-  try {
-    await linkMenuToKitchen(kitchenId, menu.id);
-  } catch (error) {
-    return {
-      error: "La liaison n'a pas ete realise.",
-      status: 500,
-    };
-  }
+
   return {
-    success: "Le menu est maintenant lie.",
+    success: "Le menu a ete ajoute avec success.",
     status: 200,
   };
 }
 
 /**
- * Adds a member to a kitchen. If the member does not already exist he will be created in the database.
+ * Retrieves the names of all members in a given kitchen.
  *
- * @param form - A FormData object containing the email and userId of the member to be added.
- * @returns An object containing an error message or a success message.
+ * @param formData - A FormData object containing the kitchenId.
+ * @returns An array of strings containing the names of the members in the kitchen.
+ * @throws If the kitchenId is not provided in the formData.
  */
-export async function addMemberToKitchen(form: FormData) {
-  //email et userId
-  const email = form.get("memberEmail") as string;
-  const userId = form.get("userId") as string;
-  const name = form.get("memberName") as string;
-  const kitchenName = form.get("kitchenName") as string;
-  let userToLinkId = undefined;
-  let kitchenId = undefined;
-
+export async function getMenuLinkKitchen(form: FormData) {
+  const kitchenId = form.get("kitchenId") as string;
+  let menuNameList: string[] = [];
   try {
-    const isExist = await getUserIfExist(email);
-    if (!isExist) {
-      await createMemberUser(email, name);
-    }
-    const user = await getUser(email);
-    if (!user) {
-      return {
-        error: "Impossible de recuperer l utilisateur",
-        status: 404,
-      };
-    }
-    userToLinkId = user.id;
+    const results = await getLinkMenuToKitchen(kitchenId);
+    if (!results) throw new Error("Aucun menu trouvé.");
+
+    results.forEach((result) => {
+      menuNameList.push(result.menu.name);
+    });
+    return menuNameList;
   } catch (err) {
     return {
-      error: "Impossible de creer ou de recuperer le membre",
+      error: "Une erreur est survenu lors de la recherche de vos menu.",
       status: 500,
     };
   }
+}
+
+/**
+ * Removes a menu from a kitchen.
+ *
+ * @param form - A FormData object containing the userId, kitchenId, and menuName of the menu to be removed.
+ * @returns An object containing an error message or a success message.
+ */
+export async function removeMenuToKitchen(form: FormData) {
+  const userId = form.get("userId") as string;
+  const kitchenId = form.get("kitchenId") as string;
+  const menuToAdd = form.get("menuName") as string;
+
   try {
-    const kitchen = await getKitchenByAdminAndName(userId, kitchenName);
-    kitchenId = kitchen?.id;
-    if (!kitchenId) {
-      return {
-        error: "Impossible de recuperer la cuisine",
-        status: 404,
-      };
+    const menu = await getMenu(userId, menuToAdd);
+
+    if (menu === null || menu === undefined) throw new Error();
+
+    await deleteLinkMenuKitchen(menu.id, kitchenId);
+  } catch (error) {
+    return {
+      error:
+        "Une erreur est survenu lors de la suppression de la liaison de votre menu.",
+      status: 500,
+    };
+  }
+}
+
+/**
+ * Adds a member to a kitchen.
+ * If the member does not already exist he will be created in the database.
+ *
+ * @param form - A FormData object containing the memberEmail and kitchenId.
+ * @returns An object containing an error message or a success message.
+ */
+export async function addMemberToKitchen(
+  email: string,
+  kitchenId: string,
+  role: RoleName
+) {
+  try {
+    let userToLink = await getUser(email);
+    if (!userToLink) {
+      // Create new user
+      await createMemberUser(email);
+      userToLink = await getUser(email);
     }
-    // TODO: Verif si le user est deja lier a cette cuisine
-    await linkKitchenUserById(userToLinkId, kitchenId);
+
+    if (!userToLink) throw new Error("L'utilisateur est introuvable");
+
+    const kitchen = await getKitchen(kitchenId);
+
+    if (!kitchen) throw new Error("La cuisine est inexistante");
+
+    // TODO: Check if the user is already link ? Will see with the visual
+    await linkKitchenUserById(userToLink.id, kitchen.id, role);
   } catch (error) {
     return {
       error: "Impossible de lier le membre a la cuisine.",
       status: 500,
     };
   }
+
   return {
     success: "La personne à été ajouté avec succes.",
     status: 200,
   };
 }
 
-export async function removeMemberToKitchen(form: FormData) {
-  //email et userId
-  const email = form.get("memberEmail") as string;
-  const userId = form.get("userId") as string;
-  const kitchenName = form.get("kitchenName") as string;
-  let kitchenId = undefined;
-  let userToRemoveId = undefined;
+/**
+ * Removes a member from a kitchen.
+ *
+ * @param form - A FormData object containing the memberEmail and kitchenId.
+ * @returns An object containing an error message or a success message.
+ */
+export async function removeMemberToKitchen(email: string, kitchenId: string) {
   try {
-    const kitchen = await getKitchenByAdminAndName(userId, kitchenName);
-    kitchenId = kitchen?.id;
-    if (!kitchenId) {
-      return {
-        error: "Impossible de recuperer la cuisine",
-        status: 404,
-      };
-    }
+    const kitchen = await getKitchen(kitchenId);
 
-    const user = await getUser(email);
-    if (!user) {
-      return {
-        error: "Impossible de recuperer l utilisateur",
-        status: 404,
-      };
-    }
-    userToRemoveId = user.id;
-  } catch (err) {
-    return {
-      error: "Erreur interne, impossible de recuperer l utilisateur",
-      status: 500,
-    };
-  }
-  try {
-    await deleteLinkKitchenUser(userToRemoveId, kitchenId);
+    if (!kitchen) throw new Error("Aucune cuisine trouve");
+    const userToRemove = await getUser(email);
+
+    if (!userToRemove) throw new Error("Aucun usager trouve");
+    await deleteLinkKitchenUser(userToRemove.id, kitchenId);
   } catch (err) {
     return {
       error: "Impossible de supprimer l utilisateur de cette cuisine",
@@ -144,7 +224,7 @@ export async function removeMemberToKitchen(form: FormData) {
   }
   return {
     success: "L'utilisateur à été supprimer de la cuisine",
-    status: 500,
+    status: 200,
   };
 }
 
@@ -154,19 +234,17 @@ export async function removeMemberToKitchen(form: FormData) {
  * @param email - The email address of the new user.
  * @returns An object containing a success message or an error message
  */
-async function createMemberUser(email: string, name: string) {
-  // TODO mettre un mdp ? (si pas verifier il peut pas ce connecter?)
-
+async function createMemberUser(email: string) {
   const user = {
-    name: name,
     email: email,
-    password: "undefined",
+    password: crypto.randomUUID().split("-")[0],
     userType: UserTypes.MEMBER,
   } as User;
 
   try {
     createUser(user);
     // TODO: envoyer un email
+    // TODO: email qui envoie un lien vers un password reset token. (ou un token de verification)
   } catch {
     return {
       error:
@@ -187,23 +265,25 @@ async function createMemberUser(email: string, name: string) {
  * @returns An array of strings containing the names of the members in the kitchen.
  * @throws If the kitchenId is not provided in the formData.
  */
-export async function getNameMemberKitchen(formData: FormData) {
-  const kitchenName = formData.get("kitchenName") as string;
-  const userId = formData.get("userId") as string;
-  let userList = undefined;
-  let kitchenId = undefined;
-  let userListName: string[] = [];
+export async function getNameMemberKitchen(kitchenId: string) {
+  const userListName: string[][] = [];
 
   try {
-    const kitchen = await getKitchenByAdminAndName(userId, kitchenName);
-    kitchenId = kitchen?.id;
-    if (!kitchenId) {
-      throw new Error();
-    }
-    userList = await getAllKitchenUserById(kitchenId);
+    const userList = await getAllKitchenUserById(kitchenId);
     userList.forEach((kitchen) => {
       if (kitchen.user.name) {
-        userListName.push(kitchen.user.name);
+        userListName.push([
+          kitchen.user.name,
+          kitchen.user.email,
+          kitchen.user.phone === null ? " - " : kitchen.user.phone,
+          kitchen.role,
+        ]);
+      } else {
+        userListName.push([
+          "En attente de vérification",
+          kitchen.user.email,
+          kitchen.role,
+        ]);
       }
     });
   } catch (error) {
@@ -226,16 +306,14 @@ export async function getNameMemberKitchen(formData: FormData) {
 export async function getContactForKitchen(formData: FormData) {
   const kitchenName = formData.get("kitchenName") as string;
   const userId = formData.get("userId") as string;
-  let contact = undefined;
-  let kitchenId = undefined;
-  let contactList: Contact[] = [];
+  const contactList: Contact[] = [];
   try {
     const kitchen = await getKitchenByAdminAndName(userId, kitchenName);
-    kitchenId = kitchen?.id;
+    const kitchenId = kitchen?.id;
     if (!kitchenId) {
       throw new Error();
     }
-    contact = await getAllContactLinksToKitchen(kitchenId);
+    const contact = await getAllContactLinksToKitchen(kitchenId);
     contact.forEach((contact) => {
       if (contact.contact) {
         contact.contact.id = "not given";

@@ -68,14 +68,19 @@ export const pathnames = {
     fr: "/recettes",
   },
 
-  "/recipes/books/[recipeBook]": {
-    en: "/recipes/books/[recipeBook]",
-    fr: "/recettes/livres/[recipeBook]",
+  "/recipes/[recipeBook]": {
+    en: "/recipes/[recipeBook]",
+    fr: "/recettes/[recipeBook]",
   },
 
-  "/recipes/add-recipe": {
-    en: "/recipes/new%20Recipe",
-    fr: "/recettes/nouvelle%20Recette",
+  "/recipes/create": {
+    en: "/recipes/create",
+    fr: "/recettes/creer",
+  },
+
+  "/settings": {
+    en: "/settings",
+    fr: "/parametres",
   },
 
   "/contacts": "/contacts",

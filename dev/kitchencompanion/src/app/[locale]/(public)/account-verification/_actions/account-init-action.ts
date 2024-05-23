@@ -1,8 +1,17 @@
-import { createManyContact, deleteAllContact } from "@/db/data-access/contact";
-import { createRecipeBook, deleteAllRecipeBook } from "@/db/data-access/recipe-book";
-import { createManySupplier, deleteAllSupplierByUserId, getAllSupplierSupported } from "@/db/data-access/supplier";
+import { createManyContact } from "@/db/data-access/contact";
+import { createRecipeBook } from "@/db/data-access/recipe-book";
+import {
+  createManySupplier,
+  getAllSupplierSupported,
+} from "@/db/data-access/supplier";
 import { getUserById } from "@/db/data-access/user";
-import { Contact, RecipeBook, Supplier, SupplierSupported, User } from "@prisma/client";
+import {
+  Contact,
+  RecipeBook,
+  Supplier,
+  SupplierSupported,
+  User,
+} from "@prisma/client";
 
 /**
  * Initializes the recipeBook and market for a user.
@@ -11,7 +20,7 @@ import { Contact, RecipeBook, Supplier, SupplierSupported, User } from "@prisma/
  * @returns A Promise that resolves when the data initialization is complete.
  * @throws An error if there is an issue initializing the data.
  */
-export async function account_init(userId: string) {
+export async function accountInit(userId: string) {
   let user = undefined;
   try {
     // Get the user
@@ -24,22 +33,22 @@ export async function account_init(userId: string) {
   }
   // Default recipeBook
   const recipeBook = {
-    name: "Toutes les recettes, " + user.name,
+    name: "Mes recettes",
     userId: user.id,
-    description: "Toutes les recettes SAUTE"
+    description: "Ce livre de recette contient toutes les recettes.",
   };
 
   // create recipeBook
   try {
     await createRecipeBook(recipeBook as RecipeBook);
-  }catch(error){
+  } catch (error) {
     return {
       error: "Erreur lors de la creation du livre de recette.",
       status: 400,
     };
   }
   // Link default supplier supported
-  try{
+  try {
     const supplierSupported: SupplierSupported[] =
       await getAllSupplierSupported();
 
@@ -69,39 +78,14 @@ export async function account_init(userId: string) {
     await createManyContact(contactToAdd);
   } catch (error) {
     return {
-      error: "Erreur lors de la creation des fournisseur et des contacts par default.",
+      error:
+        "Erreur lors de la creation des fournisseur et des contacts par default.",
       status: 400,
     };
   }
   return {
-    success: "L'initialiser des informations par default c'est executer avec succes.",
+    success:
+      "L'initialiser des informations par default c'est executer avec succes.",
     status: 200,
   };
-}
-
-/**
- * Removes all data associated with a user. (dev fonction)
- * ! DANGER !: remove all recipebook, supplier, contact.
- * @param userId - The id of the user whose data should be removed.
- * @returns A Promise that resolves when the data removal is complete.
- * @throws An error if there is an issue removing the data.
- */
-export async function dev_action_removeAllDataUser(userId: string) {
-  try {
-    const user = await getUserById(userId);
-
-    if (user) {
-      // Remove all recipeBook
-      await deleteAllRecipeBook(userId);
-      // Remove all Supplier
-      await deleteAllSupplierByUserId(userId);
-      // Remove all contact
-      await deleteAllContact(userId);
-    }
-  } catch (error) {
-    console.error(
-      "Error data-access/action: action_removeUser(), error: ",
-      error
-    );
-  }
 }
