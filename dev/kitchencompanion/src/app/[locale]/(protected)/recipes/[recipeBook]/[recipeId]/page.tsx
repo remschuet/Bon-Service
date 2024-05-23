@@ -29,7 +29,7 @@ export default function ViewRecipe() {
   const steps: string[] = JSON.parse(recipe.steps);
 
   return (
-    <div className='container mx-auto space-y-2'>
+    <div className='container mx-auto space-y-4'>
       <RecipeCard recipeName={recipe.name}>
         <RecipeHeader
           recipe={recipe}
