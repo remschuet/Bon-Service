@@ -4,10 +4,8 @@ import { PdfSection } from "@/lib/pdf-creator/pdfSection";
 import { exportGetRecipe } from "./pdf-action-recipe-export";
 
 async function getSteps(steps: string) {
-  const stringWithoutQuotes = steps.replace(/["\\n[\]]/g, "");
-  // Divise la chaîne en une liste en fonction du caractère "\n"
-  const stringList = stringWithoutQuotes.split(",");
-  // Enlève les "\n" de chaque élément de la liste
+  // Divise la chaîne en une liste en fonction des virgules
+  const stringList = steps.split('","');
   const cleanedList = stringList.map((item) => item.replace(/\n/g, ""));
   cleanedList.unshift("ETAPES");
   console.log(cleanedList);
