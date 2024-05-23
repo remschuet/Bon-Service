@@ -68,7 +68,7 @@ export function UpdateInformation() {
         </form>
       </CardContent>
       <CardFooter className='border-t px-6 py-4'>
-        <Button>Sauvegarder</Button>
+        <Button disabled>Sauvegarder</Button>
       </CardFooter>
     </Card>
   );
