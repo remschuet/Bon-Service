@@ -15,6 +15,7 @@ async function getSteps(steps: string) {
 export async function exportCreatePdfRecipe(id: string, idRecipe: string) {
   const data = await exportGetRecipe(idRecipe);
   let ingredientName: string[] = [];
+  let alergeneName: string[] = [];
 
   console.log(data.recipe);
   console.log(data.ingredients);
@@ -37,9 +38,9 @@ export async function exportCreatePdfRecipe(id: string, idRecipe: string) {
     }
   });
 
-  ingredientName.push("ALERGENES");
+  alergeneName.push("ALERGENES");
   data.recipe.recipeAllergens.forEach((element) => {
-    ingredientName.push(element.allergen);
+    alergeneName.push(element.allergen);
   });
 
   let PdfOption = new PdfOptionBuilder().setPageHeader(10).build();
@@ -54,15 +55,19 @@ export async function exportCreatePdfRecipe(id: string, idRecipe: string) {
   // Attribute a name (tag) for the sections
   const sections: Section = {
     Ingredients: {
-      start: { x: 0, y: 0 },
-      end: { x: 3, y: 8 },
+      start: { x: 1.2, y: 0.7 },
+      end: { x: 9, y: 5 },
+    },
+    Alergenes: {
+      start: { x: 5.5, y: 0.7 },
+      end: { x: 9, y: 5 },
     },
     timer: {
-      start: { x: 2, y: 0 },
+      start: { x: 1.3, y: 0 },
       end: { x: 8, y: 1 },
     },
     Etapes: {
-      start: { x: 2, y: 1 },
+      start: { x: 1, y: 2.5 },
       end: { x: 8, y: 9 },
     },
     infos: {
@@ -76,11 +81,20 @@ export async function exportCreatePdfRecipe(id: string, idRecipe: string) {
   pdf.addTextToSection(
     "Ingredients",
     ingredientName,
-    ["INGREDIENTS", "ALERGENES"],
+    ["INGREDIENTS"],
     "-",
     10, // space x
     1 // space y
   );
+  pdf.addTextToSection(
+    "Alergenes",
+    alergeneName,
+    ["ALERGENES"],
+    "-",
+    10, // space x
+    1 // space y
+  );
+
   const steps = await getSteps(data.recipe.steps);
   pdf.addTextToSection("Etapes", steps, ["ETAPES"], "i", 15, 30);
   pdf.addTextToSection("infos", "Created with BonService");
