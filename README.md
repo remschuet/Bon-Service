@@ -61,6 +61,10 @@ Bon Service est une application dédiée à la gestion et au partage de recettes
 
   Framework React nous permettant de faire une application web full-stack.
 
+- [NextAuth](https://next-auth.js.org/getting-started/introduction)
+
+  Librairie d'authentification pour NextJS.
+
 - [React](https://reactjs.org/docs/getting-started.html)
 
   Librairie JavaScript pour construire nos interfaces visuels.
@@ -99,9 +103,27 @@ Bon Service est une application dédiée à la gestion et au partage de recettes
 
 ## Ressources
 
-- [NextJs, bonnes pratiques](https://www.youtube.com/watch?v=1MTyCvS05V4&t=16706s)
+- [NextAuth, Cours technique](https://www.youtube.com/watch?v=1MTyCvS05V4&t=16706s)
 
-  Vidéo YouTube visualisé pour la compréhension globale du fonctionnement de NextJs.
+  Vidéo YouTube visualisé pour aider avec l'implémentation de l'authentification par Credentials avec NextAuth.
+
+- [NextJS, Clean architecture](https://www.youtube.com/watch?v=wnxO4AT2N4o&t=994s&ab_channel=WebDevCody)
+
+  Vidéo Youtube visualisé plus tôt dans le développement, cette vidéo à modelée beaucoup de nos choix en terme d'architecture pour notre projet.
+
+- [Web Dev Cody](https://www.youtube.com/@WebDevCody)
+
+  Multitude de vidéo sur NextJS et le déploiement sur VPS.
+
+- [Theo Browne](https://www.youtube.com/@t3dotgg)
+
+  Tutoriel React et TypeScript, aussi une execelente source pour suivre les nouveautés et les changements dans l'écosystème TypseScript.
+
+- [Josh W Commeau](https://www.joshwcomeau.com/)
+
+  Blog sur le développement Web, panoplie d'article intéréssant portant sur React et les design pattern plus avancés.
+
+Et bien d'autres.
 
 ## Contact
 
