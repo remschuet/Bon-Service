@@ -46,7 +46,7 @@ export async function sendPasswordResetEmail(email: string, token: string) {
   const passwordResetLink = `${APP_URL}/password-reset/?token=${token}`;
 
   const { data, error } = await resend.emails.send({
-    from: "KitchenCompanion <onboarding@resend.dev>",
+    from: "Bon Service <onboarding@bonservice.app>",
     to: [email],
     subject: "Changement de mot de passe",
     html: `<p>Veuillez cliquer <a href=${passwordResetLink} >ici</a> pour réinitialiser votre mot de passe.</p>`,
