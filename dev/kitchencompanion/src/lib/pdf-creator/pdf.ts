@@ -122,6 +122,21 @@ export class PdfGenerator {
     this.displayHeader(description, descriptionSize, 25);
   }
 
+  private truncateString(str: string, maxLength: number) {
+    if (str.length > maxLength) {
+      let truncatedStr = str.slice(0, maxLength);
+
+      let lastSpaceIndex = truncatedStr.lastIndexOf(" ");
+
+      if (lastSpaceIndex !== -1) {
+        truncatedStr = truncatedStr.slice(0, lastSpaceIndex);
+      }
+
+      return truncatedStr + " [...]";
+    }
+    return str;
+  }
+
   /**
    * Displays a header text in the PDF document.
    *
@@ -130,6 +145,7 @@ export class PdfGenerator {
    * @param posY The vertical position (Y-coordinate) of the header text.
    */
   private displayHeader(text: string, size: number, posY: number) {
+    text = this.truncateString(text, 80);
     this.doc.setFontSize(size);
     const textWidth = this.getTextWidth(text, size);
     const centerX = (this.pdfOption.pageWidth - textWidth) / 2;
