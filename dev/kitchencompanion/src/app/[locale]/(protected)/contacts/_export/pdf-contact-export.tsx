@@ -22,7 +22,7 @@ export async function exportContactPdf(id: string, name: string) {
   await pdf.createGrid(data, ingredientExport);
 
   // Set Header
-  pdf.setHeader("Liste numéro d'urgence", "", "responsable: " + name);
+  pdf.setHeader("Contacts", "", "responsable: " + name);
 
   pdf.openPdf();
 }

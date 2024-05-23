@@ -18,6 +18,7 @@ export async function exportIngredientPdf(id: string, name: string) {
   async function createPDF(id: string) {
     let PdfOption = new PdfOptionBuilder().setPageHeader(10).build();
     const pdf = new PdfTable(PdfOption);
+    pdf.setHeader("", "Listes des ingrédients");
     let data = ["nom", "categorie", "fournisseur", "origine", "prix", "unité"];
 
     const contactsDTO = (await exportGetIngredient(
@@ -29,7 +30,6 @@ export async function exportIngredientPdf(id: string, name: string) {
     await pdf.createGrid(data, contactExport);
 
     // Set Header
-    pdf.setHeader("Ingredients", "Tous les ingredients de la cuisine");
 
     pdf.openPdf();
   }
