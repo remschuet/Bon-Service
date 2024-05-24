@@ -11,10 +11,6 @@ export const NavigationStateProvider = ({
 }) => {
   const path = usePathname().split("/")[1];
 
-  if (!path) {
-    return;
-  }
-
   const [isOpen, setIsOpen] = useState(false);
   const [isActive, setIsActive] = useState("/" + path);
 

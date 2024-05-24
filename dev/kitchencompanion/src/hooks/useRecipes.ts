@@ -20,7 +20,7 @@ export function useRecipes(recipeBookId: string): {
     };
 
     fetchRecipes();
-  }, []);
+  }, [recipeBookId]);
 
   return { recipes, recipesCount };
 }

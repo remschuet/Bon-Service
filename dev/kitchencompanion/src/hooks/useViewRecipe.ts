@@ -20,7 +20,7 @@ export function useViewRecipe(recipeId: string) {
     };
 
     fetchRecipe();
-  }, []);
+  }, [recipeId]);
 
   return { recipe, ingredients };
 }

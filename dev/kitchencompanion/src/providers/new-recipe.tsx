@@ -46,6 +46,7 @@ export function NewRecipeProvider({ children }: { children: React.ReactNode }) {
     cookTime,
     steps,
     ingredients,
+    newRecipe,
   ]);
 
   useEffect(() => {
@@ -95,9 +96,8 @@ export function NewRecipeProvider({ children }: { children: React.ReactNode }) {
         setVersion,
         ingredients,
         setIngredients,
-      }}
-    >
-      <div className="space-y-2 flex gap-4 justify-center mt-10">
+      }}>
+      <div className='space-y-2 flex gap-4 justify-center mt-10'>
         {children}
       </div>
     </NewRecipe.Provider>

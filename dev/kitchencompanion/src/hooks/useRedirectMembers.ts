@@ -10,5 +10,5 @@ export function useRedirectMembers() {
     if (userType === "MEMBER") {
       router.push("/dashboard");
     }
-  }, [userType]);
+  }, [userType, router]);
 }

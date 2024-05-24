@@ -15,7 +15,7 @@ export function useNotification() {
     };
 
     fetchNotifications();
-  }, []);
+  }, [id]);
 
   return { notifications };
 }

@@ -26,7 +26,7 @@ export function useOwner(recipeBookId: string) {
     }
 
     fetchOwner();
-  }, []);
+  }, [id, recipeBookId]);
 
   return { isOwner, loading };
 }
