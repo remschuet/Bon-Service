@@ -29,7 +29,7 @@ export async function passwordReset(token: string, password: string) {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  await updateUserPassword(currentToken.email, hashedPassword);
+  await updateUserPassword(user.id, hashedPassword);
   await deletePasswordResetToken(currentToken.token);
 
   return { success: "Votre mot de passe à été réinitialisé.", status: 200 };

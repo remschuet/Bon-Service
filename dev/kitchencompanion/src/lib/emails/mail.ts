@@ -1,7 +1,7 @@
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const APP_URL = "http://localhost:3000";
+const APP_URL = "http://bonservice.app/";
 
 export async function sendVerificationEmail(email: string, token: string) {
   const verificationLink = `${APP_URL}/account-verification/?token=${token}`;
