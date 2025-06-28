@@ -1,153 +1,102 @@
-## Bon Service
+# 🍽️ Bon Service
 
-lien: <a href="https://bonService.app" title="Hobbit lifestyles">Bon Service</a>
+**Bon Service** is an innovative application designed for the **management, standardization, and sharing of recipes** within professional kitchens. It helps chefs streamline operations such as **cost calculation**, **inventory organization**, and **PDF export** of recipes.
 
-## Présentation
+Built with **Next.js**, **TypeScript**, and **Tailwind CSS**, the app offers a modern and responsive user interface. Data is stored using **PostgreSQL** and files are hosted with **Amazon S3**.
 
-Bon Service est une application dédiée à la gestion et au partage de recettes au sein d'une équipe de cuisine. Elle permet aux Chefs de centraliser et d'organiser leurs recettes, facilitant ainsi la collaboration et l'innovation culinaire.
+🔗 [Watch the LinkedIn demo](https://www.linkedin.com/posts/remi-chuet_programming-typescript-web-activity-7232413573312901122-W4nw?utm_source=share&utm_medium=member_desktop&rcm=ACoAAD1EaqABCnci4wMsLt3JatEzCkbRMogTir8)
 
-## Installation
+---
 
-**Ouvrir un terminal à la racine du projet et entrer chacune des prochaines commandes :**
+## ⚙️ Installation
 
-1. Déplacement vers le répertoire du projet :
+Open a terminal at the root of the project and run the following steps:
 
-   ```sh
+1. **Navigate to the project directory**:
+
+   ```bash
    cd KitchenCompanion/dev/kitchencompanion
    ```
 
-2. Installation des dépendances :
+2. **Install dependencies**:
 
-   ```sh
+   ```bash
    npm install
    ```
 
-3. Configuration du fichier `.env` :
+3. **Set up the environment variables**:
 
-   - Demander le fichier `.env` à un administrateur du projet et le placer à l'emplacement actuel du terminal.
+   Ask a project admin for the `.env` file and place it in the current directory.
 
-4. Configuration du client Prisma :
+4. **Generate Prisma client**:
 
-   ```sh
+   ```bash
    npx prisma generate
    ```
 
-5. Démarrer le projet :
+5. **Start the development server**:
 
-   ```sh
+   ```bash
    npm run dev
    ```
 
-6. Ouvrir un navigateur web et aller à l'adresse suivante :
+6. Open your browser and visit:
+
    ```
-   localhost:3000
+   http://localhost:3000
    ```
 
-## Utilisation
+---
 
-- **Gestion du Marché** : Ajouter et modifier vos ingredients manuellement ou déposer votre reçu pdf
-- **Gestion des Recettes** : Créer, modifier et supprimer des recettes.
-- **Partage en Équipe** : Collaborer avec d'autres membres de l'équipe en partageant des recettes et contacts.
-- **Catégorisation** : Organiser les recettes par livres de recettes pour une recherche facile.
-- **Exporter** : Télécharger vos recettes, ingredients ou contacts en pdf pour une lecture papier.
+## 🧩 Features
 
-## Références
+* 🛒 **Market Management**: Add or edit ingredients manually or upload a PDF receipt.
+* 📖 **Recipe Management**: Create, edit, and delete recipes.
+* 🤝 **Team Collaboration**: Share recipes and contacts within your kitchen team.
+* 🗂️ **Recipe Organization**: Categorize recipes into cookbooks for easier browsing.
+* 📄 **Export**: Download recipes, ingredients, or contacts as PDF files.
 
-- [TypeScript](https://www.typescriptlang.org/docs/)
+---
 
-  Language utilisé dans le projet permettant de typer notre code.
+## 🛠️ Tech Stack
 
-- [Next.js](https://nextjs.org/docs)
+* **TypeScript** – Type-safe JavaScript for more robust code.
+* **Next.js** – React framework for building full-stack web applications.
+* **NextAuth** – Authentication library for secure sign-in (Credentials provider).
+* **React** – Component-based library for dynamic UIs.
+* **Prisma** – Type-safe ORM for PostgreSQL.
+* **ShadCN** – Beautiful component library built on Radix UI + Tailwind.
+* **Zod** – Schema validation for frontend and backend.
+* **Tailwind CSS** – Utility-first CSS framework for rapid UI design.
+* **Jest** – Testing framework for unit and integration tests.
+* **Bcrypt** – Password hashing for secure storage.
+* **Resend** – Email sending API for password reset and notifications.
+* **JsPDF** – Client-side PDF generation from the browser.
 
-  Framework React nous permettant de faire une application web full-stack.
+---
 
-- [NextAuth](https://next-auth.js.org/getting-started/introduction)
+## 📚 Learning Resources
 
-  Librairie d'authentification pour NextJS.
+* **NextAuth Credentials Tutorial** – YouTube guide on implementing custom auth.
+* **Next.js Clean Architecture** – Architectural inspiration from early development.
+* **Web Dev Cody** – Next.js + deployment tutorials.
+* **Theo Browne** – Advanced TypeScript and React content.
+* **Josh W Comeau** – High-quality blog on React and frontend patterns.
 
-- [React](https://reactjs.org/docs/getting-started.html)
+---
 
-  Librairie JavaScript pour construire nos interfaces visuels.
+## 👥 Team
 
-- [Prisma](https://www.prisma.io/docs/)
+| Name                    | Role                | Contact                                                         |
+| ----------------------- | ------------------- | --------------------------------------------------------------- |
+| Rémi Chuet              | Developer, Designer | [remschuet@gmail.com](mailto:remschuet@gmail.com)               |
+| Julien Coulombe-Morency | Developer, Designer | [jcoulombemorency@gmail.com](mailto:jcoulombemorency@gmail.com) |
 
-  ORM nous aidant à la connection, visualisation et migration de notre base de donnée PostgreSQL.
+---
 
-- [ShadCN](https://ui.shadcn.com/)
+## 🙏 Special Thanks
 
-  Bibliothèque de composants React, basée sur Tailwind CSS, conçue pour simplifier le développement d'interfaces utilisateur élégantes et réactives.
-
-- [Zod](https://zod.dev/)
-
-  Bibliothèque TypeScript pour la validation de schémas, permettant de définir et valider les structures de données de manière intuitive et sécurisée.
-
-- [Tailwind CSS](https://tailwindcss.com/docs)
-
-  Framework CSS utilitaire qui permet de créer rapidement des interfaces personnalisées en utilisant des classes pré-définies directement dans le HTML.
-
-- [Jest](https://jestjs.io/docs/getting-started)
-
-  Framework de test JavaScript conçu pour tester des applications JavaScript et React, offrant des fonctionnalités comme les tests unitaires, les tests d'intégration utilisés dans notre projet.
-
-- [Bcrypt](https://www.npmjs.com/package/bcrypt)
-
-  Bibliothèque pour le hachage de mots de passe, utilisée pour sécuriser les mots de passe en les transformant en une chaîne cryptée avant de les stocker dans une base de données.
-
-- [Resend](https://resend.com/docs)
-
-  API web d'envoi d'e-mails qui simplifie l'intégration de fonctionnalités de messagerie dans les applications, offrant des options de personnalisation et une gestion fiable des envois d'e-mails.
-
-- [JsPDF](https://www.npmjs.com/package/jspdf)
-
-  Bibliothèque JavaScript permettant de générer des fichiers PDF directement depuis le navigateur, utilisée pour créer et télécharger des documents PDF de manière dynamique.
-
-## Ressources
-
-- [NextAuth, Cours technique](https://www.youtube.com/watch?v=1MTyCvS05V4&t=16706s)
-
-  Vidéo YouTube visualisé pour aider avec l'implémentation de l'authentification par Credentials avec NextAuth.
-
-- [NextJS, Clean architecture](https://www.youtube.com/watch?v=wnxO4AT2N4o&t=994s&ab_channel=WebDevCody)
-
-  Vidéo Youtube visualisé plus tôt dans le développement, cette vidéo à modelée beaucoup de nos choix en terme d'architecture pour notre projet.
-
-- [Web Dev Cody](https://www.youtube.com/@WebDevCody)
-
-  Multitude de vidéo sur NextJS et le déploiement sur VPS.
-
-- [Theo Browne](https://www.youtube.com/@t3dotgg)
-
-  Tutoriel React et TypeScript, aussi une execelente source pour suivre les nouveautés et les changements dans l'écosystème TypseScript.
-
-- [Josh W Commeau](https://www.joshwcomeau.com/)
-
-  Blog sur le développement Web, panoplie d'article intéréssant portant sur React et les design pattern plus avancés.
-
-Et bien d'autres.
-
-## Contact
-
-Pour toute question ou demande d'information, vous pouvez contacter les membres de notre équipe de développement :
-
-| Nom                         | Rôle                    | Contact                                                         |
-| --------------------------- | ----------------------- | --------------------------------------------------------------- |
-| **Rémi Chuet**              | Développeur, Concepteur | [remschuet@gmail.com](mailto:remschuet@gmail.com)               |
-| **Julien Coulombe-Morency** | Développeur, Concepteur | [jcoulombemorency@gmail.com](mailto:jcoulombemorency@gmail.com) |
-
-## Remerciements
-
-Pierre-Paul Monty
-
-- Discussion sur les algorythmes: In-Order Traversal
-
-Frederic Theriault
-
-- Discussion sécurité web
-
-Martine Coulombe
-
-- Relecture documents techniques
-
-David Chuet
-
-- Relecture documents techniques
+* **Pierre-Paul Monty** – Discussions on tree traversal algorithms.
+* **Frédéric Thériault** – Guidance on web security.
+* **Martine Coulombe** – Technical document proofreading.
+* **David Chuet** – Technical document proofreading.
